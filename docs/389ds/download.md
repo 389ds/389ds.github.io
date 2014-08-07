@@ -1,0 +1,193 @@
+---
+title: "Download"
+---
+
+# Download 389 Directory Server
+-------------------------------
+
+Below you will find links to download the binary packages and source files. Please see the [FAQ section on Open Source](FAQ/faq.html#open-source) for more information.
+
+<div style="text-align: left;">
+<span style="display:inline-block;padding:1px;border:1px solid #000;font-size:80%;">
+EXPORT CONTROL. As required by U.S. law, you (Licensee) represents and warrants that it: (a) understands that the Software is subject to export controls under the U.S. Commerce Department's Export Administration Regulations ("EAR"); (b) is not located in a prohibited destination country under the EAR or U.S. sanctions regulations (currently Cuba, Iran, Iraq, North Korea, Sudan and Syria); (c) will not export, re-export, or transfer the Software to any prohibited destination, entity, or individual without the necessary export license(s) or authorizations(s) from the U.S. Government; (d) will not use or transfer the Software for use in any sensitive nuclear, chemical or biological weapons, or missile technology end-uses unless authorized by the U.S. Government by regulation or specific license; (e) understands and agrees that if it is in the United States and exports or transfers the Software to eligible end users, it will, as required by EAR Section 740.17(e), submit semi-annual reports to the Commerce Department's Bureau of Industry & Security (BIS), which include the name and address (including country) of each transferee; and (f) understands that countries other than the United States may restrict the import, use, or export of encryption products and that it shall be solely responsible for compliance with any such import, use, or export restrictions.
+</span>
+</div>
+<br>
+
+{% include toc.md %}
+
+## Binary Packages
+------------------
+
+### RHEL6/EPEL6
+
+You must first install EPEL from <https://fedoraproject.org/wiki/EPEL>. There is no direct link to the RPM, you must first find a mirror. Go here to find the RPM:
+
+[](http://download.fedoraproject.org/pub/epel/6/i386/repoview/epel-release.html)
+
+That will direct you to a mirror where you can download the epel-release RPM:
+
+    rpm -ivh http://site/path/to/epel-release-6-N.noarch.rpm
+
+The directions below assume you have already installed EPEL.
+
+The package 389-ds-base is now part of RHEL6 (as of RHEL6.1). Therefore, due to Fedora/EPEL packaging policy, we cannot also provide a 389-ds-base package in EPEL6. We would still like to provide recent/testing/experimental 389-ds-base packages for the EL6 platform, so we will be using [coprs](http://copr.fedoraproject.org/coprs/) instead. After installing EPEL (see above), download the [epel-389-ds-base.repo](http://copr.fedoraproject.org/coprs/nhosoi/389-ds-base-epel6/repo/epel-6-i386/) file and put it in /etc/yum.repos.d.
+
+    # as root, or use sudo
+
+    wget http://copr.fedoraproject.org/coprs/nhosoi/389-ds-base-epel6/repo/epel-6-i386/ -O epel-389-ds-base.repo
+
+Then you can install 389-ds-base or 389-ds as you normally would.
+
+### 389 Directory Server 1.1 and later
+
+-   yum is used to install on platforms that use yum for package installation and management.
+-   Enterprise Linux packages are available from EPEL
+    -   How to use - <https://fedoraproject.org/wiki/EPEL/FAQ#howtouse>
+    -   More info on EPEL - <https://fedoraproject.org/wiki/EPEL>
+
+New Install:
+
+    yum install [--enablerepo=updates-testing|--enablerepo=epel-testing] 389-ds
+    setup-ds-admin.pl
+
+Upgrade an existing system:
+
+    yum [--enablerepo=updates-testing|--enablerepo=epel-testing] upgrade [389-ds-base ...other packages...]
+    setup-ds-admin.pl -u
+
+If you specify package names on the command line, only those packages will be updated - useful for testing, if you just want to test certain packages without upgrading every package on your system to the testing version. You can use *yum downgrade pkgname ... pkgname* to downgrade the package from the testing version to the stable version.
+
+-   Testing - installing packages from the testing repos
+    -   On Fedora - yum install 389-ds --enablerepo=updates-testing
+    -   On EPEL - yum install 389-ds --enablerepo=epel-testing
+    -   On Fedora - yum upgrade <testing packages> --enablerepo=updates-testing
+    -   On EPEL - yum upgrade <testing packages> --enablerepo=epel-testing
+    -   See the [Release Notes](releases/release-notes.html) for the current list of testing packages
+-   Upgrade - **yum upgrade**
+    -   The 389 packages are designed to obsolete and replace the fedora-ds packages - you must use yum **upgrade** *not update* in order for yum and rpm to process the obsolete directives
+    -   You **must** run **setup-ds-admin.pl -u** after the upgrade to refresh your admin server and console configuration
+-   New Install - **yum install 389-ds**
+    -   Run **setup-ds-admin.pl** to set up your directory server
+
+Upgrading and installing will install many dependencies too, including Java if your platform supports it. If not, see [Install Guide](legacy/install-guide.html) for more information about Java.
+
+See [Install Guide](legacy/install-guide.html) for more information.
+
+### Windows Password Synchronization
+
+NOTE: If you are upgrading from version **1.1.0**, the upgrade will create a new 389 Password Sync folder and copy your files from the old Fedora Password Sync folder. It will not remove the old Fedora Password Sync folder. You can do that manually once you have verified that the new 389 version is working correctly.
+
+NOTE: If you are upgrading from a version older than **1.1.0**, install the new version first, then remove the old version from the Add/Remove Programs list in the Control Panel. The new version is **1.1.5**.
+
+This is an Active Directory "plug-in" that intercepts password changes made to AD Domain Controllers and sends the clear text password over an encrypted connection (SSL/TLS) to 389 DS to keep the passwords in sync. It works in conjunction with the Windows Sync feature of 389. You must install this on every Domain Controller.
+
+Tested with Windows 2008 and 2003 Server 32-bit and 64-bit. Should work on Win 2012.
+
+|Platform|File|SHA1SUM|
+|--------|----|-------|
+|Windows 2003/2008 32-bit|[389-PassSync-1.1.5-i386.msi]({{ site.baseurl }}/binaries/389-PassSync-1.1.5-i386.msi)|4b79578e3d4bf9cdaada70e5c1212290a4e5ce3c|
+|Windows 2003/2008 64-bit|[389-PassSync-1.1.5-x86\_64.msi]({{ site.baseurl }}/binaries/389-PassSync-1.1.5-x86_64.msi)|ddac9705d305b14fa217af2f264d3529d3f3edb8|
+
+### Windows Console
+
+NOTE: Windows Console now (as of April 3, 2009) requires Java 1.6 to work.
+
+NOTE: You must use 64-bit Java with the 64-bit version.
+
+Tested with Sun Java 1.6 on Windows 2008/2003 Server.
+
+|Platform|File|SHA1SUM|
+|--------|----|-------|
+|Windows 2003/2008 32-bit|[389-Console-1.1.6-i386.msi]({{ site.baseurl }}/binaries/389-console-1.1.6-i386.msi)|95590970a5e1de183ba508ff450958c495c8ae15|
+|Windows 2003/2008 64-bit|[389-Console-1.1.6-x86\_64.msi]({{ site.baseurl }}/binaries/389-console-1.1.6-x86_64.msi)|5a125647d536a3f7ee1a1ee6157eb4c90e7ac631|
+
+NOTE: You must have Java in your PATH in order for this to work. Or you can just edit the batch file to tell it where to find Java. NOTE: This might work with Fedora DS 1.0.4 and earlier, but it has not been tested with that release.
+
+<br>
+
+## Legacy Releases
+------------------
+
+These releases are very old, and provided for historical purposes only.
+
+### Fedora Directory Server 1.0.4
+
+The FDS 1.0.4 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help.
+
+|Platform|File|MD5SUM|
+|--------|----|------|
+|Fedora Core 6 x86|[fedora-ds-1.0.4-1.FC6.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.FC6.i386.opt.rpm)|e9266f3355e6dae23a518544f8d2c1c6|
+|Fedora Core 6 x86\_64|[fedora-ds-1.0.4-1.FC6.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.FC6.x86_64.opt.rpm)|3009084ea996584d6ed4bf6fbefe7d1c|
+|Fedora Core 5 x86|[fedora-ds-1.0.4-1.FC5.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.FC5.i386.opt.rpm)|75a92f846cee3c8048d05fdac635191d|
+|Fedora Core 5 x86\_64|[fedora-ds-1.0.4-1.FC5.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.FC5.x86_64.opt.rpm)|59b6b8f09504dc9ff88461bac0032d35|
+|Fedora Core 4 x86|[fedora-ds-1.0.4-1.FC4.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.FC4.i386.opt.rpm)|9e3362e7a349f2c7aff901278881e008|
+|Fedora Core 4 x86\_64|[fedora-ds-1.0.4-1.FC4.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.FC4.x86_64.opt.rpm)|ba5e467cfd340f1952c06ab2e9aec9cb|
+|Fedora Core 3/RHEL4 x86|[fedora-ds-1.0.4-1.RHEL4.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.RHEL4.i386.opt.rpm)|c45626a95f2fcc41e9a6f95b255477b0|
+|Fedora Core 3/RHEL4 x86\_64|[fedora-ds-1.0.4-1.RHEL4.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.RHEL4.x86_64.opt.rpm)|fe8b2d8df9370e73bf0f22040d4f492f|
+|Fedora Core 2/RHEL3 x86|[fedora-ds-1.0.4-1.RHEL3.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.RHEL3.i386.opt.rpm)|17781d77fd816a41df3f941ae693614a|
+
+Please read the [Release Notes](releases/release-notes.html) to find out what's new and for late breaking information. After installing the RPM, see the [Install Guide](legacy/install-guide.html) for more information about setup and configuration.
+
+### Windows Synchronization
+
+This is an installable file for Windows for doing password synchronization.
+
+-   [PassSync]({{ site.baseurl }}/binaries/PassSync-20060330.msi) md5sum 54c33a6e665bb2526f1f286e505cc0ff
+
+The following is only required for NT4 sync. It is not required for Active Directory sync.
+
+-   [NTDS]({{ site.baseurl }}/binaries/ntds.msi) md5sum 74e0ada5ff519ade5295ae0bf75ddb84
+
+### Fedora Directory Server 1.0.3
+
+The FDS 1.0.3 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help.
+
+|Platform|File|MD5SUM|
+|--------|----|------|
+|Fedora Core 6 x86|[fedora-ds-1.0.3-1.FC6.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.FC6.i386.opt.rpm)|9e9309d1a7a3f3cb6913f1aad12a6e26|
+|Fedora Core 6 x86\_64|N/A|N/A|
+|Fedora Core 5 x86|[fedora-ds-1.0.3-1.FC5.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.FC5.i386.opt.rpm)|0f12b06a7b67c971cf7d0f8def19f0a3|
+|Fedora Core 5 x86\_64|[fedora-ds-1.0.3-1.FC5.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.FC5.x86_64.opt.rpm)|437ebb8b1cdfbb6e162f2fd484da3df7|
+|Fedora Core 4 x86|[fedora-ds-1.0.3-1.FC4.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.FC4.i386.opt.rpm)|6c4faeef2b9d63837e79b79757b0ff72|
+|Fedora Core 4 x86\_64|N/A|N/A|
+|Fedora Core 3/RHEL4 x86|[fedora-ds-1.0.3-1.RHEL4.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.RHEL4.i386.opt.rpm)|0baacf00923f76570e834d63835ea732|
+|Fedora Core 3/RHEL4 x86\_64|[fedora-ds-1.0.3-1.RHEL4.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.RHEL4.x86_64.opt.rpm)|5a8d7da9f9351aed28d5fb1417f050e4|
+|Fedora Core 2/RHEL3 x86|[fedora-ds-1.0.3-1.RHEL3.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.RHEL3.i386.opt.rpm)|0a2f62ff0090e5ced3ff7c6475e3be20|
+
+Please read the [Release Notes](releases/release-notes.html) to find out what's new and for late breaking information. After installing the RPM, see the [Install Guide](legacy/install-guide.html) for more information about setup and configuration.
+
+### Fedora Directory Server 1.0.2
+
+The FDS 1.0.2 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help.
+
+|Platform|File|MD5SUM|
+|--------|----|------|
+|NEW - Fedora Core 5 x86|[fedora-ds-1.0.2-1.FC5.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.FC5.i386.opt.rpm)|4dc42883451ca85e82f808d48eaee6df|
+|NEW - Fedora Core 5 x86\_64|[fedora-ds-1.0.2-1.FC5.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.FC5.x86_64.opt.rpm)|b4776cb6ff6c2c44b5af2f5be05493c4|
+|Fedora Core 4 x86|[fedora-ds-1.0.2-1.FC4.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.FC4.i386.opt.rpm)|26731d36eff54d8ffc953dfaa7cb944e|
+|Fedora Core 4 x86\_64|[fedora-ds-1.0.2-1.FC4.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.FC4.x86_64.opt.rpm)|c760b0787f7988c4bf1e36e45b152e23|
+|Fedora Core 3/RHEL4 x86|[fedora-ds-1.0.2-1.RHEL4.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.RHEL4.i386.opt.rpm)|faa4beecf5c0779ad62f61f735ba0204|
+|Fedora Core 3/RHEL4 x86\_64|[fedora-ds-1.0.2-1.RHEL4.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.RHEL4.x86_64.opt.rpm)|38f88acb225a4e2e0f76584a51ef7878|
+|Fedora Core 2/RHEL3 x86|[fedora-ds-1.0.2-1.RHEL3.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.RHEL3.i386.opt.rpm)|94a90c2a5c4dd8c1879d29f78e962b9d|
+
+Please read the [Release Notes](releases/release-notes.html) to find out what's new and for late breaking information. After installing the RPM, see the [Install Guide](legacy/install-guide.html) for more information about setup and configuration.
+
+### Fedora Directory Server 1.0.1
+
+The FDS 1.0.1 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help.
+
+-   [Fedora Core 4]({{ site.baseurl }}/binaries/fedora-ds-1.0.1-1.FC4.i386.opt.rpm)
+-   [Fedora Core 3]({{ site.baseurl }}/binaries/fedora-ds-1.0.1-1.RHEL4.i386.opt.rpm) and RHEL4
+-   [Fedora Core 2]({{ site.baseurl }}/binaries/fedora-ds-1.0.1-1.RHEL3.i386.opt.rpm) and RHEL3
+
+See the [Release Notes](releases/release-notes.html) for more information. After downloading, see [Install Guide](legacy/install-guide.html) for more information.
+
+### Fedora Directory Server 7.1
+
+The FDS 7.1 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help. Since the Admin Server and related files in this legacy package are not available as open source, please refer to the [Licensing](licensing.html) for these Binary packages. 
+
+## Source Packages
+
+Check out our [Build](development/building.html) page to find out how to build from source. The source packages are available [here](development/source.html).
+

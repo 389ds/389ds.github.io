@@ -1,0 +1,44 @@
+<header>
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#389ds-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="{{ site.baseurl }}/docs/389ds/">
+        <img src="{{ site.baseurl }}/images/logo-header-transparent.png" />
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="389ds-navbar">
+      <ul class="nav navbar-nav">
+        {% assign overview_page = 'docs/389ds/mission.html' %}
+        <li class="{% if page.url contains 'docs/389ds/download.html' %}active{% endif %}">
+          <a href="{{ site.baseurl }}/docs/389ds/download.html">Download</a>
+        </li>
+        <li class="{% if page.url contains 'docs/389ds/documentation.html' %}active{% endif %}">
+          <a href="{{ site.baseurl }}/docs/389ds/documentation.html">Documentation</a>
+        </li>
+        <li class="{% if page.url contains 'docs/389ds/development.html' %}active{% endif %}">
+          <a href="{{ site.baseurl }}/docs/389ds/development.html">Development</a>
+        </li>
+        <li class="">
+          <a href="{{ site.repository }}">View Source</a>
+        </li>         
+        <li class="">
+          <a href="https://fedorahosted.org/389/wiki">File a Bug</a>
+        </li> 
+        <li class="{% if page.url contains 'docs/389ds/mailing-lists.html' %}active{% endif %}">
+          <a href="{{ site.baseurl }}/docs/389ds/mailing-lists.html">Contact Us</a>
+        </li>
+      </ul>
+      <div id="gcse" class="navbar-right">
+        Search here
+      </div>
+    </div>
+  </div>
+</nav>
+</header>
