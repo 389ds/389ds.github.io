@@ -1,3 +1,5 @@
+require 'rack/jekyll'
+
 use Rack::Static,
   # Poor man's redirects
   :urls => {
