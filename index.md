@@ -1,22 +1,47 @@
 ---
 title: "Main Page"
+layout: default
 ---
 
-**<font color="#006b84" size="10">389 Directory Server</font>**
-===================
+# 389 Directory Server
+{: #front-page-title}
 
-The enterprise-class [Open Source](FAQ/licensing.html) LDAP server for Linux. It is hardened by real-world use, is full-featured, supports multi-master replication, and already handles many of the largest LDAP deployments in the world.  The **389 Directory Server** can be downloaded for free and set up in less than an hour using the graphical console.
+---
 
-<div>
-<table align="center">
-  <tr>
-    <td align="center"><font size="6" face="modern" color="#006b84"><i><br>Performance</i></font><br>High performance LDAP server that can handle thousands of operations a second, and tens of thousands of concurrent users</font></td>
-    <td align="center" colspan="2"><font size="6" face="modern" color="#006b84"><i><br>Reliability</i></font><br>An open source, real-world, hardened stable directory service.  As well as a rich feature set of fail-over & backup technologies</td>
-    <td align="center" colspan="3"><font size="6" face="modern" color="#006b84"><i><br>Scalability</i></font><br>With a database size that is only restricted by diskspace,  high throughput performance, ease of expansion, and multimaster replication, the <b>389 Directory Server</b> can meet the highest demands</td>
-  </tr>
-</table>
+The enterprise-class [Open Source](docs/389ds/FAQ/licensing.html) LDAP server for Linux. It is hardened by real-world use, is full-featured, supports multi-master replication, and already handles many of the largest LDAP deployments in the world.  The **389 Directory Server** can be downloaded for free and set up in less than an hour using the graphical console.
+
+<div id="front-page-columns" class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-md-4">
+      <h3 class="front-page-column-title">
+        Performance
+      </h3>
+      <p class="front-page-column-text">
+        High performance LDAP server that can handle thousands of operations a
+        second, and tens of thousands of concurrent users.
+       </p>
+    </div>
+    <div class="col-xs-12 col-md-4">
+      <h3 class="front-page-column-title">
+        Reliability
+      </h3>
+      <p class="front-page-column-text">
+        An open source, real-world, hardened stable directory service.  As well as a
+        rich feature set of fail-over and backup technologies.
+      </p>
+    </div>
+    <div class="col-xs-12 col-md-4">
+      <h3 class="front-page-column-title">
+        Scalability
+      </h3>
+      <p class="front-page-column-text">
+        With a database size that is only restricted by diskspace, high throughput
+        performance, ease of expansion, and multimaster replication, the <strong>
+        389 Directory Server</strong> can meet the highest demands.
+      </p>
+    </div>
+  </div>
 </div>
-<br>
 
 ## Welcome, new to the 389 Project?
 

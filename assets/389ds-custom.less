@@ -6,15 +6,23 @@
 
 @rh-dark-red: rgb(158, 41, 43);
 @rh-darker-red: rgb(120, 31, 28);
+@ds-green: #006b84;
 
 .red-border() {
   border-bottom: 3px solid @rh-red;
 }
 
-div#front-page-banner {
-  #gradient.vertical(@start-color: @navbar-default-bg; @end-color: black);
-  .red-border;
-  margin-bottom: 0px;
+#front-page-title {
+  color: @ds-green;
+  .text-center;
+  font-weight: 900;
+}
+
+.front-page-column-title {
+  color: @ds-green;
+  .text-center;
+  font-style: italic;
+  font-weight: bold;
 }
 
 div#front-page-blurb, div#not-found-blurb {
