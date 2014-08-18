@@ -56,7 +56,9 @@ Building
 
 The sources for the 4 console components listed above can be found at [Source](source.html) - this has source tarballs and CVS information.
 
-### <a name="framework"></a>Building the Console Framework (idm-console-framework)
+<a name="framework"></a>
+
+### Building the Console Framework (idm-console-framework)
 
 Use Ant
 
@@ -79,7 +81,9 @@ You can also build html Javadoc API documentation by issuing the following comma
 
 The Javadoc html files will be located in "%{built.dir}/doc".
 
-### <a name="console"></a>Building the 389 Console (389-console)
+<a name="console"></a>
+
+### Building the 389 Console (389-console)
 
 Use Ant
 
@@ -101,7 +105,9 @@ If all goes well during the build, the files will end up in the "%{built.dir}" d
     cp %{built.dir}/*.jar /path/to/runtime/jar/dir
     cp %{built.dir}/389-console /path/to/runtime/bin/dir
 
-### <a name="ds-console"></a>Building Directory Server Console (389-ds-console)
+<a name="ds-console"></a>
+
+### Building Directory Server Console (389-ds-console)
 
 To build the Directory Server Console, simply fire off Ant
 
@@ -132,7 +138,9 @@ If you need the help files too, you'll have to:
     cp %{built.dir}/help/en/tokens.map %{_datadir}/dirsrv/manual/en/slapd
     cp %{built.dir}/help/en/help/*.html %{_datadir}/dirsrv/manual/en/slapd/help
 
-### <a name="admin-console"></a>Building the Administration Server Console (389-admin-console)
+<a name="admin-console"></a>
+
+### Building the Administration Server Console (389-admin-console)
 
 To build the Administration Server Console, simply fire off Ant
 
