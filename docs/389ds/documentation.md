@@ -9,7 +9,7 @@ title: "Documentation"
 
 ### Resources
 
-##### [Directory Server Documentation](redhat-docs.html)
+##### [Red Hat Directory Server Documentation](redhat-docs.html)
 
 ##### [FAQ's, Tech Docs, and How To's](tech-docs.html)
 
