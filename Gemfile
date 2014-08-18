@@ -20,9 +20,6 @@ gem 'thin'
 group :development do
   gem 'httparty'
   gem 'thor'
-  # Lock to 2.7.5.  Code that causes site-tool to hang was introduced
-  # in b650c8bd prior to the release of 2.7.6
-  gem 'listen', '= 2.7.5'
   gem 'safe_yaml'
   gem 'rack-livereload'
   gem 'guard-livereload'
