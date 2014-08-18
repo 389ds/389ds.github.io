@@ -8,7 +8,7 @@ layout: default
 
 ---
 
-The enterprise-class [Open Source](docs/389ds/FAQ/licensing.html) LDAP server for Linux. It is hardened by real-world use, is full-featured, supports multi-master replication, and already handles many of the largest LDAP deployments in the world.  The **389 Directory Server** can be downloaded for free and set up in less than an hour using the graphical console.
+The enterprise-class [Open Source](docs/389ds/FAQ/licensing.html) LDAP server for Linux. It is hardened by real-world use, is full-featured, supports multi-master replication, and already handles many of the largest LDAP deployments in the world.  The **389 Directory Server** can be downloaded for free, and set up in less than an hour using the graphical console.
 
 <div id="front-page-columns" class="container-fluid">
   <div class="row">
