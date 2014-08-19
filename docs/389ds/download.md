@@ -111,83 +111,26 @@ NOTE: You must have Java in your PATH in order for this to work. Or you can just
 
 These releases are very old, and provided for historical purposes only.
 
-### Fedora Directory Server 1.0.4
-
-The FDS 1.0.4 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help.
-
-|Platform|File|MD5SUM|
-|--------|----|------|
-|Fedora Core 6 x86|[fedora-ds-1.0.4-1.FC6.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.FC6.i386.opt.rpm)|e9266f3355e6dae23a518544f8d2c1c6|
-|Fedora Core 6 x86\_64|[fedora-ds-1.0.4-1.FC6.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.FC6.x86_64.opt.rpm)|3009084ea996584d6ed4bf6fbefe7d1c|
-|Fedora Core 5 x86|[fedora-ds-1.0.4-1.FC5.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.FC5.i386.opt.rpm)|75a92f846cee3c8048d05fdac635191d|
-|Fedora Core 5 x86\_64|[fedora-ds-1.0.4-1.FC5.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.FC5.x86_64.opt.rpm)|59b6b8f09504dc9ff88461bac0032d35|
-|Fedora Core 4 x86|[fedora-ds-1.0.4-1.FC4.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.FC4.i386.opt.rpm)|9e3362e7a349f2c7aff901278881e008|
-|Fedora Core 4 x86\_64|[fedora-ds-1.0.4-1.FC4.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.FC4.x86_64.opt.rpm)|ba5e467cfd340f1952c06ab2e9aec9cb|
-|Fedora Core 3/RHEL4 x86|[fedora-ds-1.0.4-1.RHEL4.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.RHEL4.i386.opt.rpm)|c45626a95f2fcc41e9a6f95b255477b0|
-|Fedora Core 3/RHEL4 x86\_64|[fedora-ds-1.0.4-1.RHEL4.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.RHEL4.x86_64.opt.rpm)|fe8b2d8df9370e73bf0f22040d4f492f|
-|Fedora Core 2/RHEL3 x86|[fedora-ds-1.0.4-1.RHEL3.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.4-1.RHEL3.i386.opt.rpm)|17781d77fd816a41df3f941ae693614a|
-
-Please read the [Release Notes](releases/release-notes.html) to find out what's new and for late breaking information. After installing the RPM, see the [Install Guide](legacy/install-guide.html) for more information about setup and configuration.
-
 ### Windows Synchronization
-
-This is an installable file for Windows for doing password synchronization.
-
--   [PassSync]({{ site.baseurl }}/binaries/PassSync-20060330.msi) md5sum 54c33a6e665bb2526f1f286e505cc0ff
 
 The following is only required for NT4 sync. It is not required for Active Directory sync.
 
 -   [NTDS]({{ site.baseurl }}/binaries/ntds.msi) md5sum 74e0ada5ff519ade5295ae0bf75ddb84
 
-### Fedora Directory Server 1.0.3
+### Fedora Directory Server 1.x 
 
-The FDS 1.0.3 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help.
-
-|Platform|File|MD5SUM|
-|--------|----|------|
-|Fedora Core 6 x86|[fedora-ds-1.0.3-1.FC6.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.FC6.i386.opt.rpm)|9e9309d1a7a3f3cb6913f1aad12a6e26|
-|Fedora Core 6 x86\_64|N/A|N/A|
-|Fedora Core 5 x86|[fedora-ds-1.0.3-1.FC5.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.FC5.i386.opt.rpm)|0f12b06a7b67c971cf7d0f8def19f0a3|
-|Fedora Core 5 x86\_64|[fedora-ds-1.0.3-1.FC5.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.FC5.x86_64.opt.rpm)|437ebb8b1cdfbb6e162f2fd484da3df7|
-|Fedora Core 4 x86|[fedora-ds-1.0.3-1.FC4.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.FC4.i386.opt.rpm)|6c4faeef2b9d63837e79b79757b0ff72|
-|Fedora Core 4 x86\_64|N/A|N/A|
-|Fedora Core 3/RHEL4 x86|[fedora-ds-1.0.3-1.RHEL4.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.RHEL4.i386.opt.rpm)|0baacf00923f76570e834d63835ea732|
-|Fedora Core 3/RHEL4 x86\_64|[fedora-ds-1.0.3-1.RHEL4.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.RHEL4.x86_64.opt.rpm)|5a8d7da9f9351aed28d5fb1417f050e4|
-|Fedora Core 2/RHEL3 x86|[fedora-ds-1.0.3-1.RHEL3.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.3-1.RHEL3.i386.opt.rpm)|0a2f62ff0090e5ced3ff7c6475e3be20|
-
-Please read the [Release Notes](releases/release-notes.html) to find out what's new and for late breaking information. After installing the RPM, see the [Install Guide](legacy/install-guide.html) for more information about setup and configuration.
-
-### Fedora Directory Server 1.0.2
-
-The FDS 1.0.2 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help.
-
-|Platform|File|MD5SUM|
-|--------|----|------|
-|NEW - Fedora Core 5 x86|[fedora-ds-1.0.2-1.FC5.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.FC5.i386.opt.rpm)|4dc42883451ca85e82f808d48eaee6df|
-|NEW - Fedora Core 5 x86\_64|[fedora-ds-1.0.2-1.FC5.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.FC5.x86_64.opt.rpm)|b4776cb6ff6c2c44b5af2f5be05493c4|
-|Fedora Core 4 x86|[fedora-ds-1.0.2-1.FC4.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.FC4.i386.opt.rpm)|26731d36eff54d8ffc953dfaa7cb944e|
-|Fedora Core 4 x86\_64|[fedora-ds-1.0.2-1.FC4.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.FC4.x86_64.opt.rpm)|c760b0787f7988c4bf1e36e45b152e23|
-|Fedora Core 3/RHEL4 x86|[fedora-ds-1.0.2-1.RHEL4.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.RHEL4.i386.opt.rpm)|faa4beecf5c0779ad62f61f735ba0204|
-|Fedora Core 3/RHEL4 x86\_64|[fedora-ds-1.0.2-1.RHEL4.x86\_64.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.RHEL4.x86_64.opt.rpm)|38f88acb225a4e2e0f76584a51ef7878|
-|Fedora Core 2/RHEL3 x86|[fedora-ds-1.0.2-1.RHEL3.i386.opt.rpm]({{ site.baseurl }}/binaries/fedora-ds-1.0.2-1.RHEL3.i386.opt.rpm)|94a90c2a5c4dd8c1879d29f78e962b9d|
-
-Please read the [Release Notes](releases/release-notes.html) to find out what's new and for late breaking information. After installing the RPM, see the [Install Guide](legacy/install-guide.html) for more information about setup and configuration.
-
-### Fedora Directory Server 1.0.1
-
-The FDS 1.0.1 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help.
-
--   [Fedora Core 4]({{ site.baseurl }}/binaries/fedora-ds-1.0.1-1.FC4.i386.opt.rpm)
--   [Fedora Core 3]({{ site.baseurl }}/binaries/fedora-ds-1.0.1-1.RHEL4.i386.opt.rpm) and RHEL4
--   [Fedora Core 2]({{ site.baseurl }}/binaries/fedora-ds-1.0.1-1.RHEL3.i386.opt.rpm) and RHEL3
-
-See the [Release Notes](releases/release-notes.html) for more information. After downloading, see [Install Guide](legacy/install-guide.html) for more information.
+These rpm packages are no longer available for download, but the source code for each version is, and they can be located [here]({{ site.baseurl }}/binaries/)
 
 ### Fedora Directory Server 7.1
 
 The FDS 7.1 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help. Since the Admin Server and related files in this legacy package are not available as open source, please refer to the [Licensing](licensing.html) for these Binary packages. 
 
-## Source Packages
+-   [FDS 7.1 Source Code]({{ site.baseurl }}/binaries/fedora-ds-7.1.tar.gz)
+-   [FDS 7.1 SRPM]({{ site.baseurl }}/binaries/fedora-ds-7.1-2.src.rpm)
+
+
+## Source Code Packages
+-----------------------
 
 Check out our [Build](development/building.html) page to find out how to build from source. The source packages are available [here](development/source.html).
 
