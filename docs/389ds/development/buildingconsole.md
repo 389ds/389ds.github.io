@@ -181,16 +181,20 @@ You will definitely need the pre-requisites above, and the IDM console framework
 Once you get the source code, create a new project in Eclipse. Add the jss4.jar and the ldapjdk.jar to your project build and run classpath. Import the idm-console-framework/src, 389-console/src, admin-console/src, and the ds-console/src directories to the project.
 
 In the 389-console directory that you cloned from git, do this:
-    $ mkdir bin # may already exist
-    $ cd bin
-    $ ln -s ../com
+
+        $ mkdir bin # may already exist
+        $ cd bin
+        $ ln -s ../com
 
 This will put the "branded" text and images into the default classpath.
 
 In the idm-console-framework directory that you cloned from git, do this:
-    $ mkdir bin # may already exist
-    $ ant -Dbuilt.dir=bin prepare_build
-    $ cp ./src/com/netscape/management/client/console/versioninfo.properties bin/com/netscape/management/client/console
+
+        $ mkdir bin # may already exist
+        $ ant -Dbuilt.dir=bin prepare_build
+        $ cp ./src/com/netscape/management/client/console/versioninfo.properties\
+         bin/com/netscape/management/client/console
+
 The ds-console and admin-console classes will not work without the version information - they will throw an exception.
 
 For running, the main class is com.netscape.management.client.console.Console
