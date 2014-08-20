@@ -176,19 +176,25 @@ Using Eclipse
 
 If you are doing any sort of non-trivial Console development or debugging, Eclipse can be very useful - <http://www.eclipse.org/>
 
-You will definitely need the pre-requisites above, and the IDM console framework, 389-console and directory console code - you only need the admin console code if you plan to work on the admin server specific parts of the UI
+You will definitely need the pre-requisites above, and the IDM console framework, 389-console and directory console code - you only need the admin console code if you plan to work on the admin server specific parts of the UI.
 
-Once you get the source code, create a new project in Eclipse. Add the jss4.jar and the ldapjdk.jar to your project build and run classpath. Import the idm-console-framework/src, 389-console/src, and the ds-console/src directories to the project.
+Once you get the source code, create a new project in Eclipse. Add the jss4.jar and the ldapjdk.jar to your project build and run classpath. Import the idm-console-framework/src, 389-console/src, admin-console/src, and the ds-console/src directories to the project.
+
+In the 389-console directory that you cloned from git, do this:
+    $ mkdir bin # may already exist
+    $ cd bin
+    $ ln -s ../com
+
+This will put the "branded" text and images into the default classpath.
+
+In the idm-console-framework directory that you cloned from git, do this:
+    $ mkdir bin # may already exist
+    $ ant -Dbuilt.dir=bin prepare_build
+    $ cp ./src/com/netscape/management/client/console/versioninfo.properties bin/com/netscape/management/client/console
+The ds-console and admin-console classes will not work without the version information - they will throw an exception.
 
 For running, the main class is com.netscape.management.client.console.Console
 
 For the run arguments - there is a special flag to tell Eclipse to use the local versions of the classes - by default the Console will attempt to download the ds and as jar files from the admin server - use the flag -D nojars to tell the console to first look for the classes in the local ClassLoader.
 
-I would also suggest the use of these arguments to the Console class too - -x nologo -a <http://localhost:9830/> -u admin -w yourpassword
-
-I'm not sure how eclipse handles .properties files - I'm not sure why
-
-ResourceSet("com.netscape.management.client.console.versioninfo");
-
-is not loading the console/src/com/netscape/management/client/console/versioninfo.properties file - you may need to import that file explicitly into eclipse
-
+I would also suggest the use of these arguments to the Console class too - -x nologo -a http://localhost:9830/ -u admin -w yourpassword
