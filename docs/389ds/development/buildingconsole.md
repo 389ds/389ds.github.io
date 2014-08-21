@@ -214,7 +214,7 @@ I would also suggest the use of these arguments to the Console class as well  "-
 
 ### Walkthrough
 
-Get the source
+#### Get the source
 
     $ mkdir $HOME/source
     $ cd $HOME/source
@@ -223,14 +223,14 @@ Get the source
     $ git clone ssh://git.fedorahosted.org/git/389/admin-console.git
     $ git clone ssh://git.fedorahosted.org/git/389/ds-console.git
 
-Set the "branded" text and images into the default classpath for the console
+#### Prepare the console source
 
     $ cd $HOME/source/console
     $ mkdir bin  # may already exist
     $ cd bin
     $ ln -s ../com
 
-Prepare the idm-console-framework and versioning
+#### Prepare the idm-console-framework source
 
     $ cd $HOME/source/idm-console-framework
     $ mkdir bin  # may already exist
@@ -238,8 +238,9 @@ Prepare the idm-console-framework and versioning
     $ cp ./src/com/netscape/management/client/console/versioninfo.properties\
      bin/com/netscape/management/client/console
 
-Launch Eclipse and setup the projects
+#### Launch Eclipse and setup the projects
 
+Setup the idm-console-framework project
 -   Create a project for "idm-console-framework":  File -> New -> Java Project
 -   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for the idm-console-framework:  $HOME/source/idm-console-framework/
 -   Click "Next"
@@ -248,6 +249,7 @@ Launch Eclipse and setup the projects
     -   /usr/share/java/ldapjdk.jar
 -   Click "Finish"
 
+Setup the admin-console project
 -   Create a project for "admin-console":  File -> New -> Java Project
 -   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for the admin-console:  $HOME/source/admin-console/
 -   Click "Next"
@@ -257,6 +259,7 @@ Launch Eclipse and setup the projects
     -   /usr/share/java/ldapjdk.jar
 -   Click "Finish"
 
+Setup the ds-console project
 -   Create a project for "ds-console":  File -> New -> Java Project
 -   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for the ds-console:  $HOME/source/ds-console/
 -   Click "Next"
@@ -266,11 +269,12 @@ Launch Eclipse and setup the projects
     -   /usr/share/java/ldapjdk.jar
 -   Click "Finish"
 
+Setup the console project
 -   Create a project for "console":  File -> New -> Java Project
 -   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for console:  $HOME/source/console
 -   Click "Finish"
 
-Now you are ready to setup the "Run Configuration", and debug
+#### Setup the Eclispse "Run Configuration"
 
 -   Right click the idm-console-framework project -> Properties -> Run/Debug Settings -> New -> Select "Java Application"
 -   Set the "Main Class" to "com.netscape.management.client.console.Console"
