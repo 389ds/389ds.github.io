@@ -116,9 +116,11 @@ To build the Directory Server Console, simply fire off Ant
       -Dconsole.location=/path/to/console/framework/jars/dir \
       [-Dldapjdk.location=/path/to/ldapjdk.jar/dir]
 
+-   directoryconsole - the top directory of the source tree
 -   built.dir - all class files and jar files created during the build process will be put in this directory - the default is ../built
 -   console.location - the directory containing the console framework (idm-console-framework) jar files - the default is /usr/share/java
 -   ldapjdk.location - the directory containing the file ldapjdk.jar - the default is /usr/share/java
+-   _datadir - /usr/share
 
 If all goes well during the build, the files will end up in the "%{built.dir}/package" directory. There is no "install" ant build target, so you must copy these jar files to their runtime location:
 
@@ -128,9 +130,15 @@ The way the console works is that it downloads the directory server jar files fr
 
     cp %{built.dir}/package/389-ds* %{_datadir}/dirsrv/html/java
 
+    cp /home/user1/source/built/package/389-ds* /usr/share/dirsrv/html/java
+
 If you just want to run the directory console locally, you'll need to copy these jars to your local directory:
 
     cp %{built.dir}/package/389-ds* $HOME/.389-console/jars
+
+    cp /home/user1/source/built/package/389-ds* /home/user1/.389-console/jars/
+
+    You may need to rename the new jar file to match/overwrite the existing jar file name in /home/user1/.389-console/jars/
 
 If you need the help files too, you'll have to:
 
@@ -152,6 +160,7 @@ To build the Administration Server Console, simply fire off Ant
 -   built.dir - all class files and jar files created during the build process will be put in this directory - the default is ../built
 -   console.location - the directory containing the console framework (idm-console-framework) jar files - the default is /usr/share/java
 -   ldapjdk.location - the directory containing the file ldapjdk.jar - the default is /usr/share/java
+-   _datadir - /usr/share
 
 If all goes well during the build, the files will end up in the "%{built.dir}/package" directory. There is no "install" ant build target, so you must copy these jar files to their runtime location:
 
@@ -178,27 +187,100 @@ If you are doing any sort of non-trivial Console development or debugging, Eclip
 
 You will definitely need the pre-requisites above, and the IDM console framework, 389-console and directory console code - you only need the admin console code if you plan to work on the admin server specific parts of the UI.
 
-Once you get the source code, create a new project in Eclipse. Add the jss4.jar and the ldapjdk.jar to your project build and run classpath. Import the idm-console-framework/src, 389-console/src, admin-console/src, and the ds-console/src directories to the project.
+Once you get the source code, create a new project in Eclipse for idm-framework. Add the jss4.jar and the ldapjdk.jar to your project build and run classpath. Create new projects for 389-console, admin-console, and the ds-console.  
 
 In the 389-console directory that you cloned from git, do this:
 
-        $ mkdir bin # may already exist
-        $ cd bin
-        $ ln -s ../com
+    $ mkdir bin # may already exist
+    $ cd bin
+    $ ln -s ../com
 
 This will put the "branded" text and images into the default classpath.
 
 In the idm-console-framework directory that you cloned from git, do this:
 
-        $ mkdir bin # may already exist
-        $ ant -Dbuilt.dir=bin prepare_build
-        $ cp ./src/com/netscape/management/client/console/versioninfo.properties\
-         bin/com/netscape/management/client/console
+    $ mkdir bin # may already exist
+    $ ant -Dbuilt.dir=bin prepare_build
+    $ cp ./src/com/netscape/management/client/console/versioninfo.properties\
+     bin/com/netscape/management/client/console
 
 The ds-console and admin-console classes will not work without the version information - they will throw an exception.
 
-For running, the main class is com.netscape.management.client.console.Console
+For running, the main class is "com.netscape.management.client.console.Console"
 
-For the run arguments - there is a special flag to tell Eclipse to use the local versions of the classes - by default the Console will attempt to download the ds and as jar files from the admin server - use the flag -D nojars to tell the console to first look for the classes in the local ClassLoader.
+For the run arguments - there is a special flag to tell Eclipse to use the local versions of the classes - by default the Console will attempt to download the ds and as jar files from the admin server - use the flag "-D nojars" to tell the console to first look for the classes in the local ClassLoader.
 
-I would also suggest the use of these arguments to the Console class too - -x nologo -a http://localhost:9830/ -u admin -w yourpassword
+I would also suggest the use of these arguments to the Console class as well  "-x nologo -a http://localhost:9830/ -u admin -w yourpassword"
+
+### Walkthrough
+
+Get the source
+
+    $ mkdir $HOME/source
+    $ cd $HOME/source
+    $ git clone ssh://git.fedorahosted.org/git/idm-console-framework.git
+    $ git clone ssh://git.fedorahosted.org/git/389/console.git
+    $ git clone ssh://git.fedorahosted.org/git/389/admin-console.git
+    $ git clone ssh://git.fedorahosted.org/git/389/ds-console.git
+
+Set the "branded" text and images into the default classpath for the console
+
+    $ cd $HOME/source/console
+    $ mkdir bin  # may already exist
+    $ cd bin
+    $ ln -s ../com
+
+Prepare the idm-console-framework and versioning
+
+    $ cd $HOME/source/idm-console-framework
+    $ mkdir bin  # may already exist
+    $ ant -Dbuilt.dir=bin prepare_build
+    $ cp ./src/com/netscape/management/client/console/versioninfo.properties\
+     bin/com/netscape/management/client/console
+
+Launch Eclipse and setup the projects
+
+-   Create a project for "idm-console-framework":  File -> New -> Java Project
+-   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for the idm-console-framework:  $HOME/source/idm-console-framework/
+-   Click "Next"
+-   Under the "Libraries" tab, add "external jars"
+    -   /usr/lib64/jss/jss4.jar
+    -   /usr/share/java/ldapjdk.jar
+-   Click "Finish"
+
+-   Create a project for "admin-console":  File -> New -> Java Project
+-   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for the admin-console:  $HOME/source/admin-console/
+-   Click "Next"
+-   Under the "Projects" tab, add the "idm-console-framework" project
+-   Under the "Libraries" tab, add "external jars"
+    -   /usr/lib64/jss/jss4.jar
+    -   /usr/share/java/ldapjdk.jar
+-   Click "Finish"
+
+-   Create a project for "ds-console":  File -> New -> Java Project
+-   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for the ds-console:  $HOME/source/ds-console/
+-   Click "Next"
+-   Under the "Projects" tab, add the "idm-console-framework" project
+-   Under the "Libraries" tab, add "external jars"
+    -   /usr/lib64/jss/jss4.jar
+    -   /usr/share/java/ldapjdk.jar
+-   Click "Finish"
+
+-   Create a project for "console":  File -> New -> Java Project
+-   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for console:  $HOME/source/console
+-   Click "Finish"
+
+Now you are ready to setup the "Run Configuration", and debug
+
+-   Right click the idm-console-framework project -> Properties -> Run/Debug Settings -> New -> Select "Java Application"
+-   Set the "Main Class" to "com.netscape.management.client.console.Console"
+-   Under the "Arguments" tab, add something like:   "-D nojars -x nologo  -a http://localhost:9830/ -u admin -w PASSWORD"
+-   Under the "Classpath" tab, select "User Entries", and then "Add Projects"
+    -   Add the **admin-console**, **ds-console**, and **console** projects
+    -   Click "OK"
+    -   If "idm-console-framework" is listed twice, remove the one that is not "expandable"
+-   Click "Apply"
+-   Click "Run" -> this will launch the console
+
+
+
