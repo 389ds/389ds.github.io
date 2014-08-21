@@ -212,9 +212,10 @@ For the run arguments - there is a special flag to tell Eclipse to use the local
 
 I would also suggest the use of these arguments to the Console class as well  "-x nologo -a http://localhost:9830/ -u admin -w yourpassword"
 
-### Walkthrough
+Walkthrough
+-----------
 
-#### Get the source
+### Get the source
 
     $ mkdir $HOME/source
     $ cd $HOME/source
@@ -223,14 +224,14 @@ I would also suggest the use of these arguments to the Console class as well  "-
     $ git clone ssh://git.fedorahosted.org/git/389/admin-console.git
     $ git clone ssh://git.fedorahosted.org/git/389/ds-console.git
 
-#### Prepare the console source
+### Prepare the console source
 
     $ cd $HOME/source/console
     $ mkdir bin  # may already exist
     $ cd bin
     $ ln -s ../com
 
-#### Prepare the idm-console-framework source
+### Prepare the idm-console-framework source
 
     $ cd $HOME/source/idm-console-framework
     $ mkdir bin  # may already exist
@@ -238,22 +239,22 @@ I would also suggest the use of these arguments to the Console class as well  "-
     $ cp ./src/com/netscape/management/client/console/versioninfo.properties\
      bin/com/netscape/management/client/console
 
-#### Launch Eclipse and setup the projects
+### Launch Eclipse and setup the projects
 
-Setup the idm-console-framework project
+#### Setup the idm-console-framework project
 
 -   Create a project for **idm-console-framework**:  File -> New -> Java Project
--   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for the idm-console-framework:  $HOME/source/idm-console-framework/
+-   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for the idm-console-framework:  $HOME/source/idm-console-framework/
 -   Click "Next"
 -   Under the "Libraries" tab, add "external jars"
     -   /usr/lib64/jss/jss4.jar
     -   /usr/share/java/ldapjdk.jar
 -   Click "Finish"
 
-Setup the admin-console project
+#### Setup the admin-console project
 
 -   Create a project for **admin-console**:  File -> New -> Java Project
--   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for the admin-console:  $HOME/source/admin-console/
+-   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for the admin-console:  $HOME/source/admin-console/
 -   Click "Next"
 -   Under the "Projects" tab, add the **idm-console-framework** project
 -   Under the "Libraries" tab, add "external jars"
@@ -261,10 +262,10 @@ Setup the admin-console project
     -   /usr/share/java/ldapjdk.jar
 -   Click "Finish"
 
-Setup the ds-console project
+#### Setup the ds-console project
 
 -   Create a project for **ds-console**:  File -> New -> Java Project
--   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for the ds-console:  $HOME/source/ds-console/
+-   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for the ds-console:  $HOME/source/ds-console/
 -   Click "Next"
 -   Under the "Projects" tab, add the **idm-console-framework** project
 -   Under the "Libraries" tab, add "external jars"
@@ -272,13 +273,13 @@ Setup the ds-console project
     -   /usr/share/java/ldapjdk.jar
 -   Click "Finish"
 
-Setup the console project
+#### Setup the console project
 
 -   Create a project for **console**:  File -> New -> Java Project
--   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for console:  $HOME/source/console
+-   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for console:  $HOME/source/console
 -   Click "Finish"
 
-#### Setup the Eclipse "Run Configuration"
+### Setup the Eclipse "Run Configuration"
 
 -   Right click the idm-console-framework project -> Properties -> Run/Debug Settings -> New -> Select "Java Application"
 -   Set the "Main Class" to "com.netscape.management.client.console.Console"
