@@ -278,7 +278,7 @@ Setup the console project
 -   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for for console:  $HOME/source/console
 -   Click "Finish"
 
-#### Setup the Eclispse "Run Configuration"
+#### Setup the Eclipse "Run Configuration"
 
 -   Right click the idm-console-framework project -> Properties -> Run/Debug Settings -> New -> Select "Java Application"
 -   Set the "Main Class" to "com.netscape.management.client.console.Console"
