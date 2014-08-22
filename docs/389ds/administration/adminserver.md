@@ -53,6 +53,10 @@ For example
 
     configure --with-modnss-lib=/usr/local/apache2/modules/libmodnss.so --with-modnss-bin=/usr/local/apache2/sbin/nss_pcache
 
+-   On Fedora, **configure** can have issues with mozldap, that that case use
+
+        configure  --with-ldapsdk-inc=/usr/include/mozldap --with-ldapsdk-lib=/usr/lib64/mozldap
+
 There are 3 configure options that control where the files go during the install phase:
 
     --with-fhs  - this tells configure to use the standard FHS layout - see [FHS_Packaging](../development/fhs-packaging.html) for details
