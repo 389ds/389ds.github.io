@@ -29,25 +29,25 @@ The simplest way is to just do
     configure --disable-tests [options]
     make
 
-configure attempts to find all of the dependent components using pkg-config (e.g. pkg-config --libs nspr) or using the component specific script (e.g. net-snmp-config or icu-config). If that fails, configure will attempt to use the components from the standard system locations. You can override these with either the standard configure --dir options (e.g. --libdir=/path, --includedir=/path) or by overriding specific component paths (e.g. --with-nspr=/path/to/nspr --with-nss=/path/to/nss). Use configure --help to see all of the options.
+**configure** attempts to find all of the dependent components using pkg-config (e.g. pkg-config --libs nspr) or using the component specific script (e.g. net-snmp-config or icu-config). If that fails, configure will attempt to use the components from the standard system locations. You can override these with either the standard configure --dir options (e.g. --libdir=/path, --includedir=/path) or by overriding specific component paths (e.g. --with-nspr=/path/to/nspr --with-nss=/path/to/nss). Use configure --help to see all of the options.
 
 There are some tests which can be used if you already have a directory server + admin server set up. To enable these, run configure without --disable-tests.
 
 For the Apache components, there are several ways to tell it where to find them:
 
 -   By default, configure will look for apr-config (or apr-1-config) and apxs in the PATH (usually provided by the httpd-devel and apr-devel packages)
--   You can tell configure where to find apr-config and apxs by using --with-apr-config=/path/to/apr-config and --with-apxs=/path/to/apxs e.g.
+-   You can tell configure where to find apr-config and apxs by using --with-apr-config=/path/to/apr-config and --with-apxs=/path/to/apxs
 
-    configure --with-apr-config=/usr/local/apache2/bin/apr-config --with-apxs=/usr/local/apache2/sbin/apxs
+        configure --with-apr-config=/usr/local/apache2/bin/apr-config --with-apxs=/usr/local/apache2/sbin/apxs
 
--   You can tell configure where the Apache binary is by --with-httpd=/path/to/httpd.worker e.g.
+-   You can tell configure where the Apache binary is by --with-httpd=/path/to/httpd.worker
 
-    configure --with-httpd=/usr/local/apache2/sbin/httpd.worker
+        configure --with-httpd=/usr/local/apache2/sbin/httpd.worker
 
 mod\_nss is provided with Fedora and with EL5 and later. If configure cannot find mod\_nss, you can specify the locations:
 
--   --with-modnss-lib=/path/to/libmodnss.so
--   --with-modnss-bin=/path/to/nss\_pcache
+    --with-modnss-lib=/path/to/libmodnss.so
+    --with-modnss-bin=/path/to/nss\_pcache
 
 For example
 
@@ -55,9 +55,9 @@ For example
 
 There are 3 configure options that control where the files go during the install phase:
 
--   --with-fhs - this tells configure to use the standard FHS layout - see [FHS_Packaging](../development/fhs-packaging.html) for details
--   --with-fhs-opt - this tells configure to use the FHS /etc/opt, /var/opt, and /opt hierarchy
--   --prefix=/path (default) - this is the default - the default value of prefix is /opt/dirsrv
+    --with-fhs  - this tells configure to use the standard FHS layout - see [FHS_Packaging](../development/fhs-packaging.html) for details
+    --with-fhs-opt  - this tells configure to use the FHS /etc/opt, /var/opt, and /opt hierarchy
+    --prefix=/path  - the default value of prefix is /opt/dirsrv
 
 The build honors the DESTDIR=/path option, so you could do something like
 
@@ -73,8 +73,8 @@ to install the server under /home/rich/fds11 for testing purposes.
 
 -   USE\_64=1 is for 64 bit platforms, as for all of the components that you just built.
 
-    configure [options]
-    make USE_64=1
+        configure [options]
+        make USE_64=1
 
 ### Notes
 
