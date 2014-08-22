@@ -279,7 +279,7 @@ Walkthrough
 -   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for console:  $HOME/source/console
 -   Click "Finish"
 
-### Setup the Eclipse "Run Configuration"
+### Setup the Eclipse "Run/Debug Configuration"
 
 -   Right click the idm-console-framework project -> Properties -> Run/Debug Settings -> New -> Select "Java Application"
 -   Set the "Main Class" to "com.netscape.management.client.console.Console"
@@ -289,7 +289,13 @@ Walkthrough
     -   Click "OK"
     -   If **idm-console-framework** is listed twice, remove the one that is not "expandable"
 -   Click "Apply"
--   Click "Run" -> this will launch the console
 
+### Run/Debug the console
 
+-   From the menu:  Run -> "Run Configurations..." or "Debug Configurations..."
+    -   Run Configurations -> simply runs the application
+    -   Debug Configuration -> runs the application in debug mode(follows breakpoints, step through code, etc).
+-   Click "Run" or "Debug" depending on the what configfuration you chose -> this will launch the console
+
+-   Note - after any source change you must "rebuild" the project before those changes are reflected.  Preferably choose:  Project -> "Clean...", select the checkbox to "Start a build immediately", and select "Build the entire workspace", and click "Ok". 
 
