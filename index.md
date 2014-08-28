@@ -73,13 +73,10 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 ## News
 
 <!-- Try to keep this list under 10 releases  -->
-- 2014-04-04: released **389 Directory Server [1.2.11.29](docs/389ds/releases/release-1-2-11-29.html)**
-- 2014-03-14: released **389 Directory Server [1.3.2.16](docs/389ds/releases/release-1-3-2-16.html), [1.3.1.22](docs/389ds/releases/release-1-3-1-22.html) and [1.2.11.28](docs/389ds/releases/release-1-2-11-28.html)**
-- 2014-02-28: released **389 Directory Server [1.3.2.13](docs/389ds/releases/release-1-3-2-13.html), [1.3.1.19](docs/389ds/releases/release-1-3-2-19.html)**
-- 2014-02-05: released **389 Directory Server [1.3.2.11](docs/389ds/releases/release-1-3-2-11.html), [1.3.1.18](docs/389ds/releases/release-1-3-1-18.html)**
-- 2014-01-08: released **389 Directory Server [1.3.2.10](docs/389ds/releases/release-1-3-2-10.html), [1.3.1.17](docs/389ds/releases/release-1-3-1-17.html)**
-- 2013-12-17: released **389 Directory Server [1.3.2.9](docs/389ds/releases/release-1-3-2-9.html)**
-- 2013-12-06: released **389 Directory Server [1.3.2.8](docs/389ds/releases/release-1-3-2-8.html)**
+
+- 2014-08-28: released **389 Directory Server [1.3.2.23](docs/389ds/releases/release-1-3-2-23.html)**
+- 2014-08-12: released **389 Directory Server [1.2.11.30](docs/389ds/releases/release-1-2-11-30.html), [1.3.2.22](docs/389ds/releases/release-1-3-2-22.html)**
+- 2014-07-09: released **389 Directory Server [1.3.2.19](docs/389ds/releases/release-1-3-2-19.html)**
 
     For older news, see the [News Archive](docs/389ds/releases/news-archive.html)
 
