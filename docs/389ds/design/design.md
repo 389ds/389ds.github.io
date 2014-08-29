@@ -25,7 +25,7 @@ Coming soon...
 -   [MemberOf Plugin Shared Configuration](memberof-plugin-configuration.html)
 -   [Replication Changelog Trimming Interval](changelog-trimming-interval.html)
 -   [Dynamic Plugins](dynamic-plugins.html)
--   [Available NSS Ciphers](nss-cipher-design.md)
+-   [Available NSS Ciphers](nss-cipher-design.html)
 
 ## 389 Directory Server 1.3.2
 -------------------------------------------------
