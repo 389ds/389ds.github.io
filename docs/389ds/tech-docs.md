@@ -7,8 +7,11 @@ title: "FAQs and Tech Docs"
 
 {% include toc.md %} 
 
-### [Design Documents](design/design.html "Feature Design Documents")
-----------------------
+### Design Documents
+---------------------
+
+Go to the [Design Documents](design/design.html "Feature Design Documents")
+
 
 <a name="tech-docs"></a>
 

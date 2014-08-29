@@ -15,15 +15,17 @@ If you are adding a new design document, use the [template](design-template.html
 
 ## 389 Directory Server 1.3.4
 -------------------------------------------------
+
 Coming soon...
 
 ## 389 Directory Server 1.3.3
 -------------------------------------------------
 
--   [Referential Integrity Plugin Configuration]( ri-plugin-configuration.html)
--   [MemberOf Plugin Shared Configuration]( memberof-plugin-configuration.html)
--   [Replication Changelog Trimming Interval]( changelog-trimming-interval.html)
--   [Dynamic Plugins]( dynamic-plugins.html)
+-   [Referential Integrity Plugin Configuration](ri-plugin-configuration.html)
+-   [MemberOf Plugin Shared Configuration](memberof-plugin-configuration.html)
+-   [Replication Changelog Trimming Interval](changelog-trimming-interval.html)
+-   [Dynamic Plugins](dynamic-plugins.html)
+-   [Available NSS Ciphers](nss-cipher-design.md)
 
 ## 389 Directory Server 1.3.2
 -------------------------------------------------

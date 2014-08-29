@@ -39,13 +39,13 @@ Source Code and Build Instructions
 
 |Component|GIT Repository|Clone the Repository|
 |---------|------|
-|**Directory Server** ([build instructions](development/building.html))| <https://git.fedorahosted.org/git/389/ds.git>| git clone git://git.fedorahosted.org/git/389/ds.git<br>git clone ssh://git.fedorahosted.org/git/389/ds.git|
+|**Directory Server** ([build & debug instructions](development/building.html))| <https://git.fedorahosted.org/git/389/ds.git>| git clone git://git.fedorahosted.org/git/389/ds.git<br>git clone ssh://git.fedorahosted.org/git/389/ds.git|
 |**AdminUtil** ([build instructions](administration/adminutil.html)) | <https://git.fedorahosted.org/git/389/adminutil.git>| git clone git://git.fedorahosted.org/git/389/adminutil.git<br>git clone ssh://git.fedorahosted.org/git/389/adminutil.git|
-|**Admin Server** ([build instructions](administration/adminserver.html)) | <https://git.fedorahosted.org/git/389/admin.git>| git clone git://git.fedorahosted.org/git/389/admin.git<br>git clone ssh://git.fedorahosted.org/git/389/admin.git|
-|**IDM Console Framework** ([build instructions](development/buildingconsole.html#framework)) | <https://git.fedorahosted.org/git/idm-console-framework.git>| git clone git://git.fedorahosted.org/git/idm-console-framework.git<br>git clone ssh://git.fedorahosted.org/git/idm-console-framework.git|
-|**389 Console** ([build instructions](development/buildingconsole.html#console)) | <https://git.fedorahosted.org/git/389/console.git>| git clone git://git.fedorahosted.org/git/389/console.git<br>git clone ssh://git.fedorahosted.org/git/389/console.git|
-|**DS Console** ([build instructions](development/buildingconsole.html#ds-console)) | <https://git.fedorahosted.org/git/389/ds-console.git>| git clone git://git.fedorahosted.org/git/389/ds-console.git<br>git clone ssh://git.fedorahosted.org/git/389/ds-console.git|
-|**Admin Console** ([build instructions](development/buildingconsole.html#admin-console)) | <https://git.fedorahosted.org/git/389/admin-console.git>| git clone git://git.fedorahosted.org/git/389/admin-console.git<br>git clone ssh://git.fedorahosted.org/git/389/admin-console.git|
+|**Admin Server** ([build & debug instructions](administration/adminserver.html#build)) | <https://git.fedorahosted.org/git/389/admin.git>| git clone git://git.fedorahosted.org/git/389/admin.git<br>git clone ssh://git.fedorahosted.org/git/389/admin.git|
+|**IDM Console Framework** ([build & debug instructions](development/buildingconsole.html#framework)) | <https://git.fedorahosted.org/git/idm-console-framework.git>| git clone git://git.fedorahosted.org/git/idm-console-framework.git<br>git clone ssh://git.fedorahosted.org/git/idm-console-framework.git|
+|**389 Console** ([build & debug instructions](development/buildingconsole.html#console)) | <https://git.fedorahosted.org/git/389/console.git>| git clone git://git.fedorahosted.org/git/389/console.git<br>git clone ssh://git.fedorahosted.org/git/389/console.git|
+|**DS Console** ([build & debug instructions](development/buildingconsole.html#ds-console)) | <https://git.fedorahosted.org/git/389/ds-console.git>| git clone git://git.fedorahosted.org/git/389/ds-console.git<br>git clone ssh://git.fedorahosted.org/git/389/ds-console.git|
+|**Admin Console** ([build & debug instructions](development/buildingconsole.html#admin-console)) | <https://git.fedorahosted.org/git/389/admin-console.git>| git clone git://git.fedorahosted.org/git/389/admin-console.git<br>git clone ssh://git.fedorahosted.org/git/389/admin-console.git|
 |**DSGW & Web Apps** ([build instructions](administration/dsgw-building.html)) | <https://git.fedorahosted.org/git/389/dsgw.git>| git clone git://https://git.fedorahosted.org/git/389/dsgw.git<br>git clone ssh://https://git.fedorahosted.org/git/389/dsgw.git|
 |**DSML Gateway** ([build instructions](administration/dsml-gateway-building.html)) | <https://git.fedorahosted.org/git/389/dsmlgw.git>| git clone git://git.fedorahosted.org/git/389/dsmlgw.git<br>git clone ssh://git.fedorahosted.org/git/389/dsmlgw.git|
 |**Passync/Winsync** ([build instructions](development/buildingpasssync.html)) | <https://git.fedorahosted.org/git/389/winsync.git>| git clone git://git.fedorahosted.org/git/389/winsync.git<br>git clone ssh://git.fedorahosted.org/git/389/winsync.git|
@@ -97,12 +97,13 @@ If you know python, you can add to the *Continuous Integration Testing Framework
 What can you do?
 ----------------
 
--   [How to contribute](FAQ/ways-to-contribute.html)
+-   [How to Contribute](FAQ/ways-to-contribute.html)
+-   [Write a Wiki Page](howto/howto-write-wiki-page.html)
 -   [Roadmap](FAQ/roadmap.html)
 -   Timelines
 -   [Wishlist](FAQ/wishlist.html)
 -   [History](FAQ/history.html)
--   [File bugs](FAQ/bugs.html)
+-   [File Bugs](FAQ/bugs.html)
 
 Contributors
 ------------

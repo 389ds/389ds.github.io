@@ -21,41 +21,27 @@ To build Admin Server including the dependent components manually, you will need
 
 -   [Source](../development/source.html)
 
+<a name="build"></a>
+
 Building
 ========
 
-The simplest way is to just do
+The recommended build layout is to create a directory called "BUILD" on the same level as the the root directory fort the source code
 
-    configure --disable-tests [options]
-    make
+    /home/user1/source/admin  -> Admin Server source code is under here
+    /home/user1/source/BUILD
 
-**configure** attempts to find all of the dependent components using pkg-config (e.g. pkg-config --libs nspr) or using the component specific script (e.g. net-snmp-config or icu-config). If that fails, configure will attempt to use the components from the standard system locations. You can override these with either the standard configure --dir options (e.g. --libdir=/path, --includedir=/path) or by overriding specific component paths (e.g. --with-nspr=/path/to/nspr --with-nss=/path/to/nss). Use configure --help to see all of the options.
+Then run your **configure** and **make** commands from this directory.  It keeps the source tree clean, and makes it easier to sumbit patches, etc.
 
-There are some tests which can be used if you already have a directory server + admin server set up. To enable these, run configure without --disable-tests.
+**Optimized Build**
 
-For the Apache components, there are several ways to tell it where to find them:
+    ../admin/configure --with-selinux --with-systemdsystemunitdir=/usr/lib/systemd/system --with-fhs --libdir=/usr/lib64 --with-openldap
+    make install
 
--   By default, configure will look for apr-config (or apr-1-config) and apxs in the PATH (usually provided by the httpd-devel and apr-devel packages)
--   You can tell configure where to find apr-config and apxs by using --with-apr-config=/path/to/apr-config and --with-apxs=/path/to/apxs
+**Debug Build**
 
-        configure --with-apr-config=/usr/local/apache2/bin/apr-config --with-apxs=/usr/local/apache2/sbin/apxs
-
--   You can tell configure where the Apache binary is by --with-httpd=/path/to/httpd.worker
-
-        configure --with-httpd=/usr/local/apache2/sbin/httpd.worker
-
-mod\_nss is provided with Fedora and with EL5 and later. If configure cannot find mod\_nss, you can specify the locations:
-
-    --with-modnss-lib=/path/to/libmodnss.so
-    --with-modnss-bin=/path/to/nss\_pcache
-
-For example
-
-    configure --with-modnss-lib=/usr/local/apache2/modules/libmodnss.so --with-modnss-bin=/usr/local/apache2/sbin/nss_pcache
-
--   On Fedora, **configure** can have issues with mozldap, that that case use
-
-        configure  --with-ldapsdk-inc=/usr/include/mozldap --with-ldapsdk-lib=/usr/lib64/mozldap
+    CFLAGS='-g -pipe -Wall -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic' CXXFLAGS='-g -pipe -Wall -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic' ../admin/configure --with-selinux --with-systemdsystemunitdir=/usr/lib/systemd/system --enable-debug --with-fhs --libdir=/usr/lib64 --with-openldap
+    make install
 
 There are 3 configure options that control where the files go during the install phase:
 
@@ -63,38 +49,43 @@ There are 3 configure options that control where the files go during the install
     --with-fhs-opt  - this tells configure to use the FHS /etc/opt, /var/opt, and /opt hierarchy
     --prefix=/path  - the default value of prefix is /opt/dirsrv
 
-The build honors the DESTDIR=/path option, so you could do something like
+The build also honors the **DESTDIR=/path** option, which copies the files to a specific location using the FHS hierarchy - this is essentially what rpmbuild does.  Developers will probably want to use something like:
 
     configure --with-fhs ...
     make DESTDIR=/var/tmp/tmpbuild install
 
-to copy the files under /var/tmp/tmpbuild using the FHS hierarchy - this is essentially what rpmbuild does. Developers will probably want to use something like
+To install the server under a specific directory use the "--prefix" argument:
 
-    configure --prefix=/home/richm/fds11
+    configure OPTIONS --prefix=/home/user1/myAdminServer/
     make install
 
-to install the server under /home/rich/fds11 for testing purposes.
+Debugging Admin Server
+======================
 
--   USE\_64=1 is for 64 bit platforms, as for all of the components that you just built.
+You should either be using a debug build or have the debuginfo package installed before proceeding.
 
-        configure [options]
-        make USE_64=1
+### Attach to the Process
 
-### Notes
+This assumes the Admin Server is running as *nobody*.  You will use gdb to attach to the admin-serv process that runs as nobody
 
-I find it useful to create a *build* directory and run configure and make in that directory, rather than in the source directory, to keep the source directory clean (e.g. for making development tarball releases, as opposed to doing make dist).
+    # ps -ef | grep admin-serv
+    root      4455     1  0 Aug28 ?        00:00:04 /usr/sbin/httpd -k start -f /etc/dirsrv/admin-serv/httpd.conf
+    root      4456  4455  0 Aug28 ?        00:00:00 /usr/sbin/httpd -k start -f /etc/dirsrv/admin-serv/httpd.conf
+    nobody    4457  4455  0 Aug28 ?        00:00:00 /usr/sbin/httpd -k start -f /etc/dirsrv/admin-serv/httpd.conf
 
-    mkdir build ; cd build
-    /path/to/adminserver/configure [options]
-    make
+    # gdb -p 4457
+    (gdb) set follow-fork-mode child
+    (gdb) "set some break points"
+    (gdb) c
 
-This is especially useful if you are using a single source directory for building on multiple architectures:
+### Start/run the Admin Server using gdb
 
-    mkdir build.f8_i386
-    mkdir build.f8_x86_64
-
-and so on.
-
+    # gdb /usr/sbin/httpd
+    (gdb) set args -k start -f /etc/dirsrv/admin-serv/httpd.conf
+    (gdb) set follow-fork-mode child
+    (gdb) run
+    
+    
 Installation
 ============
 

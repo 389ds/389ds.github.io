@@ -172,40 +172,31 @@ NOTE: Do not git push --tags - you may inadvertently push tags you did not inten
 
 -   **git push origin refs/tags/389-ds-base-1.2.11.30**
 
-Update Release Notes
---------------------
+Update The Wiki (internal use only)
+------------------------------------
 
-<http://port389.org/wiki/Release_Notes>
+-   Upload the source tarball
 
-This No Longer Applies!!!!!
+        rhc scp -n 389ds -a website 389-ds-base-1.3.3.tar.bz2 app-root/data/
 
--   Open the current version of your particular release that you are doing the new build for.
+-   Create a release note under the following directory (follow the previous release note as a template) 
 
--   Log in, if you are not already. Then goto the bottom of the page and select "edit" and copy the contents of the page.
-    -   Note the name of the page: <http://port389.org/wiki/Releases/1.11.29>
+        /SOURCE/website/releases/
 
--   Enter in the browser: <http://port389.org/wiki/Releases/1.11.30> You can chose to "create" this page as it does not exist yet.
+-   Update the main page under the **News** Section.  Keep the number of releases under 10 - we do not want to crowd the homepage.
 
--   Paste the content from the previous copy into the blank page to use as a template for the new release.
+        /SOURCE/website/index.md
 
--   Update each section accordingly.
+   -   If the release list now exceeds 10 releases, then move older releases from the home page to the archive page
 
--   Then go back to <http://port389.org/wiki/Release_Notes> and edit the page. Add the new release note page to the list.
+            /SOURCE/website/docs/389ds/releases/news-archive.md
+ 
+-   Update the "release notes" page with the new release note
 
--   Upload the source tarball.
-    -   Copy the tarball to file.rdu.redhat.com, then ssh to file.rdu.redhat.com
-    -   scp 389-ds-base-1.2.11.30.tar.bz2 <username>@port389.et3.redhat.com:/var/www/mediawiki/sites/port389.et3.redhat.com/sources
-    -   You might need Alex Wood(awood@redhat.com) to create an account for you on port389.et3.redhat.com, or ask a developer to do it for you.
+        /SOURCE/website/docs/389ds/releases/release-notes.md
 
-Update the “Main” page
-----------------------
+-   Push your updates
 
-
-
-This No Longer Applies!!!!!
-
--   “edit” is at the bottom of the page
-
--   Add an entry for the new release at the top
+-   Done!
 
 

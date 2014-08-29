@@ -74,3 +74,8 @@ Some relevant RFCs that Directory Server supports include:
 -   [RFC 2849](https://www.ietf.org/rfc/rfc2849.txt) - The LDAP Data Interchange Format (LDIF) - Technical Specification
 -   [RFC 3377](https://www.ietf.org/rfc/rfc3377.txt) - Lightweight Directory Access Protocol (v3): Technical Specification
 
+
+### Contribute to the Wiki
+
+Simply write up your new page in MarkDown, see [How to write a wiki page](howto/howto-write-wiki-page.html), then file a [ticket](https://fedorahosted.org/389/newticket), select "**wiki**" as the component, and attach the file.  Then we will post your content asap.
+

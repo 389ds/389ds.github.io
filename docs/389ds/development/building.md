@@ -380,23 +380,23 @@ There are 3 configure options that control where the files go during the install
 
 NOTE: On multi-arch systems (e.g. x86\_64), the arch dependent directories (e.g. libdir) will default to the 32-bit directories. This means if you run configure --with-fhs on a 64-bit system to get a 64-bit binary build, it will use libdir==/usr/lib. You must use configure --with-fhs --libdir=/usr/lib64 if you want it to use /usr/lib64 for the libdir.
 
-The build honors the DESTDIR=/path option, so you could do something like
+The build honors the DESTDIR=/path option, so you can copy the files under /var/tmp/tmpbuild using the FHS hierarchy - this is essentially what rpmbuild does. Developers will probably want to use something like
 
     configure --with-fhs ...
     make DESTDIR=/var/tmp/tmpbuild install
 
-to copy the files under /var/tmp/tmpbuild using the FHS hierarchy - this is essentially what rpmbuild does. Developers will probably want to use something like
 
-    configure --prefix=/home/rich/389
+To install the server under /home/user1/389ds for testing purposes.
+
+    configure --prefix=/home/user1/389ds
     make install
 
-to install the server under /home/rich/389 for testing purposes.
 
 ### Notes
 
-I find it useful to create a *build* directory and run configure and make in that directory, rather than in the source directory, to keep the source directory clean (e.g. for making development tarball releases, as opposed to doing make dist).
+I find it useful to create a *BUILD* directory and run configure and make in that directory, rather than in the source directory, to keep the source directory clean (e.g. for making development tarball releases, as opposed to doing make dist).
 
-    mkdir build ; cd build
+    mkdir BUILD ; cd BUILD
     /path/to/ldapserver/configure [options]
     make
 
@@ -406,6 +406,42 @@ This is especially useful if you are using a single source directory for buildin
     mkdir build.f8_x86_64
 
 and so on.
+
+### Examples
+
+We are using the above method of using a BUILD directory, and building on Fedora 20
+
+#### Optimized Build
+
+    cd BUILD
+    ../ds/configure --enable-autobind --with-selinux --with-openldap --with-tmpfiles-d=/etc/tmpfiles.d --with-systemdsystemunitdir=/usr/lib/systemd/system --with-systemdsystemconfdir=/etc/systemd/system --with-systemdgroupname=dirsrv.target --with-fhs --libdir=/usr/lib64
+
+#### Debug Build
+
+    cd BUILD
+    CFLAGS='-g -pipe -Wall  -fexceptions -fstack-protector --param=ssp-buffer-size=4  -m64 -mtune=generic' CXXFLAGS='-g -pipe -Wall -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic' ../ds/configure --enable-autobind --with-selinux --with-openldap --with-tmpfiles-d=/etc/tmpfiles.d --with-systemdsystemunitdir=/usr/lib/systemd/system --with-systemdsystemconfdir=/etc/systemd/system --enable-debug --with-systemdgroupname=dirsrv.target --with-fhs --libdir=/usr/lib64
+
+
+Debug DS
+--------
+
+You should either be using a debug build, or have the 389-ds-base debuginfo package installed before debugging.
+
+### Attach to the process
+
+    # gdb -p <pid>
+    (gdb) <set some break points>
+    (gdb) c
+
+### Start/Run the server using gdb  
+
+Replace INSTANCE with your server instance name
+
+    # gdb /usr/sbin/ns-slapd
+    (gdb) set args set args  -D /etc/dirsrv/slapd-INSTANCE -i /var/run/dirsrv/slapd-INSTANCE.pid -w /var/run/dirsrv/slapd-INSTANCE.startpid -d 0
+    (gdb) <set some breakpoints if you want>
+    (gdb) run
+
 
 Installation
 ------------

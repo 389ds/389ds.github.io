@@ -111,7 +111,7 @@ If all goes well during the build, the files will end up in the "%{built.dir}" d
 
 To build the Directory Server Console, simply fire off Ant
 
-    cd directoryconsole
+    cd ds-console
     ant -Dbuilt.dir=/path/to/built/dir \
       -Dconsole.location=/path/to/console/framework/jars/dir \
       [-Dldapjdk.location=/path/to/ldapjdk.jar/dir]

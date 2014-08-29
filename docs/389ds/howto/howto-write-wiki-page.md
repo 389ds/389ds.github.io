@@ -20,6 +20,24 @@ For page consistency please start each page like:
     # Page Title
     ------------
 
+### Headings
+
+Use "pound" signs "#" for headings, the more pound signs the smaller the heading size
+
+    # = Large font size
+    ## = Slightly smaller
+    ### = Smaller still (this is used for most topic headings)
+    #### = Even smaller
+    ##### = Doesn't get much smaller than this
+
+    ### Typical Heading
+
+You can also add horizontal lines by using a series of hyphens under the text
+
+    My List of Topics
+    -----------------
+
+
 ### Escaping Characters
 
 Beware of using pipes "\|" and angled brackets "<>", they need to be escaped with a backslash unless they are inside a code block.
@@ -93,7 +111,7 @@ Use the following exact text to reach the "binaries" directory
 
 ### Community Contributions
 
-Please file a [ticket](https://fedorahosted.org/389/newticket) and select "wiki" as the component and attach the new MarkDown file(file.md)
+Please file a [ticket](https://fedorahosted.org/389/newticket) and select "**wiki**" as the component and attach the new MarkDown file(file.md)
 
 ### Advanced Wiki Configuration (internal only)
 
@@ -107,12 +125,4 @@ Be careful when modifying these files as mistakes can break the entire site
 
         _includes/toc.md
 
-    Also see 
-
-        assets/389ds-variables.less
-
-- Modify the color/layout
-
-        assets/389ds-custom.less
-        assets/389ds-variables.less
 
