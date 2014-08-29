@@ -1,6 +1,7 @@
 ---
 title: "Main Page"
 layout: default
+no_date: true
 ---
 
 # 389 Directory Server
