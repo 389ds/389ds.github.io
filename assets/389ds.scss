@@ -103,6 +103,11 @@ div#front-page-lower {
   }
 }
 
+//WHAT'S NEW
+div#whats-new h3 {
+  margin-bottom: 5px;
+}
+
 // NAVBAR
 .navbar-header a img {
   @include navbar-vertical-align(35px);
