@@ -10,9 +10,9 @@ title: "FAQs and Tech Docs"
 ### Design Documents
 ---------------------
 
-Go to the [Design Documents](design/design.html "Feature Design Documents")
+Documents describing new features that were introduced in each release, as well as existing pluigns and features.  Go to the [Design Documents](design/design.html "Feature Design Documents")
 
-
+<br>
 <a name="tech-docs"></a>
 
 ### Technical Documents

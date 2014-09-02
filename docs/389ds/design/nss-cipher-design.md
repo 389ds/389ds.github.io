@@ -111,9 +111,9 @@ Available by setting +all -- nss-3.16.2-1
 |TLS_DHE_RSA_WITH_DES_CBC_SHA |dhe_rsa_des_sha |
 |TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA |rsa_des_56_sha<br>tls_rsa_export1024_with_des_cbc_sha |
 |TLS_RSA_EXPORT1024_WITH_RC4_56_SHA |rsa_rc4_56_sha<br>tls_dhe_dss_1024_rc4_sha<br>tls_rsa_export1024_with_rc4_56_sha |
-|TLS_RSA_EXPORT_WITH_RC2_CBC_40_MD5 |rsa_rc2_40_md5 | tls_rsa_rc2_40_md5 |
-|TLS_RSA_EXPORT_WITH_RC4_40_MD5 |rsa_rc4_40_md5 | tls_rsa_rc4_40_md5 |
-|TLS_RSA_WITH_3DES_EDE_CBC_SHA |rsa_3des_sha | tls_rsa_3des_sha |
+|TLS_RSA_EXPORT_WITH_RC2_CBC_40_MD5 |rsa_rc2_40_md5<br>tls_rsa_rc2_40_md5 |
+|TLS_RSA_EXPORT_WITH_RC4_40_MD5 |rsa_rc4_40_md5<br>tls_rsa_rc4_40_md5 |
+|TLS_RSA_WITH_3DES_EDE_CBC_SHA |rsa_3des_sha<br>tls_rsa_3des_sha |
 |TLS_RSA_WITH_AES_128_CBC_SHA |rsa_aes_128_sha |
 |TLS_RSA_WITH_AES_128_CBC_SHA |tls_rsa_aes_128_sha |
 |TLS_RSA_WITH_AES_128_GCM_SHA256 |tls_rsa_aes_128_gcm_sha |

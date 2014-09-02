@@ -99,8 +99,8 @@ Tested with Sun Java 1.6 on Windows 2008/2003 Server.
 
 |Platform|File|SHA1SUM|
 |--------|----|-------|
-|Windows 2003/2008 32-bit|[389-Console-1.1.6-i386.msi]({{ site.baseurl }}/binaries/389-console-1.1.6-i386.msi)|95590970a5e1de183ba508ff450958c495c8ae15|
-|Windows 2003/2008 64-bit|[389-Console-1.1.6-x86\_64.msi]({{ site.baseurl }}/binaries/389-console-1.1.6-x86_64.msi)|5a125647d536a3f7ee1a1ee6157eb4c90e7ac631|
+|Windows 2003/2008 32-bit|[389-Console-1.1.6-i386.msi]({{ site.baseurl }}/binaries/389-Console-1.1.6-i386.msi)|95590970a5e1de183ba508ff450958c495c8ae15|
+|Windows 2003/2008 64-bit|[389-Console-1.1.6-x86\_64.msi]({{ site.baseurl }}/binaries/389-Console-1.1.6-x86_64.msi)|5a125647d536a3f7ee1a1ee6157eb4c90e7ac631|
 
 NOTE: You must have Java in your PATH in order for this to work. Or you can just edit the batch file to tell it where to find Java. NOTE: This might work with Fedora DS 1.0.4 and earlier, but it has not been tested with that release.
 
