@@ -55,7 +55,7 @@ Source Code and Build Instructions
 Design Documents
 ----------------
 
-[Design Docs](design/design.html) - Feature Design Documents
+Feature design documents describing the various features that were introduced with each release of **389-ds-base** and **389-admin** are located at the **[Feature Design Documents](design/design.html)** page.
 
 FHS style packaging
 -------------------

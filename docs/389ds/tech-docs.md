@@ -48,7 +48,7 @@ Documents describing new features that were introduced in each release, as well 
 
 <br><a name="web-apps"></a>
 
-### Web Applications
+### Web/Console Applications
 --------
 
 -   [Admin Server](administration/adminserver.html)
@@ -65,6 +65,8 @@ Documents describing new features that were introduced in each release, as well 
 -   [OrgChart](administration/orgchart.html)
 -   [Using and configuring 389 web apps](administration/webapps-overview.html) - including the DSGW, DS Express, Org Chart, and Admin Express
 -   [Installing the web apps](administration/webapps-install.html)
+-   [Using 389 Console with Anonymous Access Disabled](administration/console-login-and-anonymous-access.html)
+
 
 <br><a name="howto"></a>
 
@@ -159,10 +161,11 @@ Documents describing new features that were introduced in each release, as well 
 
 -   [How to Oracle](howto/howto-oracle.html)
 
-#### Web
+#### Web/Console
 
 -   [How to Apache](howto/howto-apache.html)
 -   [How to Subversion Apache](howto/howto-subversion-apache-ldap.html) - How to get your Subversion server to use LDAP for authenticating users
+-   [How to use 389 Console with Anonymous Access Disabled](administration/console-login-and-anonymous-access.html)
 
 #### Other
 
