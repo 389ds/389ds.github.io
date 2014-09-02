@@ -12,9 +12,9 @@ ENV['OPENSHIFT_DATA_DIR'] ||= ''
 if File.directory?(ENV['OPENSHIFT_DATA_DIR'])
   run Rack::URLMap.new( {
     "/binaries" => Rack::Directory.new(ENV['OPENSHIFT_DATA_DIR']),
-    "/" => Rack::Jekyll.new
+    "/" => Rack::Jekyll.new(:no_render => true)
   })
 else
   run Rack::Jekyll.new
-end 
+end
 
