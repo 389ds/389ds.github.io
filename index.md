@@ -81,3 +81,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
     For older news, see the [News Archive](docs/389ds/releases/news-archive.html)
 
+- Check out **[What's New on port389.org](whats_new.html)**
+
+<br>

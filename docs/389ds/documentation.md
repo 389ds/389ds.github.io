@@ -75,6 +75,10 @@ Some relevant RFCs that Directory Server supports include:
 -   [RFC 3377](https://www.ietf.org/rfc/rfc3377.txt) - Lightweight Directory Access Protocol (v3): Technical Specification
 
 
+### What's New on port389.org?
+
+Check out the latest additions and updates [here](../../whats_new.html)
+
 ### Contribute to the Wiki
 
 Simply write up your new page in MarkDown, see [How to write a wiki page](howto/howto-write-wiki-page.html), then file a [ticket](https://fedorahosted.org/389/newticket), select "**wiki**" as the component, and attach the file.  Then we will post your content asap.
