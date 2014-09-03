@@ -108,6 +108,7 @@ Coming soon...
 
 ## Plugin Design Documents
 -----------------------------------------------
+-   [Auto Membership Plugin](automember-design.html)
 -   [DNA Plugin Proposal](dna-plugin-proposal.html)
 -   [DNA Plugin](dna-plugin.html)
 -   [Linked Attributes Plugin](linked-attributes-design.html)
