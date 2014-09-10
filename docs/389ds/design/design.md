@@ -57,6 +57,7 @@ Coming soon...
 ## 389 Administration Server 1.1.36
 -----------------------------------
 
+-   [Register Remote Servers using register-ds-admin.pl](console-remote-reg-design.html)
 -   [Using 389 Console with Anonymous Access Disabled](../administration/console-login-and-anonymous-access.html)
 
 <br>

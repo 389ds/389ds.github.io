@@ -66,6 +66,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [Using and configuring 389 web apps](administration/webapps-overview.html) - including the DSGW, DS Express, Org Chart, and Admin Express
 -   [Installing the web apps](administration/webapps-install.html)
 -   [Using 389 Console with Anonymous Access Disabled](administration/console-login-and-anonymous-access.html)
+-   [Register Remote Servers using register-ds-admin.pl](design/console-remote-reg-design.html)
 
 
 <br><a name="howto"></a>
