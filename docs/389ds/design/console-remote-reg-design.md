@@ -57,7 +57,7 @@ The script can now be run in "*silent*" mode using an "**.inf**" file.  There ar
     remotehost= hp-dl380pgen8-02-vm-11.lab.bos.redhat.com
     remoteport= 636
     localcertdir= /etc/dirsrv/slapd-localhost
-    remotebinddn= cn=dm
+    remotebinddn= cn=directory manager
     remotebindpw= password
     admindomain= beaker.com
     admindn= uid=admin,ou=Administrators,ou=TopologyManagement,o=NetscapeRoot
