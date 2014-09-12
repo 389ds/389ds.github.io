@@ -30,6 +30,7 @@ Sample encryption entry:
     nsSSL3Ciphers: default
     nsKeyfile: alias/slapd-ID-key3.db
     nsCertfile: alias/slapd-ID-cert8.db
+    allowWeakCipher: off
 
 -   If **nsSSL3Ciphers** does not exist or the value is "default", the default ciphers are enabled. Note: the keyword "default" is newly introduced to 389-ds-base-1.3.3 (https://fedorahosted.org/389/ticket/47838).
 
@@ -39,7 +40,9 @@ Sample encryption entry:
 
     See "Available by setting +all" and "Available by setting +all but weak"
 
--   If the value of **nsSSL3Ciphers** is "-all", no ciphers are enabled. If the SSL is enabled "nsSSL3: on", the server does not start.
+-   If the value of **nsSSL3Ciphers** is "-all", no ciphers are enabled. If the SSL is enabled "nsSSL3: on", the SSL is disabled and the secure port is not opened.
+
+-   If the cipher suites listed as the value of **nsSSL3Ciphers** are all not avaliable, which happens if "allowWeakCipher: off" and specified cipher suites are all weak, and if the SSL is enabled "nsSSL3: on", the SSL is disabled and the secure port is not opened.
 
 -   If the value of **nsSSL3Ciphers** is the list of ciphers, the specified ciphers are enabled. + means enable it, - means disable it. E.g.,
 
@@ -59,6 +62,13 @@ Sample encryption entry:
          -SSL_CK_RC4_128_WITH_MD5,-SSL_CK_RC4_128_EXPORT40_WITH_MD5,
          -SSL_CK_RC2_128_CBC_WITH_MD5,-SSL_CK_RC2_128_CBC_EXPORT40_WITH_MD5,
          -SSL_CK_DES_64_CBC_WITH_MD5,-SSL_CK_DES_192_EDE3_CBC_WITH_MD5
+
+-   allowWeakCipher configuraton attribute is added from 389-ds-base-1.3.3.2.
+       allowWeakCipher: [on | off]
+                        on  -- allows weak ciphers.
+                               Default setting for user specified ciphers.
+                        off -- rejects weak ciphers.
+                               Default setting for +all and default.
 
 -   The ciphers in the unavailable list are not allowed to be enabled.
 
