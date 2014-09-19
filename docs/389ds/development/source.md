@@ -20,6 +20,14 @@ The source code was produced by first doing a git clone to get the repository, t
     git clone git://git.fedorahosted.org/389/MODULENAME
     git archive --prefix=PKGNAME/ TAG | bzip2 > PKGNAME.tar.bz2
 
+### 389 Directory Server 1.3.3
+
+389-ds-base uses git repo 389/ds.git branch 389-ds-base-1.3.3 (branched 21-AUG-2014)
+
+|Source tarball|git module|git tag|More Info|SHA1SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-1.3.3.3.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.3.3.tar.bz2)|ds.git|389-ds-base-1.3.3.3|[Building](building.html)|98383ea53387fe2c747633aaa9f7fa8ec2ecf0ea|
+
 ### 389 Directory Server 1.3.2
 
 389-ds-base uses git repo 389/ds.git branch 389-ds-base-1.3.2 (branched 1-OCT-2013)
