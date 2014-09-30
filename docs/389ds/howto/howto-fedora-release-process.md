@@ -66,7 +66,7 @@ DS - checkout the source, add the fixes, set the version, tag it, and archive it
 
 -   **git tag \$TAG**
 
--   **git archive --prefix=\$TAG/ \$TAG \| bzip2 \> \$SRCNAME.tar.bz2"**
+-   **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$SRCNAME.tar.bz2**
 
 Fedora - Clone it, and update the spec files
 --------------------------------------------
@@ -88,7 +88,7 @@ DS - Create version specific archive and gather the changes
 
 -   **sh -x /home/source/fedora/389-ds-base/389-ds-base-git-local.sh /home/source/ds389/ds** --> this does the same thing as the git archive command above
 
--   **git log --oneline 389-ds-base-1.2.11.29.. \> /tmp/cl-info** - The version should be the current version. This gathers all the changes since the last release.
+-   **git log -\\\-oneline 389-ds-base-1.2.11.29.. \> /tmp/cl-info** - The version should be the current version. This gathers all the changes since the last release.
 
 -   Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and trac bugs. Leave the hash for coverity/misc updates.
 
@@ -117,7 +117,7 @@ Fedora - Finish editing the spec file, verify the version, and do the scratch-bu
 
 -   **fedpkg srpm** - Create a “*.src.rpm” file
 
--   **fedpkg scratch-build --srpm=389-ds-base-1.2.11.30-1.xxxxx.src.rpm** - Submits the srpm to the koji build system. Takes a few minutes to run.
+-   **fedpkg scratch-build -\\\-srpm=389-ds-base-1.2.11.30-1.xxxxx.src.rpm** - Submits the srpm to the koji build system. Takes a few minutes to run.
 
 -   **fedpkg clog**
 
@@ -131,7 +131,7 @@ Fedora - Finish editing the spec file, verify the version, and do the scratch-bu
     -    NOTE: if git merge fails, do a *git cherry-pick* instead - **git cherry-pick -x master**
     -    **fedpkg verrel**
     -    **fedpkg srpm**
-    -    **fedpkg scratch-build --srpm=389-ds-base-1.2.11.30-1.xxxxx.src.rpm**
+    -    **fedpkg scratch-build -\\\-srpm=389-ds-base-1.2.11.30-1.xxxxx.src.rpm**
     -    **git push**
 
 
@@ -140,11 +140,11 @@ Fedora - Do the official Koji build, and do the release "update"
 
 -   **fedpkg switch-branch master**
 
--   **fedpkg build --nowait**
+-   **fedpkg build -\\\-nowait**
 
 -   Do this for each branch that you are building.
 
-    **for br in f19 f18 f17 ; do fedpkg switch-branch $br ; fedpkg build --nowait ; done**
+    **for br in f19 f18 f17 ; do fedpkg switch-branch $br ; fedpkg build -\\\-nowait ; done**
 
 -   An email will be sent from Koji telling you if the build was successful
 
@@ -164,7 +164,7 @@ DS - push the updates and the tag
 
 NOTE: Do not push the tags until you are sure the builds were successful! Once you push a tag, you cannot change it - if you need to make a change to fix a build problem, you will essentially have to repeat all of the steps again, since this will involve a new source version.
 
-NOTE: Do not git push --tags - you may inadvertently push tags you did not intend - push tags specifically by name
+NOTE: Do not git push -\\\-tags - you may inadvertently push tags you did not intend - push tags specifically by name
 
 -   **cd /home/source/ds389/ds**
 
