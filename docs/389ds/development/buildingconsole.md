@@ -244,9 +244,9 @@ Walkthrough
 #### Setup the idm-console-framework project
 
 -   Create a project for **idm-console-framework**:  File -> New -> Java Project
--   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for the idm-console-framework:  $HOME/source/idm-console-framework/
+-   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for the idm-console-framework:  *$HOME/source/idm-console-framework/*
 -   Click "Next"
--   Under the "Libraries" tab, add "external jars"
+-   Under the **Libraries** tab, add **external jars**
     -   /usr/lib64/jss/jss4.jar
     -   /usr/share/java/ldapjdk.jar
 -   Click "Finish"
@@ -254,10 +254,10 @@ Walkthrough
 #### Setup the admin-console project
 
 -   Create a project for **admin-console**:  File -> New -> Java Project
--   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for the admin-console:  $HOME/source/admin-console/
+-   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for the admin-console:  *$HOME/source/admin-console/*
 -   Click "Next"
--   Under the "Projects" tab, add the **idm-console-framework** project
--   Under the "Libraries" tab, add "external jars"
+-   Under the **Projects** tab, add the **idm-console-framework** project
+-   Under the **Libraries** tab, add **external jars**
     -   /usr/lib64/jss/jss4.jar
     -   /usr/share/java/ldapjdk.jar
 -   Click "Finish"
@@ -265,10 +265,10 @@ Walkthrough
 #### Setup the ds-console project
 
 -   Create a project for **ds-console**:  File -> New -> Java Project
--   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for the ds-console:  $HOME/source/ds-console/
+-   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for the ds-console:  *$HOME/source/ds-console/*
 -   Click "Next"
--   Under the "Projects" tab, add the **idm-console-framework** project
--   Under the "Libraries" tab, add "external jars"
+-   Under the **Projects** tab, add the **idm-console-framework** project
+-   Under the **Libraries** tab, add **external jars**
     -   /usr/lib64/jss/jss4.jar
     -   /usr/share/java/ldapjdk.jar
 -   Click "Finish"
@@ -276,26 +276,31 @@ Walkthrough
 #### Setup the console project
 
 -   Create a project for **console**:  File -> New -> Java Project
--   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for console:  $HOME/source/console
+-   Set the project name, and do NOT use the default location.  Instead set the location to the top of your git repositiory for console:  *$HOME/source/console*
 -   Click "Finish"
 
 ### Setup the Eclipse "Run/Debug Configuration"
 
--   Right click the idm-console-framework project -> Properties -> Run/Debug Settings -> New -> Select "Java Application"
--   Set the "Main Class" to "com.netscape.management.client.console.Console"
--   Under the "Arguments" tab, add something like:   "-D nojars -x nologo  -a http://localhost:9830/ -u admin -w PASSWORD"
--   Under the "Classpath" tab, select "User Entries", and then "Add Projects"
+-   Right click the **idm-console-framework** project -> Properties -> Run/Debug Settings -> New -> Select "Java Application"
+-   Set the **Main Class** to "**com.netscape.management.client.console.Console**"
+
+![Run configuration - Main](../../../images/run-config2.png)
+
+-   Under the **Arguments** tab, add something like:   "**-D nojars -x nologo  -a http://localhost:9830/ -u admin -w PASSWORD**"
+-   Under the **Classpath** tab, select **User Entries**, and then **Add Projects**
     -   Add the **admin-console**, **ds-console**, and **console** projects
     -   Click "OK"
     -   If **idm-console-framework** is listed twice, remove the one that is not "expandable"
 -   Click "Apply"
 
+![Run configuration - classpath](../../../images/run-config1.png "Classpath example")
+
 ### Run/Debug the console
 
--   From the menu:  Run -> "Run Configurations..." or "Debug Configurations..."
-    -   Run Configurations -> simply runs the application
-    -   Debug Configuration -> runs the application in debug mode(follows breakpoints, step through code, etc).
--   Click "Run" or "Debug" depending on the what configfuration you chose -> this will launch the console
+-   From the menu:  **Run** -> "Run Configurations..." or "Debug Configurations..."
+    -   **Run Configurations** -> simply runs the application
+    -   **Debug Configuration** -> runs the application in debug mode (follows breakpoints, step through code, etc).
+-   Click **Run** or **Debug** depending on the what configfuration you chose -> this will launch the console
 
--   Note - after any source change you must "rebuild" the project before those changes are reflected.  Preferably choose:  Project -> "Clean...", select the checkbox to "Start a build immediately", and select "Build the entire workspace", and click "Ok". 
+-   Note - after any source change you must "*rebuild*" the project before those changes are reflected.  Preferably choose:  **Project** -> "Clean...", select the checkbox to **Start a build immediately**, and select **Build the entire workspace**, and click "Ok". 
 
