@@ -304,3 +304,104 @@ Walkthrough
 
 -   Note - after any source change you must "*rebuild*" the project before those changes are reflected.  Preferably choose:  **Project** -> "Clean...", select the checkbox to **Start a build immediately**, and select **Build the entire workspace**, and click "Ok". 
 
+
+Using NetBeans
+==============
+
+The NetBeans setup is very similar to the eclipse setup.  We will setup separate "Java Project with Existing Sources" projects for 389-console, 389-admin-console, 389-ds-console, and idm-console-framework.
+
+### Get the source
+
+    $ mkdir $HOME/source
+    $ cd $HOME/source
+    $ git clone ssh://git.fedorahosted.org/git/idm-console-framework.git
+    $ git clone ssh://git.fedorahosted.org/git/389/console.git
+    $ git clone ssh://git.fedorahosted.org/git/389/admin-console.git
+    $ git clone ssh://git.fedorahosted.org/git/389/ds-console.git
+
+### Prepare the console source
+
+    $ cd $HOME/source/console
+    $ mkdir bin  # may already exist
+    $ cd bin
+    $ ln -s ../com
+
+### Prepare the idm-console-framework source
+
+    $ cd $HOME/source/idm-console-framework
+    $ mkdir bin  # may already exist
+    $ ant -Dbuilt.dir=bin prepare_build
+    $ cp ./src/com/netscape/management/client/console/versioninfo.properties\
+     bin/com/netscape/management/client/console
+
+
+### Launch NetBeans
+
+#### Setup the projects
+
+Do this for idm-console-framework, console, admin-console, and ds-console
+
+-   Create a project for **idm-console-framework**:  File -> New Project -> Java Project with Existing Sources
+-   Set the project name.
+-   Click "Next"
+-   Add the source package folder for this project
+-   Click "Finish"
+
+#### Set the Build Libraries
+
+Do this for the console, admin-console, and ds-console projects
+
+-   Right-click on the project and select "*Properties*"
+-   Select "*Libraries*" from the list on the left
+-   Select the "*Compile*" tab
+-   Next, "Add Jar/Folder" and add the following jar files
+    -   /usr/lib64/jss/jss4.jar
+    -   /usr/share/java/ldapjdk.jar
+    -   /usr/share/java/idm-console-base.jar
+    -   /usr/share/java/idm-console-mcc.jar
+    -   /usr/share/java/idm-console-nmclf.jar
+
+Later, we will add **/home/USER/NetBeansProject/idm-console-framework/dist/idm-console-frame.jar** if we need to test changes to the idm-console-framework project.
+
+![](../../../images/library-setup1.png)
+
+<br>
+
+#### Configure the idm-console-framework project
+ 
+-   Right-click on the project and select "*Properties*"
+-   Select "*Libraries*" from the list on the left
+-   Select the "*Compile*" tab
+-   Next, "Add Jar/Folder" and add the following jar files
+    -   /usr/lib64/jss/jss4.jar
+    -   /usr/share/java/ldapjdk.jar
+-   Next, "Add Project..." and the other projects: **console**, **admin-console**, and **ds-console**
+
+![](../../../images/framework-library.png)
+
+<br>
+
+-   Select **Run** from the list on the left
+-   Set the **Main Class**, "Browse" for  **com.netscape.management.client.console.Console**
+-   Set the **Arguments** to: **-D nojars -x nologo -a http://localhost:9830/ -u admin -w password**
+-   Click "Ok"
+
+![](../../../images/framework-run-setup.png)
+ 
+<br>
+
+#### Build the Projects
+
+Select **Run** from the NetBeans IDE menu, and then **Build Project (idm-console-framework)**.  This should build all the projects, and this is why we had to add the /usr/share/java/idm-console-framework\*.jar files to the *console*, *admin-console*, and *ds-console* properties, because we build the subprojects first, and there is no idm-console-framework.jar yet.  
+
+Once we do this initial build we can go back and add  **/home/USER/NetBeansProject/idm-console-framework/dist/idm-console-framework.jar** to the **console**, **admin-console**, and **ds-console** project libaries.  Make sure this jar file is at the top of the list of jar files.  Note, this step is only necessary if you have updated the idm-console-framework project.*
+
+![](../../../images/library-setup2.png)
+
+<br>
+
+#### Running/Debugging the Console
+
+Now that everything is built, simply choose **Run** or **Debug** from the NetBeans menu, do not forget to set your breakpoints.
+
+
