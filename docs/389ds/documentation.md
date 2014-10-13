@@ -73,6 +73,7 @@ Some relevant RFCs that Directory Server supports include:
 -   [RFC 2830](https://www.ietf.org/rfc/rfc2830.txt) - Lightweight Directory Access Protocol (v3): Extension for Transport Layer Security
 -   [RFC 2849](https://www.ietf.org/rfc/rfc2849.txt) - The LDAP Data Interchange Format (LDIF) - Technical Specification
 -   [RFC 3377](https://www.ietf.org/rfc/rfc3377.txt) - Lightweight Directory Access Protocol (v3): Technical Specification
+-   [RFC 4527](https://www.ietf.org/rfc/rfc4527.txt) - Support for Read Entry Controls (pre and post read)
 
 
 ### What's New on port389.org?

@@ -38,6 +38,7 @@ Coming soon...
 -   [Plugin Internal Operation Logging](plugin-logging.html)
 -   [Configuring Scope for Referential Integrity](configuring-scope-for-referential-integrity-plugin.html)
 -   [Replication of Custom Schema](replication-of-custom-schema.html)
+-   [Read Entry Controls](read-entry-controls.html)
 
 ## 389 Directory Server 1.3.1
 -------------------------------------------------
