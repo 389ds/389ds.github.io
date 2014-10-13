@@ -40,8 +40,8 @@ ldapmodify example showing how the attribute **description** was modified:
 Design
 ------
 
-pre-read entry control: 1.3.6.1.1.13.1
-post-read entry control: 1.3.6.1.1.13.2
+    pre-read entry control:  1.3.6.1.1.13.1
+    post-read entry control: 1.3.6.1.1.13.2
 
 The pre-read control returns a copy of the entry before it was modifed, and the post-read control returns the entry after the modify.  Both controls can be used for the same operation.  The control is added just before the result is returned to the client.
 
