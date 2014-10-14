@@ -60,6 +60,7 @@ Coming soon...
 
 -   [Register Remote Servers using register-ds-admin.pl](console-remote-reg-design.html)
 -   [Using 389 Console with Anonymous Access Disabled](../administration/console-login-and-anonymous-access.html)
+-   [Security Modules, Console, and SELinux](../administration/security-module-console.html)
 
 <br>
 

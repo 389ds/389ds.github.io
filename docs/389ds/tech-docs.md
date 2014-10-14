@@ -67,7 +67,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [Installing the web apps](administration/webapps-install.html)
 -   [Using 389 Console with Anonymous Access Disabled](administration/console-login-and-anonymous-access.html)
 -   [Register Remote Servers using register-ds-admin.pl](design/console-remote-reg-design.html)
-
+-   [Adding Security Modules using the Console](administration/security-module-console.html)
 
 <br><a name="howto"></a>
 
