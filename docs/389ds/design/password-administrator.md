@@ -18,7 +18,7 @@ Now directory administrators can define a user, or a group of users, who are "Pa
 Design
 ------
 
-In either the global password policy, or a local password policy, you can specify a DN of a group, or a user, that is a password administrator. These entries do need access control permissions to update such attributes as: userPassword, passwordExpirationtime, etc.
+In either the global password policy, or a local password policy, you can specify a DN of a group, or a user, that is a password administrator. These entries do need access control permissions to update such attributes as: userPassword, passwordExpirationtime, etc.  Password Administrators also bypass all password syntax checks.  Basically the RootDN or a Password Administrator can do anything with userpasswords, regardless of the password policy settings.
 
 The attribute for configuring this is: passwordAdminDN
 
