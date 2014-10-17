@@ -103,6 +103,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [How to Roles as Posix Groups](howto/howto-rolesasgroupsrequirements.html) - Use roles as posix groups
 -   [How to Use Named pipe Log Script](howto/howto-use-named-pipe-log-script.html)
 -   [How to Use openLdap clients](howto/howto-use-openldap-clients-in-389.html)
+-   [How to Disable SSLv3 in DS and Admin Server (Poodlebleed vulnerability)](howto/howto-disable-sslv3.html)
 
 #### Directory Server Setup and Management
 
