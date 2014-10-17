@@ -6,7 +6,7 @@ title: "Releases/1.3.2.24"
 
 The 389 Directory Server team is proud to announce 389-ds-base version 1.3.2.24.
 
-Fedora packages are available from the Fedora 20 and Rawhide repositories.
+Fedora packages are available from the Fedora 20 repository.
 
 The new packages and versions are:
 
