@@ -27,13 +27,13 @@ Here is an example of how to use ldapmodify to disable SSLv3 and enable TLS
 
 You need to restart the server for this to take effect.
 
-### Disable SSLv3 in 389 Administration Server
+### Disable SSLv3 in favor of TLSv1.1 in 389 Administration Server
 
 -   Stop the Admin Server
 -   Edit /etc/dirsrv/admin-serv/console.conf
 
         Change: NSSProtocol SSLv3,TLSv1
-        To:     NSSProtocol TLSv1
+        To:     NSSProtocol TLSv1.1
 
 -   Start the Admin server
 
