@@ -75,6 +75,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
 <!-- Try to keep this list under 10 releases  -->
 
+- 2014-10-23: Stop releasing **389 Directory Server [1.2.11](docs/389ds/releases/end-1-2-11.html) for EL6**
 - 2014-10-16: released **389 Directory Server [1.3.3.5](docs/389ds/releases/release-1-3-3-5.html)**
 - 2014-10-16: released **389 Directory Server [1.3.2.24](docs/389ds/releases/release-1-3-2-24.html)**
 - 2014-09-12: released **389 Directory Server [1.3.3.3](docs/389ds/releases/release-1-3-3-3.html)**
@@ -82,8 +83,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - 2014-09-08: released **389 Directory Server [1.2.11.32](docs/389ds/releases/release-1-2-11-32.html)**
 - 2014-09-03: released **389 Directory Server [1.3.3.0](docs/389ds/releases/release-1-3-3-0.html)**
 - 2014-08-28: released **389 Directory Server [1.3.2.23](docs/389ds/releases/release-1-3-2-23.html)**
-- 2014-08-12: released **389 Directory Server [1.3.2.22](docs/389ds/releases/release-1-3-2-22.html)**
-- 2014-07-09: released **389 Directory Server [1.3.2.19](docs/389ds/releases/release-1-3-2-19.html)**
 
     For older news, see the [News Archive](docs/389ds/releases/news-archive.html)
 

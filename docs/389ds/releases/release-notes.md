@@ -5,6 +5,7 @@ title: "Release Notes"
 # Release Notes
 ---------------
 
+-   [ 389 Directory Server 1.2.11.X is discontinued soon](end-1-2-11.html) *(October 23, 2014)* 
 -   [ 389 Directory Server 1.3.3.5](release-1-3-3-5.html) *(October 16, 2014)*
 -   [ 389 Directory Server 1.3.2.24](release-1-3-2-24.html) *(October 16, 2014)*
 -   [ 389 Directory Server 1.3.3.3](release-1-3-3-3.html) *(September 12, 2014)*
