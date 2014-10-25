@@ -75,7 +75,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
 <!-- Try to keep this list under 10 releases  -->
 
-- 2014-10-23: Stop releasing **389 Directory Server [1.2.11](docs/389ds/releases/end-1-2-11.html) for EL6**
+- 2014-10-23: Stopped releasing **389 Directory Server [1.2.11](docs/389ds/releases/end-1-2-11.html) for EL6**
 - 2014-10-16: released **389 Directory Server [1.3.3.5](docs/389ds/releases/release-1-3-3-5.html)**
 - 2014-10-16: released **389 Directory Server [1.3.2.24](docs/389ds/releases/release-1-3-2-24.html)**
 - 2014-09-12: released **389 Directory Server [1.3.3.3](docs/389ds/releases/release-1-3-3-3.html)**
