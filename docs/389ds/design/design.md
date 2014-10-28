@@ -26,6 +26,7 @@ Coming soon...
 -   [Replication Changelog Trimming Interval](changelog-trimming-interval.html)
 -   [Dynamic Plugins](dynamic-plugins.html)
 -   [Available NSS Ciphers](nss-cipher-design.html)
+-   [Windows Sync Enhancements](winsync-rfe.html)
 
 ## 389 Directory Server 1.3.2
 -------------------------------------------------
