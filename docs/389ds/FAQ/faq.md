@@ -504,7 +504,7 @@ You don't need to follow the steps to enable core files.
 
 Then run gdb like this:
 
-    gdb -ex 'set confirm off' -ex 'set pagination off' -ex 'thread apply all bt full' -ex 'quit' /usr/sbin/ns-slapd `pidof ns-slapd` > stacktrace.`date +s`.txt 2>&1 ``
+    gdb -ex 'set confirm off' -ex 'set pagination off' -ex 'thread apply all bt full' -ex 'quit' /usr/sbin/ns-slapd `pidof ns-slapd` > stacktrace.`date +%s`.txt 2>&1
 
 This is better than pstack because the "bt full" will give much more detailed stack information.
 
