@@ -18,6 +18,9 @@ Windows Sync was originally designed between a subtree on the Directory Server (
 ### 2. Support filters
 There is a requirement to restlict entries under the subtree by filters.  For inctance, by setting (|(cn=*user*)(cn=*group*)), only entries which contain "user" or "group" in the cn value are synchronized.
 
+### 3. Support range retrieval
+AD returns up to MaxValRange number of multi-valued attribute values in one search. If more attribute values exist, unless WinSync in DS does not repeat the search with increasing the range, DS cannot retrieve all the values.  The repeated range retrieval is added.
+
 Configuration
 -------------
 
@@ -41,6 +44,10 @@ Configuration
     winSyncWindowsFilter: (|(cn=*user*)(cn=*group*))
     winSyncDirectoryFilter: (|(uid=*user*)(cn=*group*))
 
+### 3. Support range retrieval
+
+    None.
+
 Implementation Details
 ----------------------
    
@@ -53,3 +60,5 @@ Implementation Details
 ### 2. Support filters
 -  The filters are set to the windows_userfilter and directory_userfilter in the private area in the windows agreement.  And when each server is searched the filters are added to the internal filter.  For instance, filters shown in the above Example allow synchronizing the entries which CN contains "user" or "group" only.
 
+### 3. Support range retrieval
+AD returns up to MaxValRange number of multi-valued attribute values in one search. If more attribute values exist, subtype ";range=0-(MaxValRange-1)" is added to the type.  AD Client (DS in this case) has to repeat the search with ";range=MaxValRange-*" then ";range=(2*MaxValRange)-*" and so on until the values with the subtype ";range=low-*" are returned.  
