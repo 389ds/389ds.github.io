@@ -139,6 +139,51 @@ Registered schema used by the account policy plug-in.
     1.  Should we inquire with the current maintainer of the password policy draft if we can sneak account inactivity into the same draft? <http://directory.fedora.redhat.com/wiki/Account_Policy_Design#Bibliography> Although the password policy draft deals with some account related stuff like account lockout time after password failures, account inactivity falls into an area less gray and more dark, so maybe not. Is there an account policy draft?
     2.  As of 2010-09-29, <http://tools.ietf.org/html/draft-behera-ldap-password-policy-10> talks about a policy for "idle passwords" but it's been indicated on ldapext mailing list that this might be changed later on to act on individual passwords, while a future account policy would be more in line with what my plug-in implements. Keep an eye on "idle passwords" in future password policy drafts, and for any account policy draft that might surface.
 
+### Additional features
+
+#### New attribute alwaysRecordLoginAttr
+	
+<b>Update lastLoginTime in Account Policy plugin if account lockout is based on passwordExpirationTime.</b>
+
+The Red hat Directory server handles automatic account inactivity through the Account Policy plugin. Through this plugin, one has the flexibility to determine whether an entry should be inactivated depending on the value of a particular attribute (referenced by the value of stateAttrName). Moreover, this plugin also provides the functionality to store the last login time of an entry (also stored in the attribute referenced by the value of stateAttrName). This request is for an improvement in functionality, in which this dual role of the stateAttrName attribute is split into two separate attributes. This would provide functionality that is inachievable with the current semantics.
+
+Example: 
+
+If account lockout is based on passwordExpirationTime under Account Policy plugin then lastLoginTime does not get updated. The configuration used for passwordExpirationTime is given below.
+
+    dn: cn=config,cn=Account Policy Plugin,cn=plugins,cn=config
+    objectClass: top
+    objectClass: extensibleObject
+    cn: config
+    alwaysrecordlogin: yes
+    stateAttrName: abc
+    altStateAttrName: passwordExpirationTime
+    specattrname: acctPolicySubentry
+    limitattrname: accountInactivityLimit
+    accountInactivityLimit: 2592000
+
+In above configration stateAttrName has set with dummy value hence when the dummy is not available then altStateAttrName is checked for alternate value. The above configuration help is implemention account lockout base on passwordExpirationTime and the passwordExpirationTime does not get update with customer login time. But this configuration does not allow lastLoginTime to be updated.
+
+This feature is required because certain account/password policies cannot be implemented with the current semantics. For example, it is impossible to keep a record of user's the last login time and implement an inactivation policy in which accounts are inactivated after a number of days after password expiry. This  requirement is simple to explain and also quite commonly included in organisations' password policy - yet it is impossible to implement. Setting the stateAttrName to passwordExpirationTime would not work because the current semantics would also update the passwordExpirationTime with the user's last login time (resulting in all accounts becoming expired after login).
+
+Here are the attributes of interest in the Account Policy Plugin outlining the changes.
+
+<b>alwaysRecordLogin</b>: yes | no, Whether every entry records its last login time.
+                    (NOTE: No changes from current implementation.)
+
+<b>alwaysRecordLoginAttr</b>: (New Attribute) What user attribute will store the last login time of a user.
+                        If empty, should have the same value as stateAttrName. 
+                        default value: empty
+
+<b>stateAttrName</b>: The primary user attribute to check when evaluating the inactivity policy.
+                The attribute referenced by the value of stateAttrName is never changed.
+                (NOTE: this user attribute should NO LONGER be updated with with user's
+                 last login time whenever a user authenticates with the directory server).
+
+<b>altStateAttrName</b>: The 'backup' attribute to check when evaluating the inactivity policy.
+                   The attribute referenced by the value of altStateAttrName is never changed.
+                   (NOTE: No changes from current implementation) 
+
 ## Detailed Design of Account Expiration
 -------------------------------------
 

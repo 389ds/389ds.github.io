@@ -27,6 +27,7 @@ Coming soon...
 -   [Dynamic Plugins](dynamic-plugins.html)
 -   [Available NSS Ciphers](nss-cipher-design.html)
 -   [Windows Sync Enhancements](winsync-rfe.html)
+-   [Account Policy -- alwaysRecordLoginAttr](account-policy-design.html#new-attribute-alwaysrecordloginattr)
 
 ## 389 Directory Server 1.3.2
 -------------------------------------------------
