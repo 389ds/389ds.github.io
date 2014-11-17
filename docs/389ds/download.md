@@ -134,3 +134,7 @@ The FDS 7.1 package includes the core DS, the Admin Server, the Management Conso
 
 Check out our [Build](development/building.html) page to find out how to build from source. The source packages are available [here](development/source.html).
 
+## Scripts
+----------
+
+Checkout our scripts page [here](scripts.html)

@@ -24,6 +24,7 @@ Design
 
        slapi_plugin_task_new()                 --> replaces:  slapi_task_new()
        slapi_plugin_task_register_handler()    --> replaces:  slapi_task_register_handler()
+       slapi_plugin_task_unregister_handler()  --> New function to unregister a plugin task - must be called in the plugin close function.
 
 So plugins that register tasks need to use these two functions. Using these functions prevents race conditions between disabling a plugin, and a running task that might be using resources that are about to be freed.
 
