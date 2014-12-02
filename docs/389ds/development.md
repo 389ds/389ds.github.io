@@ -18,12 +18,8 @@ If you want to contribute code to the project you should look at our [contributi
 
 Please take some time to review our [license](FAQ/licensing.html).
 
-<a name="source"></a>
-
-Source Code and Build Instructions
---------------------------------------------------------
-
--   [Download Source Code](development/source.html)
+Guidelines
+------------
 -   [Coding Style](development/coding-style.html)
 -   [Git Rules](development/git-rules.html) - rules and guidelines for submitting patches and pushing to upstream
 -   [Git information](http://git-scm.com/)
@@ -36,6 +32,13 @@ Source Code and Build Instructions
     -   [Linus Torvalds on Git](http://www.youtube.com/watch?v=4XpnKHJAok8)
 -   [How to Build RPMS on CentOS ](howto/howto-buildrpmsforcentos-rhel.html)
 
+
+<a name="source"></a>
+
+Source Code and Build Instructions
+--------------------------------------------------------
+
+**[Download Source Code - Click Here](development/source.html)**
 
 |Component|GIT Repository|Clone the Repository|
 |---------|------|
@@ -50,11 +53,12 @@ Source Code and Build Instructions
 |**DSML Gateway** ([build instructions](administration/dsml-gateway-building.html)) | <https://git.fedorahosted.org/git/389/dsmlgw.git>| git clone git://git.fedorahosted.org/git/389/dsmlgw.git<br>git clone ssh://git.fedorahosted.org/git/389/dsmlgw.git|
 |**Passync/Winsync** ([build instructions](development/buildingpasssync.html)) | <https://git.fedorahosted.org/git/389/winsync.git>| git clone git://git.fedorahosted.org/git/389/winsync.git<br>git clone ssh://git.fedorahosted.org/git/389/winsync.git|
 |**Continuous Integration Testing** ([documentation](FAQ/upstream-test-framework.html))| <https://git.fedorahosted.org/git/389/lib389.git>| git clone git://git.fedorahosted.org/git/389/lib389.git<br>git clone ssh://git.fedorahosted.org/git/389/lib389.git|
-|**OpenLDAP** ([build instructions](development/building-openldap.html))| | git clone git://git.openldap.org/openldap.git|
+|**OpenLDAP** ([build instructions](development/building-openldap.html))|Not Available| git clone git://git.openldap.org/openldap.git|
 
 
+<br>
 
-Design Documents
+[Design Documents](design/design.html)
 ----------------
 
 Feature design documents describing the various features that were introduced with each release of **389-ds-base** and **389-admin** are located at the **[Feature Design Documents](design/design.html)** page.
