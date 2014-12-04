@@ -10,7 +10,7 @@ title: "Fine Grained ID List Size"
 Overview
 --------
 
-With very large databases, some queries go through a lot of work to build huge ID lists for filter components with many matching IDs. For example, a search for (&(objectclass=inetorgperson)(uid=foo)) may build a huge idlist for objectclass=inetorgperson only to throw it away to intersect it with uid=foo. In these cases, it would be useful to be able to tell the indexing code to use a different idlistscanlimit for certain indexes, or use no idlist at all. In the above case, it would be useful to tell the indexing code to skip building an idlist for objectclass=inetorgperson, but still use the default idlistscanlimit for other objectclass searches (e.g. objectclass=groupOfNames).
+With very large databases, some queries go through a lot of work to build huge ID lists for filter components with many matching IDs. For example, a search for "*(&(objectclass=inetorgperson)(uid=foo))*" may build a huge idlist for "*objectclass=inetorgperson*" only to throw it away to intersect it with "*uid=foo*". In these cases, it would be useful to be able to tell the indexing code to use a different idlistscanlimit for certain indexes, or use no idlist at all. In the above case, it would be useful to tell the indexing code to skip building an idlist for objectclass=inetorgperson, but still use the default idlistscanlimit for other objectclass searches (e.g. objectclass=groupOfNames).
 
 Another example of this problem is <https://fedorahosted.org/389/ticket/47474> - if there are several million IDs for each of the objectclass= filter components, being able to skip id list generation for the objectclass values would make that query very fast.
 
@@ -60,15 +60,15 @@ because "abc" is not integer syntax.
         replace: nsIndexIDListScanLimit
         nsIndexIDListScanLimit: limit=0 type=eq values=uid=kvaughan\2Cou=People\2Cdc=example\2Cdc=com,uid=rdaugherty\2Cou=People\2Cdc=example\2Cdc=com
 
-the commas in the DN values are replaced with \\2C
+the commas in the DN values are replaced with **"\\2C"**
 
 -   The values are processed as if they were filter values - so for "sub" values, values like "values=\*sm\*ith\*" will be processed as if they were values in a substring search filter like (sn=\*sm\*ith\*)
 
         dn: cn=objectclass,...
         objectclass: nsIndex
         nsIndexType: eq
-        nsIndexIDListScanLimit: limit=0 type=eq flags=AND value=inetOrgPerson
-        nsIndexIDListScanLimit: limit=1 type=eq value=inetOrgPerson
+        nsIndexIDListScanLimit: limit=0 type=eq flags=AND values=inetOrgPerson
+        nsIndexIDListScanLimit: limit=1 type=eq values=inetOrgPerson
         nsIndexIDListScanLimit: limit=2 type=eq flags=AND
         nsIndexIDListScanLimit: limit=3 type=eq
         nsIndexIDListScanLimit: limit=4 flags=AND
@@ -97,7 +97,7 @@ Or, to apply the limit only to the use of objectclass=inetorgperson in AND claus
     nsIndexType: eq
     nsIndexIDListScanLimit: limit=0 type=eq flags=AND values=inetorgperson
 
-This means, build no ID list ("0") for "objectclass=inetorgperson" when used in an AND clause like *(&(objectclass=inetorgperson)(uid=someuser))*, but use the default nsslapd-idlistscanlimit value for other objectclass=\$value searches, like *(objectclass=inetorgperson)* or in an OR clause like *(|(objectclass=inetorgperson)(objectclass=posixAccount))*
+This means, build no ID list ("0") for "objectclass=inetorgperson" when used in an AND clause like *(&(objectclass=inetorgperson)(uid=someuser))*, but use the default nsslapd-idlistscanlimit value for other objectclass=\$value searches, like *(objectclass=inetorgperson)* or in an OR clause like *(\|(objectclass=inetorgperson)(objectclass=posixAccount))*
 
 Or, for a substring example:
 
