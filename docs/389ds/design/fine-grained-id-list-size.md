@@ -36,7 +36,7 @@ Design
 
 We cannot reuse or re-purpose nsslapd-idlistscanlimit, so the proposed solution is to add a new allowed attribute to the nsIndex objectclass: **nsIndexIDListScanLimit**
 
-    nsIndexIDListScanLimit: limit=NNN [type=eq[,sub,...]] [flags=ADD[,XXX..]] [values=val[,val...]]
+    nsIndexIDListScanLimit: limit=NNN [type=eq[,sub,...]] [flags=AND[,XXX..]] [values=val[,val...]]
 
 This is a multi-valued, DirectoryString syntax attribute, which is allowed (optional) for the nsIndex objectclass.
 
