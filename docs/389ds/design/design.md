@@ -21,6 +21,7 @@ Coming soon...
 ## 389 Directory Server 1.3.3
 -------------------------------------------------
 
+-   [AES Password Based Encryption](pbe.html)
 -   [Referential Integrity Plugin Configuration](ri-plugin-configuration.html)
 -   [MemberOf Plugin Shared Configuration](memberof-plugin-configuration.html)
 -   [Replication Changelog Trimming Interval](changelog-trimming-interval.html)

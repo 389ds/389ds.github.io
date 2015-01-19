@@ -462,6 +462,16 @@ Creates an instance with the parameters sets in **dirsrv** (see *allocate*). Dir
 
 <br>
 
+#### **upgrade(upgradeMode)**
+
+Upgrades all the instances that coexist with this DirSrv.  This is the same as running "*setup-ds.pl --update*"
+
+-   **@param** upgradeMode - "online" or "offline"
+-   **@return** None
+-   **@raise** assert failure
+
+<br>
+
 #### **delete()**
 
 Deletes the instance with the parameters sets in **dirsrv** (see *allocate*). If the instance does not exist it raise TBD.
