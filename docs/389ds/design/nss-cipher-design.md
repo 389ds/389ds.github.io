@@ -12,8 +12,61 @@ Overview
 
 Directory Server supports SSL and StartTLS for the secure connections. The ciphers to encrypt the data are provided by NSS which the Directory Server is linked with. Note: The following list contains up to TLS1.2, which is available >= nss 3.15
 
+Plus, based upon the NSS library available on the system, the Directory Server supports the SSL versions in the range manner offered by the NSS library.  By default, for the security reason (POODLEBLEED) SSLv3 is disabled even if it is offered by the NSS library.
+
+Along with the changes, a few encryption related enhancements are added.
+
 Configuration
 =============
+
+SSL version configuration
+-------------------------
+
+If the server accepts the available SSL versions that NSS support except SSLv3 and lower, no SSL version parameters need to be set in cn=encryption,cn=config.  It is required only when the version range restriction or enabling SSLv3 is necessary.
+
+SSL version range parameters sslVersionMin and sslVersionMax are prepared for specifying the SSL minimum version and maximum version.
+
+    dn: cn=encryption,cn=config
+    sslVersionMin: minimum_version
+    sslVersionMax: maximum_version
+
+The value is one of this set {SSL3, TLS1.0, TLS1.1, TLS1.2, ... up to the max version available.}  
+
+For backward compatibility, cn=encryption,cn=config entry still supports the old style of SSL versions.
+
+    dn: cn=encryption,cn=config
+    nsSSL2: off
+    nsSSL3: off
+    nsTLS1: on
+
+This combination is the default settings.  I.e., without the nsSSL2, nsSSL3, and nsTLS1 parameters, the values {off, off, on} are internally set.
+
+If the new range style and the old style has any conflict, the tighter rule is picked up.  For instance,
+
+    dn: cn=encryption,cn=config
+    sslVersionMin: TLS1.1
+    sslVersionMax: TLS1.2
+    nsSSL3: on
+    nsTLS1: on
+
+nsSSL3: on is ignored.
+
+In this case,
+
+    dn: cn=encryption,cn=config
+    sslVersionMin: SSL3
+    sslVersionMax: TLS1.2
+
+SSLv3 is not enabled since nsSSL3 is off by default.
+
+We strongly recommend not to enable SSLv3, but if it is really needed, it could be set by enabling it in both the old style and the new range style.
+
+    dn: cn=encryption,cn=config
+    nsSSL3: on
+    sslVersionMin: SSL3
+
+Cipher configuration
+--------------------
 
 To configure the ciphers for the Directory Server, the config parameter nsSSL3Ciphers in cn=encryption,cn=config is used.
 
@@ -25,8 +78,6 @@ Sample encryption entry:
     cn: encryption
     nsSSLSessionTimeout: 0
     nsSSLClientAuth: allowed
-    nsSSL2: off
-    nsSSL3: on
     nsSSL3Ciphers: default
     nsKeyfile: alias/slapd-ID-key3.db
     nsCertfile: alias/slapd-ID-cert8.db
@@ -236,7 +287,6 @@ Unavailable -- nss-3.16.2-1
 |TLS_RSA_WITH_NULL_SHA256 | |
 |TLS_RSA_WITH_NULL_MD5 |rsa_null_md5 |
 
-
 Logging
 =======
 
@@ -254,4 +304,20 @@ If the config log level is set, all the ciphers are logged with "enabled" or "di
     [..] - SSL alert:   TLS_RSA_WITH_NULL_SHA: disabled, (MUST BE DISABLED)
     [..] - SSL alert:   TLS_RSA_WITH_CAMELLIA_256_CBC_SHA: enabled
 
+Misc
+====
 
+nsSSLSupportedCiphers and nsSSLEnabledCiphers in cn=encryption,cn=config
+------------------------------------------------------------------------
+
+Searching "cn=encryption,cn=config" returns nsSSLEnabledCiphers in addition to nsSSLSupportedCiphers
+
+    $ ldapsearch [...] -D 'cn=directory manager' -w <passwd> -b "cn=encryption,cn=config" 
+    ...
+    nsSSLSupportedCiphers: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256::AES-GCM::AEAD:
+    ...
+    nssslenabledciphers: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256::AES-GCM::AEAD::128
+    ...
+    nsSSLEnabledCiphers: TLS_RSA_WITH_SEED_CBC_SHA::SEED::SHA1::128
+
+Note that the attribute types are virtual, thus they cannot be used in the filter.
