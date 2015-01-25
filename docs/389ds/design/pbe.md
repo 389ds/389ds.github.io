@@ -83,7 +83,9 @@ During an upgrade (*setup-ds.pl --update*) there are several processes that need
    - Change the DES plugin path to point to the new libary: **libpbe-plugin**
    - Change the replication plugin to depend on AES instead of DES
 
-After the upgrade, the server must be restarted.  When the server is restarted it will internally check for any DES encoded passwords by searching on all the attributes configured in both the DES & AES plugins.  Then all the backends, including "cn=config", are checked for DES encoded passwords.  If any "*DES passwords*" are found the server will decode these passwords and re-encode them using the AES Reversible Password Based Encryption.
+After the upgrade, the server must be restarted.  When the server is restarted it will internally check for any DES encoded passwords by searching on all the attributes configured in both the DES & AES plugins.  Then all the backends, including "cn=config", are searched for DES encoded passwords.  (*Note - these searches are usually unindexed and can cause a slower startup and high CPU.*)  If any "*DES passwords*" are found the server will decode these passwords and re-encode them using the AES Reversible Password Based Encryption.
+
+After the DES passwords(if any) have been converted to AES the server will disable the DES plugin.  If for some reason DES passwords are somehow added back to the database after this initial conversion, through replication or an LDIF import, you can re-enable the DES plugin and restart the server.  This will cause the DES -> AES conversion process to be run again at the next restart.  Note - only if the DES plugin is enabled will this check occur at server startup.  Again, after this startup check/conversion completes the DES plugin will once again be disabled, and the server will no longer check for DES passwords at server startup.
 
 
 Dependencies
