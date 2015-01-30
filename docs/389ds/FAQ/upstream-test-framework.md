@@ -71,7 +71,9 @@ The following describes how to setup a testing environment, and run a specific t
 -   Run a specific test using python
 -   Run a specific test using Eclipse IDE
 
-### <a name="specific-dir"></a>Deploy 389 Directory Server under specific directory
+<a name="specific-dir"></a>
+
+### Deploy 389 Directory Server under specific directory
 
 The following setup script allows you to checkout/compile and deploy the current version of 389 Directory Server under a specific directory.  The path used for *DIR\_INSTALL* will be used throughout the rest of the setup and testing process (*installation_prefix*, etc)/
 
