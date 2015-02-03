@@ -667,3 +667,7 @@ Read password from file:
 
     -y pwfile
 
+### Write a lib389 test script
+
+Check out [How to Write Upstream Test](../howto/howto-write-lib389.html)
+

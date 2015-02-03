@@ -16,7 +16,7 @@ Part of a Continuous Integration project, *389 upstream testing* is an effort to
 This document will describe the following components
 
 -   **lib389 framework**  used to do Directory Server administrative tasks (Create servers, setup replication, import LDIF files, etc)
--   **Upstream tests (layout, methods...)**  uses the lib389 framework to create individual test cases
+-   **Upstream tests (layout, methods...)**  uses the lib389 framework to create individual test cases.  See [How to Write Upstream Test](../howto/howto-write-lib389.html)
 -   **py.test test framework**  used to run the 389 upstream tests
 -   **Integration into jenkins**
 
@@ -283,6 +283,12 @@ For the moment, it is not recommended to run the test with this type of deployme
 
 -   It has not been fully tested with this type of deployment
 -   It requires to be logged in as **root**
+
+### How to Write a Test
+
+This document describes the basics for writing a lib389 test
+
+[How To Write a Lib389 Test](../howto/howto-write-lib389.html)
 
 <br><a name="lib389"></a>
 

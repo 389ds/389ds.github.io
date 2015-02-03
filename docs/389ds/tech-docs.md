@@ -43,6 +43,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [Thread Aware Regex](FAQ/thread-aware-regex.html) - Discussion about the move to a thread safe regex library
 -   [Update Resolution Protocol](FAQ/update-resolution-for-single-valued-attributes.html) - Description of the URP protocol for single values attributes
 -   [Upstream Testing Framework](FAQ/upstream-test-framework.html) - Continuous integration testing and lib389
+-   [How to Write Upstream Test](howto/howto-write-lib389.html) - How to write a upstream lib389 test
 -   [Ways to Contribute](FAQ/ways-to-contribute.html) - Ways to contribute to the 389 project
 -   [Winsync Move Action](FAQ/winsync-move-action.html) - Discussion of the winSyncMoveAction configuration attribute
 
