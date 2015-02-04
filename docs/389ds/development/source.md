@@ -264,12 +264,12 @@ These are the sources which were used to build the initial 1.1.0 release.
 |[adminutil-1.1.5.tar.bz2]({{ site.baseurl }}/binaries/adminutil-1.1.5.tar.bz2)|adminutil|FedoraAdminutil115|[AdminUtil](../administration/adminutil.html)|1ce95159db07040d7095b805e9b3b533|
 |[mod\_nss-1.0.7.tar.gz]({{ site.baseurl }}/binaries/mod_nss-1.0.7.tar.gz)|mod\_nss|mod\_nss107|[mod\_nss](../administration/mod-nss.html)|71107cbc702bf07c6c79843aa92a0e09|
 
-### 389 Directory Password Synchronization 1.1.5
+### 389 Directory Password Synchronization 1.1.6
 
 This is the source which were used to build the 389 Directory Password Synchronization.
 
 |Source tarball|git module|git tag|MD5SUM|
 |--------------|----------|-------|------|
-|[389-passsync-1.1.5.tar.bz2]({{ site.baseurl }}/binaries/389-passsync-1.1.5.tar.bz2)|winsync|winsync-1.1.5|6ab371314606a9b0f4d7831e9a66c759|
+|[389-passsync-1.1.6.tar.bz2]({{ site.baseurl }}/binaries/389-passsync-1.1.6.tar.bz2)|winsync|winsync-1.1.6|13493549a90182e064ce7987f869c56f64e48ac0|
 
 
