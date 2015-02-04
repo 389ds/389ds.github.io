@@ -7,6 +7,11 @@ title: "News Archive"
 
 {% include toc.md %} 
 
+#### 389 Directory Server 1.3.3.0 is now available for Testing (September 3, 2014)
+
+-   389-ds-base 1.3.3.0 for Fedora 21
+-   [See the Release Notes](release-notes.html) for more information
+
 #### 389 Directory Server 1.3.2.23 is now available for Testing (August 28, 2014)
 
 -   389-ds-base 1.3.2.23 for Fedora 20

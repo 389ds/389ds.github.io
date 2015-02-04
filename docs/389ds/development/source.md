@@ -27,6 +27,8 @@ The source code was produced by first doing a git clone to get the repository, t
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
 |[389-ds-base-1.3.3.8.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.3.8.tar.bz2)|ds.git|389-ds-base-1.3.3.8|[Building](building.html)|730d645bdc8d01bddda6e6636efba542ad3f3ebd|
+|[389-admin.1.1.38.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.38.tar.bz2)|admin.git|389-admin-1.1.38|[Admin](../administration/adminserver.html)|52f43945a6786f83009e5745c98b2c24f42f2797|
+|[389-adminutil-1.1.21.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.21.tar.bz2)|adminutil.git|389-adminutil-1.1.21|[AdminUtil](../administration/adminutil.html)|7a78b262d966897e78a3c94f1ae9e7126ea53f9f|
 
 ### 389 Directory Server 1.3.2
 
@@ -36,7 +38,8 @@ The source code was produced by first doing a git clone to get the repository, t
 |--------------|----------|-------|---------|-------|
 |[389-ds-base-1.3.2.26.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.2.26.tar.bz2)|ds.git|389-ds-base-1.3.2.26|[Building](building.html)|2a508ff5562880b4a3c3947ef5e62b0a71404478|
 |[389-dsgw-1.1.11.tar.bz2]({{ site.baseurl }}/binaries/389-dsgw-1.1.11.tar.bz2)|dsgw.git|389-dsgw-1.1.11|[DSGW\_Building](../administration/dsgw-building.html)|6a2b94be7d4f0079dbe5e84d720ff8f5e1779aba|
-|[389-adminutil-1.1.20.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.20.tar.bz2)|adminutil.git|389-adminutil-1.1.20|[AdminUtil](../administration/adminutil.html)|0cfc121a07959c6952751404bf5bc495f6fe1155|
+|[389-admin-1.1.38.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.38.tar.bz2)|admin.git|389-admin-1.1.38|[Admin](../administration/adminserver.html)|52f43945a6786f83009e5745c98b2c24f42f2797|
+|[389-adminutil-1.1.21.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.21.tar.bz2)|adminutil.git|389-adminutil-1.1.21|[AdminUtil](../administration/adminutil.html)|7a78b262d966897e78a3c94f1ae9e7126ea53f9f|
 
 ### 389 Directory Server 1.3.1
 
