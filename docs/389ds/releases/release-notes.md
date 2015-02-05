@@ -5,6 +5,7 @@ title: "Release Notes"
 # Release Notes
 ---------------
 
+-   [ 389 Console 1.1.9](release-console-1-1-9.html) *(February 5, 2015)*
 -   [ 389 Directory Server 1.3.3.8](release-1-3-3-8.html) *(February 5, 2015)*
 -   [ 389 Directory Server 1.3.2.26](release-1-3-2-26.html) *(February 5, 2015)*
 -   [ 389 Admin Server 1.1.38](release-admin-1-1-38.html) *(February 3, 2015)*
