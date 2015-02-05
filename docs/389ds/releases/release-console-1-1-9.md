@@ -15,10 +15,10 @@ The new packages and versions are:
 -   389-admin-console-1.1.9-1
 -   idm-console-framework-1.1.9-1
 
-Source tarballs are available for download at [Download Admin Source]({{ site.baseurl }}/389-console-1.1.9.tar.bz2), 
-[Download Adminutil Source]({{ site.baseurl }}/binaries/389-ds-console-1.2.9.tar.bz2), 
-[Download Adminutil Source]({{ site.baseurl }}/binaries/389-admin-console-1.1.9.tar.bz2) and 
-[Download Adminutil Source]({{ site.baseurl }}/binaries/idm-console-framework-1.1.9.tar.bz2).
+Source tarballs are available for download at [Download 389 Console Source]({{ site.baseurl }}/binaries/389-console-1.1.9.tar.bz2), 
+[Download 389 Ds Console Source]({{ site.baseurl }}/binaries/389-ds-console-1.2.9.tar.bz2), 
+[Download 389 Admin Console Source]({{ site.baseurl }}/binaries/389-admin-console-1.1.9.tar.bz2) and 
+[Download Idm Console Framework Source]({{ site.baseurl }}/binaries/idm-console-framework-1.1.9.tar.bz2).
 
 ### Highlights in 389-console-1.1.9, 389-ds-console-1.2.9, 389-admin-console-1.1.9 and idm-console-framework-1.1.9-1
 
