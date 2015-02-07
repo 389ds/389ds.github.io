@@ -534,6 +534,51 @@ But this may cause the server to slow down considerably, which is not good in mo
 
 You can replace the access log with a [Named_Pipe](../howto/howto-use-named-pipe-log-script.html).  This will allow you to save the last few lines of the access log if the server crashes, without severely impacting the performance of the server.
 
+### **Memory Growth**
+
+If the size of the daemon process ns-slapd keeps growing, there are 2 possibilities -- memory leak or fragmentation.
+
+#### How to check if the memory growth is from memory leak or not ####
+-   Download [ns-slapd.sh]({{ site.baseurl }}/binaries/ns-slapd.sh)
+-   sudo mv /usr/sbin/ns-slapd /usr/sbin/ns-slapd.orig
+-   sudo mv /path/to/downloaded/ns-slapd.sh /usr/sbin/ns-slapd
+-   sudo chmod 755 /usr/sbin/ns-slapd
+-   sudo systemctl restart dirsrv@YOUR_SERVER_ID.service
+-   "ps -ef \| grep ns-slapd.orig" tells you the output log file location, e.g., "--log-file=/var/tmp/val/slapd.vg.449"
+-   Run operations which could cause the memory growth.
+-   sudo systemctl stop dirsrv@YOUR_SERVER_ID.service
+-   Check the output log file.
+
+Note that the Directory Server is not rigorous to release the basic memory structures which is necessary to run the server.
+Various caches and configurations are in the category.  
+Even if LEAK SUMMARY shows "definitely lost: 4,351 bytes in 125 blocks", it does not mean it is a real leak.
+
+#### How to check if the memory growth is from fragmentation or not ####
+Malloc library has a known issue that repeated malloc and free causes the memory growth that is induced by the memory fragmentation.  The typical case is when a search requires larger entry cache size, and the search is repeated, it could grow the server size until it fails to allocate more memory.  If the physical memory size allows, increasing the entry cache size large enough to store the search results, the memory growth could be avoided.
+
+    dn: cn=userRoot,cn=ldbm database,cn=plugins,cn=config
+    nsslapd-cachememsize: ENTRY_CACHE_SIZE_IN_BYTES
+    nsslapd-dncachememsize: DN_CACHE_SIZE_IN_BYTES
+
+Malloc library provides tuning parameters to reduce the memory fragmentation. 
+Directory Server takes 2 environment variables SLAPD_MXFAST and MALLOC_TRIM_THRESHOLD_
+corresponding to M_MXFAST and M_TRIM_THRESHOLD, respectively. (See also "man mallopt" for each parameter.)
+
+The same set of the variables can be set via Directory Server config.
+
+    dn: cn=config
+	nsslapd-malloc-mxfast: [0..80*sizeof(size_t)/4]
+	nsslapd-malloc-trim-threshold: [-1..]
+
+Recommended values to reduce the fragmentation.  Note: it might slow down the ordinary memory management.
+
+    dn: cn=config
+	nsslapd-malloc-mxfast: 0               # [*]
+	nsslapd-malloc-trim-threshold: 16384   # 16K [**]
+ 
+    [*]   If 0, the use of fastbins is disabled.
+    [**]  System default value is 128K; If low, good for memory, bad for performance; If high, good for perf, bad for memory.
+
 ### Troubleshooting Admin Server
 
 #### Admin Server fails to start on Solaris/HP-UX
@@ -670,4 +715,4 @@ Read password from file:
 ### Write a lib389 test script
 
 Check out [How to Write Upstream Test](../howto/howto-write-lib389.html)
-
+Y
