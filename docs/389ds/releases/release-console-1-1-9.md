@@ -4,23 +4,23 @@ title: "Releases/console-1.1.9"
 389 Console 1.1.9
 -----------------------------
 
-The 389 Directory Server team is proud to announce 389-console version 1.1.9, 389-ds-console version 1.2.9, 389-admin-console version 1.1.9, and idm-console-framework version 1.1.9.
+The 389 Directory Server team is proud to announce 389-console version 1.1.9, 389-ds-console version 1.2.10, 389-admin-console version 1.1.10, and idm-console-framework version 1.1.9.
 
 Fedora packages are available from the Fedora 20, Fedora 21 and Rawhide repositories.
 
 The new packages and versions are:
 
 -   389-console-1.1.9-1
--   389-ds-console-1.2.9-1
--   389-admin-console-1.1.9-1
+-   389-ds-console-1.2.10-1
+-   389-admin-console-1.1.10-1
 -   idm-console-framework-1.1.9-1
 
 Source tarballs are available for download at [Download 389 Console Source]({{ site.baseurl }}/binaries/389-console-1.1.9.tar.bz2), 
-[Download 389 Ds Console Source]({{ site.baseurl }}/binaries/389-ds-console-1.2.9.tar.bz2), 
-[Download 389 Admin Console Source]({{ site.baseurl }}/binaries/389-admin-console-1.1.9.tar.bz2) and 
+[Download 389 Ds Console Source]({{ site.baseurl }}/binaries/389-ds-console-1.2.10.tar.bz2), 
+[Download 389 Admin Console Source]({{ site.baseurl }}/binaries/389-admin-console-1.1.10.tar.bz2) and 
 [Download Idm Console Framework Source]({{ site.baseurl }}/binaries/idm-console-framework-1.1.9.tar.bz2).
 
-### Highlights in 389-console-1.1.9, 389-ds-console-1.2.9, 389-admin-console-1.1.9 and idm-console-framework-1.1.9-1
+### Highlights in 389-console-1.1.9, 389-ds-console-1.2.10, 389-admin-console-1.1.10 and idm-console-framework-1.1.9-1
 
 -   Several bugs are fixed including security bugs -- enable TLS version 1.1 and newer; stop using old SSL version.
 
@@ -44,10 +44,10 @@ Please provide feedback and comments to the 389-users mailing list: <https://adm
 
 -   <https://admin.fedoraproject.org/updates/389-console-1.1.9-1.fc20>
 -   <https://admin.fedoraproject.org/updates/389-console-1.1.9-1.fc21>
--   <https://admin.fedoraproject.org/updates/389-ds-console-1.2.9-1.fc20>
--   <https://admin.fedoraproject.org/updates/389-ds-console-1.2.9-1.fc21>
--   <https://admin.fedoraproject.org/updates/389-admin-console-1.1.9-1.fc20>
--   <https://admin.fedoraproject.org/updates/389-admin-console-1.1.9-1.fc21>
+-   <https://admin.fedoraproject.org/updates/389-ds-console-1.2.10-1.fc20>
+-   <https://admin.fedoraproject.org/updates/389-ds-console-1.2.10-1.fc21>
+-   <https://admin.fedoraproject.org/updates/389-admin-console-1.1.10-1.fc20>
+-   <https://admin.fedoraproject.org/updates/389-admin-console-1.1.10-1.fc21>
 -   <https://admin.fedoraproject.org/updates/idm-console-framework-1.1.9-2.fc20>
 -   <https://admin.fedoraproject.org/updates/idm-console-framework-1.1.9-1.fc21>
 
@@ -60,6 +60,7 @@ If you find a bug, or would like to see a new feature, file it in our Trac insta
 
 ### Detailed Changelog since 389-ds-console-1.2.7
 
+-   Bug 1022104  - Remove versioned jarfiles from _javadir (idm-console-framework)
 -   Ticket 47994 - DS Console always sets nsSSL3 to "on" when a securty setting is adjusted
 -   Ticket 47380 - RFE: Winsync loses connection with AD objects when they move from the console.
 -   Ticket 135   - DS console - right clicking an object does not select that object
@@ -72,6 +73,7 @@ If you find a bug, or would like to see a new feature, file it in our Trac insta
 
 ### Detailed Changelog since 389-admin-console-1.1.8
 
+-   Bug 1022104  - Remove versioned jarfiles from _javadir (idm-console-framework)
 -   Ticket 47477 - Cannot restart SSL-admin server from console
 -   Ticket 47467 - Improve online help for Add CRL dialog
 -   Ticket 362   - Directory Console generates insufficient key strength

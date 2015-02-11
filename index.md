@@ -75,7 +75,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
 <!-- Try to keep this list under 10 releases  -->
 
-- 2015-02-05: Released **389 Console [1.1.9](docs/389ds/releases/release-console-1-1-9.html)**
+- 2015-02-10: Released **389 Console [1.1.9](docs/389ds/releases/release-console-1-1-9.html)**
 - 2015-02-05: Released **389 Directory Server [1.3.3.8](docs/389ds/releases/release-1-3-3-8.html)**
 - 2015-02-05: Released **389 Directory Server [1.3.2.26](docs/389ds/releases/release-1-3-2-26.html)**
 - 2015-02-03: Released **389 Admin Server [1.1.38](docs/389ds/releases/release-admin-1-1-38.html)**

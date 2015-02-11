@@ -30,8 +30,8 @@ The source code was produced by first doing a git clone to get the repository, t
 |[389-admin.1.1.38.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.38.tar.bz2)|admin.git|389-admin-1.1.38|[Admin](../administration/adminserver.html)|52f43945a6786f83009e5745c98b2c24f42f2797|
 |[389-adminutil-1.1.21.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.21.tar.bz2)|adminutil.git|389-adminutil-1.1.21|[AdminUtil](../administration/adminutil.html)|7a78b262d966897e78a3c94f1ae9e7126ea53f9f|
 |[389-console-1.1.9.tar.bz2]({{ site.baseurl }}/binaries/389-console-1.1.9.tar.bz2)|console.git|389-console-1.1.9|[Building Console](buildingconsole.html)|bcc15330156beab1dab57cedef838f8ec5b26988|
-|[389-ds-console-1.2.9.tar.bz2]({{ site.baseurl }}/binaries/389-ds-console-1.2.9.tar.bz2)|ds-console.git|389-ds-console-1.2.9|[Building Console](buildingconsole.html)|f769e1cbe3c04b934e9bc2737ee739e466e45567|
-|[389-admin-console-1.1.9.tar.bz2]({{ site.baseurl }}/binaries/389-admin-console-1.1.9.tar.bz2)|admin-console.git|389-admin-console-1.1.9|[Building Console](buildingconsole.html)|ae7b4c54d9acd40b7ad0dd1cacd97ec433e06ceb|
+|[389-ds-console-1.2.10.tar.bz2]({{ site.baseurl }}/binaries/389-ds-console-1.2.10.tar.bz2)|ds-console.git|389-ds-console-1.2.10|[Building Console](buildingconsole.html)|c4f38cd421ffcc8b26fd841e4e45096bbaf21451|
+|[389-admin-console-1.1.10.tar.bz2]({{ site.baseurl }}/binaries/389-admin-console-1.1.10.tar.bz2)|admin-console.git|389-admin-console-1.1.10|[Building Console](buildingconsole.html)|3f79901cb5457220e34480032cfcc14879dbbb68|
 |[idm-console-framework-1.1.9.tar.bz2]({{ site.baseurl }}/binaries/idm-console-framework-1.1.9.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.9|[Building Console](buildingconsole.html)|38f79c7248106738ed10beca936eb85b40249a8f|
 
 ### 389 Directory Server 1.3.2
@@ -45,8 +45,8 @@ The source code was produced by first doing a git clone to get the repository, t
 |[389-admin-1.1.38.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.38.tar.bz2)|admin.git|389-admin-1.1.38|[Admin](../administration/adminserver.html)|52f43945a6786f83009e5745c98b2c24f42f2797|
 |[389-adminutil-1.1.21.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.21.tar.bz2)|adminutil.git|389-adminutil-1.1.21|[AdminUtil](../administration/adminutil.html)|7a78b262d966897e78a3c94f1ae9e7126ea53f9f|
 |[389-console-1.1.9.tar.bz2]({{ site.baseurl }}/binaries/389-console-1.1.9.tar.bz2)|console.git|389-console-1.1.9|[Building Console](buildingconsole.html)|bcc15330156beab1dab57cedef838f8ec5b26988|
-|[389-ds-console-1.2.9.tar.bz2]({{ site.baseurl }}/binaries/389-ds-console-1.2.9.tar.bz2)|ds-console.git|389-ds-console-1.2.9|[Building Console](buildingconsole.html)|f769e1cbe3c04b934e9bc2737ee739e466e45567|
-|[389-admin-console-1.1.9.tar.bz2]({{ site.baseurl }}/binaries/389-admin-console-1.1.9.tar.bz2)|admin-console.git|389-admin-console-1.1.9|[Building Console](buildingconsole.html)|ae7b4c54d9acd40b7ad0dd1cacd97ec433e06ceb|
+|[389-ds-console-1.2.10.tar.bz2]({{ site.baseurl }}/binaries/389-ds-console-1.2.10.tar.bz2)|ds-console.git|389-ds-console-1.2.10|[Building Console](buildingconsole.html)|c4f38cd421ffcc8b26fd841e4e45096bbaf21451|
+|[389-admin-console-1.1.10.tar.bz2]({{ site.baseurl }}/binaries/389-admin-console-1.1.10.tar.bz2)|admin-console.git|389-admin-console-1.1.10|[Building Console](buildingconsole.html)|3f79901cb5457220e34480032cfcc14879dbbb68|
 |[idm-console-framework-1.1.9.tar.bz2]({{ site.baseurl }}/binaries/idm-console-framework-1.1.9.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.9|[Building Console](buildingconsole.html)|38f79c7248106738ed10beca936eb85b40249a8f|
 
 ### 389 Directory Server 1.3.1
