@@ -143,42 +143,48 @@ Example using a single standalone instance:
     if __name__ == '__main__':
         run_isolated()
 
-Fortunately, we have a helper script(*create_testcase.py*) to create this template for us, so we can focus on writing the *actual* test
+Fortunately, we have a helper script(*create_test.py*) to create this template for us, so we can focus on writing the *actual* test
 
-### create_testcase.py
+### create_test.py
 
 Using this script we can setup complex replication instances(that are fully configured and initialized), or multiple standalone instances.  The script is located in the Directory Server source code:
 
-    ds/dirsrvtests/tickets/create_testcase.py
+    ds/dirsrvtests/create_test.py
 
-    create_ticket.py -t|--ticket <ticket number> [ i|--instances <number of standalone instances> [ -m|--masters <number of masters> -h|--hubs <number of hubs> -c|--consumers <number of consumers> ] -o|--outputfile ]
+    ./create_test.py -t|--ticket <ticket number> | -s|--suite <suite name> [ i|--instances <number of standalone instances> [ -m|--masters <number of masters> -h|--hubs <number of hubs> -c|--consumers <number of consumers> ] -o|--outputfile ]
 
-Currently the script will create a "replication" setup, or a standalone setup (no replication).  When using the "**-o\|--outputfile" option be sure to use _Here is an example of both:
+Currently the script will create a "replication" setup, or a standalone setup (no replication).  When using the "**-o\|--outputfile**" option be sure to use _Here is an example of both:
 
-    python ./create_testcase.py --ticket 33333
+    ./create_test.py --ticket 33333
 
         --> Creates a script named:  ticket33333_test.py
             This script create a single standalone instance
 
-    python ./create_testcase.py --ticket 33333 --outputfile my_test.py
+    ./create_test.py --ticket 33333 --outputfile my_test.py
 
         --> Creates a script named:  my_test.py
             This script create a single standalone instance
 
-    python ./create_testcase.py --ticket 33333 --instances 4
+    ./create_test.py --ticket 33333 --instances 4
 
         --> Creates a script named:  ticket33333_test.py
             This script creates four standalone instances
 
-    python ./create_testcase.py --ticket 33333 --master 2
+    ./create_test.py --ticket 33333 --master 2
 
         --> Creates a script named:  ticket33333_test.py
             This script creates two replication master instances, and initializes them
 
-    python ./create_testcase.py --ticket 33333 --master 2 --hubs 2 --consumers 10
+    ./create_test.py --ticket 33333 --master 2 --hubs 2 --consumers 10
 
         --> Creates a script named:  ticket33333_test.py
             This script creates two replication master instances, two replication hubs, and ten consumers.  Replication is fully initialized across all the servers
+
+    ./create_test.py --suite memberOf_plugin
+        --> Creates a "suite" test named:  memberOf_plugin_test.py
+    
+**Note** - "suite" tests are for testing functional areas or features, while "ticket" tests are for testing individual bugs.
+
 
 If setting up a complex replication test, the script structures the deployment in a cascading fashion:
 
