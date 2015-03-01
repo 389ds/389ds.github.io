@@ -1,11 +1,15 @@
 ---
-title: "Howto: SSL"
+title: "Howto: TLS/SSL"
 ---
 
-# Configuring SSL Enabled 389 Directory Server
+**NOTE: SSL is considered insecure - do not use it - use only TLSv1 and later**
+In most places below where this document refers to the term "SSL", it usually means "TLSv1".  The term "SSL" is kept around for historical reasons, but SSLv3 should never be used.
+
+# Configuring TLS/SSL Enabled 389 Directory Server
 -------------------------------------------------
 
 {% include toc.md %}
+
 
 NOTE: key/cert database information
 -----------------------------------
@@ -53,7 +57,7 @@ NOTE: The script makes the following assumptions:
 
 ### Detailed step-by-step guide
 
-[This page](http://www.csse.uwa.edu.au/~ashley/fedora-ds/fedora-ds-26072006.html) is a graphically illustrated (screenshots) step-by-step guide to setting up your Fedora DS servers to use SSL. This guide also includes client configuration for many linux and unix systems, and even Mac.
+[This page](http://www.csse.uwa.edu.au/~ashley/fedora-ds/fedora-ds-26072006.html) is a graphically illustrated (screenshots) step-by-step guide to setting up your Fedora DS servers to use TLS/SSL. This guide also includes client configuration for many linux and unix systems, and even Mac.
 
 ### Basic Steps
 
@@ -122,10 +126,10 @@ Note the above step is only needed if you want to backup your server key and cer
 
 ### Exporting the certs for use with other apps
 
-Now that you have your server cert, client applications will need to be able to verify that cert when connecting to the server. In order to do that, the SSL client must have the CA cert to verify that the cert presented by the SSL server is valid. This includes server to server communication such as replication. The SSL roles are opposite the master/slave roles. The master pushes changes to the slave. So in this instance, the slave is the SSL server, and the master is the SSL client.
+Now that you have your server cert, client applications will need to be able to verify that cert when connecting to the server. In order to do that, the TLS/SSL client must have the CA cert to verify that the cert presented by the TLS/SSL server is valid. This includes server to server communication such as replication. The TLS/SSL roles are opposite the master/slave roles. The master pushes changes to the slave. So in this instance, the slave is the TLS/SSL server, and the master is the TLS/SSL client.
 
--   In order to be an SSL server, the slave must have a server cert/key and CA cert.
--   In order to be an SSL client, the master must have just the CA cert.
+-   In order to be an TLS/SSL server, the slave must have a server cert/key and CA cert.
+-   In order to be an TLS/SSL client, the master must have just the CA cert.
 
 You can use certutil on the master to make a cert for the slave, using the commands below on the master. Then, use pk12util to export the slave cert/key, then take that pk12 file to the slave and use pk12util to import it (and use certutil to import the CA cert).
 
@@ -172,7 +176,7 @@ Omit the -a if you have a binary DER encoded cert (if you use -r to export the c
 
 ##### 389 DS 1.1 and later
 
-The Admin Server looks for its key and cert databases in the /etc/dirsrv/admin-serv directory. In order for the Admin Server to use SSL/TLS to talk to the directory server, you must have the certificate of the CA that issued the directory server certificate in the cert db of the admin server.
+The Admin Server looks for its key and cert databases in the /etc/dirsrv/admin-serv directory. In order for the Admin Server to use TLS/SSL to talk to the directory server, you must have the certificate of the CA that issued the directory server certificate in the cert db of the admin server.
 
     cd /etc/dirsrv/admin-serv    
     certutil -A -d . -n "CA certificate" -t "CT,," -a -i cacert.asc    
@@ -187,7 +191,7 @@ or
 
 ##### Fedora DS 1.0.4 and earlier
 
-The Admin Server looks for its key and cert databases in the /opt/fedora-ds/alias directory. It uses the prefix admin-serv-hostname- where hostname is your hostname. In order for the Admin Server to use SSL/TLS to talk to the directory server, you must have the certificate of the CA that issued the directory server certificate in the cert db of the admin server.
+The Admin Server looks for its key and cert databases in the /opt/fedora-ds/alias directory. It uses the prefix admin-serv-hostname- where hostname is your hostname. In order for the Admin Server to use TLS/SSL to talk to the directory server, you must have the certificate of the CA that issued the directory server certificate in the cert db of the admin server.
 
     cd /opt/fedora-ds/alias    
     ../shared/bin/certutil -A -d . -P admin-serv-hostname- -n "CA certificate" -t "CT,," -a -i cacert.asc    
@@ -285,24 +289,22 @@ or with Fedora DS 1.0.4
 
 You will be prompted for the password used to encrypt the newservercert.p12 file as well as the key/cert db password.
 
-Starting the Server with SSL enabled
+Starting the Server with TLS/SSL enabled
 ------------------------------------
 
-Create an LDIF file called **/tmp/ssl_enable.ldif** with the following data in it. Be sure to change <instance> to the name of your slapd instance and make sure that all of the ciphers are on a single line. The nsSSL3Ciphers that are enabled are lined up against the published standards for disabling SSLv2 cipher suites and should maintain compliance for the PCI Data Security standards.
+Create an LDIF file called **/tmp/ssl_enable.ldif** with the following data in it. Be sure to change <instance> to the name of your slapd instance and make sure that all of the ciphers are on a single line. The nsSSL3Ciphers that are enabled are lined up against the published standards for disabling SSLv2 cipher suites and should maintain compliance for the PCI Data Security standards.  NOTE: SSLv3 is considered unsafe and should not be used.  The instructions below explicitly disable SSLv3.  SSLv3 should be disabled by default.
 
     dn: cn=encryption,cn=config
     changetype: modify
     replace: nsSSL3
-    nsSSL3: on
+    nsSSL3: off
     -
     replace: nsSSLClientAuth
     nsSSLClientAuth: allowed
     -
     add: nsSSL3Ciphers
-    nsSSL3Ciphers: -rsa_null_md5,+rsa_rc4_128_md5,+rsa_rc4_40_md5,+rsa_rc2_40_md5,
-    +rsa_des_sha,+rsa_fips_des_sha,+rsa_3des_sha,+rsa_fips_3des_sha,+fortezza,
-    +fortezza_rc4_128_sha,+fortezza_null,+tls_rsa_export1024_with_rc4_56_sha,
-    +tls_rsa_export1024_with_des_cbc_sha,-rc4,-rc4export,-rc2,-rc2export,-des,-desede3
+    nsSSL3Ciphers: +all
+
     dn: cn=config
     changetype: modify
     add: nsslapd-security
@@ -387,7 +389,7 @@ If you can't get it to work with TLS\_CACERTDIR, you can just tell it to use the
 
 If you have more than 1 CA cert, you will have to concatenate them into a single file.
 
-Verify SSL is enabled
+Verify TLS/SSL is enabled
 ---------------------
 
     # ldapsearch -x -ZZ '(uid=testuser)'
@@ -396,12 +398,12 @@ Check your access logs /opt/fedora-ds/slapd-\    hostname -s\    /logs/access, s
 
     [18/Jul/2005:20:33:36 -0400] conn=4 op=0 EXT oid="1.3.6.1.4.1.1466.20037" name="startTLS"    
     [18/Jul/2005:20:33:36 -0400] conn=4 op=0 RESULT err=0 tag=120 nentries=0 etime=0    
-    [18/Jul/2005:20:33:36 -0400] conn=4 SSL 256-bit AES    
+    [18/Jul/2005:20:33:36 -0400] conn=4 TLSv1.1 256-bit AES    
     [18/Jul/2005:20:33:36 -0400] conn=4 op=1 BIND dn="" method=128 version=3    
     [18/Jul/2005:20:33:36 -0400] conn=4 op=1 RESULT err=0 tag=97 nentries=0 etime=0 dn=""    
     [18/Jul/2005:20:33:36 -0400] conn=4 op=2 SRCH base="dc=example,dc=com" scope=2 filter="(uid=testuser)" attrs=ALL    
 
-Use ldapsearch with SSL
+Use ldapsearch with TLS/SSL
 -----------------------
 
 When used with the -Z option, ldapsearch needs the absolute path to a cert8.db file to know about the certificate chain trust, here are some examples:
@@ -448,20 +450,20 @@ or for Fedora DS 1.0.4 and earlier:
 
 Enter the old password then press Enter twice for the new password to blank it out.
 
-Console SSL Information
+Console TLS/SSL Information
 =======================
 
 Using the Console
 -----------------
 
-Using the console, go into the Directory Server that you want to use SSL with, then go into the Configuration tab, then go to the Encryption tab in the right hand pane. If you have not already done so, you must have already enabled SSL for this server by using the steps above.
+Using the console, go into the Directory Server that you want to use TLS/SSL with, then go into the Configuration tab, then go to the Encryption tab in the right hand pane. If you have not already done so, you must have already enabled TLS/SSL for this server by using the steps above.
 
-The check box "Use SSL in Fedora Console" tells the console to use SSL when communicating with this directory server. The directory server must already be configured to use SSL before you set this option.
+The check box "Use SSL in Fedora Console" tells the console to use TLS/SSL when communicating with this directory server. The directory server must already be configured to use TLS/SSL before you set this option.  Note that although the term "SSL" is used in this context, it really means "Use the highest strength TLS encryption available".
 
 Using the command line
 ----------------------
 
-You must first find the entry corresponding to the directory server you want the console to use SSL with.
+You must first find the entry corresponding to the directory server you want the console to use TLS/SSL with.
 
     ldapsearch -x -D "cn=directory manager" -w password -b o=netscaperoot "nsServerID=slapd-yourinstance"
 
@@ -470,7 +472,7 @@ If you have more than one server named "slapd-yourinstance", you can add the hos
     ldapsearch -x -D "cn=directory manager" -w password -b o=netscaperoot \
     "(&(nsServerID=slapd-yourinstance)(serverHostName=myhost.domain.tld))"
 
-The attribute in this entry that controls whether or not SSL is used is **nsServerSecurity**. Set this to "on" if you want to use SSL or "off" if not e.g.
+The attribute in this entry that controls whether or not TLS/SSL is used is **nsServerSecurity**. Set this to "on" if you want to use TLS/SSL or "off" if not e.g.
 
     ldapmodify -x -D "cn=directory manager" -w password
     dn: dn of your server instance entry
@@ -499,7 +501,7 @@ Then, the console Manage Certificates -\> CA Certs will show all of the built-in
     cd /etc/dirsrv/admin-serv    
     ln -s /usr/lib/libnssckbi.so    
 
-Admin Server SSL Information
+Admin Server TLS/SSL Information
 ============================
 
 NOTE: Key/Cert database location
@@ -515,20 +517,20 @@ If using Fedora DS 1.0.4 and earlier, the directory /opt/fedora-ds/alias is shar
 Using the console
 -----------------
 
-The [Managing Servers with Red Hat Console](http://docs.redhat.com/docs/en-US/Red_Hat_Directory_Server/8.2/html/Using_Red_Hat_Console/index.html) manual provides information about setting up and using the console with an SSL enabled Admin Server.
+The [Managing Servers with Red Hat Console](http://docs.redhat.com/docs/en-US/Red_Hat_Directory_Server/8.2/html/Using_Red_Hat_Console/index.html) manual provides information about setting up and using the console with an TLS/SSL enabled Admin Server.
 
 Command line
 ------------
 
 The script mentioned above will generate the key/cert db for admin server and install it in the correct place.
 
-There are several files and directory entries which control if/how SSL is used with Admin Server and Console.
+There are several files and directory entries which control if/how TLS/SSL is used with Admin Server and Console.
 
 ### /etc/dirsrv/admin-serv/nss.conf (or admin-serv/config/nss.conf)
 
 Note: if you used the script above, this section is already done for you.
 
-If you want the admin server to start unattended with SSL, you must put the pin/password in a file for the admin server to use. First, create a file called /etc/dirsrv/admin-serv/password.conf (or with Fedora DS 1.0.4 /opt/fedora-ds/alias/password.conf). The format is
+If you want the admin server to start unattended with TLS/SSL, you must put the pin/password in a file for the admin server to use. First, create a file called /etc/dirsrv/admin-serv/password.conf (or with Fedora DS 1.0.4 /opt/fedora-ds/alias/password.conf). The format is
 
     internal:password    
 
@@ -554,7 +556,7 @@ Make sure the file is mode 400 and owned by your admin server user (default nobo
 
 This file should contain the following directives (Apache conf style directives). The value in [brackets] is the default, and you may not need to change it.
 
--   NSSEngine [off\|on] - set to on to enable the Admin Server to use https (SSL/TLS) instead of http, off otherwise
+-   NSSEngine [off\|on] - set to on to enable the Admin Server to use https (TLS/SSL) instead of http, off otherwise
 -   NSSNickname [server-cert] - this is the nickname of the Admin Server cert in it's cert/key database - server-cert is the default and the one created by the script above
 -   NSSCertificateDatabase [/etc/dirsrv/admin-serv or /opt/fedora-ds/alias] - the directory containing the key/cert database files
 -   NSSDBPrefix [admin-serv-yourhost-] - the prefix of the key/cert database filenames
@@ -574,11 +576,11 @@ or with Fedora DS 1.0.4 and earlier:
     cd /opt/fedora-ds/alias    
     ../shared/bin/certutil -d . -P admin-serv-yourhost- -L    
 
-you should see server-cert listed as an SSL server certificate.
+you should see server-cert listed as an TLS/SSL server certificate.
 
 ### admin-serv/config/adm.conf (Fedora DS 1.0.4 and earlier only)
 
-The following only applies when using Fedora DS 1.0.4 and earlier. When Admin Server SSL is enabled, the file should have the following 3 additional attributes:
+The following only applies when using Fedora DS 1.0.4 and earlier. When Admin Server TLS/SSL is enabled, the file should have the following 3 additional attributes:
 
     security: on    
     certDBFile: /opt/fedora-ds/alias/admin-serv-yourhost-cert8.db    
@@ -591,7 +593,7 @@ Some of the admin server configuration is stored in the configuration directory 
     /usr/bin/ldapsearch -x -D "cn=directory manager" -w password -b o=netscaperoot \
     '(&(cn=configuration)(objectclass=nsadminconfig))'
 
-There is an attribute in this entry called **nsServerSecurity** - set to "on" to enable SSL, "off" otherwise (or absent).
+There is an attribute in this entry called **nsServerSecurity** - set to "on" to enable TLS/SSL, "off" otherwise (or absent).
 
 ### cn=encryption entry for Admin Server
 
@@ -609,8 +611,8 @@ You should see something like the following (nsCertfile and nsKeyfile are only a
     objectClass: top
     nsCertfile: alias/admin-serv-localhost-cert8.db
     nsKeyfile: alias/admin-serv-localhost-key3.db
-    nsSSL2: on
-    nsSSL3: on
+    nsSSL2: off
+    nsSSL3: off
     nsSSLSessionTimeout: 0
     nsSSL3SessionTimeout: 0
     nsSSLClientAuth: off
@@ -644,9 +646,9 @@ Using SAN Certs (Subject Alt Name)
 -   [Rich Megginson of Red Hat thoughts on (Subject Alt Name) are preferred over \*.ssl certs](http://lists.fedoraproject.org/pipermail/389-users/2010-March/011156.html)
 -   [creating san (Subject Alt Name ) certificates with openssl for hardware load-balancer](http://andyarismendi.blogspot.com/2011/09/creating-certificates-with-sans-using.html)
 
-I just did this and thought others might like to see the procedure if the non-VIPed setup is already running. The issue is the SSL certs - they won't like the names/IPs of the VIPs and will complain (or depending on your setup, fail completely) when starting SSL/TLS. I assume your VIPs exist - here's how to change the SSL certs to work with the VIPs
+I just did this and thought others might like to see the procedure if the non-VIPed setup is already running. The issue is the TLS/SSL certs - they won't like the names/IPs of the VIPs and will complain (or depending on your setup, fail completely) when starting TLS/SSL. I assume your VIPs exist - here's how to change the TLS/SSL certs to work with the VIPs
 
-You already have the two servers up and running on SSL with their certificates working. How do you change the certificates to include the VIP names so things like "ldapsearch -ZZZ" don't die? You have to add an X.509 v3 "SubjectAltName" certificate extension to the certificate. But you can't add it, so you have to create a new certificate. This is how I did it and it has minimal impact - just one quick FDS restart (and even that might not be strictly necessary - please correct me).
+You already have the two servers up and running on TLS/SSL with their certificates working. How do you change the certificates to include the VIP names so things like "ldapsearch -ZZZ" don't die? You have to add an X.509 v3 "SubjectAltName" certificate extension to the certificate. But you can't add it, so you have to create a new certificate. This is how I did it and it has minimal impact - just one quick FDS restart (and even that might not be strictly necessary - please correct me).
 
 My situation was having two ldap servers and needing to put them behind two load-balanced VIPs.
 
@@ -673,7 +675,7 @@ and do
 
 You may need the "-P" flag if using Fedora DS 1.0.4 and earlier and your cert8.db and key3.db files for the DS are not the default names. I tend to use "-a" for ascii output as I have had problems with binary requests and certs in the past.
 
-Where "<SUBJECTNAME>" is the DN for the Certificate. This is the nice part - make sure that this is \*exactly\* the same as your already-in-use SSL cert's Subject DN. To find this out what this is, do
+Where "<SUBJECTNAME>" is the DN for the Certificate. This is the nice part - make sure that this is \*exactly\* the same as your already-in-use TLS/SSL cert's Subject DN. To find this out what this is, do
 
     certutil -L -n <CERTNAME> -d /etc/dirsrv/slapd-instancename    
 
@@ -681,7 +683,7 @@ or with Fedora DS 1.0.4 and earlier:
 
     /opt/fedora-ds/shared/bin/certutil -L -n <CERTNAME> -d /opt/fedora-ds/alias    
 
-Again, you may need the "-P" flag if using Fedora DS 1.0.4 and your cert db files are not the default names. Here "<CERTNAME>" is the name of your server SSL cert. You can list all the cert names with:
+Again, you may need the "-P" flag if using Fedora DS 1.0.4 and your cert db files are not the default names. Here "<CERTNAME>" is the name of your server TLS/SSL cert. You can list all the cert names with:
 
     certutil -L -d /etc/dirsrv/slapd-instancename    
 
@@ -699,7 +701,7 @@ or with Fedora DS 1.0.4 and earlier:
 
 This is where you generate the cert with the extensions.
 
--   <CACERT> is the name of your CA cert that is issuing the certificate - make sure it's the same CAcert that issued your current SSL cert (that way your clients which have the existing public CAcert wont' break). You can find out the name of it in the same way as described above for the server cert name.
+-   <CACERT> is the name of your CA cert that is issuing the certificate - make sure it's the same CAcert that issued your current TLS/SSL cert (that way your clients which have the existing public CAcert wont' break). You can find out the name of it in the same way as described above for the server cert name.
 -   <ID> is a unique, arbitrary serial number for the cert. The only restriction is that it must absolutely, positively be unique. You must not reuse a serial number already issued by this CA.
 -   <VIPs> - this is a comma-separated list of DNS names (can be IP addresses) of your VIPs. Basically, this option says "these names are valid matches for the hostname of the server too" (e.g. ldap1.example.com,ldap2.example.com).
 -   "-v" sets the expiration on the certificate in months. Set it to whatever you want.
@@ -762,7 +764,7 @@ Edit the pin.txt file and place a single line in it (notice the difference in in
 
 Internal (Software) Token:dirserv\_cert\_password
 
-That's it. Restart the server to test whether it doesn't ask for the PIN anymore and starts up properly with SSL.
+That's it. Restart the server to test whether it doesn't ask for the PIN anymore and starts up properly with TLS/SSL.
 
 Using Java/JNDI
 ===============

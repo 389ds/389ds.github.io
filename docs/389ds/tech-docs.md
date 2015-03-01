@@ -93,7 +93,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [How to Ldapsearch without line wrapping](howto/howto-unlimitedwidthldapsearch.html) - How do I set an unlimited line width for ldapsearch
 -   [How to Sizelimit and Ldapsearch](howto/howto-ldapsearchsizelimit.html) - Why do I get this error message "ldap\_search: Administrative limit exceeded"
 -   [How to Ldapsearch and attributes ](howto/howto-ldapsearchmanyattr.html) - How to count large number of attribute entries using an anonymous bind
--   [How to Secure MMR Walkthrough](howto/howto-walkthroughmultimasterssl.html) - Setting up FDS with multi-master replication, SSL and importing OpenLDAP schema
+-   [How to Secure MMR Walkthrough](howto/howto-walkthroughmultimasterssl.html) - Setting up FDS with multi-master replication, TLS/SSL and importing OpenLDAP schema
 -   [How to PAM Passthru Authentication](howto/howto-pam-pass-through.html) - Setting up the PAM pass through authentication plugin
 -   [How to Use DNA Plugin](howto/howto-dna.html) - How to use Distributed Numeric Assignment to auto-generate uidNumber and gidNumber
 -   [How to Set default objectclass in Console](howto/howto-default-console-object-objectclass.html) - How to set the list of default objectclasses the console uses to create new objects (Users, Groups, etc.)
@@ -111,9 +111,9 @@ Documents describing new features that were introduced in each release, as well 
 -   [How to Migrate to 389](howto/howto-migratetoldap.html)
 -   [How to Migrate from openLdap](howto/howto-openldapmigration.html)
 -   [How to PHP and Admin Server](howto/howto-phpldapadmin.html)
--   [How to Setup SSL](howto/howto-ssl.html)
+-   [How to Setup TLS/SSL](howto/howto-ssl.html)
 -   [How to StartTLS](howto/howto-starttls.html)
--   [How to Only Accept SSL Connections](howto/howto-listensslonly.html)
+-   [How to Only Accept TLS/SSL Connections](howto/howto-listensslonly.html)
 -   [How to Change UID](howto/howto-changeuid.html)
 -   [How to Use LdapAdmin tool ](howto/howto-ldapadmin.html)
 -   [How to Use LDAP monitoring tools](howto/howto-cn-equals-monitor-ldap-monitoring.html)
@@ -123,7 +123,7 @@ Documents describing new features that were introduced in each release, as well 
 #### Operating System
 
 -   [How to Posix](howto/howto-posix.html)
--   [How to Configure NSS LDAP for SSL ](howto/howto-ldapnsswithssl.html)
+-   [How to Configure NSS LDAP for TLS/SSL ](howto/howto-ldapnsswithssl.html)
 -   [How to PAM](howto/howto-pam.html)
 -   [How to Use Netgroups](howto/howto-netgroups.html)
 -   [How to Debian Packages](howto/howto-debianpackages.html)

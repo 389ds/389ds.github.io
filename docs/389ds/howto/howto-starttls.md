@@ -14,11 +14,11 @@ Example of log for startTLS, on port 389:
     [17/Oct/2007:14:32:52 -0700] conn=936 fd=68 slot=68 connection from 1.2.3.4 to 5.6.7.8    
     [17/Oct/2007:14:32:52 -0700] conn=936 op=0 EXT oid="1.3.6.1.4.1.1466.20037" name="startTLS"    
     [17/Oct/2007:14:32:52 -0700] conn=936 op=0 RESULT err=0 tag=120 nentries=0 etime=0    
-    [17/Oct/2007:14:32:52 -0700] conn=936 SSL 256-bit AES    
+    [17/Oct/2007:14:32:52 -0700] conn=936 TLSv1.1 256-bit AES    
 
 The "err=0 tag=120" show a result from an extended operation.
 
 Example of log for ssl, on port 636:
 
-    [18/Oct/2007:08:54:53 -0700] conn=253 fd=64 slot=64 SSL connection from 1.2.3.4 to 5.6.7.8    
-    [18/Oct/2007:08:54:53 -0700] conn=253 SSL 256-bit AES    
+    [18/Oct/2007:08:54:53 -0700] conn=253 fd=64 slot=64 TLSv1.1 connection from 1.2.3.4 to 5.6.7.8    
+    [18/Oct/2007:08:54:53 -0700] conn=253 TLSv1.1 256-bit AES    

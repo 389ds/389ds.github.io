@@ -27,9 +27,11 @@ User, group, and password information can be synchronized with an Active Directo
 
 The access control information is contained with the data (in operational attributes), which means that it is always available when the data is imported or restored from backup. Provides support for macros that dramatically reduce the number of access control statements used in the directory, and increase the scalability of access control evaluation. Supports the [Get Effective Rights operation](../design/get-effective-rights-design.html) allowing admins and data designers to perform "What If?" queries when designing the access control structure.
 
-### SSL/TLS
+### TLS
 
-Provides SSLv3/TLSv1 secure communications over the network including ciphers with up to 256-bit encryption. Clients can use certificates for authentication with flexible cert subject to LDAP identity mapping. Supports the LDAP startTLS operation allowing the use of crypto on a non-secure port. FDS uses [Mozilla NSS](http://www.mozilla.org/projects/security/pki/nss/) as the crypto engine.
+Provides TLSv1 secure communications over the network including ciphers with up to 256-bit encryption. Clients can use certificates for authentication with flexible cert subject to LDAP identity mapping. Supports the LDAP startTLS operation allowing the use of crypto on a non-secure port. FDS uses [Mozilla NSS](http://www.mozilla.org/projects/security/pki/nss/) as the crypto engine.
+
+**NOTE: SSLv3 is considered insecure and has been deprecated.**
 
 ### [SASL](SASL_GSSAPI_Kerberos_Design "wikilink") - Simple Authentication and Security Layer
 

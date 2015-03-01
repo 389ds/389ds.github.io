@@ -9,21 +9,21 @@ title: "Howto:WindowsSync"
 
 These are steps which you should follow to sync Windows Active Directory and 389 Directory Server .
 
-### Enabling SSL with Active Directory
+### Enabling TLS/SSL with Active Directory
 
 #### With Microsoft Certificate Authority
 
 Active Directory gets its server certificate automatically created/enrolled when a Microsoft Certificate Server is configured/installed for that domain in Enterprise Root CA mode.
 
--   Cite: [How To Enable Secure Socket Layer (SSL) Communication over LDAP for Windows 2000 Domain Controllers](http://support.microsoft.com/default.aspx?scid=kb;en-us;247078)
--   Cite: [Windows Server 2003 & 2008: How to enable LDAP over SSL with a third-party certification authority](http://support.microsoft.com/kb/321051)
+-   Cite: [How To Enable Transport Layer Security (TLS/SSL) Communication over LDAP for Windows 2000 Domain Controllers](http://support.microsoft.com/default.aspx?scid=kb;en-us;247078)
+-   Cite: [Windows Server 2003 & 2008: How to enable LDAP over TLS/SSL with a third-party certification authority](http://support.microsoft.com/kb/321051)
 -   Cite: [Setting up AD ldap\_over\_ssl for php](http://adldap.sourceforge.net/wiki/doku.php?id=ldap_over_ssl)
 
 #### (Optional) Use Microsoft ldap diagnostics gui Ldp from the AD Windows Server 2003 or AD Windows Server 2008 to test the ssl port 636
 
 -   Cite: [Windows 2003 ldp Windows Server 2003 toolkit](http://www.computerperformance.co.uk/w2k3/utilities/ldp.htm)
--   Cite: [How to enable LDAP over SSL with a third-party certification authority: Verifying an LDAPS connection](http://support.microsoft.com/kb/321051)]
--   Cite: [Windows Server 200{0,3} How to troubleshoot LDAP over SSL connection problems](http://support.microsoft.com/kb/938703)
+-   Cite: [How to enable LDAP over TLS/SSL with a third-party certification authority: Verifying an LDAPS connection](http://support.microsoft.com/kb/321051)]
+-   Cite: [Windows Server 200{0,3} How to troubleshoot LDAP over TLS/SSL connection problems](http://support.microsoft.com/kb/938703)
 
 -   [Download Windows Server 2003 toolkit: To get ldp](http://www.microsoft.com/en-us/download/details.aspx?id=17657)
 -   [Ldp is Bundled in Windows Server 2008](http://technet.microsoft.com/en-us/library/cc771022(v=ws.10).aspx)
@@ -155,7 +155,7 @@ Now rerun the ldapsearch commands , see if they are successful, if so then the i
 
 #### With Red Hat Certificate Authority
 
-These are some notes that describe how you should go about enabling SSL for an Active Directory Installation Using Red Hat Certificate System (CA).
+These are some notes that describe how you should go about enabling TLS/SSL for an Active Directory Installation Using Red Hat Certificate System (CA).
 
  Steps to follow for Windows 2000 Advanced Server:
 
@@ -186,7 +186,7 @@ These are some notes that describe how you should go about enabling SSL for an A
 
 ([[http://tinyca.sm-zone.net/]http://tinyca.sm-zone.net/](http://tinyca.sm-zone.net/]http://tinyca.sm-zone.net/))
 
-These notes should help you go about enabling SSL for Active Directory Installation using certificates generated with the TinyCA2 Certificate Authority.
+These notes should help you go about enabling TLS/SSL for Active Directory Installation using certificates generated with the TinyCA2 Certificate Authority.
 
 FYI...
 
@@ -242,7 +242,7 @@ enjoy
 
 #### Active Directory with any Other 3rd-Party Certificate Authority
 
--   Cite: [Windows Server 2003 & 2008: How to enable LDAP over SSL with a third-party certification authority](http://support.microsoft.com/kb/321051)
+-   Cite: [Windows Server 2003 & 2008: How to enable LDAP over TLS/SSL with a third-party certification authority](http://support.microsoft.com/kb/321051)
 
 ### Configuring PassSync
 
@@ -276,9 +276,9 @@ PassSync should be installed on the Windows box where you have installed/configu
         -   389 Directory Server Bind DN password
         -   (Optional) PassSync Cert DB password (CertToken)
 
-#### Enabling SSL for PassSync
+#### Enabling TLS/SSL for PassSync
 
-**NOTE: PassSync will not work until TLS/SSL is configured.** The passsync.log will contain errors about SSL initialization until SSL is properly configured, and the service will not start.
+**NOTE: PassSync will not work until TLS/SSL is configured.** The passsync.log will contain errors about TLS/SSL initialization until TLS/SSL is properly configured, and the service will not start.
 
 The following method assumes that you have some knowledge about using NSS based certificate and key management utilities like certutil/pk12util.
 
@@ -286,7 +286,7 @@ For detailed docs on these tools see [ <http://www.mozilla.org/projects/security
 
 More information about PassSync can be found [here](https://access.redhat.com/knowledge/docs/en-US/Red_Hat_Directory_Server/9.0/html/Administration_Guide/Windows_Sync-Configuring_Windows_Sync.html).
 
-Follow these steps to set up certificates that Password Sync Service will use SSL to access the Directory Server:
+Follow these steps to set up certificates that Password Sync Service will use TLS/SSL to access the Directory Server:
 
 ##### On the 389 Directory Server, export the CA certificate.
 
@@ -347,9 +347,9 @@ Under HKLM-\>Software-\>PasswordSync, add string value "Log Level" and set it to
 -   level - 0 - Only Errors are logged.
 -   level - 1 - All transactions are logged.
 
-### Enabling SSL With 389 Directory Server
+### Enabling TLS/SSL With 389 Directory Server
 
-Read [this](howto-ssl.html) to get 389 Directory Server enabled in SSL mode.
+Read [this](howto-ssl.html) to get 389 Directory Server enabled in TLS/SSL mode.
 
 #### Note: Use same CA to cut the ssl certs for windows active directory host and fedora 389 / rhds servers
 
@@ -405,13 +405,13 @@ For more information, see [Polling for Changes Using the DirSync Control](http:/
 
 ### Testing your Configuration
 
-#### Test to make sure you can talk SSL from 389 Directory to AD
+#### Test to make sure you can talk TLS/SSL from 389 Directory to AD
 
 cite: [qa script that will build an adWs2008r2 host vm with a windows ca and ca web services turned on](https://github.com/richm/auto-win-vm-ad)
 
-This is how you test to verify that the Windows side SSL is enabled properly:
+This is how you test to verify that the Windows side TLS/SSL is enabled properly:
 
-     /usr/lib[64]/mozldap/ldapsearch -Z -P /path/to/dirsrv/cert8.db -h <AD/NT Hostname> -p <AD SSL port> 
+     /usr/lib[64]/mozldap/ldapsearch -Z -P /path/to/dirsrv/cert8.db -h <AD/NT Hostname> -p <AD TLS/SSL port> 
      -D "<sync manager user>" -w < sync manager password> -s <scope>
      -b "<AD base>" "<filter>"
 

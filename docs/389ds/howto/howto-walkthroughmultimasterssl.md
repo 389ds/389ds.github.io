@@ -2,10 +2,10 @@
 title: "Howto: WalkthroughMultimasterSSL"
 ---
 
-# Walk Through of MMR SSL Setup
+# Walk Through of MMR TLS/SSL Setup
 ----------------------------------
 
-In this example we are creating a 4 node Linux LDAP environment and implementing multi-master replication. The 4 nodes are all masters in this example but I will document the process of 2 masters and 2 slaves as well. SSL is also detailed in this example both for connections to the host as well as SSL replication. Importing OpenLDAP schema is also discussed.
+In this example we are creating a 4 node Linux LDAP environment and implementing multi-master replication. The 4 nodes are all masters in this example but I will document the process of 2 masters and 2 slaves as well. TLS/SSL is also detailed in this example both for connections to the host as well as TLS/SSL replication. Importing OpenLDAP schema is also discussed.
 
 {% include toc.md %}
 
@@ -58,11 +58,11 @@ This uses ldapmodify. There are other ways to do this but I've found this to be 
 
 This command continues to wait for input until you issue a **Control-D** to signal the end of input. You should get a message about the user being successfully added. If you do not, go back and check your syntax. **Control-C** to return to a prompt.
 
-### Generate SSL certs
+### Generate TLS/SSL certs
 
-Skip this section if you're not using SSL.
+Skip this section if you're not using TLS/SSL.
 
-There are lots of guides out there for generating SSL certs. I will not detail the entire process here but rather the important and relevant information for use with Fedora DS. FDS uses the pkcs12 format.
+There are lots of guides out there for generating TLS/SSL certs. I will not detail the entire process here but rather the important and relevant information for use with Fedora DS. FDS uses the pkcs12 format.
 
 Once you have your .crt and .key files for your server and for your CA you can continue below with the following commands. I suggest creating a directory in /tmp to store your cert files during the installation process.
 
@@ -118,7 +118,7 @@ The process is the same except that instead of choosing the 'Multi-Master' radio
 
 Now that MMR has been set up on all nodes, we need to create replication agreements on **all** supplier servers.
 
-#### Configure Nodes A, B, C, D with SSL
+#### Configure Nodes A, B, C, D with TLS/SSL
 
 Back at the Replication Folder...
 
@@ -128,7 +128,7 @@ Back at the Replication Folder...
 
 3) Under Consumer, choose the 'Other' button. Type in the name of the other supplier hosts. (IE if you're doing Node A, choose Node B here) Make sure you use port 636 for your consumer server here. **Note:** the supplier server will ALWAYS show 389, this is a misnomer in this case so don't be concerned that it shows 389 -\> 636 here. As long as you choose the right port on the consumer and follow the next step it will work.
 
-4) Click the check box about using SSL connections
+4) Click the check box about using TLS/SSL connections
 
 5) Under the Bind section, enter your special Replication Manager DN yet again. (cn=replication manager, cn=config)
 
@@ -142,9 +142,9 @@ Back at the Replication Folder...
 
 **When you are finished with this process you should have 3 agreements on each supplier. On Node A you should have an agreement with Node B, C and D. On Node B you should have agreements with Node A, C and D and so on.**
 
-#### Configure Nodes A, B, C, D without SSL
+#### Configure Nodes A, B, C, D without TLS/SSL
 
-If you do not plan to use SSL, follow the same steps above except choose port 389 for your consumer port and do not click the SSL box.
+If you do not plan to use TLS/SSL, follow the same steps above except choose port 389 for your consumer port and do not click the TLS/SSL box.
 
 #### Initialize
 
@@ -152,11 +152,11 @@ On Node A, simply right click on each of your replication agreements and choose 
 
 At this point your 4 node LDAP environment should be set up properly. You can observe that your replication worked properly by clicking on each replication agreement and looking on the right page under status. You should see a date/time stamp and a message indicating that it succeeded. If you see an error here you have mis-configured something and should retrace your steps. Before redoing anything, make sure you try a 'Refresh' from the menu, sometimes it does not redraw properly.
 
-### Setting up SSL certs
+### Setting up TLS/SSL certs
 
-Skip this step if you don't plan on using SSL. Make sure you've followed the earlier steps for installing the SSL certs before continuing. From the DS console, choose the Configuration tab, then choose Encryption from the tabs on the right.
+Skip this step if you don't plan on using TLS/SSL. Make sure you've followed the earlier steps for installing the TLS/SSL certs before continuing. From the DS console, choose the Configuration tab, then choose Encryption from the tabs on the right.
 
-1) Click Enable SSL for this server
+1) Click Enable TLS/SSL for this server
 
 2) Choose 'Use this cipher...' You should see the cert you created under the certificate drop down menu
 
