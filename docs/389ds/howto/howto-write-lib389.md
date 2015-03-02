@@ -386,6 +386,48 @@ After the instance is created, you can enable it for replication and set up a re
           # Error
           assert False
     
+### Memory Leak Testing (valgrind)
+
+These are the core module functions that make valgrind testing very simple.
+
+-   valgrind_enable(sbin_dir) - Enables valgrind and copies the default ns-slapd valgrind wrapper into the sbin directory
+-   valgrind_check_leak(pattern) - Checks the valgrind output for a string/regex for the leaking function
+-   valgrind disable(sbin_dir) - Restores the ns-slapd binary (removing the ns-slapd valgrind wrapper script)
+
+#### valgrind_enable(sbin_dir)
+
+You must stop all the server instances before runing **valgrind_enable()**.  Here is an example:
+
+    # First stop the instance
+    topology.standalone.stop(timeout=10)
+
+    # Get the sbin directory so we know where to replace 'ns-slapd'
+    sbin_dir = get_sbin_dir(prefix=topology.standalone.prefix)
+
+    # Enable valgrind
+    valgrind_enable(sbin_dir)
+
+Then you must start the instance(s) before running your tests
+
+#### valgrind_check_leak(dirsrv_inst, pattern)
+
+You must provide the DirSrv instance object so we know what process to check as there could be multiple Directory Server processes running, and then the text or regular expression you want to look for in the valgrind output.  This function stops the instance you want to check, as that's the only way to get the output file written to disk.  Here is an example:
+
+    if valgrind_check_leak(topology.standalone, 'range_candidates'):
+        log.error('test_range_search: Memory leak is still present!')
+
+    # topology.standalone is now stopped
+
+#### valgrind_disable(sbin_dir)
+
+This restores the original ns-slapd binary to the sbin directory.  It's important to note that when doing valgrind tests you should always call **valrgind_disable()** before exiting the script or calling **assert False**, as it will leave the valgrind wrapper in the sbin directory and it could break other tests.
+
+Here is an example:
+
+    # Disable valgrind
+    sbin_dir = get_sbin_dir(prefix=topology.standalone.prefix)
+    valgrind_disable(sbin_dir)
+
 
 <br>
 

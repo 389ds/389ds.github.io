@@ -59,7 +59,7 @@ information about our goals and vision.
 -   The codebase has been developed and deployed continuously by the same team for more than a decade
 -   Extensive [documentation](https://access.redhat.com/site/documentation/Red_Hat_Directory_Server/)
 -   Active Directory user and group synchronization
--   Secure authentication and transport (SSLv3, TLSv1, and SASL)
+-   Secure authentication and transport (TLSv1, and SASL)
 -   Support for LDAPv3
 -   On-line, zero downtime, LDAP-based update of schema, configuration, management and in-tree Access Control Information (ACIs)
 -   Graphical console for all facets of user, group, and server management
