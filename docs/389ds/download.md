@@ -19,25 +19,22 @@ EXPORT CONTROL. As required by U.S. law, you (Licensee) represents and warrants 
 ## Binary Packages
 ------------------
 
-### RHEL6/EPEL6
+### RHEL/CentOS/EPEL (RHEL 6, RHEL 7, CentOS 6, CentOS 7)
 
-You must first install EPEL from <https://fedoraproject.org/wiki/EPEL>. There is no direct link to the RPM, you must first find a mirror. Go here to find the RPM:
+**NOTE**: Use the 389-ds-base package from your base distribution.  389-ds-base is part of RHEL and CentOS now.  The copr repositories are discontinued.
 
-[](http://download.fedoraproject.org/pub/epel/6/i386/repoview/epel-release.html)
+**NOTE**: The EL7 admin server and console bits will not be available until after RHEL 7.1 has been released.  These bits will then be available from EPEL7.
 
-That will direct you to a mirror where you can download the epel-release RPM:
+For the admin server and console bits, you must first install EPEL from <https://fedoraproject.org/wiki/EPEL>. There is no direct link to the RPM, you must first find a mirror. Go here to find the RPM:
 
-    rpm -ivh http://site/path/to/epel-release-6-N.noarch.rpm
+[EPEL 6](http://download.fedoraproject.org/pub/epel/6/x86_64/repoview/epel-release.html)
+[EPEL 7](http://download.fedoraproject.org/pub/epel/7/x86_64/repoview/epel-release.html)
 
-The directions below assume you have already installed EPEL.
+That will direct you to a mirror where you can download the epel-release X (6 or 7) RPM:
 
-The package 389-ds-base is now part of RHEL6 (as of RHEL6.1). Therefore, due to Fedora/EPEL packaging policy, we cannot also provide a 389-ds-base package in EPEL6. We would still like to provide recent/testing/experimental 389-ds-base packages for the EL6 platform, so we will be using [coprs](http://copr.fedoraproject.org/coprs/) instead. After installing EPEL (see above), download the [epel-389-ds-base.repo](http://copr.fedoraproject.org/coprs/nhosoi/389-ds-base-epel6/repo/epel-6-i386/) file and put it in /etc/yum.repos.d.
+    rpm -ivh http://site/path/to/epel-release-X-N.noarch.rpm
 
-    # as root, or use sudo
-
-    wget http://copr.fedoraproject.org/coprs/nhosoi/389-ds-base-epel6/repo/epel-6-i386/ -O epel-389-ds-base.repo
-
-Then you can install 389-ds-base or 389-ds as you normally would.
+Then you can install 389-ds and get all of the core directory server, admin server, and console bits as per the directions below.
 
 ### 389 Directory Server 1.1 and later
 
