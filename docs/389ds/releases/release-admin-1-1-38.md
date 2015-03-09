@@ -6,7 +6,7 @@ title: "Releases/AdminServer-1.1.38"
 
 The 389 Directory Server team is proud to announce 389-admin version 1.1.38 and 389-adminutil version 1.1.21.
 
-Fedora packages are available from the Fedora 20, Fedora 21 and Rawhide repositories.
+Fedora packages are available from the EPEL7, Fedora 20, Fedora 21 and Rawhide repositories.
 
 The new packages and versions are:
 
@@ -38,8 +38,10 @@ We are very interested in your feedback!
 
 Please provide feedback and comments to the 389-users mailing list: <https://admin.fedoraproject.org/mailman/listinfo/389-users> and following pages:
 
+-   <https://admin.fedoraproject.org/updates/389-admin-1.1.38-1.el7>
 -   <https://admin.fedoraproject.org/updates/389-admin-1.1.38-1.fc20>
 -   <https://admin.fedoraproject.org/updates/389-admin-1.1.38-1.fc21>
+-   <https://admin.fedoraproject.org/updates/389-adminutil-1.1.21-2.el7>
 -   <https://admin.fedoraproject.org/updates/389-adminutil-1.1.21-1.fc20>
 -   <https://admin.fedoraproject.org/updates/389-adminutil-1.1.21-1.fc21>
 

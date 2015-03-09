@@ -5,12 +5,12 @@ title: "Release Notes"
 # Release Notes
 ---------------
 
+-   [ 389 Console 1.1.9](release-console-1-1-9.html) *(March 9, 2015)*
+-   [ 389 Admin Server 1.1.38](release-admin-1-1-38.html) *(March 9, 2015)*
 -   [ 389 Directory Server 1.3.3.9](release-1-3-3-9.html) *(March 8, 2015)*
 -   [ 389 Directory Server 1.3.2.27](release-1-3-2-27.html) *(March 8, 2015)*
--   [ 389 Console 1.1.9](release-console-1-1-9.html) *(February 5, 2015)*
 -   [ 389 Directory Server 1.3.3.8](release-1-3-3-8.html) *(February 5, 2015)*
 -   [ 389 Directory Server 1.3.2.26](release-1-3-2-26.html) *(February 5, 2015)*
--   [ 389 Admin Server 1.1.38](release-admin-1-1-38.html) *(February 3, 2015)*
 -   [ 389 Directory Password Synchronization](release-passsync-1-1-6.html) *(January 28 2015)*
 -   [ 389 Directory Server 1.2.11.X is discontinued soon](end-1-2-11.html) *(October 23, 2014)* 
 -   [ 389 Directory Server 1.3.3.5](release-1-3-3-5.html) *(October 16, 2014)*

@@ -6,7 +6,7 @@ title: "Releases/console-1.1.9"
 
 The 389 Directory Server team is proud to announce 389-console version 1.1.9, 389-ds-console version 1.2.10, 389-admin-console version 1.1.10, and idm-console-framework version 1.1.9.
 
-Fedora packages are available from the Fedora 20, Fedora 21 and Rawhide repositories.
+Fedora packages are available from the EPEL7, Fedora 20, Fedora 21 and Rawhide repositories.
 
 The new packages and versions are:
 
@@ -42,12 +42,16 @@ We are very interested in your feedback!
 
 Please provide feedback and comments to the 389-users mailing list: <https://admin.fedoraproject.org/mailman/listinfo/389-users> and following pages:
 
+-   <https://admin.fedoraproject.org/updates/389-console-1.1.9-1.el7>
 -   <https://admin.fedoraproject.org/updates/389-console-1.1.9-1.fc20>
 -   <https://admin.fedoraproject.org/updates/389-console-1.1.9-1.fc21>
+-   <https://admin.fedoraproject.org/updates/389-ds-console-1.2.10-1.el7>
 -   <https://admin.fedoraproject.org/updates/389-ds-console-1.2.10-1.fc20>
 -   <https://admin.fedoraproject.org/updates/389-ds-console-1.2.10-1.fc21>
+-   <https://admin.fedoraproject.org/updates/389-admin-console-1.1.10-1.el7>
 -   <https://admin.fedoraproject.org/updates/389-admin-console-1.1.10-1.fc20>
 -   <https://admin.fedoraproject.org/updates/389-admin-console-1.1.10-1.fc21>
+-   <https://admin.fedoraproject.org/updates/idm-console-framework-1.1.9-2.el7>
 -   <https://admin.fedoraproject.org/updates/idm-console-framework-1.1.9-2.fc20>
 -   <https://admin.fedoraproject.org/updates/idm-console-framework-1.1.9-1.fc21>
 
