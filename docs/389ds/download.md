@@ -141,3 +141,8 @@ Check out our [Build](development/building.html) page to find out how to build f
 ----------
 
 Checkout our scripts page [here](scripts.html)
+
+## Schema
+----------
+
+Checkout our schema page [here](schema.html)
