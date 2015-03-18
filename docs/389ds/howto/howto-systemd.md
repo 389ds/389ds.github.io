@@ -88,6 +88,20 @@ systemctl enable|disable
     systemctl enable dirsrv.target # start all instances at boot time    
     systemctl enable dirsrv@instname.service # start only instance instname at boot time    
 
+### Note on status of instances.
+
+systemctl status returns the status of the server(s).  If the options are a list of instance name of the servers or PIDs, the status is accurate.  While if the option is dirsrv.target, it may not be.  We recommend to use the instance names or PIDs to get the servers status.
+
+On tye systemd-219 or newer, systemctl option takes a wildcard *.  Using the wildcard, the command line 
+
+    systemctl status dirsrv@*
+
+works in the same way as 
+
+    systemctl status dirsrv@instance1 dirsrv@instance2 ...
+
+does without specifying each server instance name.  See also https://bugzilla.redhat.com/show_bug.cgi?id=1202178.
+
 ### How do I do the run level configuration?
 
 ### Where did chkconfig go?
