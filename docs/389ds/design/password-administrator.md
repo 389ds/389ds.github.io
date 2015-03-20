@@ -18,18 +18,29 @@ Now directory administrators can define a user, or a group of users, who are "Pa
 Design
 ------
 
-In either the global password policy, or a local password policy, you can specify a DN of a group, or a user, that is a password administrator. These entries do need access control permissions to update such attributes as: userPassword, passwordExpirationtime, etc.  Password Administrators also bypass all password syntax checks.  Basically the RootDN or a Password Administrator can do anything with userpasswords, regardless of the password policy settings.
+In either the global password policy, or a local password policy, you can specify a DN of a group, or a user, that is a password administrator. These entries do need access control permissions to update such attributes as: userPassword, passwordExpirationtime, etc.  Password Administrators and the Root DN (cn=directory manager) can also bypass all password syntax checks.  Basically the RootDN, or a Password Administrator, can do anything with userpasswords, regardless of the current password policy settings.
 
 The attribute for configuring this is: passwordAdminDN
 
-Example: 
+Global Policy Example: 
 
+    dn: cn=config
+    changetype: modify
+    replace: passwordAdminDN
     passwordAdminDN: cn=Passwd Admins,ou=groups,dc=example,dc=com
+
+Local Policy Example:
+
+    dn: cn=cn\3DnsPwPolicyEntry\2Cou\3DPeople\2Cdc\3Dexample\2Cdc\3Dcom,cn=nsPwPolicyContainer,ou=People,dc=example,dc=com
+    changetype: modify
+    replace: passwordAdminDN
+    passwordAdminDN: cn=Passwd Admins,ou=groups,dc=example,dc=com
+
 
 Implementation
 --------------
 
-Since access control rules do need to be set, it is recommended that a group is used for the password administrators. This way only one ACI is needed to manage the password administrators.
+Since access control rules do need to be set, it is recommended that a group is used for the password administrators. This way only one ACI is needed to manage the password administrators.  It is highly recommended to not use the ROot DN, or a Password Administrator, to do all the password management.  Any paossword management that needs to be follow the password policy should be done by an existing entry in the database that has permissions to update the userpassword attribute.
 
 Feature Management
 -----------------
@@ -56,7 +67,7 @@ No impact on updates and upgrades.
 Dependencies
 ------------
 
-This feature is new to 1.3.1, and is currently not available on earlier releases of 389 DS.
+None.
 
 External Impact
 ---------------

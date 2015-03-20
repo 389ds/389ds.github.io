@@ -57,6 +57,7 @@ Coming soon...
 -   [Access Log Analyzer Improvements]( logconv-improvements-1-dot-3-1.html)
 -   [Replication Protocol Timeout]( replication-protocol-timeout.html)
 -   [Password Administrators]( password-administrator.html)
+-   [Referential Integrity Plugin and Replication]( referint-replication-design.html)
 
 
 ## 389 Administration Server 1.1.36
