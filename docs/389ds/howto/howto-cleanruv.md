@@ -28,12 +28,12 @@ This indicates that the database RUV (the replication meta-data) contains data f
 
 There may be more than one replicated sub-suffix, so pay attention to which replica the message is complaining about.
 
-CLEANALLRUV
+CleanAllRUV
 -----------
 
-How to remove a replica and its RUV's
+How to remove a replica and clean its RUV's from the remaining active replica servers.
 
-1. On the Replica we want to remove, put database into read only mode to stop updates coming in, and for the replica to flush out all its pending changes.
+1. On the Replica we want to remove put the database into read only mode to stop updates coming in.  This allows for the replica to flush out all its pending changes to the active replica servers.
 
         dn: cn=userRoot,cn=ldbm database,cn=plugins,cn=config
         changetype: modify
@@ -55,44 +55,37 @@ How to remove a replica and its RUV's
         dn: cn=replica,cn=dc\3Dexample\2Cdc\3Dcom,cn=mapping tree,cn=config
         changetype: delete
 
-4. Run CLEANALLRUV<rid> task. This operation will be "replicated" to all the servers in the replication environment.
+4. Run the CleanAllRUV task. This operation will be "replicated" to all the servers in the replication environment.
 
-        dn: cn=replica,cn=dc\3Dexample\2Cdc\3Dcom,cn=mapping tree,cn=config
-        changetype: modify
-        replace: nsds5task
-        nsds5task: CLEANALLRUV222
+        dn: cn=clean 222, cn=cleanallruv, cn=tasks, cn=config
+        objectclass: extensibleObject
+        replica-base-dn: dc=example,dc=com
+        replica-id: 222
+        replica-force-cleaning: no  --> if set to "yes" the task does not check the maxcsn's.  Meaning, it won't force the replicas to get to get caught up with updates from the deleted replica.  However, the task will still run until all the configured replicas have been cleaned, or the task is aborted.
+        cn: clean 222
 
-In 1.2.11.8, you can now use a Slapi Task:
+    You can also abort the CleanAllRUV task, as the CleanAllRUV task can run for a long time if a replica is down during the cleaning process:
 
-    dn: cn=clean 222, cn=cleanallruv, cn=tasks, cn=config
-    objectclass: extensibleObject
-    replica-base-dn: dc=example,dc=com
-    replica-id: 222
-    replica-force-cleaning: no   -> if set to "yes" the task does not check the maxcsn's.  Meaning, it won't wait to get caught up with updates from the deleted replica.
-    cn: clean 222
-
-You can also abort the task, as it can run for a long time if a replica is down during the cleaning process:
-
-    dn: cn=abort 222, cn=abort cleanallruv, cn=tasks, cn=config
-    objectclass: extensibleObject
-    cn: abort 222
-    replica-base-dn: dc=example,dc=com
-    replica-id: 222
-    replica-certifyall: yes - if set to "no" the task does not wait for all the servers to have been sent the abort task before completing.  This option is only available on 1.2.11.15 and up.
+        dn: cn=abort 222, cn=abort cleanallruv, cn=tasks, cn=config
+        objectclass: extensibleObject
+        cn: abort 222
+        replica-base-dn: dc=example,dc=com
+        replica-id: 222
+        replica-certify-all: no  --> if set to "no" the task does not wait for all the replica servers to have been sent the abort task, or be online, before completing.  If set to "yes", the task will run forever until all the configured replicas have been aborted.  Note - the orginal default was "yes", but this was changed to "no" on 4/21/15.  It is best to set this attribute anyway, and not rely on what the default is.  
  
 
 5. You can monitor the task via the attribute "nsTaskStatus" and "nsTaskExitCode".
 
 6. You can also manually confirm the result by searching on the tombstone entry on each remaining replica:
 
-        ldapsearch -xLLL -D "cn=directory manager" -w password -h localhost -b "dc=example,dc=com" \
-          '(&(nsuniqueid=ffffffff-ffffffff-ffffffff-ffffffff)(objectclass=nstombstone))' nsds50ruv
+        # ldapsearch -xLLL -D "cn=directory manager" -W -b dc=example,dc=com \
+         '(&(nsuniqueid=ffffffff-ffffffff-ffffffff-ffffffff)(objectclass=nstombstone))
 
 7. Delete the replica server.
 
 8. Done.
 
-Design doc: <http://directory.fedoraproject.org/wiki/CleanAllRUV_Design>
+Also checkout the [Design Document](../design/cleanallruv-design.html)
 
 CLEANRUV
 --------

@@ -83,7 +83,7 @@ title: "CleanAllRUV Design"
     Task added    
        - Replica id    
        - Base DN    
-       - certify (yes/no) default is “yes”    
+       - certify (yes/no) default is “no” (the old default was "yes", this was recently changed to "no" 4/22/15)    
 
     Make sure the rid specified is being cleaned, and is not already in an “abort” mode    
 
