@@ -16,7 +16,8 @@ If you are adding a new design document, use the [template](design-template.html
 ## 389 Directory Server 1.3.4
 -------------------------------------------------
 
-Coming soon...
+-   [Nunc Stans](nunc-stans.html)
+
 
 ## 389 Directory Server 1.3.3
 -------------------------------------------------
