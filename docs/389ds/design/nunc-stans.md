@@ -44,6 +44,7 @@ contenting for framework resources.  A lot of care needs to be taken when using
 an event framework since 389 is multi-threaded.
 
 Nunc Stans provides:
+
 -   Support for multiple event frameworks.  It already supports libevent and
     tevent, and support for others can be added.
 -   A thread safe wrapper around the event framework.
