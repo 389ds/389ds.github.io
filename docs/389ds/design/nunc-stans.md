@@ -23,7 +23,7 @@ The "main loop" for 389 uses poll().  Before every poll call, the array of FDs
 to pass to poll() is constructed by looping over a linked list of all of the
 active connections.  Connections that need more polling are added, while
 connections marked for deletion, or connections that have been idle for too
-long, are not skipped and added back to the pool of available connections.
+long, are skipped and added back to the pool of available connections.
 poll() is then called with this array, with a 250ms timeout, then all of the
 active connections are looped over again.  Connections that have I/O are
 notified, and closed or idle connections are cleaned up.  While this works fine
@@ -49,7 +49,8 @@ Nunc Stans provides:
     tevent, and support for others can be added.
 -   A thread safe wrapper around the event framework.
 -   Support for I/O events with a timeout, which means we do not have to keep
-    looping over active connections to look for idle ones.
+looping over active connections to look for idle ones.
+-   Minimizes the use of mutexes with lock free data structures.
 
 Use Cases
 ---------
@@ -122,7 +123,7 @@ closed because it is in use by another thread.  It will also ensure that only
 one closure job is in progress at a time.
 
 Since the `Connection` object carries the context, it needed to be changed to
-carry some addition information:
+carry some additional information:
 
     #ifdef ENABLE_NUNC_STANS
         struct connection_table     *c_ct; /* connection table that this connection belongs to */
