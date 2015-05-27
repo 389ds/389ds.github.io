@@ -51,7 +51,7 @@ In a replicated environment, all you have to do is set the **nsslapd-pluginConfi
 Design
 ------
 
-In the plugin entry, a shared config entry can be specified using **"nsslapd-pluginConfigArea: \<entry DN\>"**. This entry is validated in a preop phase and rejected if the entry does not exist, or the entry has an invalid configuration.
+In the plugin entry, a shared config entry can be specified using **"nsslapd-pluginConfigArea: \<entry DN\>"**. This entry is validated when the plugin is started, or if using dynamic plugins, it is validated when the plugin is updated, and rejected if the entry does not exist or the entry has an invalid configuration.
 
 The following configuration attributes can be used in the shared config entry:
 

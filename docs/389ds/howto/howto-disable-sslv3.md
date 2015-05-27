@@ -5,16 +5,15 @@ title: "How To Disable SSLv3"
 # How to Disable SSLv3 
 --------------------------
 
-With the recent discovery of the Poodlebleed vulnerabilty bug (2014/10/15), TLS should be used instead of SSLv3.
+With the recent discovery of the Poodlebleed vulnerabilty bug (2014/10/15), a minimum of TLS1.1 should be used instead of SSLv3.
 
 ### Disable SSLv3 in 389 Directory Server
 
 Here is an example of how to use ldapmodify to disable SSLv3 and enable TLS
 
-    ldapmodify -D "cn=directory manager" -W
+    # ldapmodify -D "cn=directory manager" -W
     dn: cn=encryption,cn=config
     changetype: modify
-    -
     replace: nsSSL2
     nsSSL2: off
     -
@@ -24,10 +23,21 @@ Here is an example of how to use ldapmodify to disable SSLv3 and enable TLS
     replace: nsTLS1
     nsTLS1: on
 
+Set the SSL version range to enforce TLS1.1(or higher)
+
+    # ldapmodify -D "cn=directory manager" -W
+    dn: cn=encryption,cn=config
+    changetype: modify
+    replace: sslVersionMin
+    sslVersionMin: TLS1.1
+    -
+    replace: sslVersionMax
+    sslVersionMin: TLS1.2
+
 
 You need to restart the server for this to take effect.
 
-### Disable SSLv3 in favor of TLSv1.1 in 389 Administration Server
+### Disable SSLv3 in favor of TLSv1.1(or higher) in 389 Administration Server
 
 -   Stop the Admin Server
 -   Edit /etc/dirsrv/admin-serv/console.conf
@@ -36,6 +46,17 @@ You need to restart the server for this to take effect.
         To:     NSSProtocol TLSv1.1
 
 -   Start the Admin server
+
+
+### Enforce TLS verson range in the console
+
+Edit the console preferences file and add the following lines:
+
+
+    # vi ~/.389-console/Console.1.1.12.Login.preferences
+
+    sslVersionMin: TLS1.1
+    sslVersionMax: TLS1.2
 
 ### Verify SSLv3 is Disabled
 
