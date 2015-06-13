@@ -27,12 +27,12 @@ The source code was produced by first doing a git clone to get the repository, t
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
 |[389-ds-base-1.3.3.10.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.3.10.tar.bz2)|ds.git|389-ds-base-1.3.3.10|[Building](building.html)|9b24fa0a3783d08e3e69092af7ec089fb2480bc0|
-|[389-admin.1.1.38.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.38.tar.bz2)|admin.git|389-admin-1.1.38|[Admin](../administration/adminserver.html)|52f43945a6786f83009e5745c98b2c24f42f2797|
-|[389-adminutil-1.1.21.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.21.tar.bz2)|adminutil.git|389-adminutil-1.1.21|[AdminUtil](../administration/adminutil.html)|7a78b262d966897e78a3c94f1ae9e7126ea53f9f|
+|[389-admin.1.1.42.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.42.tar.bz2)|admin.git|389-admin-1.1.42|[Admin](../administration/adminserver.html)|3d931830ce832b7e0f820689ca30e5996b873f75|
+|[389-adminutil-1.1.22.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.22.tar.bz2)|adminutil.git|389-adminutil-1.1.22|[AdminUtil](../administration/adminutil.html)|ee337a293409b9682f68797bf200ef4a7e14c3e1|
 |[389-console-1.1.9.tar.bz2]({{ site.baseurl }}/binaries/389-console-1.1.9.tar.bz2)|console.git|389-console-1.1.9|[Building Console](buildingconsole.html)|bcc15330156beab1dab57cedef838f8ec5b26988|
-|[389-ds-console-1.2.10.tar.bz2]({{ site.baseurl }}/binaries/389-ds-console-1.2.10.tar.bz2)|ds-console.git|389-ds-console-1.2.10|[Building Console](buildingconsole.html)|c4f38cd421ffcc8b26fd841e4e45096bbaf21451|
+|[389-ds-console-1.2.12.tar.bz2]({{ site.baseurl }}/binaries/389-ds-console-1.2.12.tar.bz2)|ds-console.git|389-ds-console-1.2.12|[Building Console](buildingconsole.html)|e71273413d9375d2b0713f18f69d48ad859603b7|
 |[389-admin-console-1.1.10.tar.bz2]({{ site.baseurl }}/binaries/389-admin-console-1.1.10.tar.bz2)|admin-console.git|389-admin-console-1.1.10|[Building Console](buildingconsole.html)|3f79901cb5457220e34480032cfcc14879dbbb68|
-|[idm-console-framework-1.1.9.tar.bz2]({{ site.baseurl }}/binaries/idm-console-framework-1.1.9.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.9|[Building Console](buildingconsole.html)|38f79c7248106738ed10beca936eb85b40249a8f|
+|[idm-console-framework-1.1.14.tar.bz2]({{ site.baseurl }}/binaries/idm-console-framework-1.1.14.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.14|[Building Console](buildingconsole.html)|fd6be1df38d8c1182b16b5f9d603860ce8cc1c9c|
 
 ### 389 Directory Server 1.3.2
 

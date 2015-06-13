@@ -75,6 +75,8 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
 <!-- Try to keep this list under 10 releases  -->
 
+- 2015-06-12: Released **389 Ds Console [1.2.12](docs/389ds/releases/release-ds-console-1-2-12.html)**
+- 2015-06-12: Released **389 Admin Server [1.1.42](docs/389ds/releases/release-admin-1-1-42.html)**
 - 2015-04-28: Released **389 Directory Server [1.3.3.10](docs/389ds/releases/release-1-3-3-10.html)**
 - 2015-03-09: Released **389 Console [1.1.9](docs/389ds/releases/release-console-1-1-9.html)**
 - 2015-03-09: Released **389 Admin Server [1.1.38](docs/389ds/releases/release-admin-1-1-38.html)**
@@ -83,8 +85,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - 2015-02-05: Released **389 Directory Server [1.3.3.8](docs/389ds/releases/release-1-3-3-8.html)**
 - 2015-02-05: Released **389 Directory Server [1.3.2.26](docs/389ds/releases/release-1-3-2-26.html)**
 - 2015-01-28: Released **389 Directory Password Synchronization [1.1.6](docs/389ds/releases/release-passsync-1-1-6.html)**
-- 2014-10-23: Stopped releasing **389 Directory Server [1.2.11](docs/389ds/releases/end-1-2-11.html) for EL6**
-- 2014-10-16: Released **389 Directory Server [1.3.3.5](docs/389ds/releases/release-1-3-3-5.html)**
 
     For older news, see the [News Archive](docs/389ds/releases/news-archive.html)
 
