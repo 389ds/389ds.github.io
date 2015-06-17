@@ -26,7 +26,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
-|[389-ds-base-1.3.3.10.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.3.10.tar.bz2)|ds.git|389-ds-base-1.3.3.10|[Building](building.html)|9b24fa0a3783d08e3e69092af7ec089fb2480bc0|
+|[389-ds-base-1.3.3.12.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.3.12.tar.bz2)|ds.git|389-ds-base-1.3.3.12|[Building](building.html)|0bdfa22e7e651ca0fbd163fb377fdc6fc3496b5f|
 |[389-admin.1.1.42.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.42.tar.bz2)|admin.git|389-admin-1.1.42|[Admin](../administration/adminserver.html)|3d931830ce832b7e0f820689ca30e5996b873f75|
 |[389-adminutil-1.1.22.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.22.tar.bz2)|adminutil.git|389-adminutil-1.1.22|[AdminUtil](../administration/adminutil.html)|ee337a293409b9682f68797bf200ef4a7e14c3e1|
 |[389-console-1.1.9.tar.bz2]({{ site.baseurl }}/binaries/389-console-1.1.9.tar.bz2)|console.git|389-console-1.1.9|[Building Console](buildingconsole.html)|bcc15330156beab1dab57cedef838f8ec5b26988|

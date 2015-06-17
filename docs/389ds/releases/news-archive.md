@@ -6,6 +6,11 @@ title: "News Archive"
 --------------
 
 {% include toc.md %} 
+#### 389 Directory Server 1.3.2.26 is now available for Testing (February 5, 2015)
+
+-   389-ds-base 1.3.2.26 for Fedora 20
+-   [See the Release Notes](release-notes.html) for more information
+
 #### 389 Directory Server 1.2.11 for EL6 is now available for Testing (October 23, 2014)
 
 -   389-ds-base 1.2.11 for EL6
