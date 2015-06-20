@@ -16,7 +16,7 @@ Source tarballs are available for download at [Download 389-ds-base Source]({{ s
 
 ### Highlights in 1.3.4.0
 
--   A new version is available featuring nunc-stans [../design/nunc-stans.html].
+-   A new version is available featuring [Nunc Stans](../design/nunc-stans.html).
 
 ### Installation and Upgrade
 
