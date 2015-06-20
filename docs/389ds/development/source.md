@@ -20,6 +20,21 @@ The source code was produced by first doing a git clone to get the repository, t
     git clone git://git.fedorahosted.org/389/MODULENAME
     git archive --prefix=PKGNAME/ TAG | bzip2 > PKGNAME.tar.bz2
 
+### 389 Directory Server 1.3.4
+
+389-ds-base uses git repo 389/ds.git branch 389-ds-base-1.3.4 (branched 19-Jun-2015)
+
+|Source tarball|git module|git tag|More Info|SHA1SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-1.3.4.0.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.4.0.tar.bz2)|ds.git|389-ds-base-1.3.4.0|[Building](building.html)|edf4fc7da08f84699a07586e21d55856e5be7d4f|
+|[nunc-stans-0.1.4.tar.bz2]({{ site.baseurl }}/binaries/nunc-stans-0.1.4.tar.bz2)|nunc-stans.git|0.1.4|[Building](building.html)|944048b7b62e2ec970f987d2f4e85b71c0c5cefd|
+|[389-admin.1.1.42.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.42.tar.bz2)|admin.git|389-admin-1.1.42|[Admin](../administration/adminserver.html)|3d931830ce832b7e0f820689ca30e5996b873f75|
+|[389-adminutil-1.1.22.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.22.tar.bz2)|adminutil.git|389-adminutil-1.1.22|[AdminUtil](../administration/adminutil.html)|ee337a293409b9682f68797bf200ef4a7e14c3e1|
+|[389-console-1.1.9.tar.bz2]({{ site.baseurl }}/binaries/389-console-1.1.9.tar.bz2)|console.git|389-console-1.1.9|[Building Console](buildingconsole.html)|bcc15330156beab1dab57cedef838f8ec5b26988|
+|[389-ds-console-1.2.12.tar.bz2]({{ site.baseurl }}/binaries/389-ds-console-1.2.12.tar.bz2)|ds-console.git|389-ds-console-1.2.12|[Building Console](buildingconsole.html)|e71273413d9375d2b0713f18f69d48ad859603b7|
+|[389-admin-console-1.1.10.tar.bz2]({{ site.baseurl }}/binaries/389-admin-console-1.1.10.tar.bz2)|admin-console.git|389-admin-console-1.1.10|[Building Console](buildingconsole.html)|3f79901cb5457220e34480032cfcc14879dbbb68|
+|[idm-console-framework-1.1.14.tar.bz2]({{ site.baseurl }}/binaries/idm-console-framework-1.1.14.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.14|[Building Console](buildingconsole.html)|fd6be1df38d8c1182b16b5f9d603860ce8cc1c9c|
+
 ### 389 Directory Server 1.3.3
 
 389-ds-base uses git repo 389/ds.git branch 389-ds-base-1.3.3 (branched 21-AUG-2014)
