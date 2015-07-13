@@ -17,7 +17,7 @@ If you are adding a new design document, use the [template](design-template.html
 -------------------------------------------------
 
 -   [Nunc Stans](nunc-stans.html)
-
+-   [Audit Events](audit-events.html)
 
 ## 389 Directory Server 1.3.3
 -------------------------------------------------
