@@ -46,6 +46,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [How to Write Upstream Test](howto/howto-write-lib389.html) - How to write a upstream lib389 test
 -   [Ways to Contribute](FAQ/ways-to-contribute.html) - Ways to contribute to the 389 project
 -   [Winsync Move Action](FAQ/winsync-move-action.html) - Discussion of the winSyncMoveAction configuration attribute
+-   [jemalloc testing](FAQ/jemalloc-testing.html) - Basic Memory/performance profiling with jemalloc and 389-ds-base-1.3.4
 
 <br><a name="web-apps"></a>
 
