@@ -1,5 +1,5 @@
 ---
-title: "jemalloc" Memory Library Testing"
+title: jemalloc Memory Library Testing
 ---
 
 # "jemalloc" Memory Library testing with 389 DS 1.3.4
@@ -9,7 +9,7 @@ title: "jemalloc" Memory Library Testing"
 
 ## Key
 
-    Test Length    - The time it tool ldclt to complete
+    Test Length    - The time it took ldclt to complete
     Average Rate   - The global average rate reported by ldclt
     Start Memsize  - The start of the DS process before running the test
     End Memsize    - The final size of the DS process after running the test
@@ -19,9 +19,9 @@ title: "jemalloc" Memory Library Testing"
 ## Reduced cache settings (test the cache churn)
 ------------------------------------------------
 
-Cache max size: 500
-
 Normalized DN cache: 2mb
+
+nsslapd-cachesize: 500 (cn=userroot,cn=ldbm database,cn=plugins,cn=config)
 
 
 ### Search Tests
@@ -335,7 +335,8 @@ Two ldapmodifies adding and deleting 10000k (20k total entries)
 ### Unindexed Searches
 -----------------------------------------
 
-Two Threads issuing unindexed searches
+Two threads issuing unindexed searches
+
 
 -------------------------------
 
@@ -431,9 +432,9 @@ Two Threads issuing unindexed searches
 ## Large Entry Cache (cache primed)
 ---------------------------------------
 
-Default normalized dn cache
+Default Normalized DN Cache
 
-3 gig entry cache
+3 gig Entry Cache Memory Size
 
 ### Search Tests
 ----------------
@@ -697,7 +698,7 @@ Default normalized dn cache
 ### Unindexed Search Tests
 --------------------------
 
-Two Threads issuing unindexed searches
+Two threads issuing unindexed searches
 
 ---------------------------
 
