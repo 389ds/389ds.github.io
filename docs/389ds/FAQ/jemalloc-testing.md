@@ -2,10 +2,14 @@
 title: jemalloc Memory Library Testing
 ---
 
-# "jemalloc" Memory Library testing with 389 DS 1.3.4
+# "jemalloc" Memory Library testing with 389 DS
 ----------------
 
 {% include toc.md %}
+
+## Overview
+
+Compare the behavior of **jemalloc** to the standard OS memory allocator.  This document details various tests(short term and long term), and compares the differences when using different allocators.
 
 ## Key
 
@@ -16,12 +20,37 @@ title: jemalloc Memory Library Testing
     Growth         - The memory growth during the test run
     Memory Profile - A profile showing the memory growth
 
+## Setup Information
+
+Loading the jemalloc library
+
+- **yum install jemalloc**
+
+- Systemd enabled:  edit **/etc/sysconfig/dirsrv**
+    
+        LD_PRELOAD=/usr/lib64/libjemalloc.so.1
+        export LD_PRELOAD
+
+- Or, non-systemd: Edit **/etc/init.d/dirsrv**, and add:
+
+        LD_PRELOAD=/usr/lib64/libjemalloc.so.1
+        export LD_PRELOAD
+
+- Restart the server: 
+
+        # restart-dirsrv
+
+- Testing with 100k entry database
+- DS Verison 1.3.5 (master branch 7/15/2015)
+- OS:  Fedora 20 - Linux localhost.localdomain 3.19.8-100.fc20.x86_64
+- Default Allocator:  glibc-2.18-19.fc20.x86_64
+
+
 ## Reduced cache settings (test the cache churn)
 ------------------------------------------------
 
-Normalized DN cache: 2mb
-
-nsslapd-cachesize: 500 (cn=userroot,cn=ldbm database,cn=plugins,cn=config)
+Normalized DN cache: reduced to 2mb from 20mb
+nsslapd-cachesize:   500 (cn=userroot,cn=ldbm database,cn=plugins,cn=config)
 
 
 ### Search Tests
@@ -432,8 +461,8 @@ Two threads issuing unindexed searches
 ## Large Entry Cache (cache primed)
 ---------------------------------------
 
-Default Normalized DN Cache
-
+Default Normalized DN Cache size
+Database size: 100,000 user entries
 3 gig Entry Cache Memory Size
 
 ### Search Tests
@@ -788,11 +817,35 @@ Two threads issuing unindexed searches
      Default Library: 2,791,200 kb
      jemalloc:        1,522,724 kb
 
+<br>
+
+### Basic Tests Conclusion
+-------------
+
+While there are some cases where performance is slightly better with **jemalloc**, the major difference between the default memory library and *jemalloc* is the memory usage.  **jemalloc** uses significantly less memory.  In most cases, the majority of the memory growth occured within the first few seconds, and then stablized for the remained of the test.
+
+## Long Duration Tests
+----------------------
+
+Tests that run for many hours, or days, looking for fragmentation/memory usage.
+
+### Add/Delete Long Duration
+
+Testing 10,000,000 adds & deletes
+
+In progress...
+
+### Unindexed Search Long Duration
+
+### Search Long Duration
+
+
+### Modify Long Duration
+
 
 <br>
 
-## Conclusion
+### Long Duration Conclusion
 -------------
 
-While there are some cases where performance is slightly better with **jemalloc**, the major difference between the default memory library and *jemalloc* is the memory usage.  **jemalloc** uses significantly less memory.
 
