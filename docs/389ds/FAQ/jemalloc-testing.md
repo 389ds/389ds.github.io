@@ -45,6 +45,7 @@ Loading the jemalloc library
 - OS:  Fedora 20 - Linux localhost.localdomain 3.19.8-100.fc20.x86_64
 - Default Allocator:  glibc-2.18-19.fc20.x86_64
 
+<br>
 
 ## Reduced cache settings (test the cache churn)
 ------------------------------------------------
@@ -824,16 +825,33 @@ Two threads issuing unindexed searches
 
 While there are some cases where performance is slightly better with **jemalloc**, the major difference between the default memory library and *jemalloc* is the memory usage.  **jemalloc** uses significantly less memory.  In most cases, the majority of the memory growth occured within the first few seconds, and then stablized for the remained of the test.
 
+<br>
+
 ## Long Duration Tests
-----------------------
 
 Tests that run for many hours, or days, looking for fragmentation/memory usage.
 
 ### Add/Delete Long Duration
 
-Testing 10,000,000 adds & deletes
+Testing 10,000,000 adds & deletes (20 million total ops)
 
-In progress...
+Test Length:    ~2 days 3 hours
+
+#### Default Library
+
+    Start Memsize:  1,020,700 kb
+    End Memsize:    4,888,352 kb
+    Growth:         3,867,652 kb
+
+#### jemalloc
+
+    Start Memsize:    728,100 kb
+    End Memsize:    3,083,300 kb
+    Growth:         2,355,200 kb
+
+#### Memory Usage Chart
+
+![Memory Usage Chart](../../../images/addDeleteLongDuration.png "Memory Usage Chart")
 
 ### Unindexed Search Long Duration
 
