@@ -133,6 +133,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [High Contention with Entry Cache](high-contention-on-entry-cache-lock.html)
 -   [Separate Suffix for Tombstones/Conflicts](separate-conflict-and-tombstone-entry.html)
 -   [Managed Entry Plug-in Enhancement](mep-rework.html)
+-   [NEW Web-based Console](389-web-ui-design.html)
 
 
 

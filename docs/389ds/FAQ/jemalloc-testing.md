@@ -860,6 +860,21 @@ Test Length:    ~2 days 3 hours
 
 ### Modify Long Duration
 
+Entry Cache set to 512k
+
+#### Default Library
+
+    Test Length:
+    Start Memsize: 1,479,092 kb
+    End Memsize:     kb
+    Growth:          kb
+
+#### jemalloc
+
+    Test Length:
+    Start Memsize:   kb
+    End Memsize:     kb
+    Growth:          kb
 
 <br>
 
