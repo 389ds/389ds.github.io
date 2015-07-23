@@ -41,7 +41,7 @@ title: 389 Web UI Design Page
 
 -   UI configuration forms/pages dynamically creating based off of templates(or querying cn=config, or o=dmc).
 -   Add a new config setting, just update a template file/entry.
--   Templates could be files (text, XML, JSON, etc), and/or ldap entries under “cn=preferences,cn=localhost.localdomain,ou=domain1,ou=Configuration Servers, o=dmc”. 
+-   Templates could be files (text, XML, JSON, etc), and/or ldap entries under “cn=config,cn=localhost.localdomain,ou=domain1,ou=Configuration Servers, o=dmc”. 
 -   Template file/entry can provide attribute name mapping:
 
         nsslapd-errorlog-level  ->   "Error Log Level"   
@@ -100,7 +100,11 @@ There is only one config server per machine/host
     AuthURLFarm:  <LDAP URL> <LDAP URL> ...   (used for console logins)
     ...
 
-    cn=config,cn=host1.domain1.com,ou=domain1.com,ou=Configuration Servers,o=dmc
+    cn=administrators, cn=host1.domain1.com, ou=domain1.com, ou=Configuration Servers, o=dmc
+
+    uid=admin, cn=administrators, cn=host1.domain1.com, ou=domain1.com, ou=Configuration Servers, o=dmc
+
+    cn=config, cn=host1.domain1.com, ou=domain1.com, ou=Configuration Servers, o=dmc
     <All the UI configuration and preferences>
     ...
 
@@ -121,11 +125,6 @@ There is only one config server per machine/host
     cn=config, cn=slapd-instance, cn=host1.domain1.com, ou=domain1.com, ou=Directory Servers, o=dmc
     <Configuration templates, UI preferences, etc>
     
-
-### Adminstrators (ou=Administrators, o=dmc)
-
--   Branch to house "Administration Users & Groups"
--   These entries only exist in o=dms for web console authentication (Pass-thru auth to DS)
 
 ---------------------------
 
@@ -167,8 +166,8 @@ Each Admin/HTTP Server will have a config file that it will use to know how to t
 -   Register to/with Remote Config Servers
 -   Authentication LDAP URLS – ordered list of servers to search for console authentication
 -   Administrators (cn=administrators, o=dmc)
-    -   uid=admin,cn=administrators,o=dmc
-    -   uid=admin-new york,cn=administrators,o=dmc
+    -   uid=admin, cn=administrators, cn=host1.domain1.com, ou=domain1.com, ou=Configuration Servers, o=dmc
+    -   uid=admin-new york, cn=administrators, cn=host.domain2.com, ou=domain1.com, ou=Configuration Servers, o=dmc
 
 ### Directory Servers Page
 
