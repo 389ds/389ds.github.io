@@ -93,6 +93,7 @@ There is only one config server per machine/host
     cn=host1.domain1.com, ou=domain1.com, ou=Configuration Servers, o=dmc
     host: host1.domain1.com
     port: 3890
+    securePort: 6360
     security: on
     SSLVersionMin: TLS1.1
     SSLVersionMax: TLS1.2
@@ -114,6 +115,7 @@ There is only one config server per machine/host
     cn=slapd-instance, cn=host1.domain1.com, ou=domain1.com, ou=Directory Servers, o=dmc
     host: host1.domain1.com
     port: 389
+    securePort: 636
     security: on
     SSLVersionMin: TLS1.1
     SSLVersionMax: TLS1.2
@@ -141,11 +143,11 @@ Each Admin/HTTP Server will have a config file that it will use to know how to t
     SSLVersionMax: TLS1.2
     AuthMethods: SIMPLE, kerberos, ....
     AuthProtocol:  LDAP, STARTTLS (no LDAPS)
-    LocalConfgServer: cn=host1.domain1.com, ou=domain1.com, ou=Configuration Servers, o=dmc
+    LocalConfgServer: ldap://host1.domain1.com:6360
     FailoverConfigServers: ???  ???  ???
     ...
 
-*LocalConfigServer* is what the Admin Server uses to know which “Configuration Server” config to use (port/host/authentication method, etc).
+*LocalConfigServer* is what the Admin Server uses to know which “Configuration Server” config to use.
 
 -----------------------------
 
@@ -209,6 +211,7 @@ Each Admin/HTTP Server will have a config file that it will use to know how to t
             - Configure logging settings
             - Manage logs (force rotation, removal, etc)
             - View Logs
+                - Reports
                 - Integrate logconv.pl ?  
 
 
