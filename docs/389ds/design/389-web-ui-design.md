@@ -49,6 +49,7 @@ title: 389 Web UI Design Page
 ### Configuration Synchronization
 
 -   Synchronze key configuration settings
+-   Compare configurations between servers
 -   Customizable
     -   Select individual attributes(or all attrs) from particular cn=config entries
     -   Indexing
@@ -141,7 +142,7 @@ Each Admin/HTTP Server will have a config file that it will use to know how to t
     AuthMethods: SIMPLE, kerberos, ....
     AuthProtocol:  LDAP, STARTTLS (no LDAPS)
     LocalConfgServer: cn=host1.domain1.com, ou=domain1.com, ou=Configuration Servers, o=dmc
-    FailoverAdminServer: ???  ???  ???
+    FailoverConfigServers: ???  ???  ???
     ...
 
 *LocalConfigServer* is what the Admin Server uses to know which “Configuration Server” config to use (port/host/authentication method, etc).
@@ -177,7 +178,7 @@ Each Admin/HTTP Server will have a config file that it will use to know how to t
         -   Indexing, limits, cache, etc
    
 -   DS Instance Actions 
-    -  "Unopened " Instance:
+    - "Unopened" Instance:
         - Start/Stop/Restart
         - Backup/Restore
         - Unregister instance
