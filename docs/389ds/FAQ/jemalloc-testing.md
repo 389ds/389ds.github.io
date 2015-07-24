@@ -858,23 +858,29 @@ Test Length:    ~2 days 3 hours
 ### Search Long Duration
 
 
-### Modify Long Duration
+### Modify Long Duration 100 Million Modifies
 
 Entry Cache set to 512k
 
+ldclt -h localhost -p 389 -D "cn=dm" -w password -b "dc=example,dc=com" -f uid=testXXXXX  -r1 -R99999 -n 2 -T 50000000 -e random -e attreplace='description: random modify XXXXX'
+
 #### Default Library
 
-    Test Length:
-    Start Memsize: 1,479,092 kb
-    End Memsize:     kb
-    Growth:          kb
+    Test Length:    19.6 hours
+    Start Memsize:  1,479,092 kb
+    End Memsize:    2,790,836 kb
+    Growth:         1,311,744 kb
 
 #### jemalloc
 
-    Test Length:
-    Start Memsize:   kb
-    End Memsize:     kb
-    Growth:          kb
+    Test Length:    19.2 hours
+    Start Memsize:  581,996 kb
+    End Memsize:    762,220 kb
+    Growth:         180,224 kb
+
+#### Memory Usage Chart
+
+![Memory Usage Chart](../../../images/modifyLongDuration.png "Memory Usage Chart")
 
 <br>
 

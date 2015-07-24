@@ -143,7 +143,7 @@ Each Admin/HTTP Server will have a config file that it will use to know how to t
     SSLVersionMax: TLS1.2
     AuthMethods: SIMPLE, kerberos, ....
     AuthProtocol:  LDAP, STARTTLS (no LDAPS)
-    LocalConfgServer: ldap://host1.domain1.com:6360
+    LocalConfgServer: ldaps://host1.domain1.com:6360
     FailoverConfigServers: ???  ???  ???
     ...
 
