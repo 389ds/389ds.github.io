@@ -37,8 +37,8 @@ If you are adding a new design document, use the [template](design-template.html
 -   [POSIX Winsync SID Enhancements]( posix-winsync-sid-enhancements.html)
 -   [LDAPI and Access Control]( ldapi-and-access-control.html)
 -   [DNA Remote Server Setting](dna-remote-server-settings.html)
--   [Fine Grained ID List Size]( fine-grained-id-list-size.html)
--   [Content Synchronization Plugin (SyncRepl)]( content-synchronization-plugin.html)
+-   [Fine Grained ID List Size](fine-grained-id-list-size.html)
+-   [Content Synchronization Plugin (SyncRepl)](content-synchronization-plugin.html)
 -   [Plugin Internal Operation Logging](plugin-logging.html)
 -   [Configuring Scope for Referential Integrity](configuring-scope-for-referential-integrity-plugin.html)
 -   [Replication of Custom Schema](replication-of-custom-schema.html)
@@ -48,17 +48,18 @@ If you are adding a new design document, use the [template](design-template.html
 ## 389 Directory Server 1.3.1
 -------------------------------------------------
 
--   [Plug-in Transaction Support]( plugin-transactions.html)
--   [Normalized DN Cache]( normalized-dn-cache.html)
--   [Configurable Allowed SASL Mechanisms]( sasl-mechanism-configuration.html)
--   [SASL Mapping Improvements]( sasl-mapping-improvements-1-dot-3-1.html)
--   [Configurable SASL Buffer]( sasl-buffer.html)
--   [Replication Retry Settings]( replication-retry-settings.html)
--   [Instance Script Improvements]( instance-script-improvements-1-dot-3-1.html)
--   [Access Log Analyzer Improvements]( logconv-improvements-1-dot-3-1.html)
--   [Replication Protocol Timeout]( replication-protocol-timeout.html)
--   [Password Administrators]( password-administrator.html)
--   [Referential Integrity Plugin and Replication]( referint-replication-design.html)
+-   [Plug-in Transaction Support](plugin-transactions.html)
+-   [Normalized DN Cache](normalized-dn-cache.html)
+-   [Configurable Allowed SASL Mechanisms](sasl-mechanism-configuration.html)
+-   [SASL Mapping Improvements](sasl-mapping-improvements-1-dot-3-1.html)
+-   [Configurable SASL Buffer](sasl-buffer.html)
+-   [Replication Retry Settings](replication-retry-settings.html)
+-   [Instance Script Improvements](instance-script-improvements-1-dot-3-1.html)
+-   [Access Log Analyzer Improvements](logconv-improvements-1-dot-3-1.html)
+-   [Replication Protocol Timeout](replication-protocol-timeout.html)
+-   [Password Administrators](password-administrator.html)
+-   [Referential Integrity Plugin and Replication](referint-replication-design.html)
+-   [MemberOf Plugin - Skip Nested Groups](memberof-skip-nested,html)
 
 
 ## 389 Administration Server 1.1.36
@@ -122,7 +123,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [DNA Plugin](dna-plugin.html)
 -   [Linked Attributes Plugin](linked-attributes-design.html)
 -   [Managed Entry Plugin](managed-entry-design.html)
--   [Memberof Plugin](memberof-plugin.html)
+-   [MemberOf Plugin](memberof-plugin.html)
 -   [Root DN Access Control Plugin](rootdn-access-control.html)
 -   [Winsync POSIX Plugin](winsync-posix.html)
 
