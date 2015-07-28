@@ -59,7 +59,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Replication Protocol Timeout](replication-protocol-timeout.html)
 -   [Password Administrators](password-administrator.html)
 -   [Referential Integrity Plugin and Replication](referint-replication-design.html)
--   [MemberOf Plugin - Skip Nested Groups](memberof-skip-nested,html)
+-   [MemberOf Plugin - Skip Nested Groups](memberof-skip-nested.html)
 
 
 ## 389 Administration Server 1.1.36
