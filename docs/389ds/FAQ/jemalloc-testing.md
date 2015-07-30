@@ -855,9 +855,31 @@ Test Length:    ~2 days 3 hours
 
 --------------------------------
 
-### Unindexed Search Long Duration
+### Unindexed Search Long Duration 10k
 
 Yet to be performed
+
+**Default library**
+
+    Test Length:    22 hrs 15 min
+    Average Rate:   (0.12/sec)
+    Start Memsize:    757,164 kb
+    End Memsize:    1,480,112 kb
+    Growth:           722,948 kb
+
+**jemalloc**
+
+    Test Length:    18 hrs 25 min
+    Average Rate:   (0.15/sec)
+    Start Memsize:  581,992 kb
+    End Memsize:    655,720 kb
+    Growth:          73,728 kb
+
+**Memory Usage Chart**
+
+![Memory Usage Chart](../../../images/unindexedLongDuration.png "Memory Usage Chart")
+
+--------------------------------
 
 ### Search Long Duration 200 Million Searches
 
