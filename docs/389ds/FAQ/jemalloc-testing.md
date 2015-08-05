@@ -820,7 +820,7 @@ Two threads issuing unindexed searches
 
 <br>
 
-### Basic Tests Conclusion
+## Basic Tests Conclusion
 -------------
 
 While there are some cases where performance is slightly better with **jemalloc**, the major difference between the default memory library and *jemalloc* is the memory usage.  **jemalloc** uses significantly less memory.  In most cases, the majority of the memory growth occured within the first few seconds, and then stablized for the remained of the test.
@@ -935,6 +935,26 @@ ldclt -h localhost -p 389 -D "cn=dm" -w password -b "dc=example,dc=com" -f uid=t
 ![Memory Usage Chart](../../../images/modifyLongDuration.png "Memory Usage Chart")
 
 ------------------------
+
+###  Mixed Load (Adds, Mods, Modrdn's, Deletes, and Searches)
+
+**Default Library**
+
+    Test Length:    39 hrs
+    Start Memsize:    757,164 kb
+    End Memsize:    2,921,904 kb
+    Growth:         2,164,740 kb
+
+**jemalloc**
+
+    Test Length:     38 hr 8 min
+    Start Memsize:     581,992 kb
+    End Memsize:     1,085,800 kb
+    Growth:            503,808 kb
+
+**Memory Usage Chart**
+
+![Memory Usage Chart](../../../images/mixmod.png "Memory Usage Chart")
 
 <br>
 
