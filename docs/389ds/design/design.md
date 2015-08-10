@@ -18,6 +18,8 @@ If you are adding a new design document, use the [template](design-template.html
 
 -   [Nunc Stans](nunc-stans.html)
 -   [Audit Events](audit-events.html)
+-   [MemberOf Plugin Scoping](memberof-scoping.html)
+-   [Retro Changelog Plugin Scoping](retrocl-scoping.html)
 
 ## 389 Directory Server 1.3.3
 -------------------------------------------------

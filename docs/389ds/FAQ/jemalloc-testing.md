@@ -940,17 +940,17 @@ ldclt -h localhost -p 389 -D "cn=dm" -w password -b "dc=example,dc=com" -f uid=t
 
 **Default Library**
 
-    Test Length:    39 hrs
+    Test Length:    39 hrs 0 min
     Start Memsize:    757,164 kb
     End Memsize:    2,921,904 kb
     Growth:         2,164,740 kb
 
 **jemalloc**
 
-    Test Length:     38 hr 8 min
-    Start Memsize:     581,992 kb
-    End Memsize:     1,085,800 kb
-    Growth:            503,808 kb
+    Test Length:    38 hrs 8 min
+    Start Memsize:    581,992 kb
+    End Memsize:    1,085,800 kb
+    Growth:           503,808 kb
 
 **Memory Usage Chart**
 
