@@ -956,6 +956,51 @@ ldclt -h localhost -p 389 -D "cn=dm" -w password -b "dc=example,dc=com" -f uid=t
 
 ![Memory Usage Chart](../../../images/mixmod.png "Memory Usage Chart")
 
+
+### Very Long Add Delete Tests
+
+#### Small Cache set to 512 kb
+
+**Default Library**
+
+    Test Length:    5 days (stablized on day 1)
+    Start Memsize:    757,168 kb
+    End Memsize:    2,855,348 kb
+    Growth:         2,098,180 kb
+
+**jemalloc**
+
+    Test Length:    5 days
+    Start Memsize:  581,988 kb
+    End Memsize:    848,228 kb
+    Growth:         266,240 kb
+
+**Memory Usage Chart**
+
+![Memory Usage Chart](../../../images/long-add-del-small-cache.png "Memory Usage Chart")
+
+#### Large Cache Set to 3 Gigs
+
+**IN PROGRESS**
+
+**Default Library**
+
+    Test Length:    
+    Start Memsize:     kb
+    End Memsize:     kb
+    Growth:          kb
+
+**jemalloc**
+
+    Test Length:    
+    Start Memsize:     kb
+    End Memsize:     kb
+    Growth:            kb
+
+**Memory Usage Chart**
+
+![Memory Usage Chart](../../../images/########.png "Memory Usage Chart")
+
 <br>
 
 ### Long Duration Conclusion
