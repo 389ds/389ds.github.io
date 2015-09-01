@@ -981,25 +981,23 @@ ldclt -h localhost -p 389 -D "cn=dm" -w password -b "dc=example,dc=com" -f uid=t
 
 #### Large Cache Set to 3 Gigs
 
-**IN PROGRESS**
-
 **Default Library**
 
-    Test Length:    
-    Start Memsize:     kb
-    End Memsize:     kb
-    Growth:          kb
+    Test Length:      6 days
+    Start Memsize:    848,708 kb
+    End Memsize:    8,517,448 kb
+    Growth:         7,668,740 kb
 
 **jemalloc**
 
-    Test Length:    
-    Start Memsize:     kb
-    End Memsize:     kb
-    Growth:            kb
+    Test Length:    6 days 5 hours 30 minutes
+    Start Memsize:  680,292 kb
+    End Memsize:    210,604 kb
+    Growth:       1,421,312 kb
 
 **Memory Usage Chart**
 
-![Memory Usage Chart](../../../images/########.png "Memory Usage Chart")
+![Memory Usage Chart](../../../images/long-add-del-large-cache.png "Memory Usage Chart")
 
 <br>
 
