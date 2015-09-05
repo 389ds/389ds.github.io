@@ -26,7 +26,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
-|[389-ds-base-1.3.4.1.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.4.1.tar.bz2)|ds.git|389-ds-base-1.3.4.1|[Building](building.html)|edf4fc7da08f84699a07586e21d55856e5be7d4f|
+|[389-ds-base-1.3.4.4.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.4.4.tar.bz2)|ds.git|389-ds-base-1.3.4.4|[Building](building.html)|7f7bfbea338756b67c8fa43a2e9f2bb4d1055736|
 |[nunc-stans-0.1.5.tar.bz2]({{ site.baseurl }}/binaries/nunc-stans-0.1.5.tar.bz2)|nunc-stans.git|0.1.5|[Building](building.html)|7e52309f61c38b241fcdaf0284559d683f3ba700|
 |[389-admin.1.1.42.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.42.tar.bz2)|admin.git|389-admin-1.1.42|[Admin](../administration/adminserver.html)|3d931830ce832b7e0f820689ca30e5996b873f75|
 |[389-adminutil-1.1.22.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.22.tar.bz2)|adminutil.git|389-adminutil-1.1.22|[AdminUtil](../administration/adminutil.html)|ee337a293409b9682f68797bf200ef4a7e14c3e1|
@@ -41,7 +41,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
-|[389-ds-base-1.3.3.12.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.3.12.tar.bz2)|ds.git|389-ds-base-1.3.3.12|[Building](building.html)|0bdfa22e7e651ca0fbd163fb377fdc6fc3496b5f|
+|[389-ds-base-1.3.3.13.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.3.13.tar.bz2)|ds.git|389-ds-base-1.3.3.13|[Building](building.html)|c60d21a149ba17343f6e6580f426f8c900df0870|
 |[389-admin.1.1.42.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.42.tar.bz2)|admin.git|389-admin-1.1.42|[Admin](../administration/adminserver.html)|3d931830ce832b7e0f820689ca30e5996b873f75|
 |[389-adminutil-1.1.22.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.22.tar.bz2)|adminutil.git|389-adminutil-1.1.22|[AdminUtil](../administration/adminutil.html)|ee337a293409b9682f68797bf200ef4a7e14c3e1|
 |[389-console-1.1.9.tar.bz2]({{ site.baseurl }}/binaries/389-console-1.1.9.tar.bz2)|console.git|389-console-1.1.9|[Building Console](buildingconsole.html)|bcc15330156beab1dab57cedef838f8ec5b26988|
