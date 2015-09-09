@@ -20,6 +20,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Audit Events](audit-events.html)
 -   [MemberOf Plugin Scoping](memberof-scoping.html)
 -   [Retro Changelog Plugin Scoping](retrocl-scoping.html)
+-   [MemberOf Plugin Auto Add Objectclass](memberof-auto-add-oc.html)
 
 ## 389 Directory Server 1.3.3
 -------------------------------------------------
