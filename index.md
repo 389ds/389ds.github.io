@@ -75,6 +75,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
 <!-- Try to keep this list under 10 releases  -->
 
+- 2015-09-11: Released **389 Windows Console [1.1.15](docs/389ds/releases/release-windows-console-1-1-15.html)**
 - 2015-09-04: Released **389 Directory Server [1.3.4.4](docs/389ds/releases/release-1-3-4-4.html)**
 - 2015-09-04: Released **389 Directory Server [1.3.3.13](docs/389ds/releases/release-1-3-3-13.html)**
 - 2015-06-24: Released **389 Directory Server [1.3.4.1](docs/389ds/releases/release-1-3-4-1.html)**
@@ -83,7 +84,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - 2015-06-12: Released **389 Ds Console [1.2.12](docs/389ds/releases/release-ds-console-1-2-12.html)**
 - 2015-06-12: Released **389 Admin Server [1.1.42](docs/389ds/releases/release-admin-1-1-42.html)**
 - 2015-03-09: Released **389 Console [1.1.9](docs/389ds/releases/release-console-1-1-9.html)**
-- 2015-03-09: Released **389 Admin Server [1.1.38](docs/389ds/releases/release-admin-1-1-38.html)**
 - 2015-01-28: Released **389 Directory Password Synchronization [1.1.6](docs/389ds/releases/release-passsync-1-1-6.html)**
 
     For older news, see the [News Archive](docs/389ds/releases/news-archive.html)
