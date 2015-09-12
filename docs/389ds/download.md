@@ -94,18 +94,18 @@ Tested with Windows 2008 and 2012 Server 32-bit and 64-bit.
 
 ### Windows Console
 
-NOTE: Windows Console now (as of April 3, 2009) requires Java 1.6 to work.
+NOTE: Windows Console now (as of September 11, 2015) requires Java 7 to work.
 
 NOTE: You must use 64-bit Java with the 64-bit version.
 
-Tested with Sun Java 1.6 on Windows 2008/2003 Server.
+Tested with Java 7 on Windows 2008/2015 Server.
 
 |Platform|File|SHA1SUM|
 |--------|----|-------|
-|Windows 2003/2008 32-bit|[389-Console-1.1.6-i386.msi]({{ site.baseurl }}/binaries/389-Console-1.1.6-i386.msi)|95590970a5e1de183ba508ff450958c495c8ae15|
-|Windows 2003/2008 64-bit|[389-Console-1.1.6-x86\_64.msi]({{ site.baseurl }}/binaries/389-Console-1.1.6-x86_64.msi)|5a125647d536a3f7ee1a1ee6157eb4c90e7ac631|
+|Windows 2008/2015 32-bit|[389-Console-1.1.15-i386.msi]({{ site.baseurl }}/binaries/389-Console-1.1.15-i386.msi)|8cff45b6d9c1839d3ad46766fa46ccbb22a2f112|
+|Windows 2008/2015 64-bit|[389-Console-1.1.15-x86\_64.msi]({{ site.baseurl }}/binaries/389-Console-1.1.15-x86_64.msi)|57f5be6c9664170da5071730d736f5668f2827f7|
 
-NOTE: You must have Java in your PATH in order for this to work. Or you can just edit the batch file to tell it where to find Java. NOTE: This might work with Fedora DS 1.0.4 and earlier, but it has not been tested with that release.
+NOTE: You must have Java in your PATH in order for this to work. Or you can just edit the batch file to tell it where to find Java.
 
 <br>
 
