@@ -1,7 +1,7 @@
 ---
 title: "Releases/windows-console-1.1.15"
 ---
-389 Console 1.1.15
+389 Windows Console 1.1.15
 -----------------------------
 
 The 389 Directory Server team is proud to announce 389-console-win version 1.1.15.
