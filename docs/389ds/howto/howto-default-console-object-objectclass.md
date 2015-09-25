@@ -35,6 +35,8 @@ Each of these entries has objectClass: nsdefaultObjectClasses. This provides the
 
 You can add additional objectclasses to this list. It is safest to add AUXILIARY object classes that do not have any required (MUST) attributes. **WARNING** - do not add an objectclass that has **REQUIRED/MUST** attributes unless the UI will ensure that there is always a value. For example, the mailUser has MUST ( uid \$ mail \$ maildrop ). If you added nsDefaultObjectClass: mailUser to cn=user, you would not be able to create a New User unless you went into the Advanced... editor and added *mail* and *maildrop* attributes with valid values. *uid* is ok because it is also required by inetorgperson, and the regular New User window will ensure the presence of a valid uid value. **WARNING** - do not add a STRUCTURAL objectclass to the list unless it has as a SUP objectclass one of the other objectclasses already in the list. Although 389 currently permits this, it is a violation of LDAPv3 and may cause interoperability problems.
 
+**Note - if using the console to set nsDefaultObjectClass, then you must close down the console and reopen it for the change to take effect!**
+
 ### Example: adding the inetUser objectclass
 
 When using memberOf, it is useful to have the inetUser objectclass added to New User entries. inetUser works well because it has no required (MUST) attributes and is an AUXILIARY objectclass.
