@@ -534,7 +534,7 @@ But this may cause the server to slow down considerably, which is not good in mo
 
 You can replace the access log with a [Named_Pipe](../howto/howto-use-named-pipe-log-script.html).  This will allow you to save the last few lines of the access log if the server crashes, without severely impacting the performance of the server.
 
-### **Memory Growth**
+### **Debugging Memory Growth/Invalid Access with Valgrind**
 
 If the size of the daemon process ns-slapd keeps growing, there are 2 possibilities -- memory leak or fragmentation.
 
