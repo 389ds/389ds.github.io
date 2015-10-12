@@ -33,6 +33,8 @@ Basic Information
 
 ### Script
 
+WARNING: These scripts are only recommended for use in single server applications in testing environments.  They are not suitable for generating multiple server certs for multi-master replicated servers.  They are not suitable for production use.  Please use a CA instead.
+
 There are two different scripts to use. The [first one](http://github.com/richm/scripts/tree/master%2Fsetupssl.sh?raw=true) is for the Fedora DS 1.0.x and earlier layout. This layout stores all of the key/cert databases for all servers in the directory /opt/fedora-ds/alias and identifies each one by a unique prefix e.g. slapd-localhost- or admin-serv-localhost-.
 
 The [second one](http://github.com/richm/scripts/tree/master%2Fsetupssl2.sh?raw=true) is for the Fedora DS 1.1 and later layout. This layout stores the key/cert databases in server specific directories e.g. /etc/dirsrv/slapd-<host>/. This directory will contain a key and cert db file without a unique prefix (e.g. just cert8.db).
