@@ -228,11 +228,11 @@ In the previous release, just the main directory daemon, ns-slapd, its dependenc
 
 ### What License does Directory use?
 
-See the [License](../FAQ/licensing.html) page for more details
+See the [License](licensing.html) page for more details
 
 ### What are my rights to redistribute?
 
-As long as you stick with the restrictions of the [License](../FAQ/licensing.html) there's no reason you can't redistribute this software. There are a few common modes of redistribution that we list here.
+As long as you stick with the restrictions of the [License](licensing.html) there's no reason you can't redistribute this software. There are a few common modes of redistribution that we list here.
 
 #### Distribution of the Directory Server
 
@@ -246,7 +246,7 @@ This is also possible because the Directory Server is GPL. The 3 Apache modules 
 
 One of the most common modes of distribution for the Directory Server is as a database backend for another application. You should be able to distribute the Directory Server along side your application as long as the Directory Server and your application are separate programs. Since the client libraries used to access the Directory Server are available under a somewhat more liberal license (MPL/LGPL/GPL) then you should be able to use them to access it from even a proprietary application.
 
-However, if you make changes to the Directory Server before you distribute it with your application then you must make sure that you make those changes available under the GPL, as is required under the [license](../FAQ/licensing.html).
+However, if you make changes to the Directory Server before you distribute it with your application then you must make sure that you make those changes available under the GPL, as is required under the [license](licensing.html).
 
 #### Bundling with extra Directory Server plugins
 
@@ -254,7 +254,7 @@ The Directory Server has a pretty powerful plugin api that can allow you to exte
 
 ### What are my rights to rebrand ?
 
-You can certainly rebrand the software to fit your needs. The [licensing](../FAQ/licensing.html) allows this.
+You can certainly rebrand the software to fit your needs. The [licensing](licensing.html) allows this.
 
 ### Who maintains this project?
 

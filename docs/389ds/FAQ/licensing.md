@@ -12,6 +12,8 @@ Overview
 
 Licensing determines what rights you have to use this software in both binary and source form. The Fedora Directory Server is made up of a number of different pieces of software, each with their own licensing. Each of these licenses is described below. And we must say, of course, that this document should not be taken as legal advice. Talk to your attorney.
 
+<a name="client"></a>
+
 Client Library Licensing
 ------------------------
 
@@ -26,7 +28,7 @@ The Fedora Directory Server is made up a few different pieces of code. These inc
 
 ### Directory Server Core
 
-This is the bulk of the code. This is available under a "GPL Exception" license created for this project. You can read the license on the [license text](GPL Exception License Text "wikilink") page or get more information on the [annotated license text](Annotated GPL Exception License "wikilink") page.
+This is the bulk of the code. This is available under a "GPL Exception" license created for this project. You can read the license on the [license text](../development/gpl-exception-license-text.html) page or get more information on the [annotated license text](annotated-gpl-exception-license.html) page.
 
 ### Admin Server and Management Console
 
@@ -38,7 +40,7 @@ These are Apache modules used by the Admin Server. They are licensed under the [
 
 ### NSPR / DBM / NSS / SVRCORE / LDAPSDK / PerLDAP
 
-Since these come from mozilla.org, this code is licensed under an MPL/LGPL/GPL tri-license. See the information in [Client Library Licensing](Licensing#Client_Library_Licensing "wikilink") on the MPL.
+Since these come from mozilla.org, this code is licensed under an MPL/LGPL/GPL tri-license. See the information in [Client Library Licensing](licensing.html#client) on the MPL.
 
 ### Cyrus SASL
 
@@ -61,5 +63,5 @@ Net-SNMP is covered by several licenses, all BSD or BSD-like. See the Net-SNMP [
 Directory Server Plugin Licensing
 ---------------------------------
 
-Through the exception that we've made available in our licensing terms it should be possible to build plugins under any license you choose, assuming that you stick within the limits of the exception. Please see the [annotated license text](Annotated GPL Exception License "wikilink") page for more information.
+Through the exception that we've made available in our licensing terms it should be possible to build plugins under any license you choose, assuming that you stick within the limits of the exception. Please see the [annotated license text](annotated-gpl-exception-license.html) page for more information.
 

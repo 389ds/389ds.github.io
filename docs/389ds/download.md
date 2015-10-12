@@ -126,7 +126,7 @@ These rpm packages are no longer available for download, but the source code for
 
 ### Fedora Directory Server 7.1
 
-The FDS 7.1 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help. Since the Admin Server and related files in this legacy package are not available as open source, please refer to the [Licensing](licensing.html) for these Binary packages. 
+The FDS 7.1 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help. Since the Admin Server and related files in this legacy package are not available as open source, please refer to the [Licensing](FAQ/licensing.html) for these Binary packages. 
 
 -   [FDS 7.1 Source Code]({{ site.baseurl }}/binaries/fedora-ds-7.1.tar.gz)
 -   [FDS 7.1 SRPM]({{ site.baseurl }}/binaries/fedora-ds-7.1-2.src.rpm)

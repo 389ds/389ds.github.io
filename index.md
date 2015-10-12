@@ -46,7 +46,7 @@ The enterprise-class [Open Source](docs/389ds/FAQ/licensing.html) LDAP server fo
 
 ## Welcome, new to the 389 Project?
 
-If you're [new](docs/389ds/users.html) to the project you should start with
+If you're [new to the project](docs/389ds/users.html) you should start with
 our [getting started](docs/389ds/FAQ/getting-started.html) page. It contains
 links to builds, source code and documentation. Our
 [mission](docs/389ds/FAQ/mission.html) page also contains some good
