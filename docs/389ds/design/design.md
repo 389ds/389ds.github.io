@@ -72,7 +72,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Using 389 Console with Anonymous Access Disabled](../administration/console-login-and-anonymous-access.html)
 -   [Security Modules, Console, and SELinux](../administration/security-module-console.html)
 
-## Web-based Directory Server Managemnt Console
+## Web-based Directory Server Management Console
 -----------------------------------------------
 -   [NEW Web-based Console](389-web-ui-design.html)
 -   [LDAP REST API](ldap-rest-api.html)

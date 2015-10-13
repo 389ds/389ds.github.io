@@ -93,7 +93,7 @@ The following lists the currently implemented resources - this is a work in prog
 |GET|Request a representation of the suffix entry|None|curl -X GET "http://localhost:5000/v1/suffix/dc=example,dc=com"|
 |PUT|Create a new suffix entry and backend|**backend**=*be_name*|curl -X PUT -G "http://localhost:5000/v1/suffix/dc=example,dc=com" -d 'backend=newUserRoot'|
 |PATCH|Modify a suffix configuration **Not Implemented yet**|n/a|n/a|
-|DELETE|Delete a suffix and its associated backend(if selected)|**deletebackend**=*yes*|curl -X DELETE -G "http://localhost:5000/v1/suffix/dc=example,dc=com" -d "deletebackend=yes"|
+|DELETE|Delete a suffix and its associated backend(if selected)|**deletebackend**=*backend*|curl -X DELETE -G "http://localhost:5000/v1/suffix/dc=example,dc=com" -d "deletebackend=newUserRoot"|
 | | | | |
 
 
