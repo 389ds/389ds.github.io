@@ -23,7 +23,7 @@ Here is an example of how to use ldapmodify to disable SSLv3 and enable TLS
     replace: nsTLS1
     nsTLS1: on
 
-Set the SSL version range to enforce TLS1.1(or higher)
+Set the SSL version range to enforce TLS1.1 through TLS1.2.
 
     # ldapmodify -D "cn=directory manager" -W
     dn: cn=encryption,cn=config
@@ -32,8 +32,9 @@ Set the SSL version range to enforce TLS1.1(or higher)
     sslVersionMin: TLS1.1
     -
     replace: sslVersionMax
-    sslVersionMin: TLS1.2
+    sslVersionMax: TLS1.2
 
+Note: If sslVersionMax is not explicitly set, the supported version by the installed NSS is applied to sslVersionMax. If sslVersionMin is not explicitly set, even if NSS supports SSL3, TLS1.0 is set to sslVersionMin, by default.
 
 You need to restart the server for this to take effect.
 
