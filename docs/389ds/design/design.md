@@ -72,6 +72,11 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Using 389 Console with Anonymous Access Disabled](../administration/console-login-and-anonymous-access.html)
 -   [Security Modules, Console, and SELinux](../administration/security-module-console.html)
 
+## Web-based Directory Server Managemnt Console
+-----------------------------------------------
+-   [NEW Web-based Console](389-web-ui-design.html)
+-   [LDAP REST API](ldap-rest-api.html)
+
 <br>
 
 ## Older Design Documents
@@ -137,7 +142,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [High Contention with Entry Cache](high-contention-on-entry-cache-lock.html)
 -   [Separate Suffix for Tombstones/Conflicts](separate-conflict-and-tombstone-entry.html)
 -   [Managed Entry Plug-in Enhancement](mep-rework.html)
--   [NEW Web-based Console](389-web-ui-design.html)
+
 
 
 
