@@ -11,20 +11,21 @@ If you are adding a new design document, use the [template](design-template.html
 
 {% include toc.md %}
 
-<br>
+## 389 Directory Server 1.3.5
+-   [Shadow Account Support](shadow-account-support.html)
 
-## 389 Directory Server 1.3.4
 -------------------------------------------------
 
+## 389 Directory Server 1.3.4
 -   [Nunc Stans](nunc-stans.html)
 -   [Audit Events](audit-events.html)
 -   [MemberOf Plugin Scoping](memberof-scoping.html)
 -   [Retro Changelog Plugin Scoping](retrocl-scoping.html)
 -   [MemberOf Plugin Auto Add Objectclass](memberof-auto-add-oc.html)
 
-## 389 Directory Server 1.3.3
 -------------------------------------------------
 
+## 389 Directory Server 1.3.3
 -   [AES Password Based Encryption](pbe.html)
 -   [Referential Integrity Plugin Configuration](ri-plugin-configuration.html)
 -   [MemberOf Plugin Shared Configuration](memberof-plugin-configuration.html)
@@ -34,9 +35,9 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Windows Sync Enhancements](winsync-rfe.html)
 -   [Account Policy -- alwaysRecordLoginAttr](account-policy-design.html#new-attribute-alwaysrecordloginattr)
 
-## 389 Directory Server 1.3.2
 -------------------------------------------------
 
+## 389 Directory Server 1.3.2
 -   [POSIX Winsync SID Enhancements]( posix-winsync-sid-enhancements.html)
 -   [LDAPI and Access Control]( ldapi-and-access-control.html)
 -   [DNA Remote Server Setting](dna-remote-server-settings.html)
@@ -48,9 +49,9 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Read Entry Controls](read-entry-controls.html)
 -   [Intervals to compact Primary DB and Replication Changelog DB](db-compactdb-interval.html)
 
-## 389 Directory Server 1.3.1
 -------------------------------------------------
 
+## 389 Directory Server 1.3.1
 -   [Plug-in Transaction Support](plugin-transactions.html)
 -   [Normalized DN Cache](normalized-dn-cache.html)
 -   [Configurable Allowed SASL Mechanisms](sasl-mechanism-configuration.html)
@@ -64,24 +65,22 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Referential Integrity Plugin and Replication](referint-replication-design.html)
 -   [MemberOf Plugin - Skip Nested Groups](memberof-skip-nested.html)
 
+-------------------------------------------------
 
 ## 389 Administration Server 1.1.36
------------------------------------
-
 -   [Register Remote Servers using register-ds-admin.pl](console-remote-reg-design.html)
 -   [Using 389 Console with Anonymous Access Disabled](../administration/console-login-and-anonymous-access.html)
 -   [Security Modules, Console, and SELinux](../administration/security-module-console.html)
 
+-------------------------------------------------
+
 ## Web-based Directory Server Management Console
------------------------------------------------
 -   [NEW Web-based Console](389-web-ui-design.html)
 -   [LDAP REST API](ldap-rest-api.html)
 
-<br>
+-------------------------------------------------
 
 ## Older Design Documents
----------------------------------------------
-
 -   [64-bit Counters](64-bit-counters-design.html)
 -   [Access Control and Moddn](access-control-on-trees-specified-in-moddn-operation.html)
 -   [Account Policy](account-policy-design.html)
@@ -123,9 +122,9 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Track Password Updates](track-password-update.html)
 -   [Windows Sync Plugin API](windows-sync-plugin-api.html)
 
+---------------------------------------------
 
 ## Plugin Design Documents
------------------------------------------------
 -   [Auto Membership Plugin](automember-design.html)
 -   [DNA Plugin Proposal](dna-plugin-proposal.html)
 -   [DNA Plugin](dna-plugin.html)
@@ -135,9 +134,9 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Root DN Access Control Plugin](rootdn-access-control.html)
 -   [Winsync POSIX Plugin](winsync-posix.html)
 
+-----------------------------------------------
 
 ## Design Discussions
--------------------------------------------
 -   [Entry State Resolution](entry-state-resolution.html)
 -   [High Contention with Entry Cache](high-contention-on-entry-cache-lock.html)
 -   [Separate Suffix for Tombstones/Conflicts](separate-conflict-and-tombstone-entry.html)
