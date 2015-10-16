@@ -11,7 +11,7 @@ Overview
 ========
 
 ShadowAccount objectclass and its attribute type belonging to the objectclass is defined in RFC 2307, 389-ds-base schema file 10rfc2307.ldif.
-Currently, shadowAccount is not explicitely supported.  
+Currently, shadowAccount is not explicitly supported.  
 For instance, one of the attribute type shadowLastChange is supposed to be updated when the password of the account is modified, but it is not.
 The shadowAccount attribute types are mapped to the subset of Password Policy attribute types.  
 This design doc proposes to support shadowAccount based upon the existing Password Policy values.
@@ -66,7 +66,7 @@ Implementation
 
 Only if the entry has the auxiliary objectclass shadowAccount, the following operations are executed.
 
-The shadowAccount attributes could be devided into 2 classes: shadowLastChange and the others.  
+The shadowAccount attributes could be divided into 2 classes: shadowLastChange and the others.  
 ShadowLastChange needs to be dynamically updated when the user password is changed, 
 while the other attributes are static which could be derived from the password policy values.
 
