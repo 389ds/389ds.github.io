@@ -141,6 +141,8 @@ If you are adding a new design document, use the [template](design-template.html
 -   [High Contention with Entry Cache](high-contention-on-entry-cache-lock.html)
 -   [Separate Suffix for Tombstones/Conflicts](separate-conflict-and-tombstone-entry.html)
 -   [Managed Entry Plug-in Enhancement](mep-rework.html)
+-   [Audit Logging Improvements](audit_improvement.html)
+
 
 
 
