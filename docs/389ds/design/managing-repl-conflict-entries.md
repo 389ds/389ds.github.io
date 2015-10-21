@@ -17,17 +17,83 @@ Note: the entries with the same dn could be really different entries, or, the mo
 Current solution
 ================
 
-In the current implementation conflict resolution one of the entries is transformed into a “conflict entry”, this is the same entry with a modified DN: DN=nsuniqueid+<current rdn>,<current parent dn>
+In the current implementation conflict resolution one of the entries is transformed into a “conflict entry”, this is the same entry with a modified DN: DN=nsuniqueid=n-n-n-n+\<current rdn\>,\<current parent dn\>
 The decision which entry is transformed is based on the CSN when the entry was created, so the result of conflict resolution will be the same on all masters.
 
 Problems with current solution
 ==============================
 
 ## Multiple entries with same attributes
-If an entry with eg uid=xxxx is resulting in a conflict, then a saerch for “uid=xxxx” will return both entries and clients expecting one entry can fail
+If an entry with eg uid=xxxx is resulting in a conflict, then a saerch for “uid=xxxx” will return both entries and clients expecting one entry can fail.
+This resulted in the requests to hide the conflict entries, the requests are tracked in ticket  [\#160](https://fedorahosted.org/389/ticket/160) and [\#48161](https://fedorahosted.org/389/ticket/48161)
 
 ## Inconsistent data 
-In scenarios where the same entry is added concurrently on three masters and deleted on one master, depending on the timing of teh adds and deletes and the  order in which they are replicated there will be inconsistent representations of “normal” and “conflict” entries on the different masters.
+In scenarios where the same entry is added concurrently on three masters and deleted on one master, depending on the timing of the adds and deletes and the  order in which they are replicated
+there will be inconsistent representations of “normal” and “conflict” entries on the different masters. Examples of these conflicts and scenarios to reproduce are provided in ticket: [\#47432](https://fedorahosted.org/389/ticket/47432)
+
+Here is one scenario presented in detail, showing how the inconsistencies are generated.
+
+	Assume three masters M1, M2 and M3 in multimaster replication and in sync.
+
+	Disable replication, this is required to simulate concurrent actions on multiple servers in a very specific order.
+	Without disabling replication and reenablin in specific order the same scenarios are possible, but not reliably reproducable.
+
+	On M1 add an entry cn=A,<SUFFIX>
+	The result is an entry:
+	dn: cn=A,<SUFFIX>
+        .....
+	nsuniqueid: 1111  (for simplification)
+
+	We will use E(cn=A,nsuniqueid=1111) as shortcut for this entry.
+
+	On M1 delete the entry just created, the result is a tombstne entry
+	dn: nsuniqueid=1111,cn=A,<SUFFIX>
+	objectclass: nstombstone
+	nsuniqueid: 1111
+
+	Track this type of entry as T(cn=A,nsuniqueid=1111)
+
+	On M2 add an entry with cn=A, the result is E(cn=A,nsuniqueid=2222) (it gets a different nsuniqueid)
+
+	On M3 add an entry with cn=A, the result is E(cn=A,nsuniqueid=3333)
+
+	Enable replication on M1, the add and delete will be replicated to M2 and M3
+
+	On M2 the ADD is received and a conflict is detected, entry with nsuniqeid=1111 is created earlier and will be preserved. The other entry is transformedint a conflict entry
+	dn: cn=A+nsuniqueid=2222,<SUFFIX>
+	nsuniqueid: 2222
+	nsds5ReplConflict: namingConflict
+
+	Track this as C(cn=A,nsuniqueid=2222)
+	Now two entries exist: E(cn=A,nsuniqueid=1111) and C(cn=A,nsuniqueid=2222)
+
+	On M2 the DEL of E(cn=A,nsuniqueid=1111) is received, the result is a tombstone and a conflict entry:
+	T(cn=A,nsuniqueid=1111) and C(cn=A,nsuniqueid=2222)
+
+	On M3 the same replicated operations also result in two entries:
+	T(cn=A,nsuniqueid=1111) and C(cn=A,nsuniqueid=3333)
+
+	Now enable replication on M2, the ADD will be replicated to M1 and M3
+
+	On M1 no regular entry with cn=A exists, it will be added and we have two entries:
+	T(cn=A,nsuniqueid=1111), E(cn=A,nsuniqueid=2222)
+
+	On M3 no regular entry with cn=A exists, it will be added and we have three entries:
+	T(cn=A,nsuniqueid=1111), E(cn=A,nsuniqueid=2222) and C(cn=A,nsuniqueid=3333)
+
+	Now enable replication on M3, the ADD will be replicated to M1 and M2
+
+	On M1 a regular entry with nsuniqueid=2222 exists, a conflict will be generated, on M1 we have:
+	T(cn=A,nsuniqueid=1111), E(cn=A,nsuniqueid=2222) and C(cn=A,nsuniqueid=3333)
+
+	On M2 no regular entry cn=A exists, it will be just added and result in:
+	T(cn=A,nsuniqueid=1111), C(cn=A,nsuniqueid=2222) and E(cn=A,nsuniqueid=3333)
+
+	The final result is that on all servers we have three entries with cn=A: one regular entry, one tombstone entry and one conflict entry.
+	The significant difference is that on M2 the nsuniqueid of the regular entry and the conflict entry are reversed from what is on M1 and M3
+
+	This is not visible directly, but if on M1 the regular entry (nsuniqueid=2222) is deleted, this will trigger the delete of the regular entry on M3,
+	but on M2 the conflict entry will be deleted, and now there is a visible difference, the entry exists only on M2.
 
 Suggested solutions
 ===================
@@ -84,15 +150,80 @@ after concflict resolution this will become:
        [conflictattr;2222222-22222222-22222222-22222222;objectclass: person]
        [conflictattr;2222222-22222222-22222222-22222222;sn: One]
 
-In a replication operation, the nsuniqueid of the original entry is used to find the entry. If no entyr with this uniqueid exists, an entry with conflictnsuniqueid is looked up.
+In a replication operation, the nsuniqueid of the original entry is used to find the entry. If no entry with this uniqueid exists, an entry with conflictnsuniqueid is looked up.
 
 ## Behaviour in inconsistency scenarios
+
+In the following the conflict scenario, which was detailed above will be replayed applying the proposed conflict mechanism to verify it resolves the inconsistency
+
+	The starting point before reenabling replication is:
+
+	On M1: T(cn=A,nsuniqueid=1111)
+	On M2: E(cn=A,nsuniqueid=2222)
+	On M3: E(cn=A,nsuniqueid=3333)
+
+	Enable replication on M1
+
+	On M2 after ADD a new conflict entry is created:
+
+	cn=A,<SUFFIX>
+	nsuniqueid: 1111
+	conflictnsuniquid: 2222
+
+	let's denote this as extended conflict entry X(cn=A,nsuniqueid=1111,conflictid=2222)
+
+	after receiving the DEL the conflict entry is split into a regular and a tombstone entry, the nsuniqueid of the del decides which nsuniqueid remains in the main entry.
+	The result is: T(cn=A,nsuniqueid=1111) and E(cn=A,nsuniqueid=2222)
+
+	Similar on M3 the result is: T(cn=A,nsuniqueid=1111) and E(cn=A,nsuniqueid=2222)
+
+	Enable replication on M2
+
+	On M1 the entry is just added, the result is: T(cn=A,nsuniqueid=1111) and E(cn=A,nsuniqueid=2222)
+
+	On M3 a regular entry exists, this is transformed into a conflict entry, the result are two entries:
+	T(cn=A,nsuniqueid=1111) and X(cn=A,nsuniqueid=2222,conflictid=3333)
+
+	Enable replication on M3
+
+	On M1 a regular entry exists and is transformed into a conflict entry, so there are two entries
+	T(cn=A,nsuniqueid=1111) and X(cn=A,nsuniqueid=2222,conflictid=3333)
+
+	On M2 the result is similar: T(cn=A,nsuniqueid=1111) and X(cn=A,nsuniqueid=2222,conflictid=3333)
+
+	Now all three servers have the same two entries:
+	T(cn=A,nsuniqueid=1111) and X(cn=A,nsuniqueid=2222,conflictid=3333)
+
 
 ## Deleting entries
 
 One problem with this approach is that more than one entry are merged into one, this is necessary to avoid inconsistencies during replication. But if an entry with a conflictnsuniqueid is deleted by a direct ldap operation, 
 the complete entry should be deleted ann not only the "main" nsuniqueid". This requires to split the change for replication operations into two (or more) deletes - one for each uniqueids.
 On the replication consumer the behaviour is a as in the "inconsistency avoidance", the traces for the deleted nsuniqueid are removed. The entry is finally removed after applying the delete for the last nsuniqueid
+
+The delete operation is demonstrated by continuing the above example:
+
+	Assume all servers have: T(cn=A,nsuniqueid=1111) and X(cn=A,nsuniqueid=2222,conflictid=3333)
+
+	On M1 delete cn=A, this will delete the entry X(cn=A,nsuniqueid=2222,conflictid=3333)
+
+	Since the entry is the representation of two conflicting entries, both will be deleted.
+
+We do not want or need to create merged tombstones, so keep individual tombstones
+
+	On M1 we now have: T(cn=A,nsuniqueid=1111), T(cn=A,nsuniqueid=2222) and T(cn=A,nsuniqueid=3333)
+
+Since in replicated operation only the nsuniqueid of the deleted entry is removed from the conflict entry, the DEL needs to contain two nsunique ids or
+needs to be split into two DEL changelog entries.
+
+	On M2 the DEL for the first nsuniqueid is received, stripped from the conflict entry and a tombstone created
+	Result is T(cn=A,nsuniqueid=1111), T(cn=A,nsuniqueid=2222) and E(cn=A,nsuniqueid=3333)
+
+	When the DEL for the next nsuniqueid is received or handled, the final entry is transformed into a tombstone:
+	T(cn=A,nsuniqueid=1111), T(cn=A,nsuniqueid=2222) and T(cn=A,nsuniqueid=3333)
+
+	Since the situation on M3 is identical, the result after DEL is the same as on M2
+
 
 
 Tickets
