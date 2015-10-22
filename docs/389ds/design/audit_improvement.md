@@ -22,6 +22,8 @@ Use Cases
 
 Logging of all sucessful changes to the directory.
 
+Log the bind dn and IP into the audit log for events.
+
 Logging of all attempts to change the directory regardless of ldap status code. (IE rejection, no such object)
 
 Filter logging of sucessful changes to a specific subtree.
@@ -50,6 +52,9 @@ We would extend cn=config to add configuration of the pattern:
     dn: cn=success,cn=audit,cn=config
     audit-response: LDAP_SUCCESS
 
+    dn: cn=success,cn=audit,cn=config
+    audit-response: !LDAP_SUCCESS
+
     dn: cn=secure_group,cn=audit,cn=config
     audit-response: LDAP_ANY
     audit-filter: '(cn=secure_group)'
@@ -69,11 +74,13 @@ We would extend cn=config to add configuration of the pattern:
 
 The behaviour of the current audit log is emulated via the addition of the "audit-response: LDAP_SUCCESS" catch all. (See implementation section regarding upgrade)
 
-The second example shows the filter syntax, that would log any change regardless of status that is attempted on objects with the attribute 'cn=secure_group'.
+The second example shows how we can use a ! as a not LDAP_SUCCESS, in other words, all failures to make a change.
 
-The third example would log changes that fail as they are attempting to alter non-existant objects under a specific subtree.
+The third example shows the filter syntax, that would log any change regardless of status that is attempted on objects with the attribute 'cn=secure_group'.
 
-The fourth example shows the combination of all of these aspects, as well as a multi-valued definition of responses to log. These are considered to be a list of OR values.
+The fourth example would log changes that fail as they are attempting to alter non-existant objects under a specific subtree.
+
+The fifth example shows the combination of all of these aspects, as well as a multi-valued definition of responses to log. These are considered to be a list of OR values.
 
 
 Design
@@ -151,7 +158,7 @@ On upgrade to continue emulation of the current audit logging configuration, wil
 External Impact
 ---------------
 
-The format of the audit log may change due to the potential addition of extra fields.
+The format of the audit log may change due to the potential addition of extra fields. We would like to add the bind dn that triggered the event, as well as the IP and connection details of the client that triggered the event.
 
 
 Author
