@@ -142,6 +142,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Separate Suffix for Tombstones/Conflicts](separate-conflict-and-tombstone-entry.html)
 -   [Managed Entry Plug-in Enhancement](mep-rework.html)
 -   [Audit Logging Improvements](audit_improvement.html)
+-   [Managing Replication Conflicts](managing-repl-conflict-entries.html)
 
 
 
