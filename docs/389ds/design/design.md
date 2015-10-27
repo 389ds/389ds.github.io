@@ -143,6 +143,8 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Managed Entry Plug-in Enhancement](mep-rework.html)
 -   [Audit Logging Improvements](audit_improvement.html)
 -   [Managing Replication Conflicts](managing-repl-conflict-entries.html)
+-   [Disable Instance Script Installation](disable-instance-scripts.html)
+
 
 
 
