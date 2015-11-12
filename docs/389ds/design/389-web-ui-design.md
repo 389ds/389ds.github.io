@@ -57,6 +57,11 @@ title: 389 Web UI Design Page
     -   Database settings
     -   etc...
 
+### Administration Delegation
+
+Grant "users" rights to manage part, or all, of o=dmc
+    - Add aci's to the proper branches of o=dmc
+
 ------------------------------
 
 ## Installation of DMC
@@ -95,6 +100,7 @@ There is only one config server per machine/host
     port: 3890
     securePort: 6360
     security: on
+    SecurityDir: /etc/dirsrv/slapd-configuration/
     SSLVersionMin: TLS1.1
     SSLVersionMax: TLS1.2
     AuthMethod: SIMPLE, SASL
@@ -139,6 +145,7 @@ Each Admin/HTTP Server will have a config file that it will use to know how to t
 
     port: 9830
     security: on
+    SecurityDir: /etc/dirsrv/slapd-inst1/
     SSLVersionMin: TLS1.1
     SSLVersionMax: TLS1.2
     AuthMethods: SIMPLE, kerberos, ....
