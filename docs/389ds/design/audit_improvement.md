@@ -14,22 +14,22 @@ However, this does not currently capture attempts to modify the directory conten
 
 This feature will add the capability of audit logging failed or rejected changes.
 
-At the same time, this may create a lot of noise in the audit log. We will add filtering to limit logging of audit events to definied conditions such as ldap error codes, subtrees, or object filters. 
+At the same time, this may create a lot of noise in the audit log. We may add filtering to limit logging of audit events to definied conditions such as ldap error codes, subtrees, or object filters. 
 
 
 Use Cases
 ---------
 
-Logging of all sucessful changes to the directory.
+Logging of all sucessful changes to the directory. This is the current behaviour.
 
 Log the bind dn and IP into the audit log for events.
 
-Logging of all attempts to change the directory regardless of ldap status code. (IE rejection, no such object)
+Logging of all attempts to change the directory regardless of ldap status code. (IE rejection, no such object). Log the rejection code.
 
 Major configuration options and enablement (single configuration design)
 ------------------------------------------------------------------------
 
-A current audit log configuration is:
+A current simple audit log configuration is:
 
     nsslapd-auditlog: log_dir/audit
     nsslapd-auditlog-mode: 600
@@ -40,18 +40,18 @@ A current audit log configuration is:
 
 We would add another set of options to mirror this such as:
 
-    nsslapd-auditfailurelog: log_dir/audit-failure
-    nsslapd-auditfailurelog-mode: 600
-    nsslapd-auditfailurelog-maxlogsize: 100
-    nsslapd-auditfailurelog-logrotationtime: 1
-    nsslapd-auditfailurelog-logrotationtimeunit: day
-    nsslapd-auditfailurelog-logging-enabled: on
+    nsslapd-auditfaillog: log_dir/audit-failure
+    nsslapd-auditfaillog-mode: 600
+    nsslapd-auditfaillog-maxlogsize: 100
+    nsslapd-auditfaillog-logrotationtime: 1
+    nsslapd-auditfaillog-logrotationtimeunit: day
+    nsslapd-auditfaillog-logging-enabled: on
 
-We would then duplicate auditlog.c to auditfailurelog.c and update it to support various status codes != LDAP_SUCCESS. We would add another configuration item:
+We would then update auditlog.c to support various status codes that are not LDAP_SUCCESS and the auditfaillog handlers. We would add another configuration item:
 
-    nsslapd-auditfailurelog-status: STATUS
+    nsslapd-auditfaillog-resultcode: STATUS
 
-This would be multivalued, and would define that return codes to clients that we are auditing for.
+This would be multivalued, and would define that result codes to clients that we are auditing for. If not specified, we collect all not LDAP_SUCCESS codes.
 
 This would not create a large performance hit as we are reducing the number of events for selection based on the status codes we recieve, and we are using the existing buffered log writing implementation, despite the large number of events that would potentially be processed.
 
@@ -92,11 +92,27 @@ This would be altered to be:
         ...
     } else {
         ...
-        write_auditfailure_log_entry(pb);
+        write_auditfail_log_entry(pb);
         ...
     }
 
-NOTE: The name auditfailure is up for discussion, it's just an example.
+The complete set of configuration options are:
+
+    nsslapd-auditfaillog-maxlogsize
+    nsslapd-auditfaillog-logrotationsync-enabled
+    nsslapd-auditfaillog-logrotationsynchour
+    nsslapd-auditfaillog-logrotationtime
+    nsslapd-auditfaillog-logrotationtimeunit
+    nsslapd-auditfaillog-logmaxdiskspace
+    nsslapd-auditfaillog-logminfreediskspace
+    nsslapd-auditfaillog-logexpirationtime
+    nsslapd-auditfaillog-logexpirationtimeunit
+    nsslapd-auditfaillog-logging-enabled
+    nsslapd-auditfaillog-logging-hide-unhashed-pw
+    nsslapd-auditfaillog
+    nsslapd-auditfaillog-list
+
+These take the same values and semantics as the auditlog options.
 
 Implementation
 --------------
@@ -115,7 +131,22 @@ No upgrade changes are required.
 External Impact
 ---------------
 
-The format of the audit log may change due to the potential addition of extra fields. We would like to add the bind dn that triggered the event, as well as the IP and connection details of the client that triggered the event.
+The format of the audit log has changed due to the addition of extra fields. This is an example of an audit/auditfail message:
+
+    time: 20151111152800
+    dn: uid=test,dc=example,dc=com
+    result: 65   /* New field */
+    changetype: modify
+    replace: objectClass
+    objectClass: account
+    objectClass: posixGroup
+    objectClass: simpleSecurityObject
+    objectClass: top
+    -
+
+Note the result maps to the ldap result code, in this case 65 == 0x41
+LDAP_OBJECT_CLASS_VIOLATION     0x41
+
 
 Other Ideas
 -----------
