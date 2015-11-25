@@ -32,6 +32,45 @@ The term **idempotent** means that no matter how many times you send the same re
 
 So for PUT we slightly stray from the pure RESTful design, but in our case when we use it add a resource(instead of using POST), it is safe to try and re-add an entry as many times as you want, the same goes for DELETE.  Once a resource is deleted, it's gone, and there are no changes if you continue to try and DELETE that resource.  Finally, GET is idempotent because it does not(should NOT) modify the state of a resource, but only return its current representation.
 
+# Authentication
+----------------
+
+Keeping our ldap servers safe is a top priority in an admin system like this. We decided the best course of action was to have a minimal rest layer, and to allow the ldap server to continue to dictate the aci and controls. This way, every part of rest is accessible to anyone, but the ldap server itself will reject your attempts to use it.
+
+There are two ways to authenticate to the rest server.
+
+First is with classic, http basic authentication. The details from this authentication are passed as a binddn and password to the ldap server.
+
+    curl -u 'cn=Directory Manager:password'  always http://ldapkdc.example.com:5000/v1/whoami
+    {
+      "href": "http://ldapkdc.example.com:5000/v1/whoami", 
+      "result": "dn: cn=directory manager", 
+      "resultCode": 200, 
+      "resultCount": 1
+    }
+
+Second is with gssapi. This is a more secure, and the preffered authentication option. The configuration details of ldap to use gssapi are beyond the scope of this document.
+
+This way a client only needs a krb5 ccache and the credentials are passed through.
+
+    klist
+    Ticket cache: KEYRING:persistent:1000:krb_ccache_1BEqTm7
+    Default principal: admin@EXAMPLE.COM
+
+    Valid starting     Expires            Service principal
+    25/11/15 09:32:22  26/11/15 09:32:00  HTTP/ldapkdc.example.com@EXAMPLE.COM
+    25/11/15 09:32:00  26/11/15 09:32:00  krbtgt/EXAMPLE.COM@EXAMPLE.COM
+
+    curl -u ':' --negotiate --delegation always http://ldapkdc.example.com:5000/v1/whoami
+    {
+      "href": "http://ldapkdc.example.com:5000/v1/whoami", 
+      "result": "dn: uid=admin,ou=people,dc=example,dc=com", 
+      "resultCode": 200, 
+      "resultCount": 1
+    }
+
+Both of these are supported by curl, and browsers.
+
 # Our Resources
 ---------------
 
@@ -179,6 +218,48 @@ The following lists the currently implemented resources - this is a work in prog
     }
 
 
+# Configuration
+---------------
 
+The rest389 admin server should be deployed on the same server as the ldap server instance. This allows rest389 to perform local instance discovery.
+
+The rest389 server needs r-x access to the /etc/dirsrv/slapd-<inst>/dse.ldif . This may mean the use of a process worker uid that has access from apache (see [WSGIDaemonProcess](https://code.google.com/p/modwsgi/wiki/ConfigurationDirectives#WSGIDaemonProcess) to set a user account that has r-x to this.
+
+If you are using GSSAPI with the server a keytab of the form "HTTP/<hostname>@REALM" and should be extracted to a secure keytab location. If you are running rest389 standalone, you should run:
+
+    KRB5_KTNAME=/path/to/http.keytab python rest389-standalone.py
+
+If you are using apache you should use
+
+    SetEnv KRB5_KTNAME /path/to/http.keytab
+
+# Constrained Delegation
+------------------------
+
+If you are configuring rest389 with freeipa, you must use contstrained delegation. Consider that we want to use rest389 on our a 389 instance that is not part of the IPA domain
+
+    master: ipamaster.example.com
+    389 server: ds.example.com
+    389 principal: ldap/ds.example.com
+
+First, we need to make the keytab for the rest389 service
+
+    ipa service-add HTTP/ds.example.com
+
+Next we need to extra the keytab to the master.
+
+    ipa-getkeytab -s ipamaster.example.com -k /etc/httpd/http.keytab HTTP/ds.example.com
+
+We add the service delegation rules
+
+    ipa servicedelegationrule-add ds-http-delegation
+    ipa servicedelegationruletarget-add ds-ldap-target
+    ipa servicedelegationrule-add-target --servicedelegationtargets=ds-ldap-target ds-http-delegation
+    ipa servicedelegationrule-add-member --principals HTTP/ds.example.com ds-http-delegation
+    ipa servicedelegationtarget-add-member --principals=ldap/ds.example.com ds-ldap-target
+
+We can now prove the delegation is working:
+
+    kvno -k /etc/httpd/http.keytab -U admin -P HTTP/ds.example.com ldap/ds.example.com
 
 
