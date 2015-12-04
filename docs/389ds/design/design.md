@@ -13,6 +13,7 @@ If you are adding a new design document, use the [template](design-template.html
 
 ## 389 Directory Server 1.3.5
 -   [Shadow Account Support](shadow-account-support.html)
+-   [Password Expiring Control Configuration](password-expiring-design.html)
 
 -------------------------------------------------
 
