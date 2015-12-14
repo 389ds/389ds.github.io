@@ -49,6 +49,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [jemalloc testing](FAQ/jemalloc-testing.html) - Basic Memory/performance profiling with jemalloc and 389-ds-base-1.3.4
 -   [Troubleshoot CleanAllRUV Task](FAQ/troubleshoot-cleanallruv.html)
 -   [Address Sanitizer Testing](howto/howto-addresssanitizer.html) - Using Address Saniziter to find and correct issues.
+-   [GSSAPI Behind Load Balancer](howto/howto-loadbalance-gssapi.html) - Configuration of SLAPD behind a load balancer with GSSAPI
 
 <br><a name="web-apps"></a>
 
