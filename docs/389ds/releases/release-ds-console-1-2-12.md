@@ -37,7 +37,7 @@ See [Source](../development/source.html) for information about source tarballs a
 
 We are very interested in your feedback!
 
-Please provide feedback and comments to the 389-users mailing list: <https://admin.fedoraproject.org/mailman/listinfo/389-users> and following pages:
+Please provide feedback and comments to the 389-users mailing list: <https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org> and following pages:
 
 -   <https://admin.fedoraproject.org/updates/389-ds-console-1.2.12-1.el7>
 -   <https://admin.fedoraproject.org/updates/389-ds-console-1.2.12-1.fc21>
