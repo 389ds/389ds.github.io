@@ -79,7 +79,9 @@ Adding more backends may cause a delay in processing of events by the slapd inst
 
 For syslog, you may be able to improve this through the use of the async flag on log types. This is a '-' prefixed to the path, such as "-/path/to/log".
 
-Journald by default is not configured to keep all log events. As slapd generates a huge number of events you must alter a number of configuration values to make journald usable.
+Journald by default is not configured to keep all log events. As slapd generates a huge number of events you must alter a number of configuration values to make journald usable. It is highly recommended that journald.conf contains the following:
+
+    # /etc/systemd/journald.conf
 
     RateLimitInterval=0
     RateLimitBurst=0
@@ -92,7 +94,7 @@ With this configuration, journald will use up to 4G of space. This is a hardcode
 
 At the rate that slapd generates events you may find that at a busy site you will not be able to retain journald events for more than a matter of hours. Some testing has shown you may only be able to retain up to 2 hours of events for the whole system with slapd logging to journald.
 
-We highly recommend the use of internal at all times. Internal provides the greatest control for logging stability, persistence and rotation. We advise the optional use of syslog for forwarding, and journald for short term querying. IE:
+We highly recommend the use of internal at all times (Despite the fact internal is optional). Internal provides the greatest control for logging stability, persistence and rotation. We advise the optional use of syslog for forwarding, and journald for short term querying. IE:
 
     nsslapd-logging-backend: internal
     OR
