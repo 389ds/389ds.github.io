@@ -8,12 +8,12 @@ title: "jemalloc Bundled with Directory Server"
 Overview
 --------
 
-Starting in 389-ds-base-1.3.5(f24) the jemalloc(alternative memory allocator) library will be shipped with the 389-ds-base-libs rpm package.  Currently jemalloc is not available in RHEL, this why we are going to ship jemalloc with the product.
+Starting in 389-ds-base-1.3.5(f24) the jemalloc(alternative memory allocator) library will be shipped with the 389-ds-base-libs rpm package.  Currently jemalloc is not available in RHEL - this is one of the reasons why we are shipping jemalloc with the product.
 
 Use Cases
 ---------
 
-jemalloc focuses on reducing/avoiding memory fragmentation, and it has a very impressive impact on the DS memory footprint, especially growth.  See(jemalloc testing results)[../FAQ/jemalloc-testing.html]
+jemalloc focuses on reducing/avoiding memory fragmentation, and it has a very impressive impact on the DS memory footprint, especially growth.  See [jemalloc testing results](../FAQ/jemalloc-testing.html)
 
 Design
 ------
