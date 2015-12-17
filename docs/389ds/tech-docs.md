@@ -50,6 +50,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [Troubleshoot CleanAllRUV Task](FAQ/troubleshoot-cleanallruv.html)
 -   [Address Sanitizer Testing](howto/howto-addresssanitizer.html) - Using Address Saniziter to find and correct issues.
 -   [GSSAPI Behind Load Balancer](howto/howto-loadbalance-gssapi.html) - Configuration of SLAPD behind a load balancer with GSSAPI
+-   [Attribute Uniqueness](howto/howto-uid-uniqueness.html) - Configuration of attribute uniqueness plugin.
 
 <br><a name="web-apps"></a>
 
