@@ -49,7 +49,7 @@ First is with classic, http basic authentication. The details from this authenti
       "resultCount": 1
     }
 
-Second is with gssapi. This is a more secure, and the preffered authentication option. The configuration details of ldap to use gssapi are beyond the scope of this document.
+Second is with gssapi. This is a more secure, and the prefered authentication option. The configuration details of ldap to use gssapi are beyond the scope of this document.
 
 This way a client only needs a krb5 ccache and the credentials are passed through.
 
@@ -83,18 +83,18 @@ The following lists the currently implemented resources - this is a work in prog
 
 ### /v1/index
 
-|Method|Description|Parameters|CURL Example|
+|Method|Description|JSON Representation|
 |-------|----------|----------|------------|
-|GET|Request a representation of all the indexes on the server|**justdn**=*yes* - Returns just the DN of the index, instead of the full entry|curl -X GET -G "http://localhost:5000/v1/index" <br>curl -X GET -G "http://localhost:5000/v1/index" -d 'justdn=yes'|
+|GET|Request a representation of all the indexes on the server|
 | | | | |
 
 ### /v1/index/{BACKEND}
 
 - **BACKEND** - The name of the database backend.  E.g. *userRoot*
 
-|Method|Description|Parameters|CURL Example|
+|Method|Description|JSON Representation|
 |-------|----------|----------|------------|
-|GET|Request a representation of all the indexes for the **backend**|**justdn**=*yes* - Returns just the DN of the index, instead of the full entry|curl -X GET -G "http://localhost:5000/v1/index/userroot" <br> curl -X GET -G "http://localhost:5000/v1/index/userroot" -d 'justdn=yes'|
+|GET|Request a representation of all the indexes for the **backend**|NULL
 | | | | |
 
 ### /v1/index/{BACKEND}/{ATTRIBUTE}
@@ -102,13 +102,13 @@ The following lists the currently implemented resources - this is a work in prog
 - **BACKEND** - The name of the database backend.  E.g. *userRoot*
 - **ATTRIBUTE** - The attribute index
 
-|Method|Description|Parameters|CURL Example|
+|Method|Description|JSON Representation|
 |-------|----------|----------|------------|
-|GET|Request a representation of the attribute index in the backend|None|curl -X GET "http://localhost:5000/v1/index/userroot/cn"|
-|PUT|Create a new index entry|**types**=*indexing_type* - Specify an indexing type.  Multivalued paramter<br>**mr**=*matching_rule* - specfiy a matching rule|curl -X PUT -G "http://localhost:5000/v1/index/userroot/newattr" -d 'types=eq' -d 'types=pres' -d 'mr=2.5.13.2'
-|POST|Reindex the attribute|None|curl -X POST -G "http://localhost:5000/v1/index/userroot/newattr"|
-|PATCH|Modify the index configuration **Not Implemented yet**|n/a|n/a|
-|DELETE|Delete an index|None|curl -X DELETE "http://localhost:5000/v1/index/userroot/newattr"
+|GET|Request a representation of the attribute index in the backend|None|
+|PUT|Create a new index entry|[Index Representation](ldap-rest-api.html#index)
+|POST|Reindex the attribute|None|
+|PATCH|Modify the index configuration|[PATCH Representation](#patch)
+|DELETE|Delete an index|None|
 | | | | |
 
 <br>
@@ -152,71 +152,7 @@ The following lists the currently implemented resources - this is a work in prog
 |DELETE|Delete an ldap entry|None|curl -X DELETE -G 'http://127.0.0.1:5000/v1/ldapmod/cn=mreynolds,dc=example,dc=com'|
 | | | | |
 
-
-### /v1/ldapsrch/{DN}/{SCOPE}/{FILTER}
-
-- **DN** - The DN of the entry
-- **SCOPE** - Search scope: base, one, sub
-- **FILTER** - Search filter
-
-|Method|Description|Parameters|CURL Example|
-|-------|----------|----------|------------|
-|GET|Request a representation of ldap entry result set|None|curl -X GET -G 'http://127.0.0.1:5000/v1/ldapsrch/dc=example,dc=com/sub/(&(objectclass=person)(cn=*))'|
-| | | | |
-
 <br>
-
-## JSON Representations
------------------------
-
-### Generic Result Representation
-
-    {
-        "result": "success|fail",
-        "href": "http link to resource - except for DELETEs or failures",  
-        "msg": "text"
-    }
-
-### LDAP Entry Representation
-
-    {
-        "result": "success|fail",
-        "href": "http link to resource",
-        "msg": {
-            "entryCount": COUNT,
-            "entries": [
-                {
-                    "dn": "DN",
-                    "attrs": {
-                        "ATTR": [
-                            "VALUE",
-                            "VALUE"
-                        ],
-                        "ATTR": [
-                            "VALUE"
-                        ]
-                        ...
-                        ...
-                    }
-                },
-                {
-                    "dn": "DN",
-                    "attrs": {
-                        "ATTR": [
-                            "VALUE",
-                            "VALUE"
-                        ],
-                        "ATTR": [
-                            "VALUE"
-                        ]
-                        ...
-                        ...
-                    }
-                }
-            ]
-        }
-    }
-
 
 # Configuration
 ---------------
@@ -236,7 +172,7 @@ If you are using apache you should use
 # Constrained Delegation
 ------------------------
 
-If you are configuring rest389 with freeipa, you must use contstrained delegation. Consider that we want to use rest389 on our a 389 instance that is not part of the IPA domain
+If you are configuring rest389 with freeipa, you must use constrained delegation. Consider that we want to use rest389 on our a 389 instance that is not part of the IPA domain
 
     master: ipamaster.example.com
     389 server: ds.example.com
@@ -262,4 +198,259 @@ We can now prove the delegation is working:
 
     kvno -k /etc/httpd/http.keytab -U admin -P HTTP/ds.example.com ldap/ds.example.com
 
+
+
+<br>
+
+## JSON Representations
+-----------------------
+
+### Generic Result/Response Representation
+
+All the JSON responses, for all the resources, are what the "**msg**" is in the **result** key.  All the following resource representation examples are what becomes the **msg** in the **result** key
+
+        "href": "http link to resource",
+        "resultCode": "http result code",
+        "resultCount": #####
+        "result": msg
+
+<a name="patch"></a>
+
+### PATCH - Update a resource
+
+Every resource that supports PATCH uses the JSON Patch representation: [https://tools.ietf.org/html/rfc6902](https://tools.ietf.org/html/rfc6902)
+However, currently we only support "**remove**", "**add**", "**replace**" from rfc6902
+
+    [
+        { "op": "remove", "path": "attr" },
+        { "op": "add", "path": "attr", "value": [ "somevalue1", "somevalue2" ] },
+        { "op": "replace", "path": "attr", "value": "somevalue1" }
+    ]
+
+Example
+
+    [
+        { "op": "remove", "path": "description" },
+        { "op": "add", "path": "uniquemember", "value": [ "uid=mark,dc=example,dc=com", "uid=william,dc=example,dc=com" ] },
+        { "op": "replace", "path": "userpassword", "value": "5ecretPa55Phra5e" }
+    ]
+
+<a name="suffix"></a>
+
+### Suffix Representation
+
+    GET, PUT
+    -----------------------------------------------------
+    {
+        'dn': Config DN,
+        'suffix': 'ou=people,dc=example,dc=com',
+        'parent': 'dc=example,dc=com',
+        'state':  'backend',
+        'backend':  [ BACKEND, BACKEND, ... ],
+        'referral': [ LDAP URL, LDAP URL, ... ]
+    }
+
+<a name="index"></a>
+
+### Index Representation
+
+    {
+        'dn': Config DN,
+        'index': ATTR,
+        'systemIndex': true/false,
+        'indexType': [ type, type, ... ]
+        'matchingRule': [ mr, mr, ... ]
+    }
+
+### Replication Representations
+
+THe following lists the representations of various components of replication, as well as the representations on how to update/access those resources.
+
+<a name="replica"></a>
+
+#### Replica Representation
+
+    GET
+    -----------------------------------------------------
+    {
+        'dn': DN
+        'ReplicaRoot': SUFFIX
+        'ReplicaRole': master, hub, consumer
+        'ReplicaType': 2
+        'ReplicaFlags': 1
+        'ReplicaID': 1
+        'ReplicaPurgeDelay': 604800
+        'ReplicaBindDN': 'uid=replica,cn=config'
+        'ReplicaBindDNGroup:' DN
+        'ReplicaBindDNGroupCheckInterval': 60
+        'ReplicaState': <decode base64 value>
+        'ReplicaName': '38475874-sdfdf-...'
+        'ReplicaBackoffMin': 5
+        'ReplicaBackoffMax': 300
+        'ReplicaProtocolTimeout': 120
+        'ReplicaReferral': REFERRAL
+        'ReplicaTombstonePurgeInterval': 12000
+        'ReplicaPreciseTombstonePurging': on
+        'ReplicaLegacyConsumer':
+        'ReplicaCleanRUV': VALUE
+        'ReplicaAbortCleanRUV': VALUE
+        'ReplicaChangeCount':
+        'ReplicaReapActive': 0/1
+    }
+
+    POST - Replica promotion/demotion Representation
+    -----------------------------------------------------
+    {
+        'action': 'promote/demote'
+        'newrole': 'master, hub, consumer'
+        'rid': 'newrid'  # Only for promotion to master
+        'binddn': DN  # Only for promotion to master
+        'newrole': 'master, hub, consumer'
+    }
+
+<a name="replagmt"></a>
+
+### Replication Agreement Representations
+
+    GET, PUT
+    -----------------------------------------------------
+    {
+        'dn': DN
+        'ReplicaName':
+        'ReplicaBindMethod': 'SASL/GSSAPI, SIMPLE  '
+        'ReplicaBindDN': cn=dm
+        'ReplicaBindCredentials': secret
+        'ReplicaHost': vm-192.abc.idm.lab.eng.brq.redhat.com
+        'ReplicaPort': 389
+        'ReplicaRoot': dc=abc,dc=idm,dc=lab,dc=eng,dc=brq,dc=redhat,dc=com
+        'ReplicaTransportInfo': LDAP
+        'ReplicatedAttributeList':
+        'ReplicatedAttributeListTotal':
+        'ReplicaConnTimeout': 120
+        'ReplicaRefresh': start
+        'ReplicaSchedule':
+        'ReplicaBusyWaitTime':
+        'ReplicaSessionPauseTime':
+        'ReplicaEnabled':
+        'ReplicaStripAttrs':
+        'ReplicaFlowControlWindow':
+        'ReplicaFlowControlPause':
+        'ReplicaRUV': []
+        'ReplicaMaxCSN':
+        'ReplicaBeginRefresh':
+        'ReplicaLastUpdateStart': 20151109201346Z
+        'ReplicaLastUpdateEnd: 20151109201346Z
+        'ReplicaChangesSentSinceStartup': base64
+        'ReplicaLastUpdateStatus':
+        'ReplicaUpdateInProgress':
+        'ReplicaLastInitStart':
+        'ReplicaLastInitEnd': 20151109201336Z
+        'ReplicaLastInitStatus':
+        'ReplicaReapActive':
+        'ReplicaStatus':
+        # Window Sync Attributes
+        'WinsyncDirectoryReplicaSubtree': DN
+        'WindowsReplicaSubtree': DN
+        'WinsyncNewWinUserSyncEnabled': 'on/off'
+        'WinsyncNewWinGroupSyncEnabled':'on/off'
+        'WinsyncWindowsDomain': VALUE
+        'WinsyncDirsyncCookie': BASE64-VALUE
+        'WinsyncInterval': INTERVAL
+        'WinsyncOneWaySync':
+        'WinsyncMoveAction':
+        'WinsyncWindowsFilter':
+        'WinsyncDirectoryFilter':
+        'WinsyncSubtreePair':
+    }
+
+    POST
+    -----------------------------------------------------
+    {
+        'action': 'enable/disable/initialize/send_updates'
+        'target': 'all (default), winsync, ds'
+    }
+
+    POST Error Response - lists agreements that were not updated
+    -----------------------------------------------------
+    {
+        'result_status': TEXT
+        'agreements': [agmt_dn, agmt_dn,...]
+    }
+
+<a name="replstatus"></a>
+
+### Replication Status Representation
+
+Returns a list of agreements and their current replication status
+
+    GET
+    ------------------------------------------------------
+    {
+        [
+            {
+                'agreement': name,
+                'suffix': replicated suffix,
+                'consumer_host': host,
+                'consumer_port': port,
+                'status_code': 0 = in sync, -1 not in sync,
+                'status_text': 'status message'
+            },
+            {
+                'agreement': name,
+                ...
+                ...
+            }
+        ]
+    }
+
+<a name="changelog"></a>
+
+#### Changelog Representation
+
+    GET
+    -----------------------------------------------------
+    {
+        'dn': DN:
+        'ChangelogDir':
+        'ChangelogMaxEntries':
+        'ChangelogMaxAge':
+        'ChangelogCompactDBInterval':
+        'ChangelogTrimInterval':
+        'ChangelogMaxConcurrentWrites':
+        'ChangelogEncryptionAlgorithm':
+        'ChangelogSymmetricKey':
+    }
+
+
+<a name="monitor"></a>
+
+### Monitor Representations
+
+    <work in progress>
+
+<a name="entry"></a>
+
+### LDAP Entry Representation
+
+A list of "entries" is returned, even for a single entry.
+    [
+	{
+	   "dn": "DN",
+	   "attrs": {
+		         "ATTR": ["VALUE", "VALUE"],
+		         "ATTR": ["VALUE"],
+		         ...,
+		         ...
+		    }
+	},
+	{
+	   "dn": "DN",
+	   "attrs": {
+		         "ATTR": ["VALUE", "VALUE"],
+		         "ATTR": ["VALUE"]
+		         ...,
+		         ...
+		    }
+	}
+    ]
 
