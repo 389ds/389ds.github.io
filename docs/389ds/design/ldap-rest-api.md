@@ -85,30 +85,30 @@ The following lists the currently implemented resources - this is a work in prog
 
 |Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Request a representation of all the indexes on the server|None|curl -X GET -G "http://admin.example.com:9830/v1/index"
+|GET|Request a representation of all the indexes on the server|[Index Representation](#index)|curl -X GET -G "http://admin.example.com:9830/v1/index"|
 | | | | |
 
 ### /v1/index/{BACKEND}
 
-- **BACKEND** - The name of the database backend.  E.g. *userRoot*
+- **BACKEND** - The name of the database backend or suffix.  E.g. *userRoot*
 
 |Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Request a representation of all the indexes for the **backend**|None|curl -X GET -G "http://admin.example.com:9830/v1/index/dc=example,dc=com
+|GET|Request a representation of all the indexes for the **backend**|[Index Representation](#index)|curl -X GET -G "http://admin.example.com:9830/v1/index/dc=example,dc=com"|
 | | | | |
 
 ### /v1/index/{BACKEND}/{ATTRIBUTE}
 
-- **BACKEND** - The name of the database backend.  E.g. *userRoot*
+- **BACKEND** - The name of the database backend or suffix.  E.g. *userRoot*
 - **ATTRIBUTE** - The attribute index
 
 |Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Request a representation of the attribute index in the backend|[Index Representation](#index)|curl -X GET -G "http://admin.example.com:9830/v1/index/dc=example,dc=com/cn|
-|PUT|Create a new index entry|[Index Representation](#index)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/index/dc=example,dc=com/cn|
-|POST|Reindex the attribute|None|http://admin.example.com:9830/v1/index/userroot|
-|PATCH|Modify the index configuration|[PATCH Representation](#patch)|curl -X PATCH -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/index/dc=example,dc=com/cn|
-|DELETE|Delete an index|None|http://admin.example.com:9830/v1/index/userroot|
+|GET|Request a representation of the attribute index in the backend|[Index Representation](#index)|curl -X GET -G "http://admin.example.com:9830/v1/index/dc=example,dc=com/cn"|
+|PUT|Create a new index entry|[Index Representation](#index)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/index/dc=example,dc=com/cn"|
+|POST|Reindex the attribute|None|curl -X POST -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/index/dc=example,dc=com/cn"|
+|PATCH|Modify the index configuration|[PATCH Representation](#patch)|curl -X PATCH -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/index/dc=example,dc=com/cn"|
+|DELETE|Delete an index|None|curl -X DELETE -G "http://admin.example.com:9830/v1/index/dc=example,dc=com/cn"|
 | | | | |
 
 <br>
@@ -129,9 +129,9 @@ The following lists the currently implemented resources - this is a work in prog
 
 |Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Request a representation of the suffix entry|None|curl -X GET "http://admin.example.com:9830/v1/suffix/dc=example,dc=com"|
-|PUT|Create a new suffix entry and backend|[Suffix Representation](#suffix)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/suffix/dc=example,dc=com|
-|PATCH|Modify a suffix configuration|[Suffix Representation](#suffix)|curl -X PATCH -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/suffix/dc=example,dc=com|
+|GET|Request a representation of the suffix entry|[Suffix Representation](#suffix)|curl -X GET "http://admin.example.com:9830/v1/suffix/dc=example,dc=com"|
+|PUT|Create a new suffix entry and backend|[Suffix Representation](#suffix)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/suffix/dc=example,dc=com"|
+|PATCH|Modify a suffix configuration|[Suffix Representation](#suffix)|curl -X PATCH -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/suffix/dc=example,dc=com"|
 |DELETE|Delete a suffix and its associated backend|None|curl -X DELETE -G "http://admin.example.com:9830/v1/suffix/dc=example,dc=com"|
 | | | | |
 
@@ -168,8 +168,8 @@ The following lists the currently implemented resources - this is a work in prog
 
 |Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Request a representation of all the replication agreements|[Replica Representation](#replica)|curl -X GET "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts"|
-|POST|Enable/disable/Initialize/sendupdates for all the agreements|[Replica Representation](#replica)|curl -X POST -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts"|
+|GET|Request a representation of all the replication agreements|[Replica Agreement Representation](#replagmt)|curl -X GET "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts"|
+|POST|Enable/disable/Initialize/sendupdates for all the agreements|[Replica Agreement Representation](#replagmt)|curl -X POST -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts"|
 |DELETE|Delete all the replication agreements|None|curl -X DELETE -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts"|
 | | | | |
 
@@ -227,10 +227,10 @@ The following lists the currently implemented resources - this is a work in prog
 
 |Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Search for a LDAP Entry (subtree scope, objectclass=*)|Entry Representation](#entry)|curl -X GET "http://admin.example.com:9830/v1/ldap/uid=mreynolds,dc=example,dc=com"|
+|GET|Search for a LDAP Entry (subtree scope, objectclass=*)|[Entry Representation](#entry)|curl -X GET "http://admin.example.com:9830/v1/ldap/uid=mreynolds,dc=example,dc=com"|
 |PUT|Add an LDAP Entry|[Entry Representation](#entry)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G 'http://admin.example.com:9830/v1/ldap/uid=mreynolds,dc=example,dc=com'|
-|PATCH|Modify an entry (also used for MODRDN)|[Entry Representation](#entry)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G 'http://admin.example.com:9830/v1/ldapmod/uid=mreynolds,dc=example,dc=com'|
-|DELETE|Delete an ldap entry|None|curl -X DELETE -G 'http://admin.example.com:9830/v1/ldapmod/cn=mreynolds,dc=example,dc=com'|
+|PATCH|Modify an entry (also used for MODRDN)|[Entry Representation](#entry)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G 'http://admin.example.com:9830/v1/ldap/uid=mreynolds,dc=example,dc=com'|
+|DELETE|Delete an ldap entry|None|curl -X DELETE -G 'http://admin.example.com:9830/v1/ldap/cn=mreynolds,dc=example,dc=com'|
 | | | | |
 
 ### /v1/ldap/{DN}/{SCOPE}/
@@ -240,7 +240,7 @@ The following lists the currently implemented resources - this is a work in prog
 
 |Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Search for a LDAP Entry (scope)|Entry Representation](#entry)|curl -X GET "http://admin.example.com:9830/v1/ldap/dc=example,dc=com/one"|
+|GET|Search for a LDAP Entry (scope)|[Entry Representation](#entry)|curl -X GET "http://admin.example.com:9830/v1/ldap/dc=example,dc=com/one"|
 | | | | |
 
 ### /v1/ldap/{DN}/{SCOPE}/{FILTER}/
@@ -251,7 +251,7 @@ The following lists the currently implemented resources - this is a work in prog
 
 |Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Search for a LDAP Entry (scope, filter))|Entry Representation](#entry)|curl -X GET "http://admin.example.com:9830/v1/ldap/dc=example,dc=com/one"|
+|GET|Search for a LDAP Entry (scope, filter))|[Entry Representation](#entry)|curl -X GET "http://admin.example.com:9830/v1/ldap/dc=example,dc=com/one"|
 | | | | |
 
 ### /v1/ldap/{DN}/{SCOPE}/{FILTER/{ATTRS}
@@ -263,7 +263,7 @@ The following lists the currently implemented resources - this is a work in prog
 
 |Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Search for a LDAP Entry (scope, filter, and attributes)|Entry Representation](#entry)|curl -X GET "http://admin.example.com:9830/v1/ldap/dc=example,dc=com/one/dn,cn"|
+|GET|Search for a LDAP Entry (scope, filter, and attributes)|[Entry Representation](#entry)|curl -X GET "http://admin.example.com:9830/v1/ldap/dc=example,dc=com/one/dn,cn"|
 | | | | |
 
 <br>
@@ -316,10 +316,10 @@ We can now prove the delegation is working:
 
 <br>
 
-## JSON Representations
+# JSON Representations
 -----------------------
 
-### Generic Result/Response Representation
+## Generic Result/Response Representation
 
 All the JSON responses, for all the resources, are what the "**msg**" is in the **result** key.  All the following resource representation examples are what becomes the **msg** in the **result** key
 
@@ -330,7 +330,7 @@ All the JSON responses, for all the resources, are what the "**msg**" is in the 
 
 <a name="patch"></a>
 
-### PATCH - Update a resource
+## PATCH - Update a resource
 
 Every resource that supports PATCH uses the JSON Patch representation: [https://tools.ietf.org/html/rfc6902](https://tools.ietf.org/html/rfc6902)
 However, currently we only support "**remove**", "**add**", "**replace**" from rfc6902
@@ -351,7 +351,7 @@ Example
 
 <a name="suffix"></a>
 
-### Suffix Representation
+## Suffix Representation
 
     GET, PUT
     -----------------------------------------------------
@@ -366,7 +366,7 @@ Example
 
 <a name="index"></a>
 
-### Index Representation
+## Index Representation
 
     {
         'dn': Config DN,
@@ -376,13 +376,13 @@ Example
         'matchingRule': [ mr, mr, ... ]
     }
 
-### Replication Representations
+## Replication Representations
 
 The following lists the representations of various components of replication, as well as the representations on how to update/access those resources.
 
 <a name="replica"></a>
 
-#### Replica Representation
+### Replica Representation
 
     GET
     -----------------------------------------------------
@@ -424,7 +424,7 @@ The following lists the representations of various components of replication, as
 
 <a name="replagmt"></a>
 
-### Replication Agreement Representations
+## Replication Agreement Representations
 
     GET, PUT
     -----------------------------------------------------
@@ -493,7 +493,7 @@ The following lists the representations of various components of replication, as
 
 <a name="replstatus"></a>
 
-### Replication Status Representation
+## Replication Status Representation
 
 Returns a list of agreements and their current replication status
 
@@ -519,7 +519,7 @@ Returns a list of agreements and their current replication status
 
 <a name="changelog"></a>
 
-#### Changelog Representation
+## Changelog Representation
 
     GET
     -----------------------------------------------------
@@ -538,15 +538,16 @@ Returns a list of agreements and their current replication status
 
 <a name="monitor"></a>
 
-### Monitor Representations
+## Monitor Representations
 
     <work in progress>
 
 <a name="entry"></a>
 
-### LDAP Entry Representation
+## LDAP Entry Representation
 
 A list of "entries" is returned, even for a single entry.
+
     [
 	{
 	   "dn": "DN",
