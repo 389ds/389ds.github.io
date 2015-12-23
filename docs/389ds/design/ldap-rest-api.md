@@ -83,18 +83,18 @@ The following lists the currently implemented resources - this is a work in prog
 
 ### /v1/index
 
-|Method|Description|JSON Representation|
+|Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Request a representation of all the indexes on the server|
+|GET|Request a representation of all the indexes on the server|None|curl -X GET -G "http://admin.example.com:9830/v1/index"
 | | | | |
 
 ### /v1/index/{BACKEND}
 
 - **BACKEND** - The name of the database backend.  E.g. *userRoot*
 
-|Method|Description|JSON Representation|
+|Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Request a representation of all the indexes for the **backend**|NULL
+|GET|Request a representation of all the indexes for the **backend**|None|curl -X GET -G "http://admin.example.com:9830/v1/index/dc=example,dc=com
 | | | | |
 
 ### /v1/index/{BACKEND}/{ATTRIBUTE}
@@ -102,13 +102,13 @@ The following lists the currently implemented resources - this is a work in prog
 - **BACKEND** - The name of the database backend.  E.g. *userRoot*
 - **ATTRIBUTE** - The attribute index
 
-|Method|Description|JSON Representation|
+|Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Request a representation of the attribute index in the backend|None|
-|PUT|Create a new index entry|[Index Representation](ldap-rest-api.html#index)
-|POST|Reindex the attribute|None|
-|PATCH|Modify the index configuration|[PATCH Representation](#patch)
-|DELETE|Delete an index|None|
+|GET|Request a representation of the attribute index in the backend|[Index Representation](#index)|curl -X GET -G "http://admin.example.com:9830/v1/index/dc=example,dc=com/cn|
+|PUT|Create a new index entry|[Index Representation](#index)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/index/dc=example,dc=com/cn|
+|POST|Reindex the attribute|None|http://admin.example.com:9830/v1/index/userroot|
+|PATCH|Modify the index configuration|[PATCH Representation](#patch)|curl -X PATCH -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/index/dc=example,dc=com/cn|
+|DELETE|Delete an index|None|http://admin.example.com:9830/v1/index/userroot|
 | | | | |
 
 <br>
@@ -118,38 +118,152 @@ The following lists the currently implemented resources - this is a work in prog
 
 ### /v1/suffix
 
-|Method|Description|Parameters|CURL Example|
+|Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Request a representation of all the suffixes|**justdn**=*yes* - Return just the suffix names|curl -X GET -G "http://localhost:5000/v1/suffix" -d 'justdn=yes'|
+|GET|Request a representation of all the suffixes|[Suffix Representation](#suffix)|curl -X GET -G "http://admin.example.com:9830/v1/suffix"|
 | | | | |
 
 ### /v1/suffix/{SUFFIX}
 
 - **SUFFIX** - The suffix to engage
 
-|Method|Description|Parameters|CURL Example|
+|Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|GET|Request a representation of the suffix entry|None|curl -X GET "http://localhost:5000/v1/suffix/dc=example,dc=com"|
-|PUT|Create a new suffix entry and backend|**backend**=*be_name*|curl -X PUT -G "http://localhost:5000/v1/suffix/dc=example,dc=com" -d 'backend=newUserRoot'|
-|PATCH|Modify a suffix configuration **Not Implemented yet**|n/a|n/a|
-|DELETE|Delete a suffix and its associated backend(if selected)|**deletebackend**=*backend*|curl -X DELETE -G "http://localhost:5000/v1/suffix/dc=example,dc=com" -d "deletebackend=newUserRoot"|
+|GET|Request a representation of the suffix entry|None|curl -X GET "http://admin.example.com:9830/v1/suffix/dc=example,dc=com"|
+|PUT|Create a new suffix entry and backend|[Suffix Representation](#suffix)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/suffix/dc=example,dc=com|
+|PATCH|Modify a suffix configuration|[Suffix Representation](#suffix)|curl -X PATCH -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/suffix/dc=example,dc=com|
+|DELETE|Delete a suffix and its associated backend|None|curl -X DELETE -G "http://admin.example.com:9830/v1/suffix/dc=example,dc=com"|
 | | | | |
 
+
+<br>
+
+## Replication Resources
+------------------------
+
+### /v1/replication
+
+|Method|Description|JSON Representation|CURL Example|
+|-------|----------|----------|------------|
+|GET|Request a representation of the suffix entry|[Replica Representation](#replica)|curl -X GET "http://admin.example.com:9830/v1/replication"|
+| | | | | 
+
+### /v1/replication/{SUFFIX}
+
+- **SUFFIX** - The suffix to engage
+
+|Method|Description|JSON Representation|CURL Example|
+|-------|----------|----------|------------|
+|GET|Request a representation of Replication|[Replica Representation](#replica)|curl -X GET "http://admin.example.com:9830/v1/replication/dc=example,dc=com"|
+|PUT|Enable replication for the suffix|[Replica Representation](#replica)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com"|
+|PATCH|Modify the replication configuration|[Replica Representation](#replica)|curl -X PATCH -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com"|
+|POST|Promote/Demote Replication Role|[Replica Representation](#replica)|curl -X POST -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com"|
+|DELETE|Disable replication|None|curl -X DELETE -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com"|
+| | | | |
+
+
+### /v1/replication/{SUFFIX}/agmts
+
+- **SUFFIX** - The suffix to engage
+
+|Method|Description|JSON Representation|CURL Example|
+|-------|----------|----------|------------|
+|GET|Request a representation of all the replication agreements|[Replica Representation](#replica)|curl -X GET "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts"|
+|POST|Enable/disable/Initialize/sendupdates for all the agreements|[Replica Representation](#replica)|curl -X POST -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts"|
+|DELETE|Delete all the replication agreements|None|curl -X DELETE -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts"|
+| | | | |
+
+### /v1/replication/{SUFFIX}/agmts/status
+
+- **SUFFIX** - The suffix to check
+
+|Method|Description|JSON Representation|CURL Example|
+|-------|----------|----------|------------|
+|GET|Get the status of all the replication agreements under the suffix|[Replica Agreement Representation](#replagmt)|curl -X GET "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts"|
+| | | | |
+
+### /v1/replication/{SUFFIX}/agmts/{AGMT}
+
+- **SUFFIX** - The suffix to engage
+- **AGMT** - The replication agreement name
+
+|Method|Description|JSON Representation|CURL Example|
+|-------|----------|----------|------------|
+|GET|Request a representation of the replication agmt|[Replica Agreement Representation](#replagmt)|curl -X GET "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts/hostA-to-hostB"|
+|PUT|Create a replication agreement|[Replica Agreement Representation](#replagmt)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts/hostA-to-hostB"|
+|PATCH|Modify the replication agreement|[Replica Agreement Representation](#replagmt)|curl -X PATCH -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts/hostA-to-hostB"|
+|POST|Initialize, send updates, enable, or disable agreement|[Replica Agreement Representation](#replagmt)|curl -X POST -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts/hostA-to-hostB"|
+|DELETE|Delete replication agreement|None|curl -X DELETE -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts/hostA-to-hostB"|
+| | | | |
+
+### /v1/replication/{SUFFIX}/agmts/{AGMT}/status
+
+- **SUFFIX** - The suffix to engage
+- **AGMT** - The replication agreement name
+
+|Method|Description|JSON Representation|CURL Example|
+|-------|----------|----------|------------|
+|GET|Get the status of the replication agreement|[Replica Agreement Representation](#replagmt)|curl -X GET "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts"|
+| | | | |
+
+### /v1/replication/changelog
+
+|Method|Description|JSON Representation|CURL Example|
+|-------|----------|----------|------------|
+|GET|Request a representation of the replication changelog|[Changelog Representation](#changelog)|curl -X GET "http://admin.example.com:9830/v1/replication/changelog"|
+|PUT|Create replication changelog|[Changelog Representation](#changelog)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/replication/changelog"|
+|PATCH|Modify the replication changelog|[Changelog Representation](#changelog)|curl -X PATCH -H "Content-Type: application/json" -d JSON_REP -G "http://admin.example.com:9830/v1/replication/changelog"|
+|DELETE|Delete replication changelog|None|curl -X DELETE -G "http://admin.example.com:9830/v1/replication/dc=example,dc=com/agmts/hostA-to-hostB"|
+| | | | |
 
 <br>
 
 ## LDAP Operation Resources
 ---------------------------
 
-### /v1/ldapmod/{DN}
+### /v1/ldap/{DN}
 
-- **DN** - the DN of the entry
+- **DN** - The DN of the entry
 
-|Method|Description|Parameters|CURL Example|
+|Method|Description|JSON Representation|CURL Example|
 |-------|----------|----------|------------|
-|PUT|Add an LDAP entry|**attribute**=*value*|curl -X PUT -G 'http://127.0.0.1:5000/v1/ldapmod/uid=mreynolds,dc=example,dc=com' -d 'objectclass=top' -d 'objectclass=person' -d 'objectclass=inetorgperson' -d 'objectclass=inetuser' -d 'uid=mreynolds' -d 'givenname=Mark' -d 'cn=Mark_Reynolds' -d 'sn=Reynolds'|
-|PATCH|Modify an entry (also yused for MODRDN)|**changetype**=*modify/modrdn*<br>**op**=*add/replace/delete*<br>**attribute**=*value*<br>**newrdn**=*new_rdn*<br>**newsuperior**=*new_superior*<br>**deleteoldrdn**=*True/False*|curl -X PATCH -G 'http://127.0.0.1:5000/v1/ldapmod/uid=mreynolds,dc=example,dc=com' -d 'changetype=modify' -d 'op=replace' -d 'description=test'<br>curl -X PATCH -G 'http://127.0.0.1:5000/v1/ldapmod/uid=mreynolds,dc=example,dc=com' -d 'changetype=modrdn' -d 'newrdn=cn=mreynolds' -d 'deloldrdn=True'|
-|DELETE|Delete an ldap entry|None|curl -X DELETE -G 'http://127.0.0.1:5000/v1/ldapmod/cn=mreynolds,dc=example,dc=com'|
+|GET|Search for a LDAP Entry (subtree scope, objectclass=*)|Entry Representation](#entry)|curl -X GET "http://admin.example.com:9830/v1/ldap/uid=mreynolds,dc=example,dc=com"|
+|PUT|Add an LDAP Entry|[Entry Representation](#entry)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G 'http://admin.example.com:9830/v1/ldap/uid=mreynolds,dc=example,dc=com'|
+|PATCH|Modify an entry (also used for MODRDN)|[Entry Representation](#entry)|curl -X PUT -H "Content-Type: application/json" -d JSON_REP -G 'http://admin.example.com:9830/v1/ldapmod/uid=mreynolds,dc=example,dc=com'|
+|DELETE|Delete an ldap entry|None|curl -X DELETE -G 'http://admin.example.com:9830/v1/ldapmod/cn=mreynolds,dc=example,dc=com'|
+| | | | |
+
+### /v1/ldap/{DN}/{SCOPE}/
+
+- **DN** - The DN of the entry
+- **SCOPE** - The search scope
+
+|Method|Description|JSON Representation|CURL Example|
+|-------|----------|----------|------------|
+|GET|Search for a LDAP Entry (scope)|Entry Representation](#entry)|curl -X GET "http://admin.example.com:9830/v1/ldap/dc=example,dc=com/one"|
+| | | | |
+
+### /v1/ldap/{DN}/{SCOPE}/{FILTER}/
+
+- **DN** - The DN of the entry
+- **SCOPE** - The search scope
+- **FILTER** - The search filter
+
+|Method|Description|JSON Representation|CURL Example|
+|-------|----------|----------|------------|
+|GET|Search for a LDAP Entry (scope, filter))|Entry Representation](#entry)|curl -X GET "http://admin.example.com:9830/v1/ldap/dc=example,dc=com/one"|
+| | | | |
+
+### /v1/ldap/{DN}/{SCOPE}/{FILTER/{ATTRS}
+
+- **DN** - The DN of the entry
+- **SCOPE** - The search scope
+- **FILTER** - The search filter
+- **ATTRS** - Comma separated list of attrs to return
+
+|Method|Description|JSON Representation|CURL Example|
+|-------|----------|----------|------------|
+|GET|Search for a LDAP Entry (scope, filter, and attributes)|Entry Representation](#entry)|curl -X GET "http://admin.example.com:9830/v1/ldap/dc=example,dc=com/one/dn,cn"|
 | | | | |
 
 <br>
@@ -264,7 +378,7 @@ Example
 
 ### Replication Representations
 
-THe following lists the representations of various components of replication, as well as the representations on how to update/access those resources.
+The following lists the representations of various components of replication, as well as the representations on how to update/access those resources.
 
 <a name="replica"></a>
 
