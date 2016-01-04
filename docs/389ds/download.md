@@ -98,12 +98,12 @@ NOTE: Windows Console now (as of September 11, 2015) requires Java 7 to work.
 
 NOTE: You must use 64-bit Java with the 64-bit version.
 
-Tested with Java 7 on Windows 2008/2015 Server.
+Tested with Java 7 on Windows 2008/2012 Server.
 
 |Platform|File|SHA1SUM|
 |--------|----|-------|
-|Windows 2008/2015 32-bit|[389-Console-1.1.15-i386.msi]({{ site.baseurl }}/binaries/389-Console-1.1.15-i386.msi)|8cff45b6d9c1839d3ad46766fa46ccbb22a2f112|
-|Windows 2008/2015 64-bit|[389-Console-1.1.15-x86\_64.msi]({{ site.baseurl }}/binaries/389-Console-1.1.15-x86_64.msi)|57f5be6c9664170da5071730d736f5668f2827f7|
+|Windows 2008/2012 32-bit|[389-Console-1.1.15-i386.msi]({{ site.baseurl }}/binaries/389-Console-1.1.15-i386.msi)|772e4691daea66dcdef97cb220d9ae77ab9fbe78|
+|Windows 2008/2012 64-bit|[389-Console-1.1.15-x86\_64.msi]({{ site.baseurl }}/binaries/389-Console-1.1.15-x86_64.msi)|35ec5bad0d309c334ba8c5e8ac0ab183f004d7fd|
 
 NOTE: You must have Java in your PATH in order for this to work. Or you can just edit the batch file to tell it where to find Java.
 
