@@ -53,8 +53,8 @@ Source Code and Build Instructions
 |**DSML Gateway** ([build instructions](administration/dsml-gateway-building.html)) | <https://git.fedorahosted.org/git/389/dsmlgw.git>| git clone git://git.fedorahosted.org/git/389/dsmlgw.git<br>git clone ssh://git.fedorahosted.org/git/389/dsmlgw.git|
 |**Passync/Winsync** ([build instructions](development/buildingpasssync.html)) | <https://git.fedorahosted.org/git/389/winsync.git>| git clone git://git.fedorahosted.org/git/389/winsync.git<br>git clone ssh://git.fedorahosted.org/git/389/winsync.git|
 |**Continuous Integration Testing** ([documentation](FAQ/upstream-test-framework.html))| <https://git.fedorahosted.org/git/389/lib389.git>| git clone git://git.fedorahosted.org/git/389/lib389.git<br>git clone ssh://git.fedorahosted.org/git/389/lib389.git|
+|**Rest Server** ([documentation](design/ldap-rest-api.html))| <https://git.fedorahosted.org/git/389/rest389.git>| git clone git://git.fedorahosted.org/git/389/rest389.git<br>git clone ssh://git.fedorahosted.org/git/389/rest389.git|
 |**OpenLDAP** ([build instructions](development/building-openldap.html))|Not Available| git clone git://git.openldap.org/openldap.git|
-
 
 <br>
 
