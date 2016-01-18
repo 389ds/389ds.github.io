@@ -1,0 +1,12 @@
+// Represent the AST of the filter '(&(objectClass=foo)(cn=bar)(uid=baz))'
+
+digraph FilterBasic {
+    root_and [label="&", shape=record];
+    uid_baz [label="uid=baz", shape=record];
+    cn_bar [label="cn=bar", shape=record];
+    oc_foo [label="objectClass=foo", shape=record];
+    root_and -> uid_baz;
+    root_and -> cn_bar;
+    root_and -> oc_foo;
+}
+

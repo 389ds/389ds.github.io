@@ -1,0 +1,8 @@
+
+all:
+	dot -o ../images/query_opt_filter_basic.svg -Tsvg query_opt_filter_basic.dot
+	dot -o ../images/query_opt_filter_basic_pop.svg -Tsvg query_opt_filter_basic_pop.dot
+	dot -o ../images/query_opt_filter_basic_ig.svg -Tsvg query_opt_filter_basic_ig.dot
+	dot -o ../images/query_opt_filter_complex.svg -Tsvg query_opt_filter_complex.dot
+	dot -o ../images/query_opt_filter_complex_ig.svg -Tsvg query_opt_filter_complex_ig.dot
+
