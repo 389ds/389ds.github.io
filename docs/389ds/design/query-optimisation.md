@@ -24,15 +24,15 @@ There are many efficiency improvements to be realised. This design document will
 ### Description
 ---------------
 
-The majority of work currently done in the seas is the ldbm backends ldbm_search.c, in the function ldbm_back_search( Slapi_PBlock *pb ). Depending on the search type, this calls filter_candidates in the case of subtree and onelevel searches (A base search will only ever have one result, so is already considered as optimised.)
+The majority of work currently done in the seas is the ldbm backends ldbm_search.c, in the function ldbm_back_search(). Depending on the search type, this calls filter_candidates in the case of subtree and onelevel searches (A base search will only ever have one result, so is already considered as optimised.)
 
-In the absence of indexed attributes, the searching backend builds a filtering regex, compiles and applies it. We are not interested in this behaviour as we are unable to improve the performance of this behaviour in a fully unindexed search.
+In the absence of indexed attributes, the searching backend builds a filtering regex, compiles and applies it to the entries in the candidate list. We are not interested in this behaviour as we are unable to improve the performance of this behaviour in a fully unindexed search.
 
-If we have a filter which has 1 or more indexed attributes, the indexed attributes are searched first by index_subsys_evaluate_filter and the result set returned once it is complete.
+If we have a filter which has 1 or more indexed attributes, the indexed attributes are searched first by index_subsys_evaluate_filter() and the result set returned once it is complete.
 
 In index_subsystem.c, (which is decoupled from the ldbm code) applies the available indexes left to right, by:
 
-There is a simple optimisation available here where the components of an AND filter are rearranged to make the indexed components to the left of the filter (index_subsys_group_decoders) . However, no regard is made to the order of the indexed components.
+There is a simple optimisation available here where the components of an AND filter are rearranged to make the indexed components to the left of the filter in index_subsys_group_decoders() . However, no regard is made to the order of the indexed components.
 
 The current application of the filter is for intents and purposes "left to right, indexed first within an AND statement".
 
@@ -45,7 +45,7 @@ The filter for objectClass=foo will be applied first before the filter for cn=ba
 ### Filter application
 ----------------------
 
-As a result, there are cases, especially within an and clause where the re-arranging of the filter components can yield a performance increase.
+As a result, there are cases, especially within an AND clause where the re-arranging of the filter components can yield a performance increase.
 
 Consider a database of 40 entries. We will declare the set of all entries as E. 30 of these have objectClass=foo, 20 with cn=bar and 10 with uid=baz.
 
@@ -409,5 +409,5 @@ This is a large, serious change proposal. It is not to be entered into lightly, 
 ## Author
 ---------
 
-William Brown:  firstyear at redhat dot com
+William Brown:  wibrown at redhat dot com
 
