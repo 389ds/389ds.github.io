@@ -21,7 +21,7 @@ title: 389 Web UI Design Page
 -   “o=netscaperoot”/console layout not robust, too hostname centric, replication is only good for backup purposes – single point of console failure
 -   Not network management friendly
 -   Requires installing a client package (e.g. 389-console)
--   User experience is generally poor, features are not in system with actual main 389-ds features.
+-   User experience is generally poor, features are not in sync with actual main 389-ds features.
 
 ---------------------------
 
@@ -36,7 +36,7 @@ title: 389 Web UI Design Page
 ### “Floating” Configuration
 
 -   Directory Management Configuration suffix “o=dmc” replaces “o=netscaperoot”
--   Seperation of machin, domain and suffix specific configurations.
+-   Seperation of host, domain and suffix specific configurations.
 -   Can be replicated, and still fully functional on every system
 -   Allows the DMC to administer all servers in the registered deployment simultaneously
 -   Allows the DS server to be "brought into line" with the contents of o=dmc (Fast system repair, deployment and validation)
@@ -128,8 +128,8 @@ Remember, in a domain, that not all hosts in the domain need to serve a suffix i
 
 There is only one config server per server host. Hosts can have per host configuration defined for relevant attributes.
 
-    cn=settings, cn=host1.domain1.com, cn=hosts, o=dmc
-    host: host1.domain1.com
+    cn=settings, cn=master-a.example.com, cn=hosts, o=dmc
+    cn: master-a.example.com
     port: 3890
     securePort: 6360
     SecurityDir: /etc/dirsrv/slapd-configuration/
@@ -148,6 +148,16 @@ Some settings are domain wide. For example, encryption policy, or password polic
 
 Suffixes can have settings that apply to them, such as indicies, some plugins and replication.
 
+    dc=example,dc=com,cn=suffixes,o=dmc
+
+    // Maybe there should be a cn=hosts container in the suffix to keep it neat?
+
+    cn=master-a.example.com, dc=example,dc=com,cn=suffixes,o=dmc
+    replicatesTo: master-b.example.com
+
+    cn=master-b.example.com, dc=example,dc=com,cn=suffixes,o=dmc
+    replicatesTo: master-a.example.com
+
     cn=settings, dc=example,dc=com, cn=suffixes, o=dmc
     backendType: ldbm
     ...
@@ -162,9 +172,14 @@ Administrative users are placed into:
 
 Permissions are granted through aci's, which refer to role groups in cn=roles,o=dmc. An example of this is cn=domain admin,cn=roles,o=dmc which would be equivalent to cn=Directory Manager for the purpose of o=dmc.
 
+When we create a suffix in cn=suffixes,o=dmc, paintbrust would detect this change, and apply the new backend to the hosts that have been nominated to serve it. It would also apply the replication configuration to these hosts.
+
+
 ---------------------------
 
 ## HTTP/REST Server
+
+// If we only allow one ns-slapd instance per server, then we don't need this. Because we only have one instance, lib389 auto discover will find it, and we know the backend will always be o=dmc.
 
 Each Admin/HTTP Server will have a config file that it will use to know how to talk to the Configuration DS.
 
