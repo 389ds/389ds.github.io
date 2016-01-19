@@ -202,86 +202,126 @@ Each Admin/HTTP Server will have a config file that it will use to know how to t
 
 ## UI Layout
 
- WARNING: I haven't edited this bit yet ...
 
--   Tasks
--   Configuration Servers
--   Directory Servers
--   Replication
+The UI should be laid out with a treeview on the left panel, and a menu bar across the top.
 
-### Tasks page
--   Start, Stop, Restart HTTP server
--   Security Management
-
-### Configuration Servers Page
-
--   “Tree” listing the network structure (just like the existing console), but only listing the configuration servers
--   Might group this into the Directory Servers page/topology, but I'd like to somehow keep it separate.
--   Register to/with Remote Config Servers
--   Authentication LDAP URLS – ordered list of servers to search for console authentication
--   Administrators (cn=administrators, o=dmc)
-    -   uid=admin, cn=administrators, cn=host1.domain1.com, ou=domain1.com, ou=Configuration Servers, o=dmc
-    -   uid=admin-new york, cn=administrators, cn=host.domain2.com, ou=domain1.com, ou=Configuration Servers, o=dmc
-
-### Directory Servers Page
-
--   “Tree” listing the network structure (domains/hosts) (just like the existing console)
-    -   Create a new instances
-    -   Synchronize Server Config?
-        -   Indexing, limits, cache, etc
-   
--   DS Instance Actions 
-    - "Unopened" Instance:
-        - Start/Stop/Restart
-        - Backup/Restore
-        - Unregister instance
-        - Monitor/Stats?
-        - Delete instance
-        - Synch Configuration with another instance (to and from)
-    - “Opened” Instance:
-        - Server Configuration  
-            - Global settings
-            - Schema
-            - Security
-            - Password Policy
-            - Disk Monitoring
-            - Password Admins
-            - Limits (size, time, idletimeout, etc)
-            - etc.  
-        - Plugins   
-            - Add, delete, enable/disable, and configure plugins
-        - Backend    
-            - DB config/perf tuning
-            - Suffix Management
-            - Backup/Restore
-            - Import/export
-        - Replication 
-            - Configure replication
-            - Changelog
-        - Logging & Monitoring 
-            - Configure logging settings
-            - Manage logs (force rotation, removal, etc)
-            - View Logs
-                - Reports
-                - Integrate logconv.pl ?  
+A rough ascii example:
 
 
-### Replication Page
+    *389 DS Admin* | Monitoring  | Performance | Tasks | Replication | Suffix | Roles
+    ---------------|-----------------------------------------------------------------
+    domain         |
+    |- suffixes    |       Awesome 389-ds admin stuff goes here!
+    \- hosts       |
 
--   Replication overview 
--   Configure/deploy replication across all registered servers in a single proceedure
-    -   Select "instances"
-    -   Specify instance role (master, hub, consumer)
-    -   Specify suffix
-    -   Define other configurations(fractional, attributes to strip/ignore, protocol timeouts, etc)
-    -   Define Authentication(method + protocol)
-    -   Initialize All (one click)
-    -   Done!
+
+The treeview will contain:
+
+    domain
+    |- suffixes
+    \- hosts
+
+These can then expand to:
+
+    domain
+    |- suffixes
+    |  |- dc=example,dc=com
+    |  \- dc=bazaar,dc=com
+    |
+    \- hosts
+       |- master-a.example.com
+       \- master-b.example.com
+
+The menu across the top will list various "actions" or components for configuration.
+
+This list will include (at a basic estimation)
+
+    | Monitoring  | Performance | Tasks | Replication | Suffix | Roles
+
+Now, the most important aspect of how the ui will function is on the set of these.
+
+If we select 'domain' in the tree, and 'Monitoring' on the menu, we should see the monitoring status of all hosts and suffixes in the domain.
+
+If we select 'suffixes' and 'Monitoring', we should see only suffix Monitoring information.
+
+If we select a single host we should see only that host's 'Monitoring' information.
+
+Certain actions however only make sense in the tree. For example, right clicking domain or suffixes, should yield a context menu to "add a suffix". Right clicking a specific suffix should give the option to remove it. These actions should also exist in the suffix tab.
+
+Another example, the performance tab, will behave differently for a host compared to a suffix. A suffix may show indices, where as the host will display cachesizing.
+
+If we swap between tree view items, such as between the two hosts master-a and master-b, and presume we are on the page "replication", then we should just update the page with the replication details of the now selected system.
+
+Certain tree and menu combinations may not make sense however. In this case, we can either:
+
+* Move the tree pointer to "domain"
+* While we have certain tree elements selected, de-activate menu options.
+* Present a blank menu that states "select a valid resource type X"
+
+I think that number 2 likely makes the most sense, and means the "tree view" really drives the interaction and scoping. However, 3 would be an acceptable solution too.
+
+Roles would manage the roles for administrators in the o=dmc domain.
+
+
+This layout would also largely affect, and influence the design of the rest api and the dsadm tool.
 
 --------------------
+
+## Config application
+
+The most important part of this system is how we get config *out* from o=dmc and into each DS instance.
+
+       +----------+      +----------+
+       | master-a | <--> | master-b |
+       +----------+      +----------+
+            ^                  ^
+            |                  |
+    +--------------+    +--------------+
+    | paintbrush-a |    | paintbrush-b |
+    +--------------+    +--------------+
+
+When a change is made to o=dmc on master-a *or* master-b, that change will be replicated via o=dmc throughout the ds topology.
+
+The paintbrush daemon will use a syncrepl (or persistent search) connection to the DS to monitor changes to o=dmc. When it detects a change, it interprets the changed value in o=dmc into a value for application in the local instances cn=config
+
+Additionally, paintbrush can also re-parse the entire o=dmc to refresh and "force" the contents of cn=config on a host to be updated in line with what the o=dmc domain expects. This should always be done on server startup and shutdown. That's why paintbrush really becomes the "controller" of the local ns-slapd instance.
+
+We should give objects in o=dmc an "application status" field of some kind ...
+
+For example, when a suffix is created, we would create this in cn=suffixes,o=dmc. It would have the status field:
+
+    status: master-a.example.com:pending
+    host: master-a.example.com
+
+Then paintbrush would detect this change: paintbrush-b would see the change, and seeing the suffix host is not "master-b.example.com". It would do nothing.
+
+paintbrush-a however would see the change, and would see: host: master-a.example.com. It would then write back "status: master-a.example.com:creating"
+
+Finally, once the suffix is created, paintbrush-a would write "status: master-a.example.com:complete"
+
+This way if the ui polls the suffix status, we can see the exact status that each master is in with regard to the action.
+
+For example, if we were to modify an index:
+
+* First check that status: *:complete. We don't want there to be pending actions on the resources we want to change. // Does this matter? if we make a change we are forcing all nodes to synchronise to this point anyway ...
+* Then we set status: HOST:pending for each master the index is going to be applied to. In our case, master-a and master-b.
+* In the same modification we set the changes to the index.
+* ...wait ....
+* We in the ui can poll the index item, and see the status line for each master as it applies the change.
+* We know the change is complete when status: *:complete.
+
+If we had a master than was offline at the time. Because this is all async based, the next time that server starts, it would see the change and apply the update, and would set it's status: host:complete value. Then the ui would reflect this has been applied.
+
+This way we don't need aggressive time outs on actions, and we can see the current status of all configuration applications in the whole domain.
+
+// Syncrepl might be a good choice, as we can fractionally exclude "status", which means paintbrush doesn't zealously check changes when other paintbrushes are working.
 
 
 ## Integration
 
-This would use rest389, which heavily relies on lib389. Any python code that interacts with the ds would use lib389.
+This would use rest389, which heavily relies on lib389. Any python code that interacts with the ds would use lib389. We will need to write a number of tranforms from o=dmc configurations into cn=config for paintbrush to work, as well as extending it for the usage of rest389.
+
+Most important, we need *lots* of testing across lib389, rest389, paintbrush, and o=dmc.
+
+
 
