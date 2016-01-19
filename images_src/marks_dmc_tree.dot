@@ -1,0 +1,105 @@
+digraph O_DMC {
+    root [label="ns-slapd CONFIG instance", shape=house, style=bold];
+
+    o_dmc [label="o=dmc", shape=octagon];
+    
+    cn_administration [label="cn=Administration", shape=record];
+    dmc_settings [label="cn=DMC Settings", shape=ellipse, color=green];
+    ou_servers [label="ou=Directory Servers", shape=record];
+    cn_servers [label="cn=Servers", shape=record];
+    cn_server_settings [label="cn=Global Config", shape=record, style=bold];
+    default_scheme [label="cn=default profile", shape=record];
+    custom_scheme [label="cn=another profile", shape=record];
+    global_config [label="cn=config", shape=ellipse, color=green];
+    global_security [label="cn=security", shape=ellipse, color=green];
+    global_suffix [label="cn=suffix", shape=ellipse, color=green];
+    global_backend [label="cn=backend", shape=ellipse, color=green];
+    global_plugins [label="cn=plugins", shape=ellipse, color=green];
+    ou_domain1 [label="ou=example.com", shape=record];
+    ou_domain2 [label="ou=redhat.com", shape=record];
+    ou_domain1_settings [label="cn=domain settings?", shape=ellipse, color=green];
+    ou_domain2_settings [label="cn=domain settings?", shape=ellipse, color=green];
+
+    cn_host1 [label="cn=host1.example.com", shape=record];
+    cn_host2 [label="cn=host2.example.com", shape=record];
+    cn_host3 [label="cn=host1.redhat.com", shape=record];
+   
+    config_sync [label="cn=Config Sync", shape=record];
+    uid_admin [label="uid=admin", shape=record];
+    admin_role [label="cn=roles", shape=record];
+
+    cn_inst1 [label="cn=slapd-instA", shape=record];
+    cn_inst2 [label="cn=slapd-instB", shape=record];
+    cn_inst3 [label="cn=slapd-instA", shape=record];
+    cn_inst4 [label="cn=slapd-instA", shape=record];
+    cn_inst5 [label="cn=slapd-instB", shape=record];
+
+    cn_inst1_settings [label="cn=settings", shape=ellipse, color=green];
+    cn_inst2_settings [label="cn=settings", shape=ellipse, color=green];
+    cn_inst3_settings [label="cn=settings", shape=ellipse, color=green];
+    cn_inst4_settings [label="cn=settings", shape=ellipse, color=green];
+    cn_inst5_settings [label="cn=settings", shape=ellipse, color=green];
+
+
+    cn_config_inst1 [label="cn=slapd-CONFIG", shape=record, color=purple, style=bold];
+    cn_config_inst2 [label="cn=slapd-CONFIG", shape=record, color=purple, style=bold];
+    cn_config_inst3 [label="cn=slapd-CONFIG", shape=record, color=purple, style=bold];
+    cn_config1_settings [label="cn=settings", shape=ellipse, color=green];
+    cn_config2_settings [label="cn=settings", shape=ellipse, color=green];
+    cn_config3_settings [label="cn=settings", shape=ellipse, color=green];
+
+
+
+    root -> o_dmc;
+    o_dmc -> cn_administration;
+    o_dmc -> dmc_settings;
+    o_dmc -> ou_servers;
+
+    cn_administration -> uid_admin;
+    cn_administration -> admin_role;
+
+    ou_servers -> config_sync;
+    ou_servers -> cn_server_settings;
+    cn_server_settings -> default_scheme
+    cn_server_settings -> custom_scheme
+
+    default_scheme -> global_config;
+    default_scheme -> global_security
+    default_scheme -> global_suffix;
+    default_scheme -> global_backend;
+    default_scheme -> global_plugins;
+
+    ou_servers -> cn_servers;
+    cn_servers -> ou_domain1;
+    cn_servers -> ou_domain2;
+
+    ou_domain1 -> ou_domain1_settings;
+    ou_domain2 -> ou_domain2_settings;
+
+    ou_domain1 -> cn_host1;
+    ou_domain1 -> cn_host2;
+    ou_domain2 -> cn_host3;
+
+    cn_host1 -> cn_inst1;
+    cn_host1 -> cn_inst2;
+    cn_host1 -> cn_config_inst1;
+    cn_config_inst1 -> cn_config1_settings;
+
+    cn_host2 -> cn_inst3;
+    cn_host2 -> cn_config_inst2;
+    cn_config_inst2 -> cn_config2_settings;
+
+    cn_host3 -> cn_inst4;
+    cn_host3 -> cn_inst5;
+    cn_host3 -> cn_config_inst3;
+    cn_config_inst3 -> cn_config3_settings;
+
+
+    cn_inst1 -> cn_inst1_settings;
+    cn_inst2 -> cn_inst2_settings;
+    cn_inst3 -> cn_inst3_settings;
+    cn_inst4 -> cn_inst4_settings;
+    cn_inst5 -> cn_inst5_settings;
+}
+
+
