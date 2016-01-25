@@ -5,6 +5,7 @@ title: "Release Notes"
 # Release Notes
 ---------------
 
+-   [ 389 Directory Server 1.3.4.7](release-1-3-4-7.html) *(January 25, 2016)*
 -   [ 389 Directory Server 1.3.4.5](release-1-3-4-5.html) *(November 19, 2015)*
 -   [ 389 Directory Server 1.3.3.14](release-1-3-3-14.html) *(November 19, 2015)*
 -   [ 389 Windows Console 1.1.15](release-windows-console-1-1-15.html) *(September 11, 2015)*
