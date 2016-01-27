@@ -2,10 +2,10 @@ digraph O_DMC {
     root [label="Configuration Server", shape=house, style=bold];
 
     o_dmc [label="o=dmc", shape=octagon, style=bold, fontcolor=green];
-    cn_administration [label="cn=Administration", shape=record];
+    
     cn_domains [label="cn=Domains", shape=record];
-    dmc_repl [label="cn=DMC Replication", shape=record];
-    dmc_repl_servers [label="cn=Config Servers", shape=ellipse, color=green];
+    cn_administration [label="cn=Administration", shape=record];
+    dmc_repl [label="cn=DMC Network", shape=record];
 
     # Under Domains
     cn_hosts [label="cn=Hosts", shape=record, style=bold];
@@ -26,11 +26,11 @@ digraph O_DMC {
     suffix_config_sync [label="cn=Config Sync", shape=record, color=blue];
 
     config_sync_host_attr [label="cn=host attributes", shape=ellipse, color=green];
-    config_sync_host [label="cn=host template", shape=ellipse, color=green];
+    config_sync_host [label="cn=host templates", shape=ellipse, color=green];
     config_sync_suffix_attr [label="cn=suffix attributes", shape=ellipse, color=green];
-    config_sync_suffix [label="cn=suffix template", shape=ellipse, color=green];
+    config_sync_suffix [label="cn=suffix templates", shape=ellipse, color=green];
     config_sync_repl_attr [label="cn=replication attributes", shape=ellipse, color=green];
-    config_sync_repl [label="cn=replication template", shape=ellipse, color=green];
+    config_sync_repl [label="cn=replication templates", shape=ellipse, color=green];
     config_sync_plugin [label="cn=plugins", shape=ellipse, color=green];
 
     # Administration
@@ -41,14 +41,14 @@ digraph O_DMC {
     cn_repl_masters [label="cn=Masters", shape=record];
     cn_repl_hubs [label="cn=Hubs", shape=record];
     cn_repl_consumers [label="cn=Consumers", shape=record];
-    cn_repl_inst1 [label="cn=host1:389", shape=record];
-    cn_repl_inst2 [label="cn=host2:389", shape=record];
+    cn_repl_inst1 [label="cn=host1:uuid", shape=record];
+    cn_repl_inst2 [label="cn=host2:uuid", shape=record];
 
     # Instances
     cn_inst1 [label="cn=slapd-instA", shape=record];
     cn_inst2 [label="cn=slapd-instB", shape=record];
-    cn_config_inst1 [label="cn=slapd-CONFIG", shape=record, color=purple, style=bold];
-    cn_config_inst2 [label="cn=slapd-CONFIG", shape=record, color=purple, style=bold];
+    cn_config_inst1 [label="cn=Config Host1(uuid)", shape=record, color=purple, style=bold];
+    cn_config_inst2 [label="cn=Config Host2(uuid)", shape=record, color=purple, style=bold];
 
 
     cn_inst1_agmt [label="cn=agreements", shape=ellipse, color=green];
@@ -61,12 +61,13 @@ digraph O_DMC {
     root -> o_dmc;
     o_dmc -> cn_domains;
     o_dmc -> cn_administration;
-    o_dmc -> dmc_repl;
-    dmc_repl -> dmc_repl_servers;
 
     # Admin Node
     cn_administration -> uid_admin;
     cn_administration -> admin_role;
+    cn_administration -> dmc_repl;
+    dmc_repl -> cn_config_inst1;
+    dmc_repl -> cn_config_inst2;
 
     # Domain Node
     cn_domains -> ou_domain
@@ -88,9 +89,7 @@ digraph O_DMC {
 
     # Instances
     cn_host1 -> cn_inst1;
-    cn_host1 -> cn_config_inst1;
     cn_host2 -> cn_inst2;
-    cn_host2 -> cn_config_inst2;
 
 
     # Replication
