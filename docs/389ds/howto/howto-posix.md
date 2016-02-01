@@ -7,7 +7,7 @@ title: "Howto: Posix"
 
 ### New Method
 
-There is already an AUXILIARY objectclass provided with the pam/nss ldap distribution on Linux systems: hostObject. This schema is included with the directory server software - /etc/dirsrv/schema/60nss-ldap.ldif. If this file is not in the schema directory for your directory server instance - /etc/dirsrv/slapd-yourname/schema - just copy the file in there, and restart the server. If for some reason the file is not there, you can always grab the latest from our CVS version control system - <http://cvs.fedoraproject.org/viewvc/ldapserver/ldap/schema/60nss-ldap.ldif?revision=1.1&root=dirsec&view=markup>
+There is already an AUXILIARY objectclass provided with the pam/nss ldap distribution on Linux systems: hostObject. This schema is included with the directory server software - /etc/dirsrv/schema/60nss-ldap.ldif. If this file is not in the schema directory for your directory server instance - /etc/dirsrv/slapd-yourname/schema - just copy the file in there, and restart the server.
 
 ### Old Method
 

@@ -207,7 +207,7 @@ Upgrade Scenario
 
     OR
 
-        rpm [-ivh|-Uvh] /path/to/<dirsrv-package-version>.rpm + setup-ds.pl -u (Offline mode)   
+        yum install /path/to/<dirsrv-package-version>.rpm + setup-ds.pl -u (Offline mode)   
  
 2. Check the errors log:
     
@@ -473,7 +473,7 @@ On RHDS 8.1 / 389 v1.2.5, entries in the above sample ldif file are added withou
     entryid: 19    
     parentid: 14    
 
-yum upgrade / rpm -U calls setup-ds.pl utility with '-u' option, from which upgradednformat utility is invoked.
+yum upgrade calls setup-ds.pl utility with '-u' option, from which upgradednformat utility is invoked.
 
     [spec file snippet]    
     -- do the upgrade    

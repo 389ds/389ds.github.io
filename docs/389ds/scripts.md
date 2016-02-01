@@ -21,5 +21,5 @@ title: "Scripts"
 
 ### 389 Directory Server Utility Scripts
 
-Coming soon...
+These are shipped as part of the 389-ds package. You can find them installed in /usr/bin on most systems, along with man pages detailing their usage.
 

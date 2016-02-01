@@ -24,7 +24,7 @@ There are many efficiency improvements to be realised. This design document will
 ### Description
 ---------------
 
-The majority of work currently done in the seas is the ldbm backends ldbm_search.c, in the function ldbm_back_search(). Depending on the search type, this calls filter_candidates in the case of subtree and onelevel searches (A base search will only ever have one result, so is already considered as optimised.)
+The majority of work currently done in the search is in the ldbm backends ldbm_search.c, in the function ldbm_back_search(). Depending on the search type, this calls filter_candidates in the case of subtree and onelevel searches (A base search will only ever have one result, so is already considered as optimised.)
 
 In the absence of indexed attributes, the searching backend builds a filtering regex, compiles and applies it to the entries in the candidate list. We are not interested in this behaviour as we are unable to improve the performance of this behaviour in a fully unindexed search.
 
@@ -92,10 +92,46 @@ There are a number of real world examples that support this style of re-arrangem
 
 This design document will describe a number of proposals which will build into a new method of filter application and usage within the directory server.
 
-### Proposal 1: Index type "popularity"
+### Proposal 1: Parse filters into abstract syntax trees
+-------------------------------------------------------
+
+Ldap filtering is a small domain specific language, and semantically can be broken down into a tree of operations that must be performed. Consider our filter:
+
+    '(&(uid=baz)(cn=bar)(objectClass=foo))'
+
+This would be represented in an AST as:
+
+![Filter Basic](../../../images/query_opt_filter_basic.svg)
+
+A more complex filter such as:
+
+    '(&(|(uid=a)(uid=b)(uid=c))(!(cn=bar))(sn=*)(objectClass=foo))'
+
+Would be represented as:
+
+![Filter Complex](../../../images/query_opt_filter_complex.svg)
+
+Once the filter has been converted to one of these trees, we would be able to analyse and optimise certain operations.
+
+### Proposal 2: Apply queries by AST traversal
+----------------------------------------------
+
+Once we have parsed the query to an AST, we should apply the components of the query by applying a depth first search across the tree.
+
+This will allow us to test that there are no or minimal regressions in query performance as a result of the usage of the AST system. This also gives us a "base line" of values we will be able to use to compare if query optimisation is improving our result times.
+
+This is the stage where we should apply and develop timing metrics for the evaluations of different subtree components, and the tools to display when specific terms are unindexed into logs.
+
+
+### Proposal 3: Index type "popularity"
 --------------------------------------
 
-A new index type called "popularity" should be added. This index will track two important statistics.
+A new index type called "popularity" should be added. There are two potential methods of this index, each with costs and benefits
+
+#### Statistical likelihood
+---------------------------
+
+This index will track two important statistics.
 
 First, it will track the number of objects each subtree that posses an attribute X. The index for objectClass if it contained the type "popularity" would track the number of objects in that subtree that held an instance of the attribute X with some value.
 
@@ -137,26 +173,60 @@ It would be recommended that all values that contain an index of some nature, al
 
 As a property of this index, the value of the number of objectClass entries in a directory is also a count of the number of objects in the directory. This property is important and we will use it later.
 
-### Proposal 2: Parse filters into abstract syntax trees
--------------------------------------------------------
+#### Basic Exact Tracking
+-------------------------
 
-Ldap filtering is a small domain specific language, and semantically can be broken down into a tree of operations that must be performed. Consider our filter:
+Rather than tracking the "popularity" of attributes as they exist in the directory, we may wish to track the exact number of values.
 
-    '(&(uid=baz)(cn=bar)(objectClass=foo))'
+Total object tracking remains the same for us in this case.
 
-This would be represented in an AST as:
+If we have:
 
-![Filter Basic](../../../images/query_opt_filter_basic.svg)
+* uid=a
+* uid=b
+* uid=c
 
-A more complex filter such as:
+We would track:
 
-    '(&(|(uid=a)(uid=b)(uid=c))(!(cn=bar))(sn=*)(objectClass=foo))'
+* uid=a: 1
+* uid=b: 1
+* uid=c: 1
 
-Would be represented as:
+We also keep a count of the totals of how many objects contain uid=*. This is effectively an extension of the other 3 index types, and allows us to understand the types and values within the directory.
 
-![Filter Complex](../../../images/query_opt_filter_complex.svg)
+#### Advanced Exact Tracking
+----------------------------
 
-Once the filter has been converted to one of these trees, we would be able to analyse and optimise certain operations.
+This is the same as basic exact tracking, but we also track the number of objects through subtrees of the directory as well (excluding leaf entries).
+
+Total object tracking remains the same for us in this case.
+
+If we have:
+
+* uid=a
+* uid=b
+* uid=c
+
+We would track:
+
+* uid=a: 1
+* uid=b: 1
+* uid=c: 1
+
+For the subtree ou=people we would track
+
+* uid=b: 1
+* uid=c: 1
+
+If a queries search base was ou=people in this case, we would consult this version of the index, and uid=a would return a 0.
+
+This is more expensive to maintain, as we must track:
+
+* The exact number of instances of every attribute in the directory, and then, each subtree (but without needing to look at objects)
+* When objects have a modrdn applied this means we have a lot more data to update in the indices compared to the basic variant (where only add/delete/mod changes the index, and only in one location).
+
+This will allow us to perform "perfect" optimisations of queries, but may not be worth the investment due to extra maintanence expense.
+
 
 ### Proposal 3: Automatic query optimisation using popularity and filter ASTs
 ----------------------------------------------------------------------------
@@ -166,13 +236,43 @@ Once the filter has been converted to one of these trees, we would be able to an
 
 Once both the popularity index, and the filter to AST infrastructure is in place, we are able to apply the two to form decisions and optimise queries in a more powerful and automated manner.
 
+For exact tracking unique is the exact value of the number of objects that contain some value X as referenced by the index. For example,
+
+* uid=a: 1
+* uid=b: 2
+* uid=c: 1
+
+    unique '(uid=a)' = 1
+    unique '(uid=b)' = 2
+
+For likelihood tracking, we would in this case say:
+
+Directory contains:
+
+* uid=a: 1
+* uid=b: 2
+* uid=c: 1
+
+Therfore, unique values of uid is the number of objects that contain uid=*.
+
+    unique '(uid=a)' = 4
+    unique '(uid=b)' = 4
+
+Otherwise all calculations are the same. This is why exact tracking will give better results, as we can pre-narrow the results based not only on the likelihood of the attribute type (uid), but also of it's value (=b).
+
 We can now use these values to determine "filter gain" through the application of these. For our case, the greatest "gain" is being able to statistically conclude the greatest reduction in working candidate set E' as we progress in the application of the filter.
 
 This value is a statistical approximation of the reduction in the entries by percentage of how many entries that might exist with that attribute potentially containing the value X. Obviously we cannot know the exact number until we have completed the search.
 
 We want to calculate a value that will return us the smallest percentage of objects from the subtree which contain the value we seek. We calculate the likelihood of 'filter gain', henceforth fg as:
 
+    Statistical likelihood:
+
     (('total' / 'unique') / 'number subtree objects')
+
+    exact tracking:
+
+    ('unique' / 'number subtree objects')
 
 A lower value represents a smaller resulting set. We are therefore aiming to optimise our query to apply lower values first to prune as much of the set E as possible through each step. This algorithm will reward values with high sets of unique values, and smaller set sizes over those will less unique values and bigger sizes.
 
@@ -211,7 +311,7 @@ If two values have the same fg value, the entry with a smaller 'total' should be
 #### Simple query optimisation
 ------------------------------
 
-Let us consider the first example once more. As a refresh:
+Let us consider the first example once more. This is conducted with the liklihood backend. As a refresh:
 
 A database backend, the set of all entries is E. Contains:
 
@@ -276,8 +376,8 @@ Now the fg for cn would be '0.037'. This would give us the filter value:
 
 Given that most directories have very low overlap of values, and high entry uniqueness, this will result in very well optimised queries.
 
-#### Complex query optimisation
-------------------------------
+#### Complex query optimisation (likelihood)
+--------------------------------------------
 
 Let us consider the more complex query:
 
@@ -321,25 +421,28 @@ As a result, the optimised application of this query is:
 
 If we calculate the number of operations for each query, the unoptimised version would perform many more reductions in the initial set of '(\|(uid=a)(uid=b)(uid=c))' operations, where the optimised one delays this until later in the filter application. By delaying this, there are less entries to consider in the evaluation.
 
-#### Ridiculous complex query
------------------------------
-
-TBW
+#### Complex query optimisation (exact)
+---------------------------------------
 
 #### Remaining cases
 --------------------
 
 Two major filter cases remain: Substring search, and unindexed values.
 
-The ability to determine fg from a substring query is quite hard, as there are many more possibilities. If we applied the equality fg formula, we would have so many unique "substring index" values, that we would always prefer the substring index first potentially. There is no easy to way to represent the gain in a substring search, so I propose that they are assigned an fg value of 0.75 and their total entry numbers determine the ordering. This way, we tend to apply the faster indexed types first, and we leave substring execution until later in evaluation when there are fewer candidates. 
+The ability to determine fg from a substring query is quite hard, as there are many more possibilities. If we applied the equality fg formula, we would have so many unique "substring index" values, that we would always prefer the substring index first potentially. There is no easy to way to represent the gain in a substring search, so I propose that 
 
-We may revisit this later as there may be ways to determine an appropriate formula for this.
+* In the interim they are assigned an fg value of 0.75 and their total entry numbers determine the ordering. This way, we tend to apply the faster indexed types first, and we leave substring execution until later in evaluation when there are fewer candidates. 
+* Research is done into the cost of maintaining popularity on a substring index, and the potential gain in performance as a substring index, may just be an equality index with a greater variety of potential candidates.
+
 
 Handling of unindexed values. Because we know if the value is unindexed or not, we can use this information during the parse of the tree to flag to the admin exactly which value is unindexed and the exact nature of the search that is in question. This will help administrators determine more efficient indexes to apply to their system. Unindexed terms will be given the fg of 1 (as below). Essentially, an unindexed component will "taint" components of a filter, and cause them to be de-preffered until later in execution.
 
 Any term that is unindexed or does not possess a popularity index, should be treated as though they have a total number of objects equal to the total number of objects in the subtree. They should be treated as though they have a unique value of 1. This will cause the calculation of fg to determine their value to be 1, meaning these terms cannot be analysed, so we have no choice but to deprefer them in our calculation.
 
-By forcing unindexed values to be considered near the end of the query, we should have already reduced the candidate set which will mean the unindexed operations should be significantly faster.
+By forcing unindexed values to be considered near the end of the query, we should have already reduced the candidate set which will mean the unindexed operations should be significantly faster. This is already the case in the basic "and" filter optimisation in ns-slapd, but it cannot be applied to all cases.
+
+
+Additionally, the choice between statistical likelihood and exact tracking must be decided. There are greater costs in the application of the exact tracking process, as it requires us to potentially consult the popularity indcies more. However, it will yield "perfect" optimisations of all queries that have the popularity index as we know ahead of time the exact number of objects that a filter will produce. This means we know when a filter of say uid=x is presented, we know the exact number of results uid=x will gain us: If it is large, we know to de-prefer the term, if it is small, we know to prefer it's usage.
 
 ### Future Proposal 4: Filter execution from the AST structure
 -------------------------------------------------------
@@ -391,6 +494,12 @@ Once we have the AST mechanisms in place, we can automatically normalise queries
     (|(|(x=1)(y=2))(z=3)) -> (|(x=1)(y=2)(z=3))
 
     (!(!(x=1))) -> (x=1)
+
+With the AST query execution, we will be able to create shortcuts based on mathematical logic. Consider:
+
+    (&(uid=foo)(cn=bar))
+
+If we use exact tracking, or during the process of the application we find that the term uid=foo returns an empty candidate set, we know we can exit the AND statement prematurely because there is no possible way for it to hold true once a term yields an empty candidate set. This will prevent unnecessary database access in this scenario.
 
 We use floating point extensively in this due to the fractions involved. In the actual implementation, we should avoid this, and determine a way to represent this more efficiently with integers, or to cache calculated fg values in the indices.
 

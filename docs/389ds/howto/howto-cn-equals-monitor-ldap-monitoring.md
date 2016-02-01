@@ -21,14 +21,6 @@ Installation
 
 <http://cnmonitor.sourceforge.net/>
 
-### Avoid Certificate Validation
-
-Avoid Common Name validation of certificates when retrieving LDAP server certificates.
-
-    vi /etc/openldap/ldap.conf
-
-    TLS_REQCERT    never
-
 ### Install dependencies
 
     yum install openldap-clients
@@ -39,7 +31,7 @@ Avoid Common Name validation of certificates when retrieving LDAP server certifi
 
 Replace <version> with downloaded version number.
 
-    # rpm -ivh cnmonitor-<version>.noarch.rpm    
+    # yum install cnmonitor-<version>.noarch.rpm    
 
 Restart Apache HTTPd Web server
 

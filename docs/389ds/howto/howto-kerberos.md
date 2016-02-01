@@ -27,7 +27,7 @@ Kerberos relies heavily on the fully qualified host and domain name (FQDN) for s
 Time Sync
 ---------
 
-Kerberos works best if all of your servers and clients are in time sync. This doesn't mean you must use something like NTP, but you need to ensure that your machines are not wildly out of time sync.
+Kerberos will not work unless all servers and clients are in time sync. This means you must use something like NTP.
 
 krb5.conf
 ---------

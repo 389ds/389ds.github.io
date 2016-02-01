@@ -13,12 +13,12 @@ Example:
 
 Stop your ldap instance:
 
-    /opt/redhat-ds/slapd-    <instance-name>    /stop-slapd    
+    stop-dirsrv "instance name"
 
 Save and edit the main configuration file:
 
-    cp -p /opt/redhat-ds/slapd-<instance-name>/config/dse.ldif /opt/redhat-ds/slapd-<instance-name>/config/dse.ldif-`/bin/date +%F-%R`
-    vi /opt/redhat-ds/slapd-<instance-name>/config/dse.ldif    
+    cp -p /etc/dirsrv/slapd-<instance-name>/config/dse.ldif /etc/dirsrv/slapd-<instance-name>/config/dse.ldif-`/bin/date +%F-%R`
+    vi /etc/dirsrv/slapd-<instance-name>/config/dse.ldif    
 
 Under dn: cn=config, change from:
 
@@ -30,7 +30,7 @@ to:
 
 Then restart your ldap instance:
 
-    /opt/redhat-ds/slapd-<instance-name>/start-slapd    
+    start-dirsrv "instance name"
 
 You should see something similar to this in the error logs:
 

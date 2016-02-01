@@ -31,6 +31,12 @@ The filter in an ldapsearch has to explicitly ask for them, for example, like th
 
     ldapsearch -h some-hostname uid=some-uid modifiersname    
 
+You may request all operational attributes using the special char '+'
+
+    ldapsearch -h some-hostname uid=some-uid '+'
+
+The list of attributes may be limited by your current bind dn's acis.
+
 The modifiersname attribute can be updated by the directory manager:
 
     ldapmodify -h some-host -D "cn=directory manager" -w some-password

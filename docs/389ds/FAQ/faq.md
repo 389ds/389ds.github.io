@@ -20,7 +20,7 @@ An LDAP directory server stores information in a tree-like hierarchical structur
 
 The characteristics of an LDAP server are:
 
--   very fast read operations
+-   extremely fast read operations
 -   fairly static data
 -   hierarchical
 -   clients use standard LDAP protocol
@@ -29,10 +29,10 @@ The characteristics of an LDAP server are:
 The characteristics of an RDMBS are:
 
 -   very fast write operations (think TPS)
--   dynamic data
+-   dynamic, yet highly structured data
 -   tables with rows and columns, with key relations between tables
 -   no standard on the wire protocol - vendors must provide ODBC or JDBC drivers
--   tightly coupled replication - Two Phase Commit
+-   tightly coupled, vendor specific replication - Two Phase Commit
 
 ### What is LDAP?
 
@@ -683,6 +683,7 @@ Here's what you can do with the Directory Server...
 -   Store employee information centrally for phonebook and organization chart lookups.
 -   Sync passwords with your NT domain controller.
 -   Sync passwords with Active Directory.
+-   Much much more. You are limited by your creativity.
 
 ### How do I use the Administration Server/Console with this?
 

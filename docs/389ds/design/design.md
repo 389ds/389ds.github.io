@@ -11,10 +11,13 @@ If you are adding a new design document, use the [template](design-template.html
 
 {% include toc.md %}
 
-## 389 Directory Server 1.3.5
+## 389 Directory Server 1.3.5 (Future)
 -   [Shadow Account Support](shadow-account-support.html)
 -   [Password Expiring Control Configuration](password-expiring-design.html)
 -   [Bundle jemalloc](bundle-jemalloc-design.html)
+-   [Disable Instance Script Installation](disable-instance-scripts.html)
+-   [Audit Logging Improvements](audit_improvement.html)
+-   [Multiple Logging Backends](logging-multiple-backends.html)
 
 -------------------------------------------------
 
@@ -144,10 +147,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [High Contention with Entry Cache](high-contention-on-entry-cache-lock.html)
 -   [Separate Suffix for Tombstones/Conflicts](separate-conflict-and-tombstone-entry.html)
 -   [Managed Entry Plug-in Enhancement](mep-rework.html)
--   [Audit Logging Improvements](audit_improvement.html)
 -   [Managing Replication Conflicts](managing-repl-conflict-entries.html)
--   [Disable Instance Script Installation](disable-instance-scripts.html)
--   [Multiple Logging Backends](logging-multiple-backends.html)
 -   [Schema with Multiple Search Paths](schema-multiple-search-paths.html)
 
 

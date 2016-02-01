@@ -9,7 +9,7 @@ no_date: true
 
 ---
 
-The enterprise-class [Open Source](docs/389ds/FAQ/licensing.html) LDAP server for Linux. It is hardened by real-world use, is full-featured, supports multi-master replication, and already handles many of the largest LDAP deployments in the world.  The **389 Directory Server** can be downloaded for free, and set up in less than an hour using the graphical console.
+The enterprise-class [Open Source](docs/389ds/FAQ/licensing.html) LDAP server for Linux. It is hardened by real-world use, is full-featured, supports multi-master replication, and already handles many of the largest LDAP deployments in the world.  The **389 Directory Server** can be downloaded for free, and set up in less than an hour.
 
 <div id="front-page-columns" class="container-fluid">
   <div class="row">
@@ -59,11 +59,11 @@ information about our goals and vision.
 -   The codebase has been developed and deployed continuously by the same team for more than a decade
 -   Extensive [documentation](https://access.redhat.com/site/documentation/Red_Hat_Directory_Server/)
 -   Active Directory user and group synchronization
--   Secure authentication and transport (TLSv1, and SASL)
+-   Secure authentication and transport (TLS, and SASL)
 -   Support for LDAPv3
 -   On-line, zero downtime, LDAP-based update of schema, configuration, management and in-tree Access Control Information (ACIs)
 -   Graphical console for all facets of user, group, and server management
--   **Continuous Integration Testing ([lib389](docs/389ds/FAQ/upstream-test-framework.html))** - prevents regressions and helps maintain stability with each release
+-   **Extensive Feature and Integration Testing ([lib389](docs/389ds/FAQ/upstream-test-framework.html))** - prevents regressions and helps maintain stability with each release
 
     For more see our [Features](docs/389ds/FAQ/features.html) page
 

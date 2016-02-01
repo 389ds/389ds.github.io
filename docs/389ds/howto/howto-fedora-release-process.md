@@ -13,7 +13,7 @@ Fedora already has all of the packaging packages in the default repos - no addit
 
 If you are using RHEL/CentOS/similar derivative to do Fedora packaging, you will need to configure the EPEL repos. For example, for EL6:
 
-    rpm -ivh rpm -ivh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm
+    yum install http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm
 
 Then, install the packager packages:
 

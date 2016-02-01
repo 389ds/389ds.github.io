@@ -32,9 +32,9 @@ For the admin server and console bits, you must first install EPEL from <https:/
 
 That will direct you to a mirror where you can download the epel-release X (6 or 7) RPM:
 
-    rpm -ivh http://site/path/to/epel-release-X-N.noarch.rpm
+    yum install http://site/path/to/epel-release-X-N.noarch.rpm
 
-Then you can install 389-ds and get all of the core directory server, admin server, and console bits as per the directions below.
+Then you can install 389-ds and get all of the core directory server, admin server, and console components as per the directions below.
 
 ### 389 Directory Server 1.1 and later
 
@@ -45,7 +45,7 @@ Then you can install 389-ds and get all of the core directory server, admin serv
 
 New Install:
 
-    yum install [--enablerepo=updates-testing|--enablerepo=epel-testing] 389-ds
+    yum install 389-ds
     setup-ds-admin.pl
 
 Upgrade an existing system:

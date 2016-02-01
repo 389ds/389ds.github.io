@@ -57,11 +57,7 @@ How to resolve this issue
 -   Select a directory server to be authoritative and write the contents of its database to an ldif file
     -   On the master supplier:
 
-            # /usr/lib64/dirsrv/slapd-EXAMPLE-COM/db2ldif.pl -D 'cn=Directory Manager' -w - -n userRoot -a /tmp/master-389.ldif    
-
-        OR - if using IPA
-
-            # /var/lib/dirsrv/scripts-EXAMPLE-COM/db2ldif.pl -D 'cn=Directory Manager' -w - -n userRoot -a /tmp/master-389.ldif    
+            # /usr/bin/db2ldif.pl -Z EXAMPLE-COM -D 'cn=Directory Manager' -w - -n userRoot -a /tmp/master-389.ldif    
 
 Note that without the -r option it is deliberately omitting the tainted replication data which contains the bad CSNs
 
@@ -106,11 +102,7 @@ If you have more than one suffix/db, you will have to do this for each one that 
 -   Import the data from the known good ldif. This will mark all the changes with CSNs that match the current time/date stamps
 
         # chmod 644 /tmp/master-389.ldif    
-        # /usr/lib64/dirsrv/slapd-EXAMPLE-COM/ldif2db -n userRoot -a /tmp/master-389.ldif    
-
-    OR - if using IPA
-
-        # /var/lib/dirsrv/scripts-EXAMPLE-COM/ldif2db -n userRoot -a /tmp/master-389.ldif    
+        # /usr/bin/ldif2db -Z EXAMPLE-COM -n userRoot -a /tmp/master-389.ldif    
 
     If you have more than one suffix/db, you will have to do this for each one that the readNsState.py script reports.
 
@@ -129,11 +121,7 @@ If you have more than one suffix/db, you will have to do this for each one that 
 
 -   When the daemon starts, it will see that it does not have an nsState and will write new CSN's to -all- of the newly imported good data with today's timestamp, we need to take that data and write -it- out to an ldif file, for use in initializing all of the other servers.
 
-        # /usr/lib64/dirsrv/slapd-EXAMPLE-COM/db2ldif.pl -D 'cn=Directory Manager' -w - -n userRoot -r -a /tmp/replication-master-389.ldif    
-
-    OR - if using IPA
-
-        # /var/lib/dirsrv/scripts-EXAMPLE-COM/db2ldif.pl -D 'cn=Directory Manager' -w - -n userRoot -r -a /tmp/replication-master-389.ldif    
+        # /usr/bin/db2ldif.pl -Z EXAMPLE-COM -D 'cn=Directory Manager' -w - -n userRoot -r -a /tmp/replication-master-389.ldif    
 
     the -r tells it to include all replica data which includes the newly blessed CSN data
 
@@ -176,11 +164,7 @@ If you have more than one suffix/db, you will have to do this for each one that 
 -   Import the data from the known good ldif. This will mark all the changes with CSNs that match the current time/date stamps
 
         # chmod 644 /tmp/replication-master-389.ldif    
-        # /usr/lib64/dirsrv/slapd-EXAMPLE-COM/ldif2db -n userRoot -i /tmp/replication-master-389.ldif    
-
-    OR - if using IPA
-
-        # /var/lib/dirsrv/scripts-EXAMPLE-COM/ldif2db -n userRoot -i /tmp/replication-master-389.ldif    
+        # /usr/bin/ldif2db -Z EXAMPLE-COM -n userRoot -i /tmp/replication-master-389.ldif    
 
 -   Restart dirsrv
 

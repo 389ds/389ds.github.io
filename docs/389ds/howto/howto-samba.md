@@ -42,11 +42,7 @@ First off we need to provide FDS with a samba schema that it understands. Now le
 -   All schema€™s are located in /opt/fedora-ds/slapd-<server>/config/schema
 -   Filenames are sequential and loaded in order and 99user.ldif is always the last schema to be loaded.
 
-For this document we are going to name our schema file 61samba.ldif. As stated above we need to provide FDS with a schema it understands which involves converting the provided /usr/share/doc/samba/LDAP/samba.schema to ldif format. Luckily, there is a utility provided 3rd party that will assist in doing this which can be found at <http://directory.fedoraproject.org/download/ol-schema-migrate.pl>
-
-Use of this script is straight forward :
-
-    # perl ol-schema-migrate.pl -b /usr/share/doc/samba-*/LDAP/samba.schema > /etc/dirsrv/slapd-<server>/schema/61samba.ldif     
+The schema is already provided by DS in 60samba.ldif
 
 Once the ldif is in place restart the slapd service :
 
@@ -54,7 +50,6 @@ Once the ldif is in place restart the slapd service :
 
 If you are still using Fedora DS 1.0.4 or earlier:
 
-    # perl ol-schema-migrate.pl -b /usr/share/doc/samba-*/LDAP/samba.schema > /opt/fedora-ds/slapd-<server>/config/schema/61samba.ldif     
     # /opt/fedora-ds/slapd-<server>/restart-slapd    
 
 ### PAM Configuration

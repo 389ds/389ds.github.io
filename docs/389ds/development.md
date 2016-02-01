@@ -88,10 +88,11 @@ Testing
 
 Not a coder? No problem. You can help by finding new [bugs](FAQ/bugs.html), verifying existing bugs, polishing [documentation](documentation.html) and generally improving the quality of the server.
 
-A good way to contribute to improving the quality of the server would be to add automated tests for each of the features. Developers and contributors to the 389 Project are encouraged to write unit tests for any new features, updates and bug fixes being contributed. Where possible, the tests should be data driven. This allows for greater numbers of test cases covering more of the feature under test, to be written with minimal effort. We suggest tests be written in a scripting language like python, sh, or Perl ( Perl::Test ).
+A good way to contribute to improving the quality of the server would be to add automated tests for each of the features. Developers and contributors to the 389 Project are encouraged to write unit tests for any new features, updates and bug fixes being contributed. Where possible, the tests should be data driven. This allows for greater numbers of test cases covering more of the feature under test, to be written with minimal effort. We suggest tests be written in a scripting language like python with lib389.
 
 There are a number of other LDAP test tools available from other groups and companies which may be of interest:
 
+-   [LDCLT](https://git.fedorahosted.org/cgit/389/ds.git/plain/ldap/servers/slapd/tools/ldclt/examples/README) The project maintained LDAP load testing tool.
 -   [DirectoryMark](http://www.mindcraft.com/directorymark) from Mindcraft, is an LDAP benchmarking tool
 -   [Slamd](http://www.slamd.com/) is a distributed LDAP load generation engine
 -   [Using SystemTap](howto/howto-use-systemtap.html) - an example of using SystemTap to profile thread contention
