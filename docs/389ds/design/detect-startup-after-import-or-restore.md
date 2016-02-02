@@ -24,41 +24,70 @@ For the Retro Changelog no such mechanism exists.
 Suggested solution
 ==================
 
-Use a mechanism similar to the guardian file which is used to detect disorderly shutdowns.
+Use a mechanism similar to the guardian file which is used to detect disorderly shutdowns. The restore or import process
+writes a marker file which cna be detected at startup. If the file exists a backend flag is set so that plugin can detect
+a previous restore.
+
+## New backend flags
+
+Two new backed flags are defined, they are set during startup:
+
+    SLAPI_BE_FLAG_POST_IMPORT   /* the backend was imported since the last shutdown */
+    SLAPI_BE_FLAG_POST_RESTORE  /* the database is restored and this is the first startup */
 
 
-## Resore or Import
-In the restore process (bak2db) write a restore file to the database directory:
+## Writing Restore or Import File
 
-    <path-to-database>/db/restore
+The mechanism is the same for import and restore. At the beginning of the process an empty file is created.
+If the file cannot be created the process is aborted with an error message.
 
-The file needs no content, only the presence will be checked, but could contain a timestamp or reference to the backup directory
+After successful completion of the import or restore a succes message is written to the file.
 
+In the restore process (bak2db) writes a restore file to the database directory:
 
-In the import process (ldif2db) write an import file:
+    <path-to-database>/.restore
 
-    <path-to-database>/db/<backend>/import
+Since the db directory is recreated during the restore the initial file creation has to be in the parent directory of "db".
+To avoid accidentally delete the file is created as hidden file.
+If the restore succeeds, the file is updated. So an attempted restore could be distinguished from a successful restore.
 
-The file needs no content, only the presence will be checked, but could contain a timestamp or reference to the backup directory
+In the import process (ldif2db) writes an import file:
 
-## Startup
+    <path-to-database>/db/.import_<backend>
+
+Since the backend directory is recreated during the import the initial file creation has to be in the parent directory of the backend, the backen is part of the file name.
+To avoid accidentally delete the file is created as hidden file.
+If the import succeeds, the file is updated. So an attempted import could be distinguished from a successful import.
+
+## Startup Checks
 
 ### Check for restore
 
-At startup the existence of the "restore" file is checked. If it exists the variable:
+A restore affects all backends, t startup the existence of the "restore" file is checked and if it exists the flag in all backends has to be set.
+It is checked before the backends are started and the state is stored in a private variable:
 
     is_restart_after_restore 
 
-is set (like is_disordely_shutdown) and the file removed. The state can be determined via a function
+when the backends are started, the state can be determined via a function
 
     slapi_is_restore_startup()
+
+and the "post_restore" flag i
+
+
+    SLAPI_BE_FLAG_POST_RESTORE
+
+will be set. It can be detected by calling:
+
+
+    slapi_be_is_flag_set(be, SLAPI_BE_FLAG_POST_RESTORE)
 
 
 
 ### Check for import
 
 
-When a backend instance is started the existence of an "import" file in the backend directoty is checked. A new flag
+When a backend instance is started the existence of an "import" file in the backend directoty is checked and if it exists the flag
 
     SLAPI_BE_FLAG_POST_IMPORT
 
