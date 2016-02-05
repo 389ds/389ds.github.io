@@ -18,6 +18,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Disable Instance Script Installation](disable-instance-scripts.html)
 -   [Audit Logging Improvements](audit_improvement.html)
 -   [Multiple Logging Backends](logging-multiple-backends.html)
+-   [Enhanced Account Tools for Account Policy Plugin](enhanced-account-tools.html)
 
 -------------------------------------------------
 
