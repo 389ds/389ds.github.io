@@ -121,8 +121,6 @@ Documents describing new features that were introduced in each release, as well 
 -   [How to StartTLS](howto/howto-starttls.html)
 -   [How to Only Accept TLS/SSL Connections](howto/howto-listensslonly.html)
 -   [How to Change UID](howto/howto-changeuid.html)
--   [How to Use LdapAdmin tool ](howto/howto-ldapadmin.html)
--   [How to Use LDAP monitoring tools](howto/howto-cn-equals-monitor-ldap-monitoring.html)
 -   [How to Upgrade DN Format](howto/howto-upgrade-to-new-dn-format.html)
 -   [How to Use SSF Restrictions](howto/howto-use-ssf-restrictions.html)
 
@@ -133,8 +131,6 @@ Documents describing new features that were introduced in each release, as well 
 -   [How to PAM](howto/howto-pam.html)
 -   [How to Use Netgroups](howto/howto-netgroups.html)
 -   [How to Debian Packages](howto/howto-debianpackages.html)
--   [How to Debian Etch](howto/howto-debianetch.html)
--   [How to Debian Ubuntu](howto/howto-debianubuntu.html)
 -   [How to Solaris to 389](howto/howto-solarisclient.html)
 -   [How to Use Windows Console](howto/howto-windowsconsole.html)
 -   [How to Windows Sync](howto/howto-windowssync.html)
@@ -142,7 +138,6 @@ Documents describing new features that were introduced in each release, as well 
 -   [How to Build RPMS on CentOS ](howto/howto-buildrpmsforcentos-rhel.html)
 -   [How to Deploy From Kickstart](howto/howto-deployfromkickstart.html)
 -   [How to Chain to AD](howto/howto-chaintoad.html) - Setting up chaining (database link) to a Windows Active Directory
--   [How to Configure MMC](howto/howto-configure-mmc.html) - Configure Microsoft Management Console
 -   [How to Create Child Domain](howto/howto-create-a-child-domain-in-an-existing-domain-tree.html) - Create a child domain in an existing domain tree
 -   [How to Create Domain in Existing Forest](howto/howto-create-an-additional-domain-controller-in-an-existing forest.html) - Create an Additional Domain Controller in an Existing Forest
 -   [How to Create Domain in New Forest](howto/howto-create-a-new-domain-tree-in-a-new-forest.html) - Create a New Domain Tree in a New Forest
@@ -153,14 +148,11 @@ Documents describing new features that were introduced in each release, as well 
 -   [How to QMail](howto/howto-qmail.html)
 -   [How to Sendmail](howto/howto-sendmail.html)
 -   [How to Postfix](howto/howto-postfix.html)
--   [How to Postfix with IMAP](howto/howto-postfix-imap.html)
 -   [How to Dovecot](howto/howto-dovecot.html)
--   [How to OpenWebmail](howto/howto-openwebmail.html)
 
 #### Filesystem
 
 -   [How to Automount](howto/howto-automount.html)
--   [How to Samba](howto/howto-samba.html)
 
 #### DNS
 
@@ -181,18 +173,27 @@ Documents describing new features that were introduced in each release, as well 
 -   [How to write a wiki page](howto/howto-write-wiki-page.html)
 -   [How to openLdap Integration](howto/howto-openldapintegration.html)
 -   [How to Kerberos](howto/howto-kerberos.html)
--   [How to Java on FedoraCore](howto/howto-javaonfedoracore.html)
--   [How to Daemon Tools](howto/howto-daemontools.html)
 -   [How to Persistent search](howto/howto-persistent-search.html)
 -   [How to SNMP Monitoring](howto/howto-snmpmonitoring.html)
 -   [How to DS Admin Migration](howto/howto-ds-admin-migration.html)
--   [How to Fixup-UID-Script](howto/howto-uidfixup.html)
 -   [Zimbra Schema Integration (Spanish)](http://wiki.fedora-ve.org/WilmerJaramillo/ZimbraSchema)
 
 #### Legacy How To's
+
+These are potentially outdated or incorrect for the current DS version.
 
 -   [How to Windows Domain Controller Certificate Enrollment](howto/howto-windows-domain-controller-certificate-enrollment.html)
 -   [How to Windows Webserver Certificate Enrollment](howto/howto-windows-webserver-certificate-enrollment.html)
 -   [How build on Etch](howto/howto-buildonetch.html)
 -   [How to build 389 on Debian Gnu/Linux 4.0 (Etch) ](howto/howto-gentoodsbuildinstallation.html)
+-   [How to Use LDAP monitoring tools](howto/howto-cn-equals-monitor-ldap-monitoring.html)
+-   [How to Configure MMC](howto/howto-configure-mmc.html) - Configure Microsoft Management Console
+-   [How to Daemon Tools](howto/howto-daemontools.html)
+-   [How to Debian Ubuntu](howto/howto-debianubuntu.html)
+-   [How to Java on FedoraCore](howto/howto-javaonfedoracore.html)
+-   [How to Use LdapAdmin tool ](howto/howto-ldapadmin.html)
+-   [How to OpenWebmail](howto/howto-openwebmail.html)
+-   [How to Postfix with IMAP](howto/howto-postfix-imap.html)
+-   [How to Samba](howto/howto-samba.html)
+-   [How to Fixup-UID-Script](howto/howto-uidfixup.html)
 

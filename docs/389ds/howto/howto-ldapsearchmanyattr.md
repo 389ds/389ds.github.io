@@ -36,6 +36,18 @@ Entry dn for nsslapd-sizelimit:
 
     cn=config    
 
-See [<http://docs.redhat.com/docs/en-US/Red_Hat_Directory_Server/8.2/html-single/Administration_Guide/index.html#User_Account_Management-Setting_Resource_Limits_Based_on_the_Bind_DN>](http://docs.redhat.com/docs/en-US/Red_Hat_Directory_Server/8.2/html-single/Administration_Guide/index.html#User_Account_Management-Setting_Resource_Limits_Based_on_the_Bind_DN) for a description of resource limits that apply to searches.
+# How to configure limits on a binddn
+-------------------------------------
 
-See [<http://docs.redhat.com/docs/en-US/Red_Hat_Directory_Server/8.2/html-single/Administration_Guide/index.html#About_Indexes-Overview_of_the_Searching_Algorithm>](http://docs.redhat.com/docs/en-US/Red_Hat_Directory_Server/8.2/html-single/Administration_Guide/index.html#About_Indexes-Overview_of_the_Searching_Algorithm) for how these limits apply to searches and other operations.
+Normally the limits placed on a binddn are the same as the anonymous limits.
+
+However, on a specific account object you may override the limits
+
+    uid=admin,ou=People,dc=example,dc=com
+    nsLookThroughLimit:
+    nsSizeLimit:
+    nsTimeLimit:
+
+This allows you to make service accounts that can do more expensive or larger searches, without allowing anonymous or all other accounts to do the same.
+
+
