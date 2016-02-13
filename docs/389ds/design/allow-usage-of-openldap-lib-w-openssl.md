@@ -2,7 +2,7 @@
 title: "Allow usage of OpenLDAP libraries that do not use NSS for crypto"
 ---
 
-# OpenLDAP with non NSS Crypto Design
+# Design for "Allow usage of OpenLDAP libraries that do not use NSS for crypto"
 ------------------
 
 {% include toc.md %}
@@ -78,8 +78,8 @@ Sample certificates:
 In this example, CA certificate will be named <b>CAcertificate</b>.pem and
 Key of Server-Cert will be <b>Server-Cert-Key</b>.pem and certificate will be <b>Server-Cert</b>.pem.
 
-Server Startup
-==============
+Key/Cert Retrieval at the Server Startup
+========================================
 
 When the Directory Server starts up, the following steps are executed when nsslapd-security is on.
 
@@ -111,9 +111,10 @@ When the Directory Server starts up, the following steps are executed when nssla
              Log configuration error.  Server does not start.
     
     2) CACertFile, ServerKeyFile, and ServerCertFile are not defined in cn=encryption.
-    2.1) CAcert and Server cert are in NSS cert db.
+    2.1) CAcert(s) and Server cert(s) are in NSS cert db.
          Retrieve the CAcert and Server key and cert from the NSS cert db and 
          put them in nsslapd-cert.
+         Note: If the certs are more than two, retrieve all of them.
     2.2) CAcert and Server cert are not in NSS cert db.
          Log configuration error.  Server does not start.
 
@@ -174,7 +175,7 @@ Build
        --with-openldap-lib=/usr/local/lib \
        --with-openldap-bin=/usr/local/bin"
 
-Replication tests
+Replication Tests
 =================
 master -> read only replica
 
