@@ -225,6 +225,20 @@ To Dos
   https://github.com/npmccallum/deo
   If the authentication with Deo fails, the server prompts for the password.
 
+  <p><b>Input by William Brown</b>:</p>
+  I think deo is deprecated. We should consider tang and clevis.
+  The good part about clevis is that it can provide the password
+  prompting mechanism via systemd and such already for us.
+
+- At the start up, even if the pem files having the expected file name exist,
+  by comparing the contents of the key/certs, older key/certs are replaced by
+  the corresponding new ones.  It could be cert db --> PEM as well as PEM --> cert db.
+  For now, cert db --> PEM could be done by removing PEM files.  
+  The other direction is not supported.
+
+- Instead of maintaining the 2 sets of key/certs, NSS on the server side could switch
+  to using only the PEM files.  This allows us not to maintain the key/certs in the cert db.
+
 Tickets
 =======
 * Ticket [\#47536](https://fedorahosted.org/389/ticket/47536) - Allow usage of OpenLDAP libraries that don't use NSS for crypto
