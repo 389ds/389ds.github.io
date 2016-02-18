@@ -44,3 +44,9 @@ The modifiersname attribute can be updated by the directory manager:
     changetype: modify
     replace: modifiersname
     modifiersname: cn=some-other-cn
+
+### Tickets
+https://fedorahosted.org/389/ticket/48363
+
+### Notes
+This feature is available on 389-ds-base-1.3.5 and newer.
