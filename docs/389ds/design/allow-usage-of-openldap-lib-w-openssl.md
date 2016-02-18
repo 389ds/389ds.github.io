@@ -26,15 +26,20 @@ they are stored as a pem format.
 
 By default, the pem files are located in the same nsslapd-certdir directory.
 
+The pem files are extracted from the NSS cert db every time the server starts and
+overridden by the extracted keys and certs.
+
 ### Configuration
 
 To allow place in the different location, cn=encryption,cn=config
 could take optional attributes as follows:
 
     dn: cn=encryption,cn=config
-    CACertFile: filename
-    ServerKeyFile: filename
-    ServerCertFile: filename
+    CACertExtractFile: filename
+
+    dn: cn=RSA,cn=encryption,cn=config
+    ServerKeyExtractFile: filename
+    ServerCertExtractFile: filename
 
 The filename could be a full path or just a file name.
 If it is a file name without the path preceded, 
@@ -46,21 +51,7 @@ generates pem files and place them following the configuration.
 That is, an existing Directory Server is upgraded, it is supposed to work without
 any configuration changes.
 
-#### Special requirement per plug-in
-
-For each case that calls the openldap client library via SSL/startTLS,
-there could be a special requirement.  For instance, Windows Sync may need to
-connect to the Active Directory with the server certificate issued by a CA
-which is not in common with the one that issued the server side certificates.
-To support such requirement, each plug-in is expected to handle its own
-certificates.  
-
-Example:
-
-    Replication/Windows Sync agreement:
-    nsDS5ReplicaCACert: /path/to/cacert.pem or cacert.pem
-
-### Pem file names retrieved from NSS cert db
+### Pem file names extracted from NSS cert db
 
 When automatically retrieved, the pem file names are based on the nickname.
 If white spaces are in the nickname, they are removed.
@@ -72,59 +63,49 @@ Sample certificates:
                            SSL,S/MIME,JAR/XPI
     ---------------------+--------------------
     CA certificate         CTu,u,u
+    CA certificate 2       CTu,u,u
     Server-Cert            u,u,u
     ---------------------+--------------------
 
-In this example, CA certificate will be named <b>CAcertificate</b>.pem and
-Key of Server-Cert will be <b>Server-Cert-Key</b>.pem and certificate will be <b>Server-Cert</b>.pem.
+In this example, if CACertExtractFile is configured, the path and filename is being used for the CA 
+cert pem file.  Otherwise, the nick name of the first CA certificate is used for the file name
+by removing the white spaces as follows <b>CAcertificate</b>.pem.  
+The CA certificate pem file contains all the extracted CA certs (in this case, "CA certiricate" as
+well as "CA certificate 2".
+
+Key of Server-Cert is stored in <b>Server-Cert-Key</b>.pem and its certificate is in <b>Server-Cert</b>.pem.
+
+We do not allow to modify or replace the extracted pem files. 
+For clarity, we put a header in the extracted file noting it is auto-generated,
+always overwritten and possible with the nss name of the certificate, plus the cert Subject and Issuer.
 
 Key/Cert Retrieval at the Server Startup
 ========================================
 
 When the Directory Server starts up, the following steps are executed when nsslapd-security is on.
 
-    1) CACertFile, ServerKeyFile, and ServerCertFile are defined in cn=encryption.
-    1.1) CACertFile, ServerKeyFile, and ServerCertFile are defined as a full path.
-    1.1.1) CACertFile, ServerKeyFile, and ServerCertFile exist.
-           No need to do anything.  Done.
-    1.1.2) CACertFile, ServerKeyFile, and ServerCertFile do not exist.
-    1.1.2.1) CAcert and Server cert are in NSS cert db.
-    1.1.2.1.1) CAcert and Server cert nickname match the CACertFile, ServerCertFile.
-               Retrieve the CAcert and Server key and cert from the NSS cert db and 
-               put them in the specified path.
-    1.1.2.1.2) CAcert and Server cert nickname do not match the CACertFile, ServerCertFile.
-               Log configuration error.  Server does not start.
-    1.1.2.2) CAcert and Server cert are not in NSS cert db.
-             Log configuration error.  Server does not start.
-    
-    1.2) CACertFile, ServerKeyFile, and ServerCertFile are defined as a simple file name.
-    1.2.1) CACertFile, ServerKeyFile, and ServerCertFile exist in nsslapd-certdir.
-           No need to do anything.  Done.
-    1.2.2) CACertFile, ServerKeyFile, and ServerCertFile do not exist.
-    1.2.2.1) CAcert and Server cert are in NSS cert db.
-    1.2.2.1.1) CAcert and Server cert nickname match the CACertFile, ServerCertFile.
-               Retrieve the CAcert and Server key and cert from the NSS cert db and 
-               put them in nsslapd-certdir.
-    1.2.2.1.2) CAcert and Server cert nickname do not match the CACertFile, ServerCertFile.
-               Log configuration error.  Server does not start.
-    1.2.2.2) CAcert and Server cert are not in NSS cert db.
-             Log configuration error.  Server does not start.
-    
-    2) CACertFile, ServerKeyFile, and ServerCertFile are not defined in cn=encryption.
-    2.1) CAcert(s) and Server cert(s) are in NSS cert db.
-         Retrieve the CAcert and Server key and cert from the NSS cert db and 
-         put them in nsslapd-cert.
-         Note: If the certs are more than two, retrieve all of them.
-    2.2) CAcert and Server cert are not in NSS cert db.
-         Log configuration error.  Server does not start.
+* Scan NSS cert db.
+* Extract CA certs, convert them into the PEM format and store them into a file.
+  If the CACertExtractFile is configured in cn=encryption,cn=config, the filename is used.
+  If it is not given, the nick name of the first CA certificate is used and
+  the filename is set to CACertExtractFile.
+* Extract key and cert, convert them into the PEM format and store them individually.
+  If ServerKeyExtractFile and ServerCertExtractFile are configured in cn=CIPHER,cn=encryption,cn=config,
+  use the values for the file names.  Otherwise, the nickname of the certificate is used.
 
-Note: This automated key and certificate retrieval does not support the individual plug-in configuration.
+<b>Note:</b> To extract the private key, password is required as follows.
+
+      $ pk12util -d $secdir -o nickName.p12 -n nickName -w $secdir/pwdfile.txt -k $secdir/pwdfile.txt
+
+Also, to convert the p12 file into PEM file, I could not find the NSS utility to do the job and used openssl.
+
+      $ openssl pkcs12 -in nickName.p12 -out nickName.pem -nodes
+
+Do we have NSS library functions that allow the Directory Server to do the above 2 steps?
 
 Implementation Details
 ======================
-- Adding a new config parameter to the agreement:
-
-    nsDS5ReplicaCACert: /path/to/cacert.pem or cacert.pem
+- Plug-ins share the centralized CA cert PEM file.
 - Extending slapi_ldap_init_ext to take the ca cert.
 
   If cacert variable is given, it is passed to setup_ol_tls_conn(ld,
@@ -183,12 +164,9 @@ Replication Agreement:
 
     nsDS5ReplicaPort: 389 | 636
     nsDS5ReplicaTransportInfo: TLS | SSL
-    nsDS5ReplicaCACert: cacert.pem | /path/to/cacert.pem
 
     1) nsDS5ReplicaBindMethod: SIMPLE
-       The master has no certs in the cert db.  And the cacert pem is placed
-       at the random location such as /tmp/nss_pem/cacert.pem.  The operation
-       to the master is successfully replicated to the consumer.
+       The operation to the master is successfully replicated to the consumer using the CA cert in the pem file
 
     2) nsDS5ReplicaBindMethod: SSLCLIENTAUTH
        Configure the server with the server cert.  Then place pem files:
@@ -198,18 +176,31 @@ Replication Agreement:
 
 To Dos
 ======
-- Allowing winsync, dna, and chaining to use the feature.
+- Allowing winsync (priority high), dna (high), and chaining (low) to use the feature.
 
 - Current behavior:
-  If pin.txt exists, the server starts with SSL enabled.
-  If pin.txt does not exist,
-    if the server is started by executing ns-slapd, it prompts for the password.
-    if the server is started via systemctl, it does not prompt and the server
-    starts with SSL disabled.
-  To solve the issue, there is a password agent feature of systemd that is
-  designed for this case:
-  http://www.freedesktop.org/wiki/Software/systemd/PasswordAgents/
-  https://fedorahosted.org/389/ticket/48450 - RFE Systemd passwryd agent support
+
+       If pin.txt exists, the server starts with SSL enabled.
+       If pin.txt does not exist,
+         if the server is started by executing ns-slapd, it prompts for the password.
+         if the server is started via systemctl, it does not prompt and the server
+         starts with SSL disabled.
+       To solve the issue, there is a password agent feature of systemd that is
+       designed for this case:
+       http://www.freedesktop.org/wiki/Software/systemd/PasswordAgents/
+       https://fedorahosted.org/389/ticket/48450 - RFE Systemd passwryd agent support
+
+- NSS APIs to extract key and convert it into the pem format.
+
+  As noted in "Key/Cert Retrieval at the Server Startup", need to learn how to do the job in the Directory Server.
+
+- PEM file header
+
+  For clarity, we put a header in the extracted file noting it is auto-generated,
+  always overwritten and possible with the nss name of the certificate, plus the
+  cert Subject and Issuer.
+
+  It is also nice if we have a handy helper function in the NSS library.
 
 - After 389-ds-base, investigate 389-admin.
 
