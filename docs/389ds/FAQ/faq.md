@@ -450,6 +450,14 @@ If the server process goes away unexpectedly, it could be due to a crash. These 
 
             LimitCORE=infinity
 
+    -   Allow coredumpd to actually take cores of signifigant size.
+
+            # /etc/systemd/coredump.conf
+            [Coredump]
+            ## Set these values to the size of VSS of the program.
+            #ProcessSizeMax=2G
+            #ExternalSizeMax=2G
+
     -   refresh systemd
 
             systemctl daemon-reload
