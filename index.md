@@ -75,10 +75,10 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
 <!-- Try to keep this list under 10 releases  -->
 
+- 2016-02-22: Released **389 Windows Console [1.1.15](docs/389ds/releases/release-windows-console-1-1-15.html)**
 - 2016-01-25: Released **389 Directory Server [1.3.4.8](docs/389ds/releases/release-1-3-4-8.html)**
 - 2015-11-19: Released **389 Directory Server [1.3.4.5](docs/389ds/releases/release-1-3-4-5.html)**
 - 2015-11-19: Released **389 Directory Server [1.3.3.14](docs/389ds/releases/release-1-3-3-14.html)**
-- 2015-09-11: Released **389 Windows Console [1.1.15](docs/389ds/releases/release-windows-console-1-1-15.html)**
 - 2015-09-04: Released **389 Directory Server [1.3.4.4](docs/389ds/releases/release-1-3-4-4.html)**
 - 2015-09-04: Released **389 Directory Server [1.3.3.13](docs/389ds/releases/release-1-3-3-13.html)**
 - 2015-06-12: Released **389 Ds Console [1.2.12](docs/389ds/releases/release-ds-console-1-2-12.html)**

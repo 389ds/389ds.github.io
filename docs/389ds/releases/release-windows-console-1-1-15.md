@@ -11,6 +11,7 @@ Windows installers are available to download from [Download 389 Windows Console 
 ### Highlights in 389-console-win-1.1.15
 
 -   Windows Console now has the same bug fixes and enhancements made for the Fedora 389-console.
+-   A connection failure problem over SSL/startTLS was fixed.
 
 ### Installation and Upgrade
 
