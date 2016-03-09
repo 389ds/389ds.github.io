@@ -19,6 +19,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Audit Logging Improvements](audit_improvement.html)
 -   [Multiple Logging Backends](logging-multiple-backends.html)
 -   [Enhanced Account Tools for Account Policy Plugin](enhanced-account-tools.html)
+-   [Allow usage of OpenLDAP libraries that do not use NSS for crypto](allow-usage-of-openldap-lib-w-openssl.html)
 
 -------------------------------------------------
 
