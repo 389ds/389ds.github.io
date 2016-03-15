@@ -31,11 +31,22 @@ overridden by the extracted keys and certs.
 
 ### Configuration
 
-To allow place in the different location, cn=encryption,cn=config
-could take optional attributes as follows:
+The config entry cn=encryption,cn=config takes an attribute CACertExtractFile,
+with which the CA certificate pem file path is specified. 
+If the attribute value pair does not exist, 
+the full path to the extract CA cert pem file is added
+to the cn=encryption,cn=config entry as "CAcertExtractFile: full_path".
+The full_path is necessary for the utilities that internally call 
+openldap client tools to connect to the server over SSL/startTLS.  
+The code is implemented in DSUtil.pm.
+The full_path is set to the environment variable LDAPTLS_CACERT.
 
     dn: cn=encryption,cn=config
     CACertExtractFile: filename
+
+The config entry cn=<i>CIPHER</i>,cn=encryption,cn=config takes 
+attributes ServerKeyExtractFile as well as ServerCertExtractFile 
+to specify the filename.  These pairs are not added to the entry
 
     dn: cn=RSA,cn=encryption,cn=config
     ServerKeyExtractFile: filename
@@ -90,7 +101,7 @@ When the Directory Server starts up, the following steps are executed when nssla
   If it is not given, the nickname of the first CA certificate is used and the filename
   is set to CACertExtractFile.
 * Extract key and cert, convert them into the PEM format and store them individually.
-  If ServerKeyExtractFile and ServerCertExtractFile are configured in cn=CIPHER,cn=encryption,cn=config,
+  If ServerKeyExtractFile and ServerCertExtractFile are configured in cn=<i>CIPHER</i>,cn=encryption,cn=config,
   use the values for the file names.  Otherwise, the nickname of the certificate is used.
 * PEM file header
 
@@ -223,7 +234,13 @@ To Dos
   any CRLs or OCSPs that NSS knows about. We also need to consider how openldap+
   openssl clients will check server certs (or CA certs too?) for revocation.
 
-- After 389-ds-base, investigate 389-admin.
+- After 389-ds-base, investigate 389-admin
+  - PEM file retrieval in the admin server
+  - Set Environment variable (LDAPTLS_CACERT) for the server and CGIs.
+  - etc.
+
+- In addition to the softoken cryptographic module, 
+  it needs to test with HSM (Hardware Security Module).
 
 ### Lower priority
 - An idea not to store password in pin.txt using Deo:
@@ -240,4 +257,5 @@ To Dos
 Tickets
 =======
 * Ticket [\#47536](https://fedorahosted.org/389/ticket/47536) - Allow usage of OpenLDAP libraries that don't use NSS for crypto
+* Ticket [\#48756](https://fedorahosted.org/389/ticket/48756) - if startTLS is enabled, perl utilities fail to start.
 * Ticket [\#48450](https://fedorahosted.org/389/ticket/48450) - RFE Systemd passwryd agent support
