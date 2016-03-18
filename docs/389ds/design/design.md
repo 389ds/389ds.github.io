@@ -151,6 +151,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Managed Entry Plug-in Enhancement](mep-rework.html)
 -   [Managing Replication Conflicts](managing-repl-conflict-entries.html)
 -   [Schema with Multiple Search Paths](schema-multiple-search-paths.html)
+-   [Extended Op Plug-in Transaction Support](exop-plugin-transactions.html)
 
 
 
