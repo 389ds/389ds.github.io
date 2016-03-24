@@ -226,7 +226,7 @@ To Dos
        To solve the issue, there is a password agent feature of systemd that is
        designed for this case:
        http://www.freedesktop.org/wiki/Software/systemd/PasswordAgents/
-       https://fedorahosted.org/389/ticket/48450 - RFE Systemd passwryd agent support
+       https://fedorahosted.org/389/ticket/48450 - RFE Systemd password agent support
 
 - <p>Comment by Rich:</p>
   There is one more implicit use of NSS that just happens - revocation checking. 
@@ -258,4 +258,4 @@ Tickets
 =======
 * Ticket [\#47536](https://fedorahosted.org/389/ticket/47536) - Allow usage of OpenLDAP libraries that don't use NSS for crypto
 * Ticket [\#48756](https://fedorahosted.org/389/ticket/48756) - if startTLS is enabled, perl utilities fail to start.
-* Ticket [\#48450](https://fedorahosted.org/389/ticket/48450) - RFE Systemd passwryd agent support
+* Ticket [\#48450](https://fedorahosted.org/389/ticket/48450) - RFE Systemd password agent support

@@ -76,7 +76,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 <!-- Try to keep this list under 10 releases  -->
 
 - 2016-03-23: Updated **389 Directory Password Synchronization [1.1.6](docs/389ds/releases/release-passsync-1-1-6.html)**
-- 2016-03-23: Released **389 Directory Server [1.3.5.1](docs/389ds/releases/release-1-3-5.1.html)**
+- 2016-03-23: Released **389 Directory Server [1.3.5.1](docs/389ds/releases/release-1-3-5-1.html)**
 - 2016-03-23: Released **389 Directory Server [1.3.4.9](docs/389ds/releases/release-1-3-4-9.html)**
 - 2016-02-22: Released **389 Windows Console [1.1.15](docs/389ds/releases/release-windows-console-1-1-15.html)**
 - 2016-01-25: Released **389 Directory Server [1.3.4.8](docs/389ds/releases/release-1-3-4-8.html)**
