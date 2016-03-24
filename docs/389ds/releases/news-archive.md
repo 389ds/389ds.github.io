@@ -7,6 +7,16 @@ title: "News Archive"
 
 {% include toc.md %} 
 
+#### 389 Directory Server 1.3.4.4 is now available for Testing (September 4, 2015)
+
+-   389-ds-base 1.3.4.4 for Fedora 22, 23 and Rawhide.
+-   [See the Release Notes](release-notes.html) for more information
+
+#### 389 Directory Server 1.3.3.13 is now available for Testing (September 4, 2015)
+
+-   389-ds-base 1.3.3.13 for Fedora 21.
+-   [See the Release Notes](release-notes.html) for more information
+
 #### 389 Directory Server 1.3.4.1 is now available for Testing (June 24, 2015)
 
 -   389-ds-base 1.3.4.1 for Fedora 22.
@@ -19,7 +29,7 @@ title: "News Archive"
 
 #### 389 Directory Server 1.3.3.12 is now available for Testing (June 17, 2015)
 
--   389-ds-base 1.3.3.10 for Fedora 21 and 22.
+-   389-ds-base 1.3.3.12 for Fedora 21.
 -   [See the Release Notes](release-notes.html) for more information
 
 #### 389 Directory Server 1.3.3.10 is now available for Testing (April 28, 2015)

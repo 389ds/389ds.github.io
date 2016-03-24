@@ -20,13 +20,20 @@ The source code was produced by first doing a git clone to get the repository, t
     git clone git://git.fedorahosted.org/389/MODULENAME
     git archive --prefix=PKGNAME/ TAG | bzip2 > PKGNAME.tar.bz2
 
+### 389 Directory Server 1.3.5
+
+|Source tarball|git module|git tag|More Info|SHA1SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-1.3.5.1.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.1.tar.bz2)|ds.git|389-ds-base-1.3.5.1|[Building](building.html)|309e4134a187c5d9de7cf4377cd50a82c2078f05|
+|[nunc-stans-0.1.8.tar.bz2]({{ site.baseurl }}/binaries/nunc-stans-0.1.8.tar.bz2)|nunc-stans.git|0.1.8|[Building](building.html)|835c9788650d1b9ef0896c267b06b9e529612835|
+
 ### 389 Directory Server 1.3.4
 
 389-ds-base uses git repo 389/ds.git branch 389-ds-base-1.3.4 (branched 19-Jun-2015)
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
-|[389-ds-base-1.3.4.8.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.4.8.tar.bz2)|ds.git|389-ds-base-1.3.4.8|[Building](building.html)|62a523859f1a383aa4e03012785d612f4de0b363|
+|[389-ds-base-1.3.4.9.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.4.9.tar.bz2)|ds.git|389-ds-base-1.3.4.9|[Building](building.html)|f1c347e559bc0c1d2b6d080d4d975b9ba9f13f7c|
 |[nunc-stans-0.1.5.tar.bz2]({{ site.baseurl }}/binaries/nunc-stans-0.1.5.tar.bz2)|nunc-stans.git|0.1.5|[Building](building.html)|7e52309f61c38b241fcdaf0284559d683f3ba700|
 |[389-admin.1.1.42.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.42.tar.bz2)|admin.git|389-admin-1.1.42|[Admin](../administration/adminserver.html)|3d931830ce832b7e0f820689ca30e5996b873f75|
 |[389-adminutil-1.1.22.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.22.tar.bz2)|adminutil.git|389-adminutil-1.1.22|[AdminUtil](../administration/adminutil.html)|ee337a293409b9682f68797bf200ef4a7e14c3e1|
