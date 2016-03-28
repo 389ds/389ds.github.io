@@ -10,7 +10,7 @@ Fedora packages are available from the Fedora 24 and Rawhide repositories.
 
 The new packages and versions are:
 
--   389-ds-base-1.3.5.1-1
+-   389-ds-base-1.3.5.1-2
 
 Source tarballs are available for download at [Download 389-ds-base Source]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.1.tar.bz2) and [Download nunc-stans Source]({{ site.baseurl }}/binaries/nunc-stans-0.1.8.tar.bz2).
 
@@ -34,7 +34,7 @@ See [Source](../development/source.html) for information about source tarballs a
 
 We are very interested in your feedback!
 
-Please provide feedback and comments to the 389-users mailing list: <https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org> as well as <https://admin.fedoraproject.org/updates/389-ds-base-1.3.5.1-1.fc24>.
+Please provide feedback and comments to the 389-users mailing list: <https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org> as well as <https://admin.fedoraproject.org/updates/389-ds-base-1.3.5.1-2.fc24>.
 
 If you find a bug, or would like to see a new feature, file it in our Trac instance: <https://fedorahosted.org/389>
 
