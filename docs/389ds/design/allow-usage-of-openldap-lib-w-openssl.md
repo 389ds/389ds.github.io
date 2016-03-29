@@ -135,7 +135,14 @@ When the Directory Server starts up, the following steps are executed when nssla
                 [.....]
        -----END PRIVATE KEY-----
 
-<b>Note:</b> I borrowed the crypto-utils code to extract the keys from the cert db.
+<b>Notes:</b> I borrowed the crypto-utils code to extract the keys from the cert db.
+
+### Configuration parameter nsslapd-extract-pemfiles
+
+      dn: cn=config
+      nsslapd-extract-pemfiles: on | off
+
+When the value is "on", the certs/keys are extracted as pem files.  Currently (389-ds-base-1.3.5.x), it is set to off, by default.
 
 Implementation Details
 ======================
@@ -212,6 +219,34 @@ ds/dirsrvtests/tests/tickets/ticket47536_test.py
 
       Each time add 5 entries to master 1 and 2 and check they are replicated.
 
+CRL
+===
+Set value LDAP_OPT_X_TLS_CRL_ALL to the option LDAP_OPT_X_TLS_CRLCHECK with the openldap API ldap_set_option.  If the CRL file exists in the cert dir, it is supposed to be checked by this setting.
+
+Comment by Rich:
+
+- There is one more implicit use of NSS that just happens - revocation checking. 
+  If you are using NSS for everything, the certs are automatically checked against 
+  any CRLs or OCSPs that NSS knows about. We also need to consider how openldap+
+  openssl clients will check server certs (or CA certs too?) for revocation.
+
+What we need:
+
+      1) Get CRL DPs from a cert
+         (example:https://hg.python.org/cpython/file/tip/Modules/_ssl.c#l1070)
+      2) Download CRL to a temporary directory
+      3) verify that the CRL is correct and has been signed by a trusted party.
+      4) move CRL to its final destination
+
+This tool fetch-crl looks promising.  But the package is available only for Fedoras not for RHELs.
+
+      https://wiki.nikhef.nl/grid/FetchCRL3
+
+Possible solutions:
+
+  - Build our own similar tool (possibly get the CRL from NSS?)
+  - Ship fetch-crl in RHEL (approval might be tricky, maybe not though)
+
 To Dos
 ======
 - Testing with winsync (priority high), dna (high), and chaining (low) to use the feature.
@@ -227,12 +262,6 @@ To Dos
        designed for this case:
        http://www.freedesktop.org/wiki/Software/systemd/PasswordAgents/
        https://fedorahosted.org/389/ticket/48450 - RFE Systemd password agent support
-
-- <p>Comment by Rich:</p>
-  There is one more implicit use of NSS that just happens - revocation checking. 
-  If you are using NSS for everything, the certs are automatically checked against 
-  any CRLs or OCSPs that NSS knows about. We also need to consider how openldap+
-  openssl clients will check server certs (or CA certs too?) for revocation.
 
 - After 389-ds-base, investigate 389-admin
   - PEM file retrieval in the admin server
