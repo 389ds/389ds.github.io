@@ -56,6 +56,7 @@ Source Code and Build Instructions
 |**Continuous Integration Testing** ([documentation](FAQ/upstream-test-framework.html))| <https://git.fedorahosted.org/git/389/lib389.git>| git clone git://git.fedorahosted.org/git/389/lib389.git<br>git clone ssh://git.fedorahosted.org/git/389/lib389.git|
 |**Rest Server** ([documentation](design/ldap-rest-api.html))| <https://git.fedorahosted.org/git/389/rest389.git>| git clone git://git.fedorahosted.org/git/389/rest389.git<br>git clone ssh://git.fedorahosted.org/git/389/rest389.git|
 |**OpenLDAP** ([build instructions](development/building-openldap.html))|Not Available| git clone git://git.openldap.org/openldap.git|
+|**Svrcore** ([build instructions](development/building-svrcore.html))|<https://pagure.io/svrcore.git>| git clone https://pagure.io/svrcore.git|
 
 <br>
 

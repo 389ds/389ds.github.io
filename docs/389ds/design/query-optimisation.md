@@ -194,56 +194,13 @@ We would track:
 
 We also keep a count of the totals of how many objects contain uid=*. This is effectively an extension of the other 3 index types, and allows us to understand the types and values within the directory.
 
-#### Advanced Exact Tracking
-----------------------------
-
-This is the same as basic exact tracking, but we also track the number of objects through subtrees of the directory as well (excluding leaf entries).
-
-Total object tracking remains the same for us in this case.
-
-If we have:
-
-* uid=a
-* uid=b
-* uid=c
-
-We would track:
-
-* uid=a: 1
-* uid=b: 1
-* uid=c: 1
-
-For the subtree ou=people we would track
-
-* uid=b: 1
-* uid=c: 1
-
-If a queries search base was ou=people in this case, we would consult this version of the index, and uid=a would return a 0.
-
-This is more expensive to maintain, as we must track:
-
-* The exact number of instances of every attribute in the directory, and then, each subtree (but without needing to look at objects)
-* When objects have a modrdn applied this means we have a lot more data to update in the indices compared to the basic variant (where only add/delete/mod changes the index, and only in one location).
-
-This will allow us to perform "perfect" optimisations of queries, but may not be worth the investment due to extra maintanence expense.
-
-
 ### Proposal 3: Automatic query optimisation using popularity and filter ASTs
 ----------------------------------------------------------------------------
 
 #### Rules
 ----------
 
-Once both the popularity index, and the filter to AST infrastructure is in place, we are able to apply the two to form decisions and optimise queries in a more powerful and automated manner.
-
-For exact tracking unique is the exact value of the number of objects that contain some value X as referenced by the index. For example,
-
-* uid=a: 1
-* uid=b: 2
-* uid=c: 1
-
-    unique '(uid=a)' = 1
-    unique '(uid=b)' = 2
+Once both the popularity index, and the filter to AST infrastructure is in place, we are able to apply this to form decisions and optimise queries in a more powerful and automated manner.
 
 For likelihood tracking, we would in this case say:
 
@@ -258,8 +215,6 @@ Therfore, unique values of uid is the number of objects that contain uid=*.
     unique '(uid=a)' = 4
     unique '(uid=b)' = 4
 
-Otherwise all calculations are the same. This is why exact tracking will give better results, as we can pre-narrow the results based not only on the likelihood of the attribute type (uid), but also of it's value (=b).
-
 We can now use these values to determine "filter gain" through the application of these. For our case, the greatest "gain" is being able to statistically conclude the greatest reduction in working candidate set E' as we progress in the application of the filter.
 
 This value is a statistical approximation of the reduction in the entries by percentage of how many entries that might exist with that attribute potentially containing the value X. Obviously we cannot know the exact number until we have completed the search.
@@ -269,10 +224,6 @@ We want to calculate a value that will return us the smallest percentage of obje
     Statistical likelihood:
 
     (('total' / 'unique') / 'number subtree objects')
-
-    exact tracking:
-
-    ('unique' / 'number subtree objects')
 
 A lower value represents a smaller resulting set. We are therefore aiming to optimise our query to apply lower values first to prune as much of the set E as possible through each step. This algorithm will reward values with high sets of unique values, and smaller set sizes over those will less unique values and bigger sizes.
 
@@ -288,6 +239,12 @@ rareAttr:
 * unique: 2
 
 This would yield an fg within our example set of entries of '0.05' as we would significantly reduce the candidate set size in a single operation.
+
+We will determine the fg of a substring index as:
+
+    (('total' / 'unique') / 'number subtree objects')
+
+This is identical to equality because substring is internally an extended case of equality.
 
 We determine the fg of an OR filter as the sum of all fg values in the children of the OR, up to the maximum value 1. The total of an OR value is the sum of total of child filters total for the purpose of query ordering in the case of duplicate fg.
 
@@ -421,28 +378,14 @@ As a result, the optimised application of this query is:
 
 If we calculate the number of operations for each query, the unoptimised version would perform many more reductions in the initial set of '(\|(uid=a)(uid=b)(uid=c))' operations, where the optimised one delays this until later in the filter application. By delaying this, there are less entries to consider in the evaluation.
 
-#### Complex query optimisation (exact)
----------------------------------------
-
-#### Remaining cases
+#### Remaining notes
 --------------------
-
-Two major filter cases remain: Substring search, and unindexed values.
-
-The ability to determine fg from a substring query is quite hard, as there are many more possibilities. If we applied the equality fg formula, we would have so many unique "substring index" values, that we would always prefer the substring index first potentially. There is no easy to way to represent the gain in a substring search, so I propose that 
-
-* In the interim they are assigned an fg value of 0.75 and their total entry numbers determine the ordering. This way, we tend to apply the faster indexed types first, and we leave substring execution until later in evaluation when there are fewer candidates. 
-* Research is done into the cost of maintaining popularity on a substring index, and the potential gain in performance as a substring index, may just be an equality index with a greater variety of potential candidates.
-
 
 Handling of unindexed values. Because we know if the value is unindexed or not, we can use this information during the parse of the tree to flag to the admin exactly which value is unindexed and the exact nature of the search that is in question. This will help administrators determine more efficient indexes to apply to their system. Unindexed terms will be given the fg of 1 (as below). Essentially, an unindexed component will "taint" components of a filter, and cause them to be de-preffered until later in execution.
 
 Any term that is unindexed or does not possess a popularity index, should be treated as though they have a total number of objects equal to the total number of objects in the subtree. They should be treated as though they have a unique value of 1. This will cause the calculation of fg to determine their value to be 1, meaning these terms cannot be analysed, so we have no choice but to deprefer them in our calculation.
 
 By forcing unindexed values to be considered near the end of the query, we should have already reduced the candidate set which will mean the unindexed operations should be significantly faster. This is already the case in the basic "and" filter optimisation in ns-slapd, but it cannot be applied to all cases.
-
-
-Additionally, the choice between statistical likelihood and exact tracking must be decided. There are greater costs in the application of the exact tracking process, as it requires us to potentially consult the popularity indcies more. However, it will yield "perfect" optimisations of all queries that have the popularity index as we know ahead of time the exact number of objects that a filter will produce. This means we know when a filter of say uid=x is presented, we know the exact number of results uid=x will gain us: If it is large, we know to de-prefer the term, if it is small, we know to prefer it's usage.
 
 ### Future Proposal 4: Filter execution from the AST structure
 -------------------------------------------------------
