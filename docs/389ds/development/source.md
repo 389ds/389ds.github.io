@@ -26,6 +26,7 @@ The source code was produced by first doing a git clone to get the repository, t
 |--------------|----------|-------|---------|-------|
 |[389-ds-base-1.3.5.1.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.1.tar.bz2)|ds.git|389-ds-base-1.3.5.1|[Building](building.html)|309e4134a187c5d9de7cf4377cd50a82c2078f05|
 |[nunc-stans-0.1.8.tar.bz2]({{ site.baseurl }}/binaries/nunc-stans-0.1.8.tar.bz2)|nunc-stans.git|0.1.8|[Building](building.html)|835c9788650d1b9ef0896c267b06b9e529612835|
+|[svrcore-4.1.0.tar.bz2]({{ site.baseurl }}/binaries/svrcore-4.1.0.tar.bz2)|svrcore.git|4.1.0|[Building](building.html)|a1c4bc221ed0539bbca21c4468f1633dad245623|
 
 ### 389 Directory Server 1.3.4
 
