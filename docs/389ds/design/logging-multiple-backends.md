@@ -11,6 +11,15 @@ As time as progressed we have access to many other logging systems now. Slapd sh
 
 We will develop and introduce syslog and journald backends as part of this improvement.
 
+# Notice:
+---------
+
+As of 2016-04-13 Journald support has been disabled by default due to concerns over it's production capability.
+
+Syslog support will still be provided.
+
+Journald can be enabled with --with-systemd --with-journald, but it is extremely likely that this will not be added to most distributions.
+
 # Use Cases
 -----------
 
