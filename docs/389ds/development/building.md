@@ -187,7 +187,7 @@ NSS does not currently use autotools, so there is no configure - just use make (
 
 #### SVRCORE
 
-Use the latest stable version from [<ftp://ftp.mozilla.org/pub/mozilla.org/directory/svrcore/releases/>](ftp://ftp.mozilla.org/pub/mozilla.org/directory/svrcore/releases/) or the mozilla mercurial (hg) repo.
+Use the latest stable version from [<{{ site.baseurl }}/binaries/>]({{ site.baseurl }}/binaries/) or the 389 ds team git repository.
 
 Then build it using configure and make. You will need to tell it where to find NSPR and NSS if it cannot find them automatically:
 
