@@ -34,7 +34,7 @@ That will direct you to a mirror where you can download the epel-release X (6 or
 
     yum install http://site/path/to/epel-release-X-N.noarch.rpm
 
-Then you can install 389-ds and get all of the core directory server, admin server, and console components as per the directions below.
+Then you can install 389-ds-base and get all of the core directory server, admin server, and console components as per the directions below.
 
 ### 389 Directory Server 1.1 and later
 
@@ -56,8 +56,8 @@ Upgrade an existing system:
 If you specify package names on the command line, only those packages will be updated - useful for testing, if you just want to test certain packages without upgrading every package on your system to the testing version. You can use *yum downgrade pkgname ... pkgname* to downgrade the package from the testing version to the stable version.
 
 -   Testing - installing packages from the testing repos
-    -   On Fedora - yum install 389-ds --enablerepo=updates-testing
-    -   On EPEL - yum install 389-ds --enablerepo=epel-testing
+    -   On Fedora - yum install 389-ds-base --enablerepo=updates-testing
+    -   On EPEL - yum install 389-ds-base --enablerepo=epel-testing
     -   On Fedora - yum upgrade <testing packages> --enablerepo=updates-testing
     -   On EPEL - yum upgrade <testing packages> --enablerepo=epel-testing
     -   See the [Release Notes](releases/release-notes.html) for the current list of testing packages
