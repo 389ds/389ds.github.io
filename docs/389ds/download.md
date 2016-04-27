@@ -45,7 +45,7 @@ Then you can install 389-ds-base and get all of the core directory server, admin
 
 New Install:
 
-    yum install 389-ds
+    yum install 389-ds-base
     setup-ds-admin.pl
 
 Upgrade an existing system:
@@ -64,7 +64,7 @@ If you specify package names on the command line, only those packages will be up
 -   Upgrade - **yum upgrade**
     -   The 389 packages are designed to obsolete and replace the fedora-ds packages - you must use yum **upgrade** *not update* in order for yum and rpm to process the obsolete directives
     -   You **must** run **setup-ds-admin.pl -u** after the upgrade to refresh your admin server and console configuration
--   New Install - **yum install 389-ds**
+-   New Install - **yum install 389-ds-base**
     -   Run **setup-ds-admin.pl** to set up your directory server
 
 Upgrading and installing will install many dependencies too, including Java if your platform supports it. If not, see [Install Guide](legacy/install-guide.html) for more information about Java.
