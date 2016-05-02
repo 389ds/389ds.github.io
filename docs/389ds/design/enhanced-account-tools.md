@@ -175,7 +175,7 @@ None
 
 ## Replication
 
-No Impact
+No Impact.
 
 ## Updates and Upgrades
 
