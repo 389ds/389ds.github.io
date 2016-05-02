@@ -27,11 +27,13 @@ Suggested solution
 
 -   Define a new backend flag:
 
-        SLAPI_BE_FLAG_NO_PLUGINS
+        SLAPI_BE_FLAG_DISABLE_PLUGIN_OPERATIONS
 
--   Define a configuration parameter for backend entries: 
+-   Define a  parameter for backend configuration entries: 
 
-        nsslapd-no-plugins: on/off
+        dn: cn=changelog,cn=ldbm database,cn=plugins,cn=config
+        ......
+        nsslapd-disable-plugin-operations: on/off
 
      with default set to off
 
@@ -40,3 +42,4 @@ Suggested solution
 Tickets
 =======
 * Several tickets involving deadlocks or crashes, eg: 48388
+* Ticket [\#48812](https://fedorahosted.org/389/ticket/48812) Exclude Backends From Plugin Operations
