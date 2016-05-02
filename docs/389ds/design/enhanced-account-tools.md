@@ -150,7 +150,7 @@ The only change to this tool is that it can now detect when an account is inacti
 
 ## Implementation
 
-Here are the *new* command line tool parameters for the new features:
+Here are the *new* command line tool parameters for the new features for ns-accountstatus.pl:
 
     Searching Parameters (ignores "-I DN")
     --------------------
