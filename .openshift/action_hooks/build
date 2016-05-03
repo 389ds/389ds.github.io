@@ -1,10 +1,11 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Exit on errors
 set -e
 
-cd $OPENSHIFT_REPO_DIR
-
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+
+pushd $OPENSHIFT_REPO_DIR
 bundle exec jekyll build
+popd
