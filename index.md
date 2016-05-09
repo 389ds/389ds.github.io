@@ -75,8 +75,8 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
 <!-- Try to keep this list under 10 releases  -->
 
-- 2016-04-14: Released **Svrcore [4.1.1](docs/389ds/releases/release-svrcore-4-1-1.html)**
-- 2016-04-08: Released **Svrcore [4.1.0](docs/389ds/releases/release-svrcore-4-1-0.html)**
+- 2016-05-09: Released **389 Directory Server [1.3.5.3](docs/389ds/releases/release-1-3-5-3.html)**
+- 2016-05-09: Released **Svrcore [4.1.2](docs/389ds/releases/release-svrcore-4-1-2.html)**
 - 2016-03-28: Released **389 Directory Server [1.3.5.1](docs/389ds/releases/release-1-3-5-1.html)**
 - 2016-03-23: Updated **389 Directory Password Synchronization [1.1.6](docs/389ds/releases/release-passsync-1-1-6.html)**
 - 2016-03-23: Released **389 Directory Server [1.3.4.9](docs/389ds/releases/release-1-3-4-9.html)**

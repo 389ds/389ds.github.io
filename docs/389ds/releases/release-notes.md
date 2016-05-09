@@ -5,6 +5,8 @@ title: "Release Notes"
 # Release Notes
 ---------------
 
+-   [ 389 Directory Server 1.3.5.3](release-1-3-5-3.html) *(May 9, 2016)*
+-   [ Svrcore 4.1.2](release-svrcore-4.1.2.html) *(May 9, 2016)*
 -   [ Svrcore 4.1.1](release-svrcore-4.1.1.html) *(April 14, 2016)*
 -   [ Svrcore 4.1.0](release-svrcore-4.1.0.html) *(April 8, 2016)*
 -   [ 389 Directory Server 1.3.5.2](release-1-3-5-1.html) *(March 28, 2016)*
