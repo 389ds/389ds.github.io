@@ -7,6 +7,11 @@ title: "News Archive"
 
 {% include toc.md %} 
 
+#### 389 Directory Server 1.3.4.5 is now available for Testing (November 19, 2015)
+
+-   389-ds-base 1.3.4.5 for Fedora 22, 23 and Rawhide.
+-   [See the Release Notes](release-notes.html) for more information
+
 #### svrcore 4.1.1 is now available for Testing (April 14, 2016)
 
 -   svrcore 4.1.1 for Fedora 24 and Rawhide.

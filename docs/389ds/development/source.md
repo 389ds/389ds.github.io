@@ -24,7 +24,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
-|[389-ds-base-1.3.5.3.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.3.tar.bz2)|ds.git|389-ds-base-1.3.5.3|[Building](building.html)|b02d29e414975e978cf99d27234c03484569240e|
+|[389-ds-base-1.3.5.4.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.4.tar.bz2)|ds.git|389-ds-base-1.3.5.4|[Building](building.html)|a3d1010476b0522cdc6e87726d6ea49dd47829a1|
 |[nunc-stans-0.1.8.tar.bz2]({{ site.baseurl }}/binaries/nunc-stans-0.1.8.tar.bz2)|nunc-stans.git|0.1.8|[Building](building.html)|835c9788650d1b9ef0896c267b06b9e529612835|
 |[svrcore-4.1.2.tar.bz2]({{ site.baseurl }}/binaries/svrcore-4.1.2.tar.bz2)|svrcore.git|4.1.2|[Building](building.html)|699db1b2294e7d15c8f576037fc5ff9bc6d8e001|
 
