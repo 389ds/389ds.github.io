@@ -1,5 +1,5 @@
 ---
-title: "Detect import or restore at startup"
+title: "Processing the replication changelog when sending updates"
 ---
 
 # Processing the replication changelog when sending updates
@@ -168,4 +168,127 @@ Include minCSN in calculation of new anchorCSN
 ### case 3: localRUV has changed 
 
 Distinguish cases depending on relative loaction of localRUV, prevLocalRUV, currentCSN, consumerRUV
+
+
+Current definitions and Algorithm
+=================================
+
+## Terminology:
+
+
+clBuffer: set of sequential records from the changelog
+
+
+csnAnchor: csn used to define where the start of teh loaded clbuffer is
+
+
+csnConsumer(X): maxcsn for replica X which is known by the consumer. It is read from the consumer when the replication session is started and updated when changes for X are sent to the consumer. Since the consumer is locked by the current replication session it cannot receive updates for X from other suppliers.
+
+
+csnMaxSup(X): max csn for replica X known by the supplier, this can change during the replication session and during processing of one clBuffer
+
+
+csnPrevMaxSup(x): max csn for replica X when the buffer was loaded last time and tzhe last anchor csn was determined
+
+
+csnMinSup(X): first change in changelog for replica X, needed if the consumer has not yet seen any change for replica X
+
+
+csnBuffer: csn currently processed, after all csns in the clBuffer have been processed, this is the last csn which was contained in the buffer.
+
+
+## Theorems:
+
+
+    1] A change received for replica X with csnX will only be applied and inserted into the changelog if csnX > csnMaxSup
+
+==>
+
+    2] For any change (csnX) received for replica X while clBuffer is processed: csnX > csnPrevMaxSup(X)
+
+
+## Determine anchor csn for first buffer load:
+
+
+    Let csnStart(X) be the potential anchor csn for replica X
+
+    Let startCSNs be the set of potential start csns.
+
+
+    For each replica X :
+
+    if csnConsumer(X) >= csnMaxSup(X)
+
+        continue
+
+    else if csnConsumer(X) == NULL
+
+        csnStart(X) = csnMinSup(X),
+
+        add csnStart(X) to startCSNs
+
+    else
+
+        csnStart(X) = csnConsumerCSN(X),
+
+        add csnStart(X) to startCSNs
+
+    csnAnchor = min ({csnStart(X)}
+
+## Determine anchor csn for buffer reload
+
+
+For each replica X handle the following cases:
+
+
+1] csnPrevMaxSup(X) == csnMaxSup(X)
+
+    ==> no new changes for X, ignore X in calculation of anchor csn
+
+    ==> csnStart(X) = csnBuffer
+
+
+2] csnPrevMax(SupX) >= csnBuffer
+
+    ==> we have not yet reached previous max csn for X, ne changes will be ahead of current buiffer
+
+    ==> csnStart(X) = csnBuffer
+
+
+3] csnPrevMaxSup(X) < csnBuffer
+
+==> there are two cases
+
+3.1] csnPrevMaxSup(X) == NULL
+
+    ==> we have received the first changes for X during buffer processing
+
+    ==> if csnConsumer(X) == NULL
+
+            csnStart(X) = csnMinSup(X)
+
+        else if csnMaxSup(X) > csnConsumer(X)
+
+            csnStart(X) = csnConsumer(X)
+
+        else
+
+            ignore X (csnStart(X) = csnBuffer
+
+3.2] csnPrevMaxSup(X) > 0 (and < csnBuffer)
+
+    ==> all csn(X) up to csnPrevMaxSup(X) have been sent,
+
+        but there could be the case that X was ignored because
+
+            csnConsumer(X) > csnPrevMaxSup()
+
+        anyway if changes for X were processed, the consumerMax(X) had been updated
+
+        and sending would have stopped at csnPrevMaxSup(X)
+
+        ==> csnStart(X) = csnConsumer(X)
+
+
+csnAnchor = min ({startCSNS(X)}
 
