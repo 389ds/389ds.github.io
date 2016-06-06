@@ -63,6 +63,11 @@ Here is a "MarkDown" template for writing design docs
 
     Impact on other development teams and components
 
+    Origin
+    -------------
+
+    A link to the trac ticket or bugzilla
+
     Author
     ------
 
