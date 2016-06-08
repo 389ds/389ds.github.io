@@ -11,7 +11,11 @@ If you are adding a new design document, use the [template](design-template.html
 
 {% include toc.md %}
 
-## 389 Directory Server 1.3.5 (Future)
+## 389 Directory Server 1.3.6 (Future)
+
+------------------------------------------------
+
+## 389 Directory Server 1.3.5
 -   [Shadow Account Support](shadow-account-support.html)
 -   [Password Expiring Control Configuration](password-expiring-design.html)
 -   [Bundle jemalloc](bundle-jemalloc-design.html)
@@ -21,6 +25,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Enhanced Account Tools for Account Policy Plugin](enhanced-account-tools.html)
 -   [Allow usage of OpenLDAP libraries that do not use NSS for crypto](allow-usage-of-openldap-lib-w-openssl.html)
 -   [Systemd Ask Password](systemd-ask-pass.html)
+-   [Replication Convergence Improvement](repl-conv-design.html) - This feature will most likely be backported to previous versions
 
 -------------------------------------------------
 
