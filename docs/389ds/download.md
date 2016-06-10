@@ -146,3 +146,14 @@ Checkout our scripts page [here](scripts.html)
 ----------
 
 Checkout our schema page [here](schema.html)
+
+## Artwork and logos
+--------------------
+
+We maintain a the project logos and some other nice images. 
+
+
+-   [Logo Small]({{ site.baseurl }}/images/logo389.png)
+-   [Wallpaper 16:9 svg]({{ site.baseurl }}/images/389-logo-wallpaper-1080p.svg)
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />These <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/StillImage" rel="dct:type">works</span> are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
