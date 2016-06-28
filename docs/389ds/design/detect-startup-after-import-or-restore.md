@@ -63,7 +63,7 @@ If the import succeeds, the file is updated. So an attempted import could be dis
 
 ### Check for restore
 
-A restore affects all backends, t startup the existence of the "restore" file is checked and if it exists the flag in all backends has to be set.
+A restore affects all backends, at startup the existence of the "restore" file is checked and if it exists the flag in all backends has to be set.
 It is checked before the backends are started and the state is stored in a private variable:
 
     is_restart_after_restore 
@@ -72,7 +72,7 @@ when the backends are started, the state can be determined via a function
 
     slapi_is_restore_startup()
 
-and the "post_restore" flag i
+and the "post_restore" flag is
 
 
     SLAPI_BE_FLAG_POST_RESTORE
@@ -95,6 +95,11 @@ is set in the backend and the file is removed. The flag can be detected by calli
 
     slapi_be_is_flag_set(be, SLAPI_BE_FLAG_POST_IMPORT)
 
+
+## Online import
+
+Plugins can register for backend state changes and the registered function is called at a state change. But the reason for the state change cannot be detected by the plugin. Therfor also
+after an online initialization, either an import task or an online replica initialization, the import flag is set.
 
 Tickets
 =======
