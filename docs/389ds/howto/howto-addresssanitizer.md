@@ -20,18 +20,6 @@ Install the required libraries
 
 LLVM is used to print the trace in a more readable format. It's not used for compilation.
 
-# Environment Setup
--------------------
-
-In your shell of choice, you should add the following variables:
-
-    export ASAN_SYMBOLIZER_PATH=/usr/bin/llvm-symbolizer
-    export ASAN_OPTIONS=symbolize=1
-
-Then source them into your running environment (for example)
-
-    source ~/.profile
-
 # Configuration
 ---------------
 
@@ -42,10 +30,19 @@ You should configure ds with the following:
     make
     sudo make install
 
+If you wish to build and test with rpms:
+
+    cd ds
+    ./configure --enable-debug --enable-asan
+    make rpms
+    yum localinstall ....
+
+This will work correctly with both start-dirsrv and systemctl start dirsrv@.service
+
 # Testing
 ---------
 
-You can now test ns-slapd. You may find that setup-ds.pl hangs. You should try running with --debug.
+You can now test ns-slapd. You may find that setup-ds.pl hangs. You should try running with --debug in this case.
 
     setup-ds.pl --debug
 
@@ -55,7 +52,15 @@ To test, run ns-slapd in the foreground:
 
     ns-slapd -D /prefix/etc/dirsrv/slapd-<instance>/ -d 0
 
-If you encounter an issue you will see a large trace such as:
+Or you can run as normal:
+
+    start-dirsrv
+    OR
+    systemctl start dirsrv@.service
+
+If you encounter an issue you will find a trace dumped into /var/run/dirsrv/*.asan
+
+The contents of such an error will be as such:
 
     =================================================================
     ==30761== ERROR: AddressSanitizer: global-buffer-overflow on address 0x7f5ecba8c2bf at pc 0x7f5ed5604517 bp 0x7fff1bb938f0 sp 0x7fff1bb938e0
@@ -110,6 +115,11 @@ If you encounter an issue you will see a large trace such as:
     ==30761== ABORTING
 
 From here you can then determine the fault in ns-slapd. This fault has already been isolated in [ticket 48351](https://fedorahosted.org/389/ticket/48351)
+
+# Extra
+-------
+
+If you are running on Fedora 24 or rawhide, and NO address issues occur, you may still find a trace. This is the memory leak detector, similar to valgrind.
 
 # References
 ------------
