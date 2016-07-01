@@ -13,6 +13,8 @@ If you are adding a new design document, use the [template](design-template.html
 
 ## 389 Directory Server 1.3.6 (Future)
 
+-   [Schema with Multiple Search Paths](schema-multiple-search-paths.html)
+
 ------------------------------------------------
 
 ## 389 Directory Server 1.3.5
@@ -26,6 +28,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Allow usage of OpenLDAP libraries that do not use NSS for crypto](allow-usage-of-openldap-lib-w-openssl.html)
 -   [Systemd Ask Password](systemd-ask-pass.html)
 -   [Replication Convergence Improvement](repl-conv-design.html) - This feature will most likely be backported to previous versions
+-   [Extended Op Plug-in Transaction Support](exop-plugin-transactions.html)
 
 -------------------------------------------------
 
@@ -156,8 +159,8 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Separate Suffix for Tombstones/Conflicts](separate-conflict-and-tombstone-entry.html)
 -   [Managed Entry Plug-in Enhancement](mep-rework.html)
 -   [Managing Replication Conflicts](managing-repl-conflict-entries.html)
--   [Schema with Multiple Search Paths](schema-multiple-search-paths.html)
--   [Extended Op Plug-in Transaction Support](exop-plugin-transactions.html)
+-   [Logging Performance Improvement](logging-performance-improvement.html)
+
 
 
 
