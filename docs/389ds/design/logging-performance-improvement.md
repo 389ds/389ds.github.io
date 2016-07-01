@@ -123,6 +123,49 @@ For un-buffered logs, we would either:
 * Still need a mutex, and just call the log writer, bypassing the queue.
 * Add the log event to the queue, but run the logging thread more frequently.
 
+Initial Benchmarks
+==================
+
+This is a test of a stock Directory Server, compared to a server where slapi_log_access immediately returns 0. As a result, this isn't going to indicate the future performance, but should show the effect of logging on the threads and that there is peformance to be gained.
+
+This was run on EL7.2 lenovo t450s.
+
+Basic install, searched with:
+
+    /opt/dirsrv/bin/ldclt-bin -h localhost -p 38932 -b 'dc=tgt,dc=example,dc=com' -e esearch -f '(objectClass=*)'
+
+With default logging:
+
+    ldclt[215]: Average rate: 2005.10/thr  (2005.10/sec), total:  20051
+    ldclt[215]: Average rate: 2054.10/thr  (2054.10/sec), total:  20541
+    ldclt[215]: Average rate: 1972.10/thr  (1972.10/sec), total:  19721
+    ldclt[215]: Average rate: 1900.60/thr  (1900.60/sec), total:  19006
+    ldclt[215]: Average rate: 1845.50/thr  (1845.50/sec), total:  18455
+    ldclt[215]: Average rate: 1922.80/thr  (1922.80/sec), total:  19228
+    ldclt[215]: Average rate: 1939.30/thr  (1939.30/sec), total:  19393
+    ldclt[215]: Average rate: 1844.90/thr  (1844.90/sec), total:  18449
+    ldclt[215]: Average rate: 1874.80/thr  (1874.80/sec), total:  18748
+    ldclt[215]: Average rate: 1824.50/thr  (1824.50/sec), total:  18245
+
+Directory Server with logging "compiled out":
+
+    ldclt[5994]: Average rate: 2057.00/thr  (2057.00/sec), total:  20570
+    ldclt[5994]: Average rate: 2128.30/thr  (2128.30/sec), total:  21283
+    ldclt[5994]: Average rate: 2044.90/thr  (2044.90/sec), total:  20449
+    ldclt[5994]: Average rate: 2071.60/thr  (2071.60/sec), total:  20716
+    ldclt[5994]: Average rate: 1999.30/thr  (1999.30/sec), total:  19993
+    ldclt[5994]: Average rate: 2011.60/thr  (2011.60/sec), total:  20116
+    ldclt[5994]: Average rate: 1987.30/thr  (1987.30/sec), total:  19873
+    ldclt[5994]: Average rate: 1952.80/thr  (1952.80/sec), total:  19528
+    ldclt[5994]: Average rate: 1983.30/thr  (1983.30/sec), total:  19833
+    ldclt[5994]: Average rate: 2008.20/thr  (2008.20/sec), total:  20082
+
+In summary, the first test was able to complete 191837 operations, while the second was able to complete 202443. This is a 6% improvement in performance.
+
+This is a *very* artifical test, with a small dataset, and a complete removal of the access log lock. On a larger dataset, and a system with more cores (especially numa region traversal), with higher utilisation, it may improve more. Remember, more cores == more contention on locks == higher cost to take the lock.
+
+It should be taken as a preliminary, and not considered as the final result of what this change could bring.
+
 Author
 ======
 
