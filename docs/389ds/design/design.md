@@ -24,6 +24,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Disable Instance Script Installation](disable-instance-scripts.html)
 -   [Audit Logging Improvements](audit_improvement.html)
 -   [Multiple Logging Backends](logging-multiple-backends.html)
+-   [High Resolution Logging Timestamps](logging-high-resolution-time.html)
 -   [Enhanced Account Tools for Account Policy Plugin](enhanced-account-tools.html)
 -   [Allow usage of OpenLDAP libraries that do not use NSS for crypto](allow-usage-of-openldap-lib-w-openssl.html)
 -   [Systemd Ask Password](systemd-ask-pass.html)
