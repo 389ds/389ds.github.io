@@ -75,6 +75,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
 <!-- Try to keep this list under 10 releases  -->
 
+- 2016-07-25: Released **389 Admin Server / Console for EPEL6 [1.1.43.1](docs/389ds/releases/release-admin-and-console-epel6-1-1-43-1.html)**
 - 2016-05-18: Released **389 Directory Server [1.3.5.4](docs/389ds/releases/release-1-3-5-4.html)**
 - 2016-05-09: Released **389 Directory Server [1.3.5.3](docs/389ds/releases/release-1-3-5-3.html)**
 - 2016-05-09: Released **Svrcore [4.1.2](docs/389ds/releases/release-svrcore-4-1-2.html)**

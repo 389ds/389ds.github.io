@@ -20,6 +20,15 @@ The source code was produced by first doing a git clone to get the repository, t
     git clone git://git.fedorahosted.org/389/MODULENAME
     git archive --prefix=PKGNAME/ TAG | bzip2 > PKGNAME.tar.bz2
 
+### EPEL6 packages
+
+|Source tarball|git module|git tag|More Info|SHA1SUM|
+|--------------|----------|-------|---------|-------|
+|[389-admin.1.1.43.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.43.tar.bz2)|admin.git|389-admin-1.1.43|[Admin](../administration/adminserver.html)|3d931830ce832b7e0f820689ca30e5996b873f75|
+|[389-console-1.1.17.tar.bz2]({{ site.baseurl }}/binaries/389-console-1.1.17.tar.bz2)|console.git|389-console-1.1.17|[Building Console](buildingconsole.html)|b63c5c53936752e55ba205ba827af7cc96658cbb|
+|[389-admin-console-1.1.11.tar.bz2]({{ site.baseurl }}/binaries/389-admin-console-1.1.11.tar.bz2)|admin-console.git|389-admin-console-1.1.11|[Building Console](buildingconsole.html)|852a1c121923137b9048b7e498b7f03965cc0d3b|
+|[idm-console-framework-1.1.15.tar.bz2]({{ site.baseurl }}/binaries/idm-console-framework-1.1.15.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.15|[Building Console](buildingconsole.html)|86ca70b34bba1ceffb206cd945a5d077544a83f7|
+
 ### 389 Directory Server 1.3.5
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|

@@ -5,6 +5,7 @@ title: "Release Notes"
 # Release Notes
 ---------------
 
+-   [ 389 Admin Server / Console for EPEL 6](release-epel6.html) *(July 25, 2016)*
 -   [ 389 Directory Server 1.3.5.4](release-1-3-5-4.html) *(May 18, 2016)*
 -   [ 389 Directory Server 1.3.5.3](release-1-3-5-3.html) *(May 9, 2016)*
 -   [ 389 Directory Server 1.3.5.3](release-1-3-5-3.html) *(May 9, 2016)*
