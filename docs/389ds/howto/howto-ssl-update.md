@@ -13,42 +13,67 @@ In most places below where this document refers to the term "SSL", it usually me
 Configuring the certificates
 ============================
 
-This section will assume you have an external CA that must sign your certificates. This is a standard configuration, and thus what we will explore here.
+This section will assume you have an external CA that must sign your certificates. This is a standard configuration, and what we will explore here.
 
 Assess your current certificates and hosts
 ------------------------------------------
 
-To know what you will need to make the certificate request, you must examine your server setup and topology.
+To know what you will need to make the certificate request, you must examine your server setup and topology. At the end of this section you will have a list of hosts and their hostnames.
 
 If you have a single node, you will only require the name of the CNAME, and/or the A/AAAA of the node.
 
-If you have multiple nodes, you will need to make a decision on the topology of these, load balancer etc. I highly recommend that you do NOT terminate SSL/TLS on the load balancer.
+Another important decision is if you will share the private key / certificate between systems, or if you will individually sign them. We highly advise you create a unique private key and certificate for each Directory Server.
 
-Once you have this, you should have a list of hostnames. Another important decision is if you will share the private key / certificate between systems, or if you will individually sign them. I highly advise you create a unique private key and certificate for each system.
+If you have multiple nodes, you will need to understand the network topology including load balancers. I highly recommend that you do NOT terminate SSL/TLS on the load balancer. This means that your load balancers should pass through TCP/IP only to to the LDAP servers. The LDAP servers then are responsible to use the certificate and key to negotiate the SSL/TLS connection. To be clear, this means *do not* put your certificates and keys on the load balancer.
+
+You should have a list of hostnames for your servers. For example:
+
+    host.example.com. A 10.0.0.2
+    ldap01.example.com. CNAME host.example.com.
+    ldap.example.com. CNAME host.example.com.
 
 On the systems, you will need to determine their current certificate settings. Look for the value:
 
     ldapsearch -H ldap://localhost:389 -D 'cn=Directory Manager' -W -Z -b 'cn=encryption,cn=config' -x
 
-Look at the nsCertfile and nsKeyfile attributes. If these are specified, you should go to the location and view the certs. If not specified they certificates are likel in the location:
+If the nsCertfile and nsKeyfile attributes are present, you should go to the location listed and view the certificates. If nsCertFile and nsKeyFile are not specified, the certificates are in the location:
 
     /etc/dirsrv/slapd-<instance name>/
 
-To view your existing key and certificates use the command:
+To view your existing certificates use the command:
 
     certutil -L -d /etc/dirsrv/slapd-<instance name>/
+
+An example output if the certificates exist is:
+
+    Certificate Nickname                                         Trust Attributes
+                                                                 SSL,S/MIME,JAR/XPI
+
+    BH_LDAP_CA                                                   C,,  
+    Server-Cert                                                  u,u,u
+
+To view your existing keys, use the command:
+
     certutil -K -d /etc/dirsrv/slapd-<instance name>/
 
-To view the certificates in detail to ascertain their alternte names, you must use:
+An example output if the keys exist is:
+
+    < 0> rsa      79187d744c73cd2f098edc80ce261e5ad94c4db2   NSS Certificate DB:Server-Cert
+
+Note the "NSS Certificate DB:Server-Cert", which defines the certificate which matches with this key.
+
+To view the certificates in detail to display their subject alternate names, you must use:
 
     certutil -L -d /etc/dirsrv/slapd-<instance name>/ -n <certificate nickname>
+
+Once you know what certificates already exist on the Directory Servers, you can decide if you need to create new certificates or not.
 
 Plan the requests
 -----------------
 
 Now that you have the set of hosts, and you understand the topology and where you want SSL/TLS to be terminated, you must plan the set of requests you will make. You also will want to determine your certificate expiry, key size and other factors.
 
-If you have a single server with CNAMES, you will make a single request. IE
+If you have a single server with CNAMES, you will make a single request, ie.
 
     Key Size: 4096
     Expiry: 2 years
@@ -78,14 +103,12 @@ You now have a request that can be sent to your CA for signing.
 Import the certificate
 ----------------------
 
-Once your CA has signed your request, and you have the certificates back. Assume that we have:
+Once your CA has signed your request, and you have the certificates back. Assume that we have,
 
     ldap.example.com.crt  # ascii PEM signed certificate from the CA
     ca.crt  # The issuers CA certificate.
 
-You can now import these to the database for use in Directory Server.
-
-When you import, you must assign a "nickname" to the certificate. This is how directory server will find the certificate you are using. I recommend you stick to "Server-Cert" unless you have a strong reason to change. Consistency across your fleet is important!
+You can now import these to the database for use in Directory Server. When you import, you must assign a "nickname" to the certificate. This is how directory server will find the certificate you are using. I recommend you stick to "Server-Cert" unless you have a strong reason to change. Consistency across your fleet is important!
 
 Import the CA.
 
@@ -101,9 +124,7 @@ Configuring Directory Server
 
 If you have followed the steps above you should have properly configured certificates for your instances. Now you must enable SSL/TLS on your servers.
 
-Directory Server has two methods for secure transport. The first is ldaps. This is on port 636. The client connection is initialised as "SSL/TLS" from the start, and always encrypted.
-
-The second is StartTLS. StartTLS is run on the standard ldap port 389. Initially a cleartext connection is made. At that point the server and client agree to "negotiate" and upgrade to TLS over the connection.
+Directory Server has two methods for secure transport. The first is ldaps. This is on port 636. The client connection is initialised as "SSL/TLS" from the start, and always encrypted. The second is StartTLS. StartTLS is run on the standard ldap port 389. Initially a cleartext connection is made. At that point the server and client agree to "negotiate" and upgrade to TLS over the connection.
 
 The steps here will configure both.
 
@@ -120,14 +141,14 @@ Assess your security requirements
 
 Your organisation or site may have requirements around SSL/TLS protocols in use, and/or the ciphers presented by services. You must contact other groups and users to determine the requirements you should follow. If not such requirements are provided (we hope this is the case!) we recommend that you use the defaults here.
 
-Note down the requirements, and have them avaliable as needed.
+Note down the requirements, and have them available as needed.
 
 Again, if at all possible, attempt to use the "default" settings the 389 Directory Server provides. We regularly assess and upgrade the defaults to ensure that deployments are always following good practice. This means less work for you as the Administrator!
 
 Deploy the settings
 -------------------
 
-This step will not actually enable SSL/TLS, but lays our the ground work for it.
+This step will not actually enable SSL/TLS, but lays out the ground work for it.
 
 In dse.ldif cn=config, there are two objects that control encryption for the system.
 
@@ -141,7 +162,7 @@ When the server is first configured this value will be off. Modifications to oth
 
 ### cn=encryption,cn=config
 
-This object controls the avaliable protocols of the server (SSLv2, SSLv3, TLS1.0, TLS1.1, TLS1.2) and controls the encryption ciphers avaliable.
+This object controls the available protocols of the server (SSLv2, SSLv3, TLS1.0, TLS1.1, TLS1.2) and controls the encryption ciphers available.
 
 We recommend that the object contain the following.
 
@@ -203,3 +224,10 @@ You must now restart the Directory Server instance.
 
     service dirsrv restart
 
+
+# Author and Acknowledgement
+----------------------------
+
+William Brown, wibrown@redhat.com
+
+Thanks to Crystal for her careful review.
