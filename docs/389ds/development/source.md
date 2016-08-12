@@ -33,7 +33,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
-|[389-ds-base-1.3.5.4.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.4.tar.bz2)|ds.git|389-ds-base-1.3.5.4|[Building](building.html)|a3d1010476b0522cdc6e87726d6ea49dd47829a1|
+|[389-ds-base-1.3.5.13.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.13.tar.bz2)|ds.git|389-ds-base-1.3.5.13|[Building](building.html)|cef01f8347c3164f14089b4f647b9e986ef667cd|
 |[nunc-stans-0.1.8.tar.bz2]({{ site.baseurl }}/binaries/nunc-stans-0.1.8.tar.bz2)|nunc-stans.git|0.1.8|[Building](building.html)|835c9788650d1b9ef0896c267b06b9e529612835|
 |[svrcore-4.1.2.tar.bz2]({{ site.baseurl }}/binaries/svrcore-4.1.2.tar.bz2)|svrcore.git|4.1.2|[Building](building.html)|699db1b2294e7d15c8f576037fc5ff9bc6d8e001|
 
@@ -43,7 +43,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
-|[389-ds-base-1.3.4.9.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.4.9.tar.bz2)|ds.git|389-ds-base-1.3.4.9|[Building](building.html)|f1c347e559bc0c1d2b6d080d4d975b9ba9f13f7c|
+|[389-ds-base-1.3.4.14.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.4.14.tar.bz2)|ds.git|389-ds-base-1.3.4.14|[Building](building.html)|3c45f7a97b5c8c5475370df9efc8797a7346ff44|
 |[nunc-stans-0.1.5.tar.bz2]({{ site.baseurl }}/binaries/nunc-stans-0.1.5.tar.bz2)|nunc-stans.git|0.1.5|[Building](building.html)|7e52309f61c38b241fcdaf0284559d683f3ba700|
 |[389-admin.1.1.42.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.42.tar.bz2)|admin.git|389-admin-1.1.42|[Admin](../administration/adminserver.html)|3d931830ce832b7e0f820689ca30e5996b873f75|
 |[389-adminutil-1.1.22.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.22.tar.bz2)|adminutil.git|389-adminutil-1.1.22|[AdminUtil](../administration/adminutil.html)|ee337a293409b9682f68797bf200ef4a7e14c3e1|
