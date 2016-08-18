@@ -31,7 +31,7 @@ The reason for the seperation is that dsadm requires different arguments and pri
 why python
 ------------
 
-Lib389, our testing framework, already has all the parts needed to make an administrative toolkit. dsconf and dsadm and just wrappers on this. Consider
+Lib389, our testing framework, already has all the parts needed to make an administrative toolkit. dsconf and dsadm are just wrappers on this. Consider
 
     # Not a complete script, misses the opening of a connection
     from lib389.backend import Backends
@@ -77,6 +77,13 @@ Unit testing
 --------------
 
 The command line interface can be unit tested, and the current components are already tested in the pytest suite. This works because our output to the user is via the python logging module, and I have a loghandler that intercepts the output, and can assert it contains expected outputs. This brings gives us guarantees about our command lines tools and their correctness that we have never had before.
+
+You can run these tests with the following:
+
+    sudo PREFIX=/opt/dirsrv py.test-3 lib389/tests/cli/*
+    sudo PREFIX=/opt/dirsrv py.test-3 lib389/tests/instance/*
+
+As we add more commands and functions, we must add these to be tested also.
 
 Examples
 ==========
