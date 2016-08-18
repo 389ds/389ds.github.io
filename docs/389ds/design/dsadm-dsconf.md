@@ -2,7 +2,7 @@
 title: "dsadm and dsconf"
 ---
 
-# Introduction
+Introduction
 ==============
 
 Administration of Directory Server has always been a complex topic. We have a variety of helper perl scripts that are installed with the instance. These administer specific parts of the server, but the server greater cannot be managed with them alone. We often have pushed people to the Java Console, or application of ldifs to the server.
@@ -11,15 +11,15 @@ These are at opposite extremes, the Java Console having it's own issues, but eas
 
 As a result, we need a new way to administer Directory Server. It should contain extensive help, be a complete one stop, and command line focused.
 
-# Goal
+Goal
 ======
 
 A deployment and instance of Directory Server should be able to be setup, administered, and eventually decommisioned without ever applying an ldif. This should accomodate advanced usage, and basic usage.
 
-# Design
+Design
 ========
 
-# dsconf vs dsadm
+dsconf vs dsadm
 -----------------
 
 dsadm is the tool to manage the "components of Directory Server that exist on the local host or container". This means that it will required root or privileged access, generally needs access to the filesystem, and will make changes to it. This will be used to create, start, stop, backup, restore and destroy instances.
@@ -28,7 +28,7 @@ dsconf is the tool to manage "configuration of Directory Server instances". This
 
 The reason for the seperation is that dsadm requires different arguments and privileges (instance name, generally root) to run. dsconf will not need root, and can be run remotely (and requires a hostname) or while on the localsystem, can use ldapi autobind as root to access the Directory Manager account.
 
-# why python
+why python
 ------------
 
 Lib389, our testing framework, already has all the parts needed to make an administrative toolkit. dsconf and dsadm and just wrappers on this. Consider
@@ -41,7 +41,7 @@ Lib389, our testing framework, already has all the parts needed to make an admin
 
 This is how we can set the database cachesize, using pure python. To wrap this to a command line is a very simple extension.
 
-# What will it look like
+What will it look like
 ------------------------
 
 <command> <resource> <action> [<options>]
@@ -50,7 +50,7 @@ IE
 
 dsconf backend create dc=example,dc=com userRoot
 
-# New installer
+New installer
 ---------------
 
 A major component of this, is that dsadm will not use or rely on any of the existing perl scripts. As a result we will include and use the new SetupDs from lib389.
@@ -73,12 +73,12 @@ A complete example can be generated with:
 
 The example being *generated* over commited, means we keep the internal code helptext up to date, and it *will* throw exceptions if it's not there. We are forced to keep it correct and up to date as a result.
 
-# Unit testing
+Unit testing
 --------------
 
 The command line interface can be unit tested, and the current components are already tested in the pytest suite. This works because our output to the user is via the python logging module, and I have a loghandler that intercepts the output, and can assert it contains expected outputs. This brings gives us guarantees about our command lines tools and their correctness that we have never had before.
 
-# Examples
+Examples
 ==========
 
 Listing instances of Directory Server
@@ -395,7 +395,7 @@ Finally, we can delete backends, and there are checks to make sure administrator
     INFO:dsconf.backend_delete:Sucessfully deleted cn=userRoot,cn=ldbm database,cn=plugins,cn=config
 
 
-# Limitations
+Limitations
 =============
 
 Because lib389 is seperate to 389-ds-base there are a number of limitations.
@@ -415,7 +415,7 @@ Because of the prefix issue, there are issues determining default paths for 389-
 * Having 389-ds-base generate an info file during build time that lib389 can then read. Issue with this is determining the known location of this file on various platforms where the prefix in the install changes and we cannot always deterministically control the location of this file (ie we would need to search multiple locations ....)
 
 
-# Author
+Author
 --------
 
 William Brown <wibrown at redhat.com>
