@@ -44,11 +44,11 @@ This is how we can set the database cachesize, using pure python. To wrap this t
 What will it look like
 ------------------------
 
-<command> <resource> <action> [<options>]
+    <command> <resource> <action> [<options>]
 
 IE
 
-dsconf backend create dc=example,dc=com userRoot
+    dsconf backend create dc=example,dc=com userRoot
 
 New installer
 ---------------
