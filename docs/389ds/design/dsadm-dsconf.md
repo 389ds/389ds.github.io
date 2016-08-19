@@ -50,6 +50,10 @@ IE
 
     dsconf backend create dc=example,dc=com userRoot
 
+For extra arguments these are provided with the same command flags as the openldap cli tools. IE
+
+    dsconf -D 'cn=Directory Manager' -Z -H ldap://localhost backend list
+
 New installer
 ---------------
 
@@ -421,6 +425,13 @@ Because of the prefix issue, there are issues determining default paths for 389-
 * Adding a small python library to 389-ds-base that contains the base options, and we import those to lib389 (this creates a dependency loop)
 * Having 389-ds-base generate an info file during build time that lib389 can then read. Issue with this is determining the known location of this file on various platforms where the prefix in the install changes and we cannot always deterministically control the location of this file (ie we would need to search multiple locations ....)
 
+Future ideas
+============
+
+* .dsconfrc or similar that stores default hostname, binddn, starttls. and other options. To make the cli usage smoother.
+* Ability to clone an existing server and output to an 'setup.inf'. Because of the structure of the installer, this is completely possible, even down to duplicating the rootdn password hash (even though we don't know it's content!)
+* More strict checks for the pre-install verification. Including memory, cpu, filehandles etc. Basically absorb dsktune.
+* When errors are found in the verification (dry run or not), output the offending settings, and what needs to change in the inf to correct the issue.
 
 Author
 --------
