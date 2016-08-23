@@ -16,6 +16,25 @@ Goal
 
 A deployment and instance of Directory Server should be able to be setup, administered, and eventually decommisioned without ever applying an ldif. This should accomodate advanced usage, and basic usage.
 
+Naming
+======
+
+dsconf and dsadm were the names used by another company for their similar tools. Despite this being a clean, unrelated implementation, we may change the name.
+
+Current suggestions are:
+
+* dsadm
+* adm389
+* dsctl
+* nsadm
+
+* dsconf
+* conf389
+* dscfg
+* nsconf
+
+This document will refer to these tools as dsadm and dsconf, but these may change in the future.
+
 Design
 ========
 

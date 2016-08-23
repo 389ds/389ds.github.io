@@ -16,7 +16,7 @@ The current design of the logging system relies on a fixed sized buffer. If the 
 
 However, because of the design of our search code this creates an artificial serialisation point within the code. As well, when the buffer must be flushed, we prevent the progress of all threads on their current work.
 
-We can use nunc stans and lfds to create a lockless logging system, that is buffere and prevents stalls.
+We can use nunc stans and lfds to create a lockless logging system, that is buffered and prevents stalls.
 
 Current Logging Design
 ======================
