@@ -24,6 +24,19 @@ a lock on the table, locking the connection. This has certainly showed issues ev
 recently, with some connections blocked on io, which prevents processing io for
 any other connection even when they are ready to proceed.
 
+For example, looking at do_search, we can see:
+
+    #0  do_search (pb=0x7f7cb0dca9f0) at /home/william/development/389ds/ds/ldap/servers/slapd/search.c:37
+    #1  0x000000000041f8b8 in connection_dispatch_operation (conn=0x7f7cb15f7200, op=0x61400005fc40, pb=0x7f7cb0dca9f0) at /home/william/development/389ds/ds/ldap/servers/slapd/connection.c:651
+    #2  0x00000000004251ac in connection_threadmain () at /home/william/development/389ds/ds/ldap/servers/slapd/connection.c:1759
+    #3  0x00007f7cc46027df in _pt_root (arg=0x612000096040) at ../../../nspr/pr/src/pthreads/ptthread.c:216
+    #4  0x00007f7cc43c26ba in start_thread (arg=0x7f7cb0dcb700) at pthread_create.c:333
+    #5  0x00007f7cc40fd3cf in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:105
+
+Even with nunc-stans enabled today, we still use the existing threading system,
+rather than the nunc-stans event dispatch and queues.
+
+
 Proposed solution
 -----------------
 
