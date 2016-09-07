@@ -10,62 +10,82 @@ title: "Allow usage of OpenLDAP libraries that do not use NSS for crypto"
 Overview
 ========
 
-There are numerous places in the 389 DS code that assume that 
-NSS is being used beneath the OpenLDAP libraries. This means 
-things like replication over SSL will not work if 389 DS is 
-build against OpenLDAP that uses a different crypto implementation, 
+There are numerous places in the Directory Server code that assume that 
+NSS is being used beneath the OpenLDAP libraries (389-ds-base-1.3.4 and older). 
+This means operations the server executes as a client, e.g., replication, over SSL did not work 
+if server was built against OpenLDAP that used a different crypto implementation, 
 such as OpenSSL or GnuTLS.
+
+Supporting crypto other than NSS is available on 389-ds-base-1.3.5 and newer.
 
 Files in PEM Format
 ===================
 
 The Directory Server still uses the NSS library for the server side crypto.
-The NSS cert db is located in the directory specified by nsslapd-certdir in cn=config.
-To allow non NSS crypto library to access the keys and certificates,
-they are stored as a pem format.
+The NSS key/cert DB's are located in the directory specified by nsslapd-certdir in cn=config.
+To allow non NSS crypto library to access,
+the keys and certificates need to be extracted from the DB files and placed as a pem format file, respectively.
+
+To guarantee these files are located in the expected directory, the Directory Server extract the key/cert DB files
+and overrides them when the server starts up.
 
 By default, the pem files are located in the same nsslapd-certdir directory.
 
-The pem files are extracted from the NSS cert db every time the server starts and
-overridden by the extracted keys and certs.
+### New Configuration
 
-### Configuration
+<b>Configuration parameter nsslapd-extract-pemfiles</b>
 
-The config entry cn=encryption,cn=config takes an attribute CACertExtractFile,
+      dn: cn=config
+      nsslapd-extract-pemfiles: on | off
+
+When the value is "on", the certs/keys are extracted as pem files. 
+Currently (389-ds-base-1.3.5.x), it is set to off, by default.
+
+<b>Configuration parameters CACertExtractFile, ServerKeyExtractFile and ServerCertExtractFile</b>
+
+The config entry cn=encryption,cn=config newly takes an attribute CACertExtractFile,
 with which the CA certificate pem file path is specified. 
+
+    dn: cn=encryption,cn=config
+    CACertExtractFile: full_path
+
 If the attribute value pair does not exist, 
 the full path to the extract CA cert pem file is added
 to the cn=encryption,cn=config entry as "CAcertExtractFile: full_path".
+The full_path is /etc/dirsrv/slapd-INSTANCE/CA_CERT_NAME.pem, 
+where the filename part is Certificate Nickname + ".pem".  
+If the Certificate Nickname contains white spaces they are converted to its hex value "20".
+For instance, a cert having a nickname "CA certificate" has the file name "CA20certificate.pem".
+(See also the section "Pem file names extracted from NSS cert db")
+
 The full_path is necessary for the utilities that internally call 
 openldap client tools to connect to the server over SSL/startTLS.  
-The code is implemented in DSUtil.pm.
-The full_path is set to the environment variable LDAPTLS_CACERT.
+The path is passed to the openldap client tools via environment variable LDAPTLS_CACERT.
+The environment variable is currently set in DSUtil.pm, monitor, and ldif2ldap.
 
-    dn: cn=encryption,cn=config
-    CACertExtractFile: filename
-
-The config entry cn=<i>CIPHER</i>,cn=encryption,cn=config takes 
+The config entry cn=<i>CIPHER</i>,cn=encryption,cn=config newly takes 
 attributes ServerKeyExtractFile as well as ServerCertExtractFile 
-to specify the filename.  These pairs are not added to the entry
+to specify the filename.  These pairs are not automatically added to the entry
 
     dn: cn=RSA,cn=encryption,cn=config
     ServerKeyExtractFile: filename
     ServerCertExtractFile: filename
 
 The filename could be a full path or just a file name.
-If it is a file name without the path preceded, 
-the files are supposed to be in nsslapd-certdir.
+If it is a file name without the preceded path, 
+the files are considered to be in nsslapd-certdir.
 
-The Directory Server is configured with security on and finds no key and certificate
-pem files in the expected place, the server retrieves them from the NSS cert db,
-generates pem files and place them following the configuration.  
-That is, an existing Directory Server is upgraded, it is supposed to work without
-any configuration changes.
+To summarize the behaviour, 
+if the Directory Server is configured with security on and finds no key and certificate
+pem files in the expected place in the startup, the server extracts them from the NSS cert db,
+generates pem files and place them in the configured directory.
+That is, an existing Directory Server as well as the openldap client library are upgraded, 
+it is supposed to work without any configuration changes.
 
 ### Pem file names extracted from NSS cert db
 
 When automatically retrieved, the pem file names are based on the nickname.
-If white spaces are in the nickname, they are removed.
+If white spaces are in the nickname, they are replaced with the hex value string "20".
 
 Sample certificates:
 
@@ -78,36 +98,44 @@ Sample certificates:
     Server-Cert            u,u,u
     ---------------------+--------------------
 
-In this example, if CACertExtractFile is configured, the path and filename is being used for the CA 
-cert pem file.  Otherwise, the nick name of the first CA certificate is used for the file name
+In this example, if CACertExtractFile is configured, the value is used for the CA cert pem file.  
+Otherwise, the nick name of the first CA certificate is used for the file name
 by replacing the white spaces with hex characters as follows <b>CA20certificate</b>.pem.  
-The CA certificate pem file contains all the extracted CA certs (in this case, "CA certiricate" as
-well as "CA certificate 2".
+The extracted CA certificate pem file would contain all the CA certs found in the cert DB
+(in this case, "CA certiricate" as well as "CA certificate 2".
 
 Key of Server-Cert is stored in <b>Server-Cert-Key</b>.pem and its certificate is in <b>Server-Cert</b>.pem.
 
 We do not allow to modify or replace the extracted pem files. 
-For clarity, we put a header in the extracted file noting it is auto-generated,
+For clarity, we put a header in the extracted file noting it is auto-generated as follows,
 always overwritten and possible with the nss name of the certificate, plus the cert Subject and Issuer.
+
+    This file is auto-generated by 389-ds-base.
+    Do not edit directly.
+    
+    Issuer: CN=CAcert
+    Subject: CN=CAcert
+
 
 Key/Cert Retrieval at the Server Startup
 ========================================
 
 When the Directory Server starts up, the following steps are executed when nsslapd-security is on.
 
-* Scan NSS cert db.
-* Extract CA certs, convert them into the PEM format and store them into a file.
+* Extract CA certs from NSS cert db, convert them into the PEM format and store them into a file.
   If the CACertExtractFile is configured in cn=encryption,cn=config, the filename is used.
   If it is not given, the nickname of the first CA certificate is used and the filename
   is set to CACertExtractFile.
-* Extract key and cert, convert them into the PEM format and store them individually.
+  (See slapd_extract_cert with isCA = true in ldap/servers/slapd/ssl.c)
+* Extract key and cert from NSS key/cert db, convert them into the PEM format and store them individually.
   If ServerKeyExtractFile and ServerCertExtractFile are configured in cn=<i>CIPHER</i>,cn=encryption,cn=config,
   use the values for the file names.  Otherwise, the nickname of the certificate is used.
-* PEM file header
+  (See slapd_extract_key and slapd_extract_cert with isCA = false in ldap/servers/slapd/ssl.c)
+* Add PEM file header
 
   For clarity, we put a header in the extracted file noting it is auto-generated,
   always overwritten and possible with the nss name of the certificate, plus the
-  cert Subject and Issuer.
+  cert Subject and Issuer.  (Search "DONOTEDIT" macron in ldap/servers/slapd/ssl.c)
 
        ==> CA20certificate.pem <==
        This file is auto-generated by 389-ds-base.
@@ -137,22 +165,21 @@ When the Directory Server starts up, the following steps are executed when nssla
 
 <b>Notes:</b> I borrowed the crypto-utils code to extract the keys from the cert db.
 
-### Configuration parameter nsslapd-extract-pemfiles
-
-      dn: cn=config
-      nsslapd-extract-pemfiles: on | off
-
-When the value is "on", the certs/keys are extracted as pem files.  Currently (389-ds-base-1.3.5.x), it is set to off, by default.
-
 Implementation Details
 ======================
 - Added an api slapi_client_uses_openssl, 
   in which if the server is linked with OpenLDAP library and LDAP_OPT_X_TLS_PACKAGE value is "OpenSSL",
   the api returns true; otherwise false.
-- PEM files are extracted from the cert db at the start up regardless of the LDAP_OPT_X_TLS_PACKAGE value.
+  (See ldap/servers/slapd/ldaputil.c)
+- Added an api slapi_client_uses_non_nss, 
+  in which if the server is linked with OpenLDAP library and LDAP_OPT_X_TLS_PACKAGE value is NOT "MozNSS",
+  the api returns true; otherwise false.
+  (See ldap/servers/slapd/ldaputil.c)
+- If a configuration parameter nsslapd-extract-pemfiles is on,
+  PEM files are always extracted from the cert db at the server's startup regardless of the LDAP_OPT_X_TLS_PACKAGE value.
   But the PEM files are passed to OpenLDAP by ldap_set_option only when the the LDAP_OPT_X_TLS_PACKAGE
   value is "OpenSSL".  That is, the code is supposed to work with NSS as well as OpenSSL without
-  a configuration switch.
+  a configuration switch.  (Note: GnuTLS is not tested yet.)
 - If slapi_client_uses_openssl is true, cacert file name is set in setup_ol_tls_conn which is called
   by slapi_ldap_init_ext/slapi_ldap_init.
 - Also, if slapi_client_uses_openssl is true, server cert and key are set to LDAP_OPT_X_TLS_CERTFILE
@@ -219,9 +246,10 @@ ds/dirsrvtests/tests/tickets/ticket47536_test.py
 
       Each time add 5 entries to master 1 and 2 and check they are replicated.
 
-CRL
-===
-Set value LDAP_OPT_X_TLS_CRL_ALL to the option LDAP_OPT_X_TLS_CRLCHECK with the openldap API ldap_set_option.  If the CRL file exists in the cert dir, it is supposed to be checked by this setting.
+CRL (Not Implemented Yet!!)
+===========================
+Set value LDAP_OPT_X_TLS_CRL_ALL to the option LDAP_OPT_X_TLS_CRLCHECK with the openldap API ldap_set_option.  
+If the CRL file exists in the cert dir, it is supposed to be checked by this setting.
 
 Comment by Rich:
 
@@ -251,18 +279,6 @@ To Dos
 ======
 - Testing with winsync (priority high), dna (high), and chaining (low) to use the feature.
 
-- Current behavior:
-
-       If pin.txt exists, the server starts with SSL enabled.
-       If pin.txt does not exist,
-         if the server is started by executing ns-slapd, it prompts for the password.
-         if the server is started via systemctl, it does not prompt and the server
-         starts with SSL disabled.
-       To solve the issue, there is a password agent feature of systemd that is
-       designed for this case:
-       http://www.freedesktop.org/wiki/Software/systemd/PasswordAgents/
-       https://fedorahosted.org/389/ticket/48450 - RFE Systemd password agent support
-
 - After 389-ds-base, investigate 389-admin
   - PEM file retrieval in the admin server
   - Set Environment variable (LDAPTLS_CACERT) for the server and CGIs.
@@ -287,4 +303,3 @@ Tickets
 =======
 * Ticket [\#47536](https://fedorahosted.org/389/ticket/47536) - Allow usage of OpenLDAP libraries that don't use NSS for crypto
 * Ticket [\#48756](https://fedorahosted.org/389/ticket/48756) - if startTLS is enabled, perl utilities fail to start.
-* Ticket [\#48450](https://fedorahosted.org/389/ticket/48450) - RFE Systemd password agent support
