@@ -34,13 +34,17 @@ An administrator needs to provision many entries (leaf or groups) within a fixed
 ### Simplifications
 
 The graph of membership can be very complex. For simplification, this document will evaluate the impact of membership update on a trees with same leaf depth:
-Tree with one uniq path to each leaf
+
+- **Type 1** <a name="Type 1"></a>: Tree with one uniq path to each leaf
+
 ![Membership tree](../../../images/memberof_image1.png "uniq path to leaf")
 
-Tree with possible multiple path to each leaf
+- **Type 2** <a name="Type 2"></a>Tree with possible multiple path to each leaf
+
 ![Membership tree](../../../images/memberof_type_multiple_path_to_leaf.png "multiple paths to leaf")
 
-Tree with multiple path to intermediare nodes
+- **Type 3** <a name="Type 3"></a>Tree with multiple path to intermediare nodes
+
 ![Membership tree](../../../images/memberof_type_multiple_path_to_node.png "multiple paths to nodes")
 
 ### Cost of memberof update
@@ -55,28 +59,40 @@ So in the rest of the document the **cost** will be expressed in terms of **inte
 
 The figure above shows a membership tree. At the bottom of the tree **leafs** are typically **users**. Those users are directly member of a *leaf groups* of **Depth 3** (i.e. *Grp3_A*), for example *Grp 3_A* is *'Devel Kernel Group'*. Then this group is member of **Depth 2** group (i.e. *Grp 2_A*) like *'Framework Devel Group'*. This group is member of **Depth 1** group (i.e. *Grp 1_A*) like *'Engineering'*. 
 
-- Let **L** the average size of *leaf groups* (Depth 3)
+- Let **tree(L)** the number of leafs in the tree(Depth 4)
+- Let **tree(L)** the number of leafs in the tree(Depth 4)
+- Let **tree(N)** the number of intermediare nodes in the tree(Depth 1,2,3)
 - Let **A** the total number of entries in a membership tree (all *Engineering*)
 - Let **D** the depth of a given node in the membership tree
-- Let **P** the number of plugins that catch group updates
+- Let **P** the number of paths from root to nodes and leafs
 - Let **G** the number of groups a given entry is direct member
-- Let **I** the number of intermediare nodes (Depth 1,2,3) a given entry is memberof
+- Let *leaf groups* be the Depth node 3
+- Let *root* be the Grp_1_A
 
 #### Look down the impacted members
 
-When a group is updated, the txn postop callback searches for all entries being direct and indirect member of that group. This is done by a **single** internal search of each entry found in the membership tree. The lookup is quite optimal (it retrieves/process all the membership attributes in a single earch) but we can think to an improvement:
+When a group is updated, the txn postop callback searches for all entries being direct and indirect members of that group. This is done by a **single** internal search of each entry **each** time the entry is found in the membership tree. The purpose of this look down is to build a list of impacted members that later will be fixup.
 
-An entry that appears in the tree is lookup using an internal search. An entry may appears several time in the tree (and triggers several int_search for itself)
+The cost of the look down is **P**. For example with *leaf groups* (node of Depth 3) having **100** leafs:
 
-- being member of several sub groups
+- tree [type 1](#Type 1): **608** - 600 paths root to each leafs + 8 paths root to intermediate nodes
+- tree [type 2](#Type 2): **608** - 600 paths root to each leafs + 8 paths root to intermediate nodes
+- tree [type 3](#Type 3): **709** - the 101 additional paths are due to Grp_3_C (and its leafs) that is found twice
+
+The lookup is quite efficient (it retrieves/process all the membership attributes in a single earch) but we can think to an improvement:
+
+An entry (node or leaf) may appears several times in the tree (and triggers several int_search). The possibilities for finding entries several times are:
+
+- several path conduct to the same entry (node or leaf)
 - being listed in several membership attribute
 
 The ticket [48861](https://fedorahosted.org/389/ticket/48861) was opened for this improvement. We can imagine to make sure that an entry is **listed once** during *Look down* (preferably) or **Fixed once** during *Look up*. This improvement has no impact if entries appears only once in the tree.
 
-The cost of Look down with [48861](https://fedorahosted.org/389/ticket/48861) being fixed is **(A - A/G)**. For example with A=600 and G=3 the cost is ~400. 
+The expected cost of look down with a fix for [48861](https://fedorahosted.org/389/ticket/48861), for example with *leaf groups* (node of Depth 3) having **100** leafs
 
-The look down produces a list of **impacted members**
-
+- tree [type 1](#Type 1): **P = 608**: all the paths root to nodes/leafs are uniq
+- tree [type 2](#Type 2): **P - 2 = 606**: there are two paths root to LeafN and root to LeafM
+- tree [type 3](#Type 3): **P - 101 = 608**: there are two path root to Grp_3_C and root to Grp_3_C's leafs
 
 #### Look up group membership of impacted members
 
