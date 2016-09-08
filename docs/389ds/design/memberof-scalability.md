@@ -9,7 +9,7 @@ title: "MemberOf Scalability"
 
 ## Overview
 
-MemberOf plugin manages the values of LDAP attribute **memberOf**. When updating a group, it does two actions:
+MemberOf plugin manages the values of LDAP attribute **memberOf** that provided directed link inside an acyclic graph. When updating a group, it does two actions:
 
 -   Lookup **down** in the groups tree to determine the list of entries (leaf or groups) impacted by the operation
 -   For each impacted entry, lookups **up** in the groups tree to determine which groups the entry belongs to, and finally update the entry (**fixup**)
@@ -31,6 +31,18 @@ An administrator needs to provision many entries (leaf or groups) within a fixed
 
 ## Design
 
+### Simplifications
+
+The graph of membership can be very complex. For simplification, this document will evaluate the impact of membership update on a trees with same leaf depth:
+Tree with one uniq path to each leaf
+![Membership tree](../../../images/memberof_image1.png "uniq path to leaf")
+
+Tree with possible multiple path to each leaf
+![Membership tree](../../../images/memberof_type_multiple_path_to_leaf.png "multiple paths to leaf")
+
+Tree with multiple path to intermediare nodes
+![Membership tree](../../../images/memberof_type_multiple_path_to_node.png "multiple paths to nodes")
+
 ### Cost of memberof update
 
 Tests done with [Nested groups provisioning](http://www.freeipa.org/page/V4/Performance_Improvements#Memberof_plugin) shown that **by far the main contributor** was the [Number](http://www.freeipa.org/page/V4/Performance_Improvements#Small_DB_.2810K_entries.29) of internal searches.
@@ -47,52 +59,74 @@ The figure above shows a membership tree. At the bottom of the tree **leafs** ar
 - Let **A** the total number of entries in a membership tree (all *Engineering*)
 - Let **D** the depth of a given node in the membership tree
 - Let **P** the number of plugins that catch group updates
-- Let **G** the number of time each entry appears in a membership tree (groups it is memberof)
+- Let **G** the number of groups a given entry is direct member
+- Let **I** the number of intermediare nodes (Depth 1,2,3) a given entry is memberof
 
 #### Look down the impacted members
 
 When a group is updated, the txn postop callback searches for all entries being direct and indirect member of that group. This is done by a **single** internal search of each entry found in the membership tree. The lookup is quite optimal (it retrieves/process all the membership attributes in a single earch) but we can think to an improvement:
 
-An entry that appears in the tree is lookup using an internal search. An entry may appears several time in the tree (an create several int_search)
+An entry that appears in the tree is lookup using an internal search. An entry may appears several time in the tree (and triggers several int_search for itself)
 
 - being member of several sub groups
 - being listed in several membership attribute
 
 The ticket [48861](https://fedorahosted.org/389/ticket/48861) was opened for this improvement. We can imagine to make sure that an entry is **listed once** during *Look down* (preferably) or **Fixed once** during *Look up*. This improvement has no impact if entries appears only once in the tree.
 
-The cost of Look down **(A - A/G)**. For example with A=600 and G=3 the cost is ~400. 
+The cost of Look down with [48861](https://fedorahosted.org/389/ticket/48861) being fixed is **(A - A/G)**. For example with A=600 and G=3 the cost is ~400. 
 
 The look down produces a list of **impacted members**
 
 
 #### Look up group membership of impacted members
 
-When a group is updated, for each **impacted members** it computes all the groups containing (direct or indirect) the member.
+When a group is updated, for each **impacted members** it computes all the groups containing (direct or indirect) the impacted member.
 
-##### case 1 - entries appears once in the tree
+##### case 1 - impacted members appear once in the tree
 
-Assuming that **G=1** (an entry appears only once in the membership tree), the cost of update is for *each* node is **D + P**.
+Assuming that **G=1** (an entry appears only once in the membership tree), the cost of update *each* node is **(I+1) + P**.
 
-For example using the above membership, assuming that each *leaf group* has *L=100* members, the update of this tree will be: **3642 internal searches**
+For example using the above membership tree, assuming that each *leaf group* has *L=100* members, the update of this tree will be: **3638 internal searches**
 
-- Depth 4: 6 *leaf groups => **6 * L * (D + P)** =  600 * (4 + 2) = **3600 internal searches**
-- Depth 3: **6 * (D + P)** = 6 * (3 + 2) = **30 internal searches**
-- Depth 2: **2 * (D + P)** = 2 * (2 + 2) = **8 internal searches**
-- Depth 1: **1 * (D + P)** = 1 * (1 + 3) = **4 internal searches**
+- Depth 4: 6 *leaf groups* => **6 * L * ((I+1) + P)** =  600 * (4 + 2) = **3600 internal searches**
+- Depth 3: **6 * ((I+1) + P)** = 6 * (3 + 2) = **30 internal searches**
+- Depth 2: **2 * ((I+1) + P)** = 2 * (2 + 2) = **8 internal searches**
 
-This lookup can be improved because there are several lookup of the same **internal nodes** in the tree
+The way this lookup is done can be improved. In fact, there are several lookup of the same **internal nodes** in the tree
 
 ![Membership tree](../../../images/memberof_lookup_1.png "Lookup of internal nodes")
 
 In the figure above, we can see the *look up* for Leaf_A triggers internal searches for Leaf_A, Grp_3_A, Grp_2_A and Grp_1_A. Then
 *look up* for Leaf_B triggers triggers internal searches for Leaf_A, Grp_3_C, Grp_2_A and Grp_1_A. So 2 internal searches out of 8 are useless.
 
-Taking the same cost of **3642 internal searches** in the previous example, we can measure that the half (**~1800**) are useless
+Taking the same cost of **3638 internal searches** in the previous example, we can measure that the half (**~1800**) are useless
 
-- Grp_1_A is look up **609 times** (600 for Depth4, 6 for Depth3 and 2 for Depth2, 1 for Depth1)
+- Grp_1_A is look up **609 times** 
+  - 600 times for each Depth4 leafs
+  - 6 times for Depth3 nodes
+  - 2 times for Depth2 nodes
+  - 1 for Depth1 node
 - Grp_2_A and Grp_2_B are look up **304 times each**
 - Grp_3_A..Grp_3_F are look up **101 times each**
 
+
+##### case 2 - impacted members appear several time in the tree
+
+Assuming that **G > 1** (an entry is direct member of N *leaf group*). the cost of update *each* node is **(I + 1) + P**.
+
+For example using the above membership tree, Assuming:
+
+- *G=6* : each leaf is member of all *leaf groups*
+- *L=100* : *leaf groups* have 100 direct members, the update of this tree will be: **7238 internal searches**
+
+- Depth 4: 6 *leaf groups* => **6 * L * ((I + 1) + P)** =  600 * ((9 + 1) + 2) = **7200 internal searches**
+- Depth 3: **6 * ((I + 1) + P)** = 6 * (3 + 2) = **30 internal searches**
+- Depth 2: **2 * ((I + 1) + P)** = 2 * (2 + 2) = **8 internal searches**
+
+
+![Membership tree](../../../images/memberof_lookup_2.png "Lookup of internal nodes 2")
+
+In the figure above, we can see the *look up* for Leaf_A triggers internal searches for Leaf_A, Grp_3_A, Grp_2_A and Grp_1_A but also Grp_3_C, Grp_2_A and Grp_1_A. So 2 internal searches out of 7 are useless. In addition Leaf_A is found twice by [look down](http://www.port389.org/docs/389ds/design/memberof-scalability.html#look-down-the-impacted-members) so it triggers two lookup up, the second one being useless because the Leaf_A was already fixup. That is 9 (2+7) internal searches out of 14 that are useless.
 
 For example for the following membership tree with **L=100**, then **A=(6*L)+9=609**
 The problem is that updating 
