@@ -9,12 +9,12 @@ title: "MemberOf Scalability"
 
 ## Overview
 
-MemberOf plugin manages the values of LDAP attribute **memberOf** that provided directed link inside an acyclic graph. When updating a group, it does two actions:
+Membership attributes creates an acyclic tree of LDAP entries/nodes. MemberOf plugin manages the values of LDAP attribute **memberOf** into that tree. When updating a group, it does two actions:
 
--   Lookup **down** in the groups tree to determine the list of entries (leaf or groups) impacted by the operation
--   For each impacted entry, lookups **up** in the groups tree to determine which groups the entry belongs to, and finally update the entry (**fixup**)
+-   Lookup **down** in membership tree to determine the list of entries (leafs or intermediate nodes) impacted by the operation
+-   For each impacted entry (nodes or leafs), lookups **up** in the tree to determine which groups the entry belongs to, and eventually update the entry (**fixup**)
 
-Those two actions are necessary but can be very expensive in terms of:
+Those two actions are necessary but can be expensive in terms of:
 
 -   response time of each single operation
 -   scalability as during those operations others write operations are on hold (memberof is a betxn)
@@ -25,7 +25,7 @@ This document presents some possible improvements.
 
 ## Use Case
 
-An administrator needs to provision many entries (leaf or groups) within a fixed period (typically over a week end). He can use CLI or batch commands or even importing entries from a ldif file. The rate of the provisioning is critical to be sure to complete the task in an acceptable period.
+An administrator needs to provision many entries (leafs or groups) within a fixed period of time(typically over a week end). He can use CLI or batch commands or even importing entries from a ldif file. The rate of the provisioning is critical to be sure to complete the task in an acceptable delay.
 
 
 
@@ -33,17 +33,17 @@ An administrator needs to provision many entries (leaf or groups) within a fixed
 
 ### Simplifications
 
-The graph of membership can be very complex. For simplification, this document will evaluate the impact of membership update on a trees with same leaf depth:
+The graph of membership can be very complex. For simplification, this document will evaluate the impact of membership update on limited types of trees with same leaf depth:
 
-- **Type 1** <a name="Type 1"></a>: Tree with one uniq path to each leaf
+- **Type 1** <a name="Type 1"></a>: Tree with one uniq path root to each leaf
 
 ![Membership tree](../../../images/memberof_image1.png "uniq path to leaf")
 
-- **Type 2** <a name="Type 2"></a>Tree with possible multiple path to each leaf
+- **Type 2** <a name="Type 2"></a>Tree with multiple paths root to some of the leafs
 
 ![Membership tree](../../../images/memberof_type_multiple_path_to_leaf.png "multiple paths to leaf")
 
-- **Type 3** <a name="Type 3"></a>Tree with multiple path to intermediare nodes
+- **Type 3** <a name="Type 3"></a>Tree with multiple paths to intermediate nodes
 
 ![Membership tree](../../../images/memberof_type_multiple_path_to_node.png "multiple paths to nodes")
 
@@ -66,12 +66,20 @@ The figure above shows a membership tree. At the bottom of the tree **leafs** ar
 - Let **D** the depth of a given node in the membership tree
 - Let **P** the number of paths from root to nodes and leafs
 - Let **G** the number of groups a given entry is direct member
+- Let **N(x)** the number of nodes at the depth x (root is at depth 0)
+- Let **L** the maximum lenght of all paths from root to nodes and leafs (i.e. Max Depth + 1)
+- Let **plg** is the number of plugins that triggers one internal search when a entry is updated (e.g. mep). It is >= 1.
 - Let *leaf groups* be the Depth node 3
 - Let *root* be the Grp_1_A
 
 #### Look down the impacted members
 
-When a group is updated, the txn postop callback searches for all entries being direct and indirect members of that group. This is done by a **single** internal search of each entry **each** time the entry is found in the membership tree. The purpose of this look down is to build a list of impacted members that later will be fixup.
+When a group is updated, the txn postop callback searches for all entries being direct and indirect members of that group. This is done by a **single** internal search of each node (leaf or intermediate node) **each** time the entry is found in the membership tree. The purpose of this look down is to build a list of impacted members that later will be fixup.
+
+    SRCH base="<node_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs="attr_1 ... attr_N"
+    attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
+
+This internal base search is very rapid at the condition <node_dn> **remains in the entry cache**.
 
 The cost of the look down is **P**. For example with *leaf groups* (node of Depth 3) having **100** leafs:
 
@@ -79,24 +87,46 @@ The cost of the look down is **P**. For example with *leaf groups* (node of Dept
 - tree [type 2](#Type 2): **608** - 600 paths root to each leafs + 8 paths root to intermediate nodes
 - tree [type 3](#Type 3): **709** - the 101 additional paths are due to Grp_3_C (and its leafs) that is found twice
 
-The lookup is quite efficient (it retrieves/process all the membership attributes in a single earch) but we can think to an improvement:
+The lookup is quite efficient (it retrieves/process all the membership attributes in a single search) but it can be improved:
 
 An entry (node or leaf) may appears several times in the tree (and triggers several int_search). The possibilities for finding entries several times are:
 
-- several path conduct to the same entry (node or leaf)
+- severals path conduct to the same entry (node or leaf)
 - being listed in several membership attribute
 
-The ticket [48861](https://fedorahosted.org/389/ticket/48861) was opened for this improvement. We can imagine to make sure that an entry is **listed once** during *Look down* (preferably) or **Fixed once** during *Look up*. This improvement has no impact if entries appears only once in the tree.
+The ticket [48861](https://fedorahosted.org/389/ticket/48861) was opened for this improvement. It should make sure that an entry is **search once** during *Look down* (preferably) or **Fixed once** during *Look up*. This improvement has no impact if entries appears only once in the tree.
 
 The expected cost of look down with a fix for [48861](https://fedorahosted.org/389/ticket/48861), for example with *leaf groups* (node of Depth 3) having **100** leafs
 
 - tree [type 1](#Type 1): **P = 608**: all the paths root to nodes/leafs are uniq
 - tree [type 2](#Type 2): **P - 2 = 606**: there are two paths root to LeafN and root to LeafM
-- tree [type 3](#Type 3): **P - 101 = 608**: there are two path root to Grp_3_C and root to Grp_3_C's leafs
+- tree [type 3](#Type 3): **P - 101 = 608**: there are two paths root to Grp_3_C and root to Grp_3_C s leafs
 
 #### Look up group membership of impacted members
 
-When a group is updated, for each **impacted members** it computes all the groups containing (direct or indirect) the impacted member.
+When a group is updated, for each **impacted members** it computes all the groups containing (direct or indirect) the impacted member. So for each node (leafs and intermediate nodes) it does an internal search 
+
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn))" attrs=ALL
+    attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
+    They are supposed to be indexed in equality
+
+If this search in indexed and fast but item that can influence the cost are
+
+- the more there are membership attributes the more expensive it is
+- the search will retrieves *groups* that are possibly big entries. It is more expensive if the *groups* are not in the **entry cache**
+
+
+The cost of the look up is the **C = sum from l=1 to l=L of N(l)*(l + 2 + plg)**. For example with *leaf groups* (node of Depth 3) having **100** leafs:
+
+- tree [type 1](#Type 1):  **3638**
+    - for l=1 (grp_2_A and grp_2_B), it is 2 * (1 + 2 + 1) = **8** internal searches
+    - for l=2 (grp_3_*), it is 6 * (2 + 2 + 1) = **30** internal searches
+    - for l=3 (leafs), it is 600 * (3 + 2 + 1) = **3600** internal searches
+- tree [type 2](#Type 2): **3638**
+    - for l=1 (grp_2_A and grp_2_B), it is 2 * (1 + 2 + 1) = **8** internal searches
+    - for l=2 (grp_3_*), it is 6 * (2 + 2 + 1) = **30** internal searches
+    - for l=3 (leafs), it is 600 * (3 + 2 + 1) = **3600** internal searches
+- tree [type 3](#Type 3): **P - 101 = 608**: there are two paths root to Grp_3_C and root to Grp_3_C s leafs
 
 ##### case 1 - impacted members appear once in the tree
 
