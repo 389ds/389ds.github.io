@@ -105,20 +105,20 @@ The expected cost of look down with a fix for [48861](https://fedorahosted.org/3
 
 #### Look up group membership of impacted members
 
-When a group is updated, for each **impacted members** it computes all the groups containing (direct or indirect) the impacted member. So for each node (leafs and intermediate nodes) it does an internal search 
+When a group is updated, for each **impacted members** it computes all the groups containing (direct or indirect) the impacted members. So for each node (leafs and intermediate nodes) it does an internal search 
 
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn))" attrs=ALL
     attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
     They are supposed to be indexed in equality
 
-If this search in indexed and fast but item that can influence the cost are
+If this search is indexed and fast but item that can influence the cost are
 
 - the more there are membership attributes the more expensive it is
 - the search will retrieves *groups* that are possibly big entries. It is more expensive if the *groups* are not in the **entry cache**
 
 
 It is quite difficult to express in mathematical way the cost of the look down. Here is an attempt to describe it:
-Having a *list of impacted nodes* (containing potentially *duplicate*), for each of them it goes thru **all** paths from this node back to the root. The lenght of the paths can be different although they end to the root. It triggers an internal search for each nodes on each paths. So the cost (for a given node) is the sum of the number of nodes on all paths from *given node to root*. A mechanism to detect cycle can reduce the number so that common parts of the paths are accounted once. Finally, there are **plg** internal searches per fixup node. 
+Having a *list of impacted nodes* (possibly containing *duplicates*), for each of them it goes thru **all** paths from this node back to the root. Starting from a given node, the lenght of the paths can be different although they end to the root. It triggers an internal search for each nodes on each paths. So the cost (for a given node) is the sum of the number of nodes on all paths from *given node to root*. A mechanism to detect cycle can reduce the cost so that common parts of the paths are accounted once. Finally, there are **plg** internal searches per fixup node. 
 For example with *leaf groups* (node of Depth 3) having **100** leafs:
 
 
@@ -127,26 +127,52 @@ For example with *leaf groups* (node of Depth 3) having **100** leafs:
 - tree [type 3](#Type 3): **3736** internal searches
 
 
-Making sure that the *list of impacted nodes* does not contain duplicate ([48861](https://fedorahosted.org/389/ticket/48861)) has a significant impact during *look up*. In [type 3 tree](#Type 3), each member of Grp_3_C have 2 paths back to root so the look up cost of each of them will be divided by 2. The more paths it exists to a node, the more expensive is the node.
+Making sure that the *list of impacted nodes* does not contain duplicate ([48861](https://fedorahosted.org/389/ticket/48861)) has a significant impact during *look up*. In [type 3 tree](#Type 3), each member of Grp_3_C have 2 paths back to root so the look up cost of each of them will be divided by 2. **The more paths it exists to a node, the more expensive is the node**.
 
 ### Improvements
 
 #### Prevent duplicate 48861
 
-When updating membership attributes of a group, a direct or indirect impacted member of that group can be found several time. The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent that an impacted member is listed/fixed several time. A first fix, caching in an hash table the already fixed nodes, divides by **2** the duration of provision of a tree. The tree being creates with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py)
+When updating membership attributes of a group, a direct or indirect impacted member of that group can be found several time. The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent that an impacted member is listed/fixed several time. A first fix, caching in an hash table the already fixed nodes, divides by **2** the duration of provisioning of a tree. The tree being creates with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py)
 
 
 #### caching of groups
 
-The internal searches target nodes in the tree. But the number of internal searches in the **intermediate nodes (the groups)** is much higher and fluctuates if there are nested groups and leafs belonging to several groups. The 
+The vast majority of the *Look up* internal searches is to retrieve the *groups owning a given node*.
+
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn))" attrs=ALL
+    attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
+
+But looking at internal searches filters we can see an increasing number of them as the *<node_dn>* moves to the root. It also fluctuates  highly as soon as there are nested groups and nodes/leafs belong to several groups. 
+
+In the three following figures, the number in red (close to *<node_dn>*) is the number of searches:
+
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn))" attrs=ALL
+
+Type 1 
 
 ![Membership tree](../../../images/memberof_type_1_cost_of_groups.png "Type 1: Cost of groups")
 
+Type 2 
 
 ![Membership tree](../../../images/memberof_type_2_cost_of_groups.png "Type 2: Cost of groups")
 
+Type 3
 
 ![Membership tree](../../../images/memberof_type_3_cost_of_groups.png "Type 3: Cost of groups")
+
+
+In conclusion:
+
+- The number of *filter="(|(attr_1=<leaf_n>).(attr_N=<leaf_n))"* remains low (1 or 2) in all types of trees 
+- The number of *filter="(|(attr_1=<group_n>).(attr_N=<group_n))"* is very high compare to the leaf
+- The number of *filter="(|(attr_1=<group_n>).(attr_N=<group_n))"* increase as moving up in the three
+
+So if we can satisfy *filter="(|(attr_1=<group_n>).(attr_N=<group_n))"* without doing internal searches and basically have only 1 internal search per nodes (leafs or groups) it will reduce the cost of *look up* by
+
+- Type 1: From ~3000 to ~600
+- Type 2: From ~3000 to ~600
+- Type 3: From ~3700 to ~600
 
 
 ##### case 1 - impacted members appear once in the tree
