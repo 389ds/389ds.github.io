@@ -66,7 +66,8 @@ The figure above shows a membership tree. At the bottom of the tree **leafs** ar
 - Let **D** the depth of a given node in the membership tree
 - Let **P** the number of paths from root to nodes and leafs
 - Let **G** the number of groups a given entry is direct member
-- Let **N(x)** the number of nodes at the depth x (root is at depth 0)
+- Let **P_down(x)** the number of paths from root to nodes at the depth x (i.e. **paths with length = x**)
+- Let **P_up(x)** the sum of lengths + 1 of paths from nodes at the depth x back to root. For a node at depth x, all its lenghts back to root >= x.
 - Let **L** the maximum lenght of all paths from root to nodes and leafs (i.e. Max Depth + 1)
 - Let **plg** is the number of plugins that triggers one internal search when a entry is updated (e.g. mep). It is >= 1.
 - Let *leaf groups* be the Depth node 3
@@ -81,7 +82,7 @@ When a group is updated, the txn postop callback searches for all entries being 
 
 This internal base search is very rapid at the condition <node_dn> **remains in the entry cache**.
 
-The cost of the look down is **P**. For example with *leaf groups* (node of Depth 3) having **100** leafs:
+The cost of the look down is C = sum from l=1 to l=L of P_down(l). For example with *leaf groups* (node of Depth 3) having **100** leafs:
 
 - tree [type 1](#Type 1): **608** - 600 paths root to each leafs + 8 paths root to intermediate nodes
 - tree [type 2](#Type 2): **608** - 600 paths root to each leafs + 8 paths root to intermediate nodes
@@ -91,16 +92,16 @@ The lookup is quite efficient (it retrieves/process all the membership attribute
 
 An entry (node or leaf) may appears several times in the tree (and triggers several int_search). The possibilities for finding entries several times are:
 
-- severals path conduct to the same entry (node or leaf)
+- several paths conduct to the same entry (node or leaf)
 - being listed in several membership attribute
 
 The ticket [48861](https://fedorahosted.org/389/ticket/48861) was opened for this improvement. It should make sure that an entry is **search once** during *Look down* (preferably) or **Fixed once** during *Look up*. This improvement has no impact if entries appears only once in the tree.
 
 The expected cost of look down with a fix for [48861](https://fedorahosted.org/389/ticket/48861), for example with *leaf groups* (node of Depth 3) having **100** leafs
 
-- tree [type 1](#Type 1): **P = 608**: all the paths root to nodes/leafs are uniq
-- tree [type 2](#Type 2): **P - 2 = 606**: there are two paths root to LeafN and root to LeafM
-- tree [type 3](#Type 3): **P - 101 = 608**: there are two paths root to Grp_3_C and root to Grp_3_C s leafs
+- tree [type 1](#Type 1): **C = 608**: all the paths root to nodes/leafs are uniq
+- tree [type 2](#Type 2): **C - 2 = 606**: there are two paths root to LeafN and root to LeafM
+- tree [type 3](#Type 3): **C - 101 = 608**: there are two paths root to Grp_3_C and root to Grp_3_C s leafs
 
 #### Look up group membership of impacted members
 
@@ -116,17 +117,37 @@ If this search in indexed and fast but item that can influence the cost are
 - the search will retrieves *groups* that are possibly big entries. It is more expensive if the *groups* are not in the **entry cache**
 
 
-The cost of the look up is the **C = sum from l=1 to l=L of N(l)*(l + 2 + plg)**. For example with *leaf groups* (node of Depth 3) having **100** leafs:
+It is quite difficult to express in mathematical way the cost of the look down. Here is an attempt to describe it:
+Having a *list of impacted nodes* (containing potentially *duplicate*), for each of them it goes thru **all** paths from this node back to the root. The lenght of the paths can be different although they end to the root. It triggers an internal search for each nodes on each paths. So the cost (for a given node) is the sum of the number of nodes on all paths from *given node to root*. A mechanism to detect cycle can reduce the number so that common parts of the paths are accounted once. Finally, there are **plg** internal searches per fixup node. 
+For example with *leaf groups* (node of Depth 3) having **100** leafs:
 
-- tree [type 1](#Type 1):  **3638**
-    - for l=1 (grp_2_A and grp_2_B), it is 2 * (1 + 2 + 1) = **8** internal searches
-    - for l=2 (grp_3_*), it is 6 * (2 + 2 + 1) = **30** internal searches
-    - for l=3 (leafs), it is 600 * (3 + 2 + 1) = **3600** internal searches
-- tree [type 2](#Type 2): **3638**
-    - for l=1 (grp_2_A and grp_2_B), it is 2 * (1 + 2 + 1) = **8** internal searches
-    - for l=2 (grp_3_*), it is 6 * (2 + 2 + 1) = **30** internal searches
-    - for l=3 (leafs), it is 600 * (3 + 2 + 1) = **3600** internal searches
-- tree [type 3](#Type 3): **P - 101 = 608**: there are two paths root to Grp_3_C and root to Grp_3_C s leafs
+
+- tree [type 1](#Type 1):  **3030** internal searches
+- tree [type 2](#Type 2): **3036** internal searches
+- tree [type 3](#Type 3): **3736** internal searches
+
+
+Making sure that the *list of impacted nodes* does not contain duplicate ([48861](https://fedorahosted.org/389/ticket/48861)) has a significant impact during *look up*. In [type 3 tree](#Type 3), each member of Grp_3_C have 2 paths back to root so the look up cost of each of them will be divided by 2. The more paths it exists to a node, the more expensive is the node.
+
+### Improvements
+
+#### Prevent duplicate 48861
+
+When updating membership attributes of a group, a direct or indirect impacted member of that group can be found several time. The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent that an impacted member is listed/fixed several time. A first fix, caching in an hash table the already fixed nodes, divides by **2** the duration of provision of a tree. The tree being creates with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py)
+
+
+#### caching of groups
+
+The internal searches target nodes in the tree. But the number of internal searches in the **intermediate nodes (the groups)** is much higher and fluctuates if there are nested groups and leafs belonging to several groups. The 
+
+![Membership tree](../../../images/memberof_type_1_cost_of_groups.png "Type 1: Cost of groups")
+
+
+![Membership tree](../../../images/memberof_type_2_cost_of_groups.png "Type 2: Cost of groups")
+
+
+![Membership tree](../../../images/memberof_type_3_cost_of_groups.png "Type 3: Cost of groups")
+
 
 ##### case 1 - impacted members appear once in the tree
 
