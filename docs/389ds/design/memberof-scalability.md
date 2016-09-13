@@ -59,18 +59,11 @@ So in the rest of the document the **cost** will be expressed in terms of **inte
 
 The figure above shows a membership tree. At the bottom of the tree **leafs** are typically **users**. Those users are directly member of a *leaf groups* of **Depth 3** (i.e. *Grp3_A*), for example *Grp 3_A* is *'Devel Kernel Group'*. Then this group is member of **Depth 2** group (i.e. *Grp 2_A*) like *'Framework Devel Group'*. This group is member of **Depth 1** group (i.e. *Grp 1_A*) like *'Engineering'*. 
 
-- Let **tree(L)** the number of leafs in the tree(Depth 4)
-- Let **tree(L)** the number of leafs in the tree(Depth 4)
-- Let **tree(N)** the number of intermediare nodes in the tree(Depth 1,2,3)
-- Let **A** the total number of entries in a membership tree (all *Engineering*)
 - Let **D** the depth of a given node in the membership tree
 - Let **P** the number of paths from root to nodes and leafs
-- Let **G** the number of groups a given entry is direct member
 - Let **P_down(x)** the number of paths from root to nodes at the depth x (i.e. **paths with length = x**)
-- Let **P_up(x)** the sum of lengths + 1 of paths from nodes at the depth x back to root. For a node at depth x, all its lenghts back to root >= x.
 - Let **L** the maximum lenght of all paths from root to nodes and leafs (i.e. Max Depth + 1)
 - Let **plg** is the number of plugins that triggers one internal search when a entry is updated (e.g. mep). It is >= 1.
-- Let *leaf groups* be the Depth node 3
 - Let *root* be the Grp_1_A
 
 #### Look down the impacted members
@@ -80,7 +73,7 @@ When a group is updated, the txn postop callback searches for all entries being 
     SRCH base="<node_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs="attr_1 ... attr_N"
     attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
 
-This internal base search is very rapid at the condition <node_dn> **remains in the entry cache**.
+This internal base search is very rapid at the condition *node_dn* **remains in the entry cache**.
 
 The cost of the look down is C = sum from l=1 to l=L of P_down(l). For example with *leaf groups* (node of Depth 3) having **100** leafs:
 
@@ -105,7 +98,7 @@ The expected cost of look down with a fix for [48861](https://fedorahosted.org/3
 
 #### Look up group membership of impacted members
 
-When a group is updated, for each **impacted members** it computes all the groups containing (direct or indirect) the impacted members. So for each node (leafs and intermediate nodes) it does an internal search 
+When a group is updated, for each **impacted members** it computes all the groups containing (direct or indirect) the impacted members. So for each given impacted member (leafs and intermediate nodes) it does an internal search for each node from the impacted member up to the root.
 
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn))" attrs=ALL
     attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
@@ -133,14 +126,14 @@ Making sure that the *list of impacted nodes* does not contain duplicate ([48861
 
 #### Prevent duplicate 48861
 
-When updating membership attributes of a group, a direct or indirect impacted member of that group can be found several times. The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent that an impacted member is listed/fixed several times. A first fix, caching in an hash table the already fixed nodes, divides by **2** the duration of provisioning of a tree. The tree being creates with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py)
+When updating membership attributes of a group, a direct or indirect impacted member of that group can be found several times. The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent that an impacted member is listed/fixed several times. A first [patch](https://fedorahosted.org/389/attachment/ticket/48861/0001-Ticket-48861-Memberof-plugins-can-update-several-tim.patch), caching in an hash table the already fixed nodes, divides by **2** the duration of provisioning of a tree. The tree being creates with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py)
 
 
-#### caching of groups
+#### caching of groups 48856
 
-The vast majority of the *Look up* internal searches is to retrieve the *groups owning a given node*.
+The vast majority of the [Look up](#Look up group membership of impacted members) internal searches is to retrieve the *parent groups of a given node*.
 
-    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn))" attrs=ALL
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn>))" attrs=ALL
     attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
 
 But looking at internal searches filters we can see an increasing number of them as the * <node_dn> * moves toward the root. It also fluctuates  highly as soon as there are nested groups and nodes/leafs belong to several groups. 
@@ -164,9 +157,10 @@ Type 3
 
 In conclusion:
 
-- The number of *filter="(\|(attr_1=leaf_n)(attr_N=leaf_n))"* remains low (1 or 2) in all types of trees 
-- The number of *filter="(\|(attr_1=group_n)(attr_N=group_n))"* is very high compare to the leaf
-- The number of *filter="(\|(attr_1=group_n)(attr_N=group_n))"* increases as moving up in the three
+- The number of searches with *filter="(\|(attr_1=leaf_n)(attr_N=leaf_n))"* remains low (1 or 2) in all types of trees 
+- The number of searches with *filter="(\|(attr_1=group_n)(attr_N=group_n))"* is very high compare to the leaf
+- The number of searches with *filter="(\|(attr_1=group_n)(attr_N=group_n))"* increases rapidly if members (direct and indirect) belong to several groups
+- The number of searches with *filter="(\|(attr_1=group_n)(attr_N=group_n))"* increases as moving up in the three
 
 The search *filter="(\|(attr_1=group_n)(attr_N=group_n))"* builds the *memberof* values of groups that *group_n* is a direct member: Let named them **parent groups** and *group_n* being the **child group**.  If we can retrieve those **parent groups** with only 1 internal search per child group it will reduce the cost of * look up * by **80% up to 85%**
 
@@ -175,11 +169,11 @@ The search *filter="(\|(attr_1=group_n)(attr_N=group_n))"* builds the *memberof*
 - Type 3: From ~3700 to ~600 internal searches
 
 
-The proposal is to create a **parent groups** cache. *memberof_call_foreach_dn* builds a filter that will be the key to look up the cache. 
+The proposal for the ticket [48856](https://fedorahosted.org/389/ticket/48856) is to create a **parent groups** cache. *memberof_call_foreach_dn* builds a filter that will be the key to look up the cache. 
 
-If the filter does not exist in the cache, it triggers an internal search with the filter (callback_data) and a callback function that will store the **parent groups** DNs into the cache using filter as key.
+If the filter does not exist in the cache, it triggers an internal search with the *filter* (callback_data) and a callback function that will store the **parent groups** DNs into the cache using *filter* as key.
 
-Then it lookup the **parent groups** from the cache. For each of them it calls int *memberof_get_groups_callback* (taking DN instead of slapi_entry as argument).
+Then it lookup the **parent groups** from the cache. For each of them it calls  *memberof_get_groups_callback* (taking DN instead of slapi_entry as argument).
 
 
 
@@ -189,106 +183,20 @@ During internal searches, the candidates entries are retrieved from the entry ca
 
 When an entry gets to the lru it can get out of the entry cache. It would be benefical to delay a bit a group to get out of the entry cache. For example, we can imagine a counter on each entry in the lru. If the next entry to free, from the lru, is a group then increment the counter and move the entry to the begining of the lru. When the counter reaches a limit (e.g. 3) then the group is freed. When an entry goes entry_cache->lru, the counter is reset.
 
+## Implementation
 
-##### Ignore this chapter
+None
 
-Assuming that **G=1** (an entry appears only once in the membership tree), the cost of update *each* node is **(I+1) + P**.
+## Major Configuration options
 
-For example using the above membership tree, assuming that each *leaf group* has *L=100* members, the update of this tree will be: **3638 internal searches**
+# Replication
 
-- Depth 4: 6 *leaf groups* => **6 * L * ((I+1) + P)** =  600 * (4 + 2) = **3600 internal searches**
-- Depth 3: **6 * ((I+1) + P)** = 6 * (3 + 2) = **30 internal searches**
-- Depth 2: **2 * ((I+1) + P)** = 2 * (2 + 2) = **8 internal searches**
+The proposed changes have no impact in the way replication is managing *memberof* updates. Each update of *memberof* attribute, will go into the changelog. Replication agreement will replicate those updates unless they are skipped.
 
-The way this lookup is done can be improved. In fact, there are several lookup of the same **internal nodes** in the tree
+## updates and Upgrades
 
-![Membership tree](../../../images/memberof_lookup_1.png "Lookup of internal nodes")
+None
 
-In the figure above, we can see the *look up* for Leaf_A triggers internal searches for Leaf_A, Grp_3_A, Grp_2_A and Grp_1_A. Then
-*look up* for Leaf_B triggers triggers internal searches for Leaf_A, Grp_3_C, Grp_2_A and Grp_1_A. So 2 internal searches out of 8 are useless.
+## Dependencies
 
-Taking the same cost of **3638 internal searches** in the previous example, we can measure that the half (**~1800**) are useless
-
-- Grp_1_A is look up **609 times** 
-  - 600 times for each Depth4 leafs
-  - 6 times for Depth3 nodes
-  - 2 times for Depth2 nodes
-  - 1 for Depth1 node
-- Grp_2_A and Grp_2_B are look up **304 times each**
-- Grp_3_A..Grp_3_F are look up **101 times each**
-
-
-##### case 2 - impacted members appear several time in the tree
-
-Assuming that **G > 1** (an entry is direct member of N *leaf group*). the cost of update *each* node is **(I + 1) + P**.
-
-For example using the above membership tree, Assuming:
-
-- *G=6* : each leaf is member of all *leaf groups*
-- *L=100* : *leaf groups* have 100 direct members, the update of this tree will be: **7238 internal searches**
-
-- Depth 4: 6 *leaf groups* => **6 * L * ((I + 1) + P)** =  600 * ((9 + 1) + 2) = **7200 internal searches**
-- Depth 3: **6 * ((I + 1) + P)** = 6 * (3 + 2) = **30 internal searches**
-- Depth 2: **2 * ((I + 1) + P)** = 2 * (2 + 2) = **8 internal searches**
-
-
-![Membership tree](../../../images/memberof_lookup_2.png "Lookup of internal nodes 2")
-
-In the figure above, we can see the *look up* for Leaf_A triggers internal searches for Leaf_A, Grp_3_A, Grp_2_A and Grp_1_A but also Grp_3_C, Grp_2_A and Grp_1_A. So 2 internal searches out of 7 are useless. In addition Leaf_A is found twice by [look down](http://www.port389.org/docs/389ds/design/memberof-scalability.html#look-down-the-impacted-members) so it triggers two lookup up, the second one being useless because the Leaf_A was already fixup. That is 9 (2+7) internal searches out of 14 that are useless.
-
-For example for the following membership tree with **L=100**, then **A=(6*L)+9=609**
-The problem is that updating 
-
-The cost of update of any node is: **(G*D) + P** internal searches
-
-- **D** is the depth of the node in the tree, so each time a layer is added it increases by *1* the cost to update **each** node in the tree.
-- **G** is the number of groups that a given member is member of
-- **P** is the number of DS plugins that will catch the update and will issue internal searches on the updated entry. Typically this number is at least **>=2** because of *memberof* and *mep* plugins. Note that it is very likely that others plugins may be triggers like *referint* or *schema compat*.
-
-####Example of entries belonging to **only one** group
-####Example of entries belonging to **3** group
-For example, assuming that each Depth 3 group has *100* members (*L*) and each member belong to **1** group, the update of this tree will be: **3642 internal searches**
-
-- Depth 4: 6 Depth 3 groups => **6* L * ((G*D) + P)** =  600 * ((6*4) + 2) = **3600 internal searches**
-- Depth 3: **6 * (D + P)** = 6 * ((3*3) + 2) = **30 internal searches**
-- Depth 2: **2 * (D + P)** = 2 * ((1*2) + 2) = **8 internal searches**
-- Depth 1: **1 * (D + P)** = 1 * ((1*1) + 3) = **4 internal searches**
-
-The fact that a **Leaf** entry could be present in several groups does not change the cost of the update. However it is an issue as each time the entry is found in the tree, each time it is fixed with a **D + P** cost.
-
-The formula to compute the number of internal searches is
- N: Number of members to update (nested or not)
-    In a ADD/DEL/MOD_REPL N = all members in the operation are updated
-    In a MOD_ADD/MOD_DEL N = members added/removed are updated
- P: Number of plugins that lookup each members
-    (for example *mep* plugin lookup the member during the update)
- 
- Total_internal_search = N * (G + P + 1)
- 
- for example with groups of **1000** members and each member being member of **5** groups. Assuming P=3 (memberof, mep,...), (G + P + 1) = 9:
-  - adding a group => 9000 internal_searches
-  - add/del 10 members to a group => 90 internal searches
-
-What increase the number of internal searches
-
--   Fixup several times the same entry [48861](https://fedorahosted.org/389/ticket/48861)
-   - With **nested groups**, a same entry can be found serveral times as impacted
-   - If an entry member of a group
--   If an entry is present only once in a single group (for a given membership attribute)When building the list of impacted entries, **Nested groups** means that (an entry can be fixup several times)
--   multiple membership attributes
-   -   The task to 
-   -   If an entry is present
-
-- keep group in cache
-group size
-
-It is preferred to keep the plug-in configuration backwards compatible to prevent breaking existing deployments during upgrade. This is easily done by simply allowing the **memberOfGroupAttr** attribute to have multiple values. Here is an example:
-
-    dn: cn=MemberOf Plugin,cn=plugins,cn=config
-    ...
-    memberofgroupattr: member
-    memberofgroupattr: uniqueMember
-    memberofattr: memberOf
-
-It is important to note that an attribute used as a **memberOfGroupAttr** must be defined with either the **Distinguished Name** or **Name and Optional UID** syntaxes. An attempt to use an attribute defined with any other syntax will be rejected.
-
+None
