@@ -133,7 +133,7 @@ Making sure that the *list of impacted nodes* does not contain duplicate ([48861
 
 #### Prevent duplicate 48861
 
-When updating membership attributes of a group, a direct or indirect impacted member of that group can be found several time. The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent that an impacted member is listed/fixed several time. A first fix, caching in an hash table the already fixed nodes, divides by **2** the duration of provisioning of a tree. The tree being creates with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py)
+When updating membership attributes of a group, a direct or indirect impacted member of that group can be found several times. The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent that an impacted member is listed/fixed several times. A first fix, caching in an hash table the already fixed nodes, divides by **2** the duration of provisioning of a tree. The tree being creates with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py)
 
 
 #### caching of groups
@@ -143,9 +143,9 @@ The vast majority of the *Look up* internal searches is to retrieve the *groups 
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn))" attrs=ALL
     attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
 
-But looking at internal searches filters we can see an increasing number of them as the *<node_dn>* moves to the root. It also fluctuates  highly as soon as there are nested groups and nodes/leafs belong to several groups. 
+But looking at internal searches filters we can see an increasing number of them as the * <node_dn> * moves toward the root. It also fluctuates  highly as soon as there are nested groups and nodes/leafs belong to several groups. 
 
-In the three following figures, the number in red (close to *<node_dn>*) is the number of searches:
+In the three following figures, the number in red (close to * <node_dn> *) is the number of this type of searche:
 
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn))" attrs=ALL
 
@@ -164,18 +164,33 @@ Type 3
 
 In conclusion:
 
-- The number of *filter="(|(attr_1=<leaf_n>).(attr_N=<leaf_n))"* remains low (1 or 2) in all types of trees 
-- The number of *filter="(|(attr_1=<group_n>).(attr_N=<group_n))"* is very high compare to the leaf
-- The number of *filter="(|(attr_1=<group_n>).(attr_N=<group_n))"* increase as moving up in the three
+- The number of *filter="(\|(attr_1=leaf_n)(attr_N=leaf_n))"* remains low (1 or 2) in all types of trees 
+- The number of *filter="(\|(attr_1=group_n)(attr_N=group_n))"* is very high compare to the leaf
+- The number of *filter="(\|(attr_1=group_n)(attr_N=group_n))"* increases as moving up in the three
 
-So if we can satisfy *filter="(|(attr_1=<group_n>).(attr_N=<group_n))"* without doing internal searches and basically have only 1 internal search per nodes (leafs or groups) it will reduce the cost of *look up* by
+The search *filter="(\|(attr_1=group_n)(attr_N=group_n))"* builds the *memberof* values of groups that *group_n* is a direct member: Let named them **parent groups** and *group_n* being the **child group**.  If we can retrieve those **parent groups** with only 1 internal search per child group it will reduce the cost of * look up * by **80% up to 85%**
 
-- Type 1: From ~3000 to ~600
-- Type 2: From ~3000 to ~600
-- Type 3: From ~3700 to ~600
+- Type 1: From ~3000 to ~600 internal searches
+- Type 2: From ~3000 to ~600 internal searches
+- Type 3: From ~3700 to ~600 internal searches
 
 
-##### case 1 - impacted members appear once in the tree
+The proposal is to create a **parent groups** cache. *memberof_call_foreach_dn* builds a filter that will be the key to look up the cache. 
+
+If the filter does not exist in the cache, it triggers an internal search with the filter (callback_data) and a callback function that will store the **parent groups** DNs into the cache using filter as key.
+
+Then it lookup the **parent groups** from the cache. For each of them it calls int *memberof_get_groups_callback* (taking DN instead of slapi_entry as argument).
+
+
+
+#### keeping groups in the entry cache
+
+During internal searches, the candidates entries are retrieved from the entry cache and possibly reloaded from Database in case of cache miss. The lookup of [parent groups](#caching of groups) requires to find/reload many groups into the entry cache. A typical group is a large entry with quite few attributes having a large set of values. Loading those entries is expensive (read of several overflow pages, allocation/sort of many member values).
+
+When an entry gets to the lru it can get out of the entry cache. It would be benefical to delay a bit a group to get out of the entry cache. For example, we can imagine a counter on each entry in the lru. If the next entry to free, from the lru, is a group then increment the counter and move the entry to the begining of the lru. When the counter reaches a limit (e.g. 3) then the group is freed. When an entry goes entry_cache->lru, the counter is reset.
+
+
+##### Ignore this chapter
 
 Assuming that **G=1** (an entry appears only once in the membership tree), the cost of update *each* node is **(I+1) + P**.
 
