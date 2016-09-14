@@ -9,7 +9,15 @@ title: "MemberOf Scalability"
 
 ## Overview
 
-Membership attributes creates an acyclic tree of LDAP entries/nodes. MemberOf plugin manages the values of LDAP attribute **memberOf** into that tree. When updating a group, it does two actions:
+Membership attributes creates a directed graph that can contains cycles. Having cycles in membership makes almost no sense and add complexity. This is the reason why memberof plugin assums that the directed graph is actually an **acyclic tree** and enforce during evaluation of the tree that there is no cycle.
+
+The nodes of the tree are directed by membership attributes (member, uniquemember, memberuser...). MemberOf plugin manages the values of LDAP attribute **memberOf** into the tree. This attribute creates an other tree with direct edges from a node to all the nodes it is member of. 
+
+![acyclic tree](../../../images/memberof_acyclic_tree.png "acyclic tree")
+
+The nodes linked to other node(s) (with blue arrow) are called **groups or intermediate nodes** (e.g. node_0_1, node_1_1, node_2_2). The nodes linked to no other node (with blue arrow) are called **leafs**.
+
+When updating a group, MemberOf plugin needs to update the *memberof* attribute of several nodes. To do so, it does two actions:
 
 -   Lookup **down** in membership tree to determine the list of entries (leafs or intermediate nodes) impacted by the operation
 -   For each impacted entry (nodes or leafs), lookups **up** in the tree to determine which groups the entry belongs to, and eventually update the entry (**fixup**)
@@ -59,12 +67,14 @@ So in the rest of the document the **cost** will be expressed in terms of **inte
 
 The figure above shows a membership tree. At the bottom of the tree **leafs** are typically **users**. Those users are directly member of a *leaf groups* of **Depth 3** (i.e. *Grp3_A*), for example *Grp 3_A* is *'Devel Kernel Group'*. Then this group is member of **Depth 2** group (i.e. *Grp 2_A*) like *'Framework Devel Group'*. This group is member of **Depth 1** group (i.e. *Grp 1_A*) like *'Engineering'*. 
 
+- Let the tree composed of **nodes**. 
+- The **parents** of a node are the nodes with a membership link to the node. 
+- The set of nodes that are **parents** are called **groups or intermediate nodes**
+- A **leaf** is a node that is not a parent
 - Let **D** the depth of a given node in the membership tree
-- Let **P** the number of paths from root to nodes and leafs
 - Let **P_down(x)** the number of paths from root to nodes at the depth x (i.e. **paths with length = x**)
 - Let **L** the maximum lenght of all paths from root to nodes and leafs (i.e. Max Depth + 1)
 - Let **plg** is the number of plugins that triggers one internal search when a entry is updated (e.g. mep). It is >= 1.
-- Let *root* be the Grp_1_A
 
 #### Look down the impacted members
 
