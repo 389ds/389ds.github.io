@@ -170,18 +170,13 @@ In conclusion:
 - The number of searches with *filter="(\|(attr_1=group_n)(attr_N=group_n))"* increases rapidly if members (direct and indirect) belong to several groups
 - The number of searches with *filter="(\|(attr_1=group_n)(attr_N=group_n))"* increases as moving up in the three
 
-The search *filter="(\|(attr_1=group_n)(attr_N=group_n))"* builds the *memberof* values of groups that *group_n* is a direct member. This **parent** (of group_n) is searched during *look up* of *group_n*. If it is parent of another *group_m*, it will also be searched for *group_m* , etc. If we can retrieve only once, this **parent** node it will reduce the cost of * look up * by **80% up to 85%**
+**A scalability issue exists because of the number of times the plugin searches the parents of the groups**.
+
+Let *group_n* be the ancestor (parent or grand parent...) of **N** descendants, it will trigger **at least N** searches (*filter="(\|(attr_1=group_n)(attr_N=group_n))"*). If during *look up* of a group, we can do a single search and cache the result, the next **N-1** *look up* of that group will be satisfy without additional cost. It will reduce the cost of * look up * by **80% up to 85%**
 
 - Type 1: From ~3000 to ~600 internal searches
 - Type 2: From ~3000 to ~600 internal searches
 - Type 3: From ~3700 to ~600 internal searches
-
-
-The proposal for the ticket [48856](https://fedorahosted.org/389/ticket/48856) is to create a **parent groups** cache. *memberof_call_foreach_dn* builds a filter that will be the key to look up the cache. 
-
-If the filter does not exist in the cache, it triggers an internal search with the *filter* (callback_data) and a callback function that will store the **parent groups** DNs into the cache using *filter* as key.
-
-Then it lookup the **parent groups** from the cache. For each of them it calls  *memberof_get_groups_callback* (taking DN instead of slapi_entry as argument).
 
 
 
@@ -193,7 +188,66 @@ When an entry gets to the lru it can get out of the entry cache. It would be ben
 
 ## Implementation
 
-None
+### 48856 caching of groups parents
+
+
+The proposal for the ticket [48856](https://fedorahosted.org/389/ticket/48856) is to create a cache that will keep, for a given group, the parents (direct) DNs  of that group. Parents of non-group entries (leafs) are **not** stored in that cache.
+
+#### cache life cycle
+
+The cache is hash table using the normalized group DN as a key.
+
+The hash table is created at plugin startup and deleted at plugin stop.
+
+The cache is emptied at the entrance of the plugin callback and also at the exit. So that each operation starts with a cleared cache.
+
+plugin callbacks are *post-betxn* so the membership attributes are not updated during its execution and cached values remain valid.
+
+
+#### limitation
+
+The cache is not valid for remote backend or sub suffixes, because membership can be updated while processing the graph.
+
+### cache memory footprint
+
+The cache will contains DNs. Those DNs are parents of a entry that is a group.
+
+An entry is a group if *slapi_filter_test_simple(entry, config->group_filter)*
+
+We can expect that membership graph will look somehow like a tree, especially with much more leafs than intermediate nodes and more nodes at Depth D than at Depth D-1. The cache will be loaded **only** with intermediate nodes (i.e. groups) DNs. In addition only part of the groups DNs will be in the cache. In fact groups that only contain leafs are not loaded, they are *parents of leafs* not *parents of groups*.
+
+For example, assuming that each DN is 100 bytes long, 
+
+- graph [type 1](#Type 1): **1700 bytes**
+- graph [type 2](#Type 2):  idem 
+    - 9 keys (Grp_*): 900 bytes
+    - Grp_3* contain 6 values (3 times Grp_2_1 and 3 times Grp_2_2): 600 bytes
+    - Grp_2* contain 2 values (2 times Grp_1_A): 200 bytes
+    - Grp_1 contains 0 value : 0 bytes
+- graph [type 3](#Type 3): **1800 bytes**
+    - 9 keys (Grp_*): 900 bytes
+    - Grp_3* contain 7 values (3 times Grp_2_1 and 4 times Grp_2_2): 700 bytes
+    - Grp_2* contain 2 values (2 times Grp_1_A): 200 bytes
+    - Grp_1 contains 0 value : 0 bytes
+
+### cache priming
+
+The cache starts empty (see cache [life cycle](#cache life cycle)). Once *lookdown* has built the list of impacted nodes (leaf or groups), for each of them it will trigger a *look up* calling *memberof_fix_memberof_callback*.
+
+The function that actually implement the *look up* is *memberof_get_groups_r* and *memberof_call_foreach_dn*. Their interface must be changed with a new PRBool attribute that says is the provided *member_sdn* is a *group*.
+
+If this is a group
+
+try to retrieve the member_DN from the cache to get an array of for the *parents of the member_DN*.
+
+If it is not a group or in the cache, do an internal search to retrieve them and use a new callback function to build the array of *parents of the member_DN*. Then, at the condition it is a group add the member_DN/array to the cache (using member_DN as key).
+
+Finally for each parents in the array of *parents of the member_DN*, call *memberof_get_groups_callback*.
+This function needs to change a bit, because it will no longer be a search callback but a normal function taking the parent_DN in place of the Slapi_entry. This does not change the algo because this function is currently only using the entry DN.
+
+### scoping
+
+If the node is in excluded scopes or not in scopes (if scopes are defined), *memberof_call_foreach_dn* should not lookup the cache or do an internal search to retrieve its parent.
 
 ## Major Configuration options
 
