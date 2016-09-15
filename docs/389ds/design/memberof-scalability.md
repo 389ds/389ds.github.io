@@ -207,8 +207,9 @@ plugin callbacks are *post-betxn* so the membership attributes are not updated d
 #### limitation
 
 The cache is not valid for remote backend or sub suffixes, because membership can be updated while processing the graph.
+(TBC)
 
-### cache memory footprint
+#### cache memory footprint
 
 The cache will contains DNs. Those DNs are parents of a entry that is a group.
 
@@ -230,11 +231,11 @@ For example, assuming that each DN is 100 bytes long,
     - Grp_2* contain 2 values (2 times Grp_1_A): 200 bytes
     - Grp_1 contains 0 value : 0 bytes
 
-### cache priming
+#### cache priming
 
 The cache starts empty (see cache [life cycle](#cache life cycle)). Once *lookdown* has built the list of impacted nodes (leaf or groups), for each of them it will trigger a *look up* calling *memberof_fix_memberof_callback*.
 
-The function that actually implement the *look up* is *memberof_get_groups_r* and *memberof_call_foreach_dn*. Their interface must be changed with a new PRBool attribute that says is the provided *member_sdn* is a *group*.
+The function that actually implements the *look up* is *memberof_get_groups_r* and *memberof_call_foreach_dn*. Their interfaces must be changed with a new PRBool attribute that says is the provided *member_sdn* is a *group*.
 
 If this is a group
 
@@ -245,7 +246,7 @@ If it is not a group or in the cache, do an internal search to retrieve them and
 Finally for each parents in the array of *parents of the member_DN*, call *memberof_get_groups_callback*.
 This function needs to change a bit, because it will no longer be a search callback but a normal function taking the parent_DN in place of the Slapi_entry. This does not change the algo because this function is currently only using the entry DN.
 
-### scoping
+#### scoping
 
 If the node is in excluded scopes or not in scopes (if scopes are defined), *memberof_call_foreach_dn* should not lookup the cache or do an internal search to retrieve its parent.
 
