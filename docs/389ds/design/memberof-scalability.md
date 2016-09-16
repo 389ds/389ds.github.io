@@ -74,14 +74,39 @@ The figure above shows a membership graph. At the bottom of the graph **leafs** 
 - Let **L** the maximum lenght of all paths from root to nodes and leafs (i.e. Max Depth + 1)
 - Let **plg** is the number of plugins that triggers one internal search when a entry is updated (e.g. mep). It is >= 1.
 
-#### Look down the impacted members
+#### Algorythm
 
-When a group is updated, the txn postop callback searches for all entries being direct and indirect members of that group. This is done by a **single** internal search of each node (leaf or intermediate node) **each** time the entry is found in the membership graph. The purpose of this look down is to build a list of impacted members that later will be fixup.
+When a group is updated, to add/del/moddn members, Memberof plugin updates the attribute **memberof** of all entries that are impacted by the update of the group. The graphs is **look down** from the impacted members down to the leafs to retrieve the impacted nodes. During the **look down**, each impacted node is *fixup*. The fixup of node consist of 1) **look up** that retrieves all the groups that have a direct or inderect membership relation with that node (i.e. all the groups that the node is member of) then 2) update of the *memberof* values of the node.
+
+The **look down** uses the following search for **all impacted nodes ( leaf or intermediate node) **
 
     SRCH base="<node_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs="attr_1 ... attr_N"
     attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
 
-This internal base search is very rapid at the condition *node_dn* **remains in the entry cache**.
+This internal base search is very rapid at the condition *node_dn* **remains in the entry cache**. If the entry is a group (i.e. *attr_x* exists), it recurses for all the members. When the entry is a leaf if *fixup* it ( **look up** + update of memberof ).
+
+Note that during **look down**, a same entry can be found several times. This happens when it exists multiples paths from the original updated group to a node belonging to its membership graph. 
+
+#### Adding leaf as member of a group
+
+The look down in that case is
+
+- graph [type 1](#Type 1): **3** - 2 for the updated group and 1 for the leaf (no clear reason why it triggers *2* identical searches for the updated group)
+- graph [type 2](#Type 2): idem
+- graph [type 3](#Type 3): idem
+
+The look up 
+
+- graph [type 1](#Type 1): **5** - 4 for the path to the root + 1 for *plg*
+- graph [type 2](#Type 2): **7** - 6 for the path to the root + 1 for *plg*
+- graph [type 3](#Type 3): **6** - 5 for the path to the root + 1 for *plg*
+
+In conclusion: **The cost of adding a leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
+
+#### Adding group(s) as member of a group
+
+##### Look down the impacted members
+
 
 The cost of the look down is C = sum from l=1 to l=L of P_down(l). For example with group of Depth 3 having **100** leafs:
 
@@ -104,7 +129,7 @@ The expected cost of look down with a fix for [48861](https://fedorahosted.org/3
 - graph [type 2](#Type 2): **C - 2 = 606**: there are two paths root to LeafN and root to LeafM
 - graph [type 3](#Type 3): **C - 101 = 608**: there are two paths root to Grp_3_C and root to Grp_3_C s leafs
 
-#### Look up group membership of impacted members
+##### Look up group membership of impacted members
 
 When a group is updated, for each **impacted members** it computes all the groups containing (direct or indirect) the impacted members. So for each given impacted member (leafs and intermediate nodes) it does an internal search for each node from the impacted member up to the root.
 
