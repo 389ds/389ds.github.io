@@ -76,9 +76,15 @@ The figure above shows a membership graph. At the bottom of the graph **leafs** 
 
 #### Algorythm
 
-When a group is updated, to add/del/moddn members, Memberof plugin updates the attribute **memberof** of all entries that are impacted by the update of the group. The graphs is **look down** from the impacted members down to the leafs to retrieve the impacted nodes. During the **look down**, each impacted node is *fixup*. The fixup of node consist of 1) **look up** that retrieves all the groups that have a direct or inderect membership relation with that node (i.e. all the groups that the node is member of) then 2) update of the *memberof* values of the node.
+When a group is updated, to add/del/moddn members, Memberof plugin updates the attribute **memberof** of all entries that are impacted by the update of the group. The graphs is **look down** from the impacted members down to the leafs to retrieve the impacted nodes. During the **look down**, each impacted node is *fixup*. The fixup of node consist of
 
-The **look down** uses the following search for **all impacted nodes ( leaf or intermediate node) **
+- **look up** that retrieves all the groups that have a direct or inderect membership relation with that node (i.e. all the groups that the node is member of)
+- **update** of the *memberof* values of the node.
+
+##### look down
+
+The **look down** uses the following search for **all impacted nodes \(leaf or intermediate node\)**
+<a name="look down search">
 
     SRCH base="<node_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs="attr_1 ... attr_N"
     attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
@@ -87,15 +93,53 @@ This internal base search is very rapid at the condition *node_dn* **remains in 
 
 Note that during **look down**, a same entry can be found several times. This happens when it exists multiples paths from the original updated group to a node belonging to its membership graph. 
 
-#### Adding leaf as member of a group
+During a MOD of a group, the **look down** starts with this kind of searches:
+<a name="look down MOD search">
 
-The look down in that case is
+    SRCH base="<group_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
+    SRCH base="<group_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
+    SRCH base="<impacted_node_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
+
+
+
+##### look up
+
+When a group is updated, for each **impacted members** it computes all the groups containing (direct or indirect) the impacted members. So for each given impacted member (leafs and intermediate nodes) it does an internal search for each node from the impacted member up to the root.
+<a name="look up search">
+
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn>))" attrs=ALL
+    attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
+    They are supposed to be indexed in equality
+    
+    For example with a path: Grp_1_A -> Grp_2_A -> Grp_3_C -> Leaf_N. The access log will contain
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<Leaf_N>)..(attr_N=<Leaf_N>))" attrs=ALL
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<Grp_3_C>)..(attr_N=<Grp_3_C>))" attrs=ALL
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<Grp_2_A>)..(attr_N=<Grp_2_A>))" attrs=ALL
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<Grp_1_A>)..(attr_N=<Grp_1_A>))" attrs=ALL
+
+Assuming that attr_1,..,attr_N are indexed in equality, the searches are fast but items that can influence the cost are
+
+- the more there are membership attributes the more expensive it is
+- the search will retrieves *groups* that are possibly big entries. It is more expensive if the *groups* are not in the **entry cache**
+
+##### update
+
+The update of the impacted node is done with an internal MOD. It can be caught by other plugins that can search the entry. For example **mep** plugin triggers for each update:
+<a name="update">
+
+    SRCH base="<impacted_node_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
+
+#### Adding a leaf as member of a group
+
+The use case is a *modify\(group_DN, [\(ldap.MOD_ADD, 'member', leaf_DN\)]\)*. The cost is the same whatever the Depth of the updated group.
+
+The look down costs (with those [searches](#look down search)) in that case are
 
 - graph [type 1](#Type 1): **3** - 2 for the updated group and 1 for the leaf (no clear reason why it triggers *2* identical searches for the updated group)
 - graph [type 2](#Type 2): idem
 - graph [type 3](#Type 3): idem
 
-The look up 
+The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches(#update)). 
 
 - graph [type 1](#Type 1): **5** - 4 for the path to the root + 1 for *plg*
 - graph [type 2](#Type 2): **7** - 6 for the path to the root + 1 for *plg*
@@ -131,16 +175,6 @@ The expected cost of look down with a fix for [48861](https://fedorahosted.org/3
 
 ##### Look up group membership of impacted members
 
-When a group is updated, for each **impacted members** it computes all the groups containing (direct or indirect) the impacted members. So for each given impacted member (leafs and intermediate nodes) it does an internal search for each node from the impacted member up to the root.
-
-    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn))" attrs=ALL
-    attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
-    They are supposed to be indexed in equality
-
-If this search is indexed and fast but items that can influence the cost are
-
-- the more there are membership attributes the more expensive it is
-- the search will retrieves *groups* that are possibly big entries. It is more expensive if the *groups* are not in the **entry cache**
 
 
 It is quite difficult to express in mathematical way the cost of the look down. Here is an attempt to describe it:
