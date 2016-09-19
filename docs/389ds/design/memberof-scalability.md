@@ -76,12 +76,13 @@ The figure above shows a membership graph. At the bottom of the graph **leafs** 
 
 #### Algorythm
 
-When a group is updated, to add/del/moddn members, Memberof plugin updates the attribute **memberof** of all entries that are impacted by the update of the group. The graphs is **look down** from the impacted members down to the leafs to retrieve the impacted nodes. During the **look down**, each impacted node is *fixup*. The fixup of node consist of
+When a group is updated, to add/del/moddn members, Memberof plugin updates the attribute **memberof** of all entries that are impacted by the update of the group. The graphs is **look down** from the target group down to the leafs to retrieve the impacted nodes. During the **look down**, each impacted node is *fixup*. The fixup of node consist of
 
 - **look up** that retrieves all the groups that have a direct or inderect membership relation with that node (i.e. all the groups that the node is member of)
 - **update** of the *memberof* values of the node.
 
 ##### look down
+
 
 The **look down** uses the following search for **all impacted nodes \(leaf or intermediate node\)**
 <a name="look down search">
@@ -89,11 +90,11 @@ The **look down** uses the following search for **all impacted nodes \(leaf or i
     SRCH base="<node_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs="attr_1 ... attr_N"
     attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
 
-This internal base search is very rapid at the condition *node_dn* **remains in the entry cache**. If the entry is a group (i.e. *attr_x* exists), it recurses for all the members. When the entry is a leaf if *fixup* it ( **look up** + update of memberof ).
+This internal base search is very rapid at the condition *node_dn* **remains in the entry cache**. If the entry is a group (i.e. *attr_x* exists), it recurses for all the members. When the entry is a leaf it *fixup* the entry ( **look up** + update of memberof ). When the entry is a group and all its members have been *fixup*, then the group itself is *fixup* ( **look up** + update of memberof ).
 
 Note that during **look down**, a same entry can be found several times. This happens when it exists multiples paths from the original updated group to a node belonging to its membership graph. 
 
-During a MOD of a group, the **look down** starts with this kind of searches:
+During a updating a group to MOD_ADD a member, the **look down** starts with this kind of searches:
 <a name="look down MOD search">
 
     SRCH base="<group_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
@@ -129,13 +130,13 @@ The update of the impacted node is done with an internal MOD. It can be caught b
 
     SRCH base="<impacted_node_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
 
-#### Adding a leaf as member of a group
+#### Adding ONE leaf as member of a group
 
 The use case is a *modify\(group_DN, [\(ldap.MOD_ADD, 'member', leaf_DN\)]\)*. The cost is the same whatever the Depth of the updated group.
 
 The look down costs (with those [searches](#look down search)) in that case are
 
-- graph [type 1](#Type 1): **3** - 2 for the updated group and 1 for the leaf (no clear reason why it triggers *2* identical searches for the updated group)
+- graph [type 1](#Type 1): **3** - [2](#look down MOD search) for the updated group and [1](#look down search) for the leaf (no clear reason why it triggers *2* identical searches for the updated group)
 - graph [type 2](#Type 2): idem
 - graph [type 3](#Type 3): idem
 
@@ -146,6 +147,50 @@ The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) 
 - graph [type 3](#Type 3): **6** - 5 for the path to the root + 1 for *plg*
 
 In conclusion: **The cost of adding a leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
+
+#### Deleting ONE leaf from being member of a group
+
+The use case is a *modify\(group_DN, [\(ldap.MOD_DELETE, 'member', leaf_DN\)]\)*. The cost is the same whatever the Depth of the updated group.
+
+The look down costs (with those [searches](#look down search)) in that case are
+
+- graph [type 1](#Type 1): **3** - [2](#look down MOD search) for the updated group and [1](#look down search) for the leaf (no clear reason why it triggers *2* identical searches for the updated group)
+- graph [type 2](#Type 2): idem
+- graph [type 3](#Type 3): idem
+
+The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches(#update)). 
+
+- graph [type 1](#Type 1): **2** - 1 for the path(s) (0) of impacted leaf to the root  + 1 for *plg*
+- graph [type 2](#Type 2): **5** - 4 for the path(s) (1) of impacted leaf to the root  + 1 for *plg*
+- graph [type 3](#Type 3): **2** - 1 for the path(s) (0) of impacted leaf to the root of the leaf + 1 for *plg*
+
+In conclusion: **The cost of deleting a leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
+
+#### Replacing ONE leaf with an other leaf as member of a group
+
+The operation on the updated group is
+
+- Let leaf_A being member of the targeted group
+- Let leaf_B being member of any group
+- *new_members* = G0.members - leaf_A + leaf_B
+- *modify\(group_DN, [\(ldap.MOD_REPLACE, 'member', new_members\)]\)*. The cost is the same whatever the Depth of the updated group.
+
+The look down costs (with those [searches](#look down search)) in that case are
+
+- graph [type 1](#Type 1): **4** - [2](#look down MOD search) for the updated group and [2](#look down search) for the leafs leaf_A and learf_B (no clear reason why it triggers *2* identical searches for the updated group)
+- graph [type 2](#Type 2): idem
+- graph [type 3](#Type 3): idem
+
+The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches(#update)). 
+
+- graph [type 1](#Type 1): **7** - 5 for the path(s) (leaf_A, Leaf_B) of impacted leaf to the root  + 1 for *plg*
+- graph [type 2](#Type 2): **10** - 8 for the paths of impacted leafs to the root + 2 for *plg*
+- graph [type 3](#Type 3): **8** - 6 for the paths of impacted leafs to the root  + 2 for *plg*
+
+In conclusion: 
+
+- The MOD_REPLACE recomputes/update the *memberof* only on the impacted nodes. If a node was member and remains member, its *memberof* is not recomputed/updated.
+- **The cost of replacing one leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
 
 #### Adding group(s) as member of a group
 
