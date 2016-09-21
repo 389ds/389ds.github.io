@@ -135,7 +135,7 @@ The update of the impacted node is done with an internal MOD. It can be caught b
 
 #### Adding ONE leaf as member of a group
 
-The use case is a *modify\(group_DN, [\(ldap.MOD_ADD, 'member', leaf_DN\)]\)*. The cost is the same whatever the Depth of the updated group.
+The use case is a *modify\(group_DN, [\(ldap.MOD_ADD, 'member', leaf_DN\)]\)*. 
 
 The look down costs (with those [searches](#look down search)) in that case are
 
@@ -149,11 +149,16 @@ The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) 
 - graph [type 2](#Type 2): **7** - 6 for the path to the root + 1 for *plg*
 - graph [type 3](#Type 3): **6** - 5 for the path to the root + 1 for *plg*
 
-In conclusion: **The cost of adding a leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
+In conclusion: 
+
+- The cost increases in proportion of the number of paths *updated group --> root*
+- The cost increases in proportion of the *depth* (number of nodes on the path) of the *updated group --> root*
+- **The cost of adding a leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
+
 
 #### Deleting ONE leaf from being member of a group
 
-The use case is a *modify\(group_DN, [\(ldap.MOD_DELETE, 'member', leaf_DN\)]\)*. The cost is the same whatever the Depth of the updated group.
+The use case is a *modify\(group_DN, [\(ldap.MOD_DELETE, 'member', leaf_DN\)]\)*. 
 
 The look down costs (with those [searches](#look down search)) in that case are
 
@@ -167,7 +172,11 @@ The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) 
 - graph [type 2](#Type 2): **5** - 4 for the path(s) (1) of impacted leaf to the root  + 1 for *plg*
 - graph [type 3](#Type 3): **2** - 1 for the path(s) (0) of impacted leaf to the root of the leaf + 1 for *plg*
 
-In conclusion: **The cost of deleting a leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
+In conclusion:
+
+- The cost increases in proportion of the number of paths *updated group --> root*
+- The cost increases in proportion of the *depth* (number of nodes on the path) of the *updated group --> root*
+- **The cost of deleting a leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
 
 #### Replacing ONE leaf with an other leaf as member of a group
 
@@ -176,7 +185,7 @@ The operation on the updated group is
 - Let leaf_A being member of the targeted group
 - Let leaf_B being member of any group
 - *new_members* = G0.members - leaf_A + leaf_B
-- *modify\(group_DN, [\(ldap.MOD_REPLACE, 'member', new_members\)]\)*. The cost is the same whatever the Depth of the updated group.
+- *modify\(group_DN, [\(ldap.MOD_REPLACE, 'member', new_members\)]\)*. 
 
 The look down costs (with those [searches](#look down search)) in that case are
 
@@ -192,12 +201,14 @@ The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) 
 
 In conclusion: 
 
+- The cost increases in proportion of the number of paths *updated group --> root*
+- The cost increases in proportion of the *depth* (number of nodes on the path) of the *updated group --> root*
 - The MOD_REPLACE recomputes/update the *memberof* only on the impacted nodes. If a node was member and remains member, its *memberof* is not recomputed/updated.
 - **The cost of replacing one leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
 
 #### Adding N leafs as members of a group
 
-The use case is a *modify\(group_DN, [\(ldap.MOD_ADD, 'member', [leaf_1_dn,...,leaf_N_dn\)]\)*. The cost is the same whatever the Depth of the updated group.
+The use case is a *modify\(group_DN, [\(ldap.MOD_ADD, 'member', [leaf_1_dn,...,leaf_N_dn\)]\)*. 
 
 The look down costs (with those [searches](#look down search)) in that case are
 
@@ -208,12 +219,13 @@ The look down costs (with those [searches](#look down search)) in that case are
 The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches(#update)). 
 
 - graph [type 1](#Type 1): **5 \* N** - 4\*N for the paths to the root + N for *plg*
-- graph [type 2](#Type 2): **7 \* N** - 6 for the 2 paths to the root + 1 for *plg*
-- graph [type 3](#Type 3): **6** - 5 for the path to the root + 1 for *plg*
+- graph [type 2](#Type 2): **7 \* N** - 6 for the 2 paths to the root + N for *plg*
+- graph [type 3](#Type 3): **6 \* N** - 5 for the 2 paths to the root + N for *plg*
 
 The fixup cost contains several *identical searches*. 
 
 - graph [type 1](#Type 1): For example adding the N leafs to *Grp_3_A*, the update of the group triggers
+
 
     # N times the search
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_A)..(attr_N=Grp_3_A))" attrs=ALL
@@ -224,8 +236,10 @@ The fixup cost contains several *identical searches*.
     # N times the search
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_1_A)..(attr_N=Grp_1_A))" attrs=ALL
 
+
 - graph [type 2](#Type 2): For example N leafs being member of *Grp_3_C*, add them to *Grp_3_D*
-    
+
+
     # N times the search for path Grp_3_C->Grp_2_A->Grp_1_A
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_C)..(attr_N=Grp_3_C))" attrs=ALL
     
@@ -244,6 +258,26 @@ The fixup cost contains several *identical searches*.
     # For path Grp_3_D->Grp_2_B->Grp_1_A, there is no search for Grp_1_A because it is common
     # node with previous path Grp_3_C->Grp_2_A->Grp_1_A
 
+
+- graph [type 2](#Type 2): For example N leafs being added to *Grp_3_C*
+
+
+    # N times the search for path Grp_3_C->Grp_2_A->Grp_1_A
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_C)..(attr_N=Grp_3_C))" attrs=ALL
+    
+    # N times the search for path Grp_3_C->Grp_2_A->Grp_1_A
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_2_A)..(attr_N=Grp_2_A))" attrs=ALL
+    
+    # N times the search for path Grp_3_C->Grp_2_A->Grp_1_A
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_1_A)..(attr_N=Grp_1_A))" attrs=ALL
+    
+    # N times the search for path Grp_3_C->Grp_2_B->Grp_1_A
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_Grp_2_B)..(attr_N=Grp_2_B))" attrs=ALL
+    
+    # For path Grp_3_C->Grp_2_B->Grp_1_A, there is no search for Grp_1_A because it is common
+    # node with previous path Grp_3_C->Grp_2_A->Grp_1_A
+
+
 If we can prevent *identical searches*, doing a single search of the *intermediates nodes*, the cost would be reduced:
 
 - graph [type 1](#Type 1)
@@ -252,9 +286,15 @@ If we can prevent *identical searches*, doing a single search of the *intermedia
 - graph [type 2](#Type 2): 
     - from lookup+fixup = (2+N) + (7*N) = 8*N + 2
     - to lookup+fixup = (2+N) + ((2*N) + D) = 3*N + D + 2
-- graph [type 3](#Type 3): **6** - 5 for the path to the root + 1 for *plg*
+- graph [type 3](#Type 3):
+    - from lookup+fixup = (2+N) + (6*N) = 7*N + 2
+    - to lookup+fixup = (2+N) + ((2*N) + D) = 3*N + D + 2
 
-In conclusion: **The cost of adding a leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
+In conclusion: 
+
+- The cost increases in proportion of the number of paths *updated group --> root*
+- The cost increases in proportion of the *depth* (number of nodes on the path) of the *updated group --> root*
+- When adding serveral leafs to a group, the *fixup* (more specifically the *look up*) can be improved. In fact, all (intermediate nodes*, on the path updated group back to root, are searched several times. **The cost fluctuate depending of number of paths and the number of nodes on those paths**. If we can prevent reduces those *identical searches* to a single one per intermediate node, it can roughtly reduce by more than **50%** this cost. 
 
 #### Adding group(s) as member of a group
 
