@@ -143,7 +143,7 @@ The look down costs (with those [searches](#look down search)) in that case are
 - graph [type 2](#Type 2): idem
 - graph [type 3](#Type 3): idem
 
-The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches(#update)). 
+The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches](#update)). 
 
 - graph [type 1](#Type 1): **5** - 4 for the path to the root + 1 for *plg*
 - graph [type 2](#Type 2): **7** - 6 for the path to the root + 1 for *plg*
@@ -166,7 +166,7 @@ The look down costs (with those [searches](#look down search)) in that case are
 - graph [type 2](#Type 2): idem
 - graph [type 3](#Type 3): idem
 
-The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches(#update)). 
+The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches](#update)). 
 
 - graph [type 1](#Type 1): **2** - 1 for the path(s) (0) of impacted leaf to the root  + 1 for *plg*
 - graph [type 2](#Type 2): **5** - 4 for the path(s) (1) of impacted leaf to the root  + 1 for *plg*
@@ -193,7 +193,7 @@ The look down costs (with those [searches](#look down search)) in that case are
 - graph [type 2](#Type 2): idem
 - graph [type 3](#Type 3): idem
 
-The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches(#update)). 
+The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches](#update)). 
 
 - graph [type 1](#Type 1): **7** - 5 for the path(s) (leaf_A, Leaf_B) of impacted leaf to the root  + 1 for *plg*
 - graph [type 2](#Type 2): **10** - 8 for the paths of impacted leafs to the root + 2 for *plg*
@@ -216,7 +216,7 @@ The look down costs (with those [searches](#look down search)) in that case are
 - graph [type 2](#Type 2): idem
 - graph [type 3](#Type 3): idem
 
-The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches(#update)). 
+The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches](#update)). 
 
 - graph [type 1](#Type 1): **5 \* N** - 4\*N for the paths to the root + N for *plg*
 - graph [type 2](#Type 2): **7 \* N** - 6\*N for the 2 paths to the root + N for *plg*
@@ -224,30 +224,9 @@ The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) 
 
 The fixup cost contains several *identical searches*. 
 
-    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn>))" attrs=ALL
-    attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
-    They are supposed to be indexed in equality
-    
-    For example with a path: Grp_1_A -> Grp_2_A -> Grp_3_C -> Leaf_N. The access log will contain
-    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<Leaf_N>)..(attr_N=<Leaf_N>))" attrs=ALL
-    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<Grp_3_C>)..(attr_N=<Grp_3_C>))" attrs=ALL
-    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<Grp_2_A>)..(attr_N=<Grp_2_A>))" attrs=ALL
-    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<Grp_1_A>)..(attr_N=<Grp_1_A>))" attrs=ALL
-
-
 - graph [type 1](#Type 1): For example adding the N leafs to *Grp_3_A*, the update of the group triggers
 
-
-    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn>))" attrs=ALL
-    attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
-    They are supposed to be indexed in equality
-    
-    For example with a path: Grp_1_A -> Grp_2_A -> Grp_3_C -> Leaf_N. The access log will contain
-    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<Leaf_N>)..(attr_N=<Leaf_N>))" attrs=ALL
-    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<Grp_3_C>)..(attr_N=<Grp_3_C>))" attrs=ALL
-    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<Grp_2_A>)..(attr_N=<Grp_2_A>))" attrs=ALL
-    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<Grp_1_A>)..(attr_N=<Grp_1_A>))" attrs=ALL
-
+ 
 
     # N times the search
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_A)..(attr_N=Grp_3_A))" attrs=ALL
@@ -258,9 +237,11 @@ The fixup cost contains several *identical searches*.
     # N times the search
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_1_A)..(attr_N=Grp_1_A))" attrs=ALL
 
+ 
 
 - graph [type 2](#Type 2): For example N leafs being member of *Grp_3_C*, add them to *Grp_3_D*
 
+ 
 
     # N times the search for path Grp_3_C->Grp_2_A->Grp_1_A
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_C)..(attr_N=Grp_3_C))" attrs=ALL
@@ -280,9 +261,11 @@ The fixup cost contains several *identical searches*.
     # For path Grp_3_D->Grp_2_B->Grp_1_A, there is no search for Grp_1_A because it is common
     # node with previous path Grp_3_C->Grp_2_A->Grp_1_A
 
+ 
 
 - graph [type 3](#Type 3): For example N leafs being added to *Grp_3_C*
 
+ 
 
     # N times the search for path Grp_3_C->Grp_2_A->Grp_1_A
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_C)..(attr_N=Grp_3_C))" attrs=ALL
@@ -299,6 +282,7 @@ The fixup cost contains several *identical searches*.
     # For path Grp_3_C->Grp_2_B->Grp_1_A, there is no search for Grp_1_A because it is common
     # node with previous path Grp_3_C->Grp_2_A->Grp_1_A
 
+ 
 
 If we can prevent *identical searches*, doing a single search of the *intermediates nodes*, the cost would be reduced:
 
@@ -316,7 +300,7 @@ In conclusion:
 
 - The cost increases in proportion of the number of paths *updated group --> root*
 - The cost increases in proportion of the *depth* (number of nodes on the path) of the *updated group --> root*
-- When adding several leafs to a group, the *fixup* (more specifically the *look up*) can be improved. In fact, all (intermediate nodes*, on the path updated group back to root, are searched several times. **The cost fluctuate depending of number of paths and the number of nodes on those paths**. If we can prevent reduces those *identical searches* to a single one per intermediate node, it can roughtly reduce by more than **50%** this cost. 
+- When adding several leafs to a group, the *fixup* (more specifically the *look up*) can be improved. In fact, all (intermediate nodes*, on the path updated group back to root, are searched several times. **The cost fluctuate depending of number of paths and the number of nodes on those paths**. If we can prevent reduces those * identical searches * to a single one per intermediate node, it can roughtly reduce by more than **50%** this cost. 
 
 #### Delete N leafs as members of a group
 
@@ -328,7 +312,7 @@ The look down costs (with those [searches](#look down search)) in that case are
 - graph [type 2](#Type 2): idem
 - graph [type 3](#Type 3): idem
 
-The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches(#update)). 
+The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches](#update)). 
 
 - graph [type 1](#Type 1): **2 \* N** - N the leaf belonging to no other group look up stops at the leaf level + N for *plg*
 - graph [type 2](#Type 2): **5 \* N** - 4\*N for the remaining path to the root + N for *plg*
@@ -338,6 +322,7 @@ The fixup cost contains several *identical searches*.
 
 - graph [type 1](#Type 1): no identical searches during fixup
 - graph [type 2](#Type 2): For example, assuming N leafs members of Grp_3_A and Grp_3_C, if those N leafs are suppressed from Grp_3_A
+ 
 
     # N times the search for path Grp_3_A->Grp_2_A->Grp_1_A
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_C)..(attr_N=Grp_3_C))" attrs=ALL
@@ -349,9 +334,11 @@ The fixup cost contains several *identical searches*.
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_1_A)..(attr_N=Grp_1_A))" attrs=ALL
     
 
+ 
+
 - graph [type 3](#Type 3): no identical searches during fixup
 
-If we can prevent *identical searches*, doing a single search of the *intermediates nodes*, the cost would be reduced:
+If we can prevent * identical searches *, doing a single search of the *intermediates nodes*, the cost would be reduced:
 
 - graph [type 1](#Type 1): no gain - remains 3*N + 2
 - graph [type 2](#Type 2): 
@@ -363,7 +350,7 @@ In conclusion:
 
 - The cost increases in proportion of the number of paths *updated group --> root*
 - The cost increases in proportion of the *depth* (number of nodes on the path) of the *updated group --> root*
-- *duplicated searches* (or *indentical searches*) during a MOD_DEL, occur if the removed leaf has *several parents*
+- *duplicated searches* (or *identical searches*) during a MOD_DEL, occur if the removed leaf has *several parents*
 - When leafs, **with multiple parents**, are deleted from a group, the *fixup* (more specifically the *look up*) can be improved. In fact, all (*intermediate nodes*), on the path updated group back to root, are searched several times. **The cost fluctuate depending of number of paths and the number of nodes on those paths**. If we can prevent reduces those *identical searches* to a single one per intermediate node, it can roughtly reduce by more than **50%** this cost. 
 
 #### Adding group(s) as member of a group
