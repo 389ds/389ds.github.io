@@ -225,8 +225,8 @@ The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) 
 The fixup cost contains several *identical searches*. 
 
 - graph [type 1](#Type 1): For example adding the N leafs to *Grp_3_A*, the update of the group triggers
+- the following duplicated/identical searches
 
- 
 
     # N times the search
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_A)..(attr_N=Grp_3_A))" attrs=ALL
