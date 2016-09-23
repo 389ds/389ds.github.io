@@ -71,6 +71,7 @@ The figure above shows a membership graph. At the bottom of the graph **leafs** 
 - A **leaf** is a node that is not a parent
 - Let **D** the depth of a given node in the membership graph
 - Let **P_down(x)** the number of paths from root to nodes at the depth x (i.e. **paths with length = x**)
+- Let **N_up(x)** the number of different nodes existing on all possible paths from node *x* to root.
 - Let **L** the maximum lenght of all paths from root to nodes and leafs (i.e. Max Depth + 1)
 - Let **plg** is the number of plugins that triggers one internal search when a entry is updated (e.g. mep). It is >= 1.
 
@@ -219,11 +220,11 @@ The look down costs (with those [searches](#look down search)) in that case are
 The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches](#update)). 
 
 - graph [type 1](#Type 1): **5 \* N** - 4\*N for the paths to the root + N for *plg*
-Note: the factor *4* is related to the depth (leaf-->root). If depth would have been *100*, then the cost would have been * 100 \* N *
+    - Note: the factor *4* is related to the N_up(x). If N_up(x) would have been *100* for each added member, then the cost would have been * 100 \* N *
 - graph [type 2](#Type 2): **7 \* N** - 6\*N for the 2 paths to the root + N for *plg*
-Note: the factor *6* is related to the depth (leaf-->root). If depth would have been *100*, then the cost would have been * 100 \* N *
+    - Note: the factor *6* is related to the N_up(x). If N_up(x) would have been *100* for each added member, then the cost would have been * 100 \* N *
 - graph [type 3](#Type 3): **6 \* N** - 5\*N for the 2 paths to the root + N for *plg*
-Note: the factor *5* is related to the depth (leaf-->root). If depth would have been *100*, then the cost would have been * 100 \* N *
+    - Note: the factor *5* is related to the N_up(x). If N_up(x) would have been *100* for each added member, then the cost would have been * 100 \* N *
 
 The fixup cost contains several *identical searches*. 
 
@@ -317,7 +318,7 @@ The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) 
 
 - graph [type 1](#Type 1): **2 \* N** - N the leaf belonging to no other group look up stops at the leaf level + N for *plg*
 - graph [type 2](#Type 2): **5 \* N** - 4\*N for the remaining path to the root + N for *plg*.
-Note: the factor *4* is related to the depth (leaf-->root). If depth would have been *100*, then the cost would have been * 100 \* N *
+    - Note: the factor *4* is related to the N_up(x). If N_up(x) would have been *100* for each added member, then the cost would have been * 100 \* N *
 - graph [type 3](#Type 3): **2 \* N** - N the leaf belonging to no other group look up stops at the leaf level + N for *plg*
 
 The fixup cost contains several *identical searches*. 
@@ -365,7 +366,7 @@ The operation on the updated group is
 
 The look down costs (with those [searches](#look down search)) in that case are
 
-- graph [type 1](#Type 1): **2 + 2\*N** - [2](#look down MOD search) for the updated group and [2*N](#look down search) for each leaf removed/added (no clear reason why it triggers *2* identical searches for the updated group)
+- graph [type 1](#Type 1): **2 + 2\*N** - [2](#look down MOD search) for the updated group and [2\*N](#look down search) for each leaf removed/added (no clear reason why it triggers *2* identical searches for the updated group)
 - graph [type 2](#Type 2): idem
 - graph [type 3](#Type 3): idem
 
@@ -376,22 +377,28 @@ The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) 
     - Let leaf_B1-leaf_BN being member of any group
     - For the N removed leafs: 2 \* N : N the leaf belonging to no other group look up stops at the leaf level + N for *plg*
     - For the N added leafs: 5 \* N : 4 \* N for the path to the root + N for the *plg*
-Note: the factor *4* is related to the depth (leaf-->root). If depth would have been *100*, then the cost would have been * 100 \* N *
+    - Note: the factor *4* is related to the N_up(x). If N_up(x) would have been *100* for each added member, then the cost would have been * 100 \* N *
 - graph [type 2](#Type 2): **12 \* N**
     - Target group is Grp_3_D
-    - Let leaf_A1-leaf_AN being member of Grp_3_C and also the targeted group
+    - Let leaf_A1-leaf_AN being member of Grp_3_C and also the targeted group Grp_3_D
     - Let leaf_B1-leaf_BN being member of Grp_3_C
     - For the N removed leafs: 5 \* N : 4 \* N for the remaining path to the root + N for *plg*
     - For the N added leafs: 7 \* N : 6 \* N for the 2 paths to the root + N for the *plg*
-    - Note: the factor *4* and *6* are related to the depth (leaf-->root). If depth would have been *100*, then the cost would have been * 100 \* N *
-- graph [type 3](#Type 3): **2 \* N** - N the leaf belonging to no other group look up stops at the leaf level + N for *plg*
+    - Note: the factor *4* and *6* are related to the N_up(x). If N_up(x) would have been *100*, then the cost would have been * 100 \* N *. 
+- graph [type 3](#Type 3): **8 \* N**
+    - Target group is Grp_3_C
+    - Let leaf_A1-leaf_AN being member of Grp_3_C
+    - Let leaf_B1-leaf_BN being member of any group
+    - For the N removed leafs: 2 \* N : N the leaf belonging to no other group look up stops at the leaf level + N for *plg*
+    - For the N added leafs: 6 \* N : 5 \* N for the 2 paths to the root + N for the *plg*
+    - Note: the factor *5* is related to the N_up(x). If N_up(x) would have been *100* for each added member, then the cost would have been * 100 \* N *
 
 
 The fixup cost contains several *identical searches*. 
 
 - graph [type 1](#Type 1):
 
-For example, assuming N leafs are new member of Grp_3_A
+For example, assuming N leafs are new members of Grp_3_A
 
     # N times the search for path Grp_3_A->Grp_2_A->Grp_1_A
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_A)..(attr_N=Grp_3_A))" attrs=ALL
@@ -405,7 +412,7 @@ For example, assuming N leafs are new member of Grp_3_A
 
 - graph [type 2](#Type 2):
 
-For example, assuming N leafs members of Grp_3_A and Grp_3_C, if those N leafs are suppressed from Grp_3_A
+For example, assuming N leafs remain member of Grp_3_C and N leafs are new members of Grp_3_C and Grp_3_D
 
     # For N removed leafs that are now only member of Grp_3_C
        # N times the search for the path Grp_3_C->Grp_2_A->Grp_1_A
@@ -438,7 +445,45 @@ For example, assuming N leafs members of Grp_3_A and Grp_3_C, if those N leafs a
 
 
 
-- graph [type 3](#Type 3): no identical searches during fixup
+- graph [type 3](#Type 3):
+
+For example assuming N leafs are new member of Grp_3_C
+
+       # N times the search for the path Grp_3_C->Grp_2_A->Grp_1_A
+       SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_C)..(attr_N=Grp_3_C))" attrs=ALL
+    
+    # Grp_3_C being member of Grp_2_A, it evaluates this path
+       # N times the search for the path Grp_3_C->Grp_2_A->Grp_1_A
+       SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_2_A)..(attr_N=Grp_2_A))" attrs=ALL
+    
+       # N times the search for the path Grp_3_C->Grp_2_A->Grp_1_A
+       SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_1_A)..(attr_N=Grp_1_A))" attrs=ALL
+    
+    # Grp_3_C is also member of Grp_2_B, it evaluates this path
+       # N times the search for the path Grp_3_C->Grp_2_B->Grp_1_A
+       SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_2_B)..(attr_N=Grp_2_B))" attrs=ALL
+    
+    # For path Grp_3_C->Grp_2_B->Grp_1_A, there is no search for Grp_1_A because it is common
+    # node with previous path Grp_3_C->Grp_2_A->Grp_1_A
+
+If we can prevent * identical searches *, doing a single search of the *intermediates nodes*, the cost would be reduced:
+
+- graph [type 1](#Type 1):
+    - from lookup+fixup = (2+2\*N) + 7\*N = 9N + 2
+    - to lookup+ fixup = (2+2\*N) + (4\*N + D) = 6N + D + 2
+- graph [type 2](#Type 2): 
+    - from lookup+fixup = (2+2\*N) + 12\*N = 14N + 2
+    - to lookup+fixup = (2+2\*N) + (4\*N + D) = 6N + D + 2
+- graph [type 3](#Type 3):
+    - from lookup+fixup = (2+2\*N) + 8\*N = 10N + 2
+    - to lookup+fixup = (2+2\*N) + (4\*N + D) = 6N + D + 2
+
+In conclusion: 
+
+- The cost increases in proportion of the number of paths *updated group --> root*
+- The cost increases in proportion of the *depth* (number of nodes on the path) of the *updated group --> root*
+- The MOD_REPLACE algo is efficient as it recomputes the membership only on the impacted members (added or removed)
+- When MOD_REPLACE add several leafs to a group, the *fixup* (more specifically the *look up*) can be improved. In fact, all (intermediate nodes*, on all the paths updated group back to root, are searched several times. **The cost fluctuate depending of number of paths and the number of nodes on those paths**. If we can reduces those * identical searches * to a single one per intermediate node, it can roughtly reduce by more than **50%** this cost. 
 
 #### Adding group(s) as member of a group
 
