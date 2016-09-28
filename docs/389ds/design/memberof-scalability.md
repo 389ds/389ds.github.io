@@ -489,10 +489,10 @@ In conclusion:
 
 The use case is 
 
-- *modify\(group_DN, [\(ldap.MOD_ADD, 'member', [group_1_dn,...,grou_N_dn\)]\)*
-- each group (group_1.. groupN) has M leafs
+- *modify\(group_DN, [\(ldap.MOD_ADD, 'member', [group_1_dn,...,grou_N_dn\)]\), adding **N** groups*
+- each group (group_1.. groupN) has **M** leafs
 - graph [type 1](#Type 1): Assuming Grp_2_A has only one member (Grp_3_A), the use case is to add Grp_3_B and Grp_3_C to Grp_2_A
-- graph [type 2](#Type 2): idem
+- graph [type 2](#Type 2): Assuming Grp_2_B has only one member (Grp_3_F), the groups Grp_3_C, Grp_3_D and Grp_3_E have the same **M** leafs, the use case is to add Grp_3_D and Grp_3_E as member of Grp_2_B.
 - graph [type 3](#Type 3): idem
 
 The look down costs (with those [searches](#look down search)) in that case are
@@ -504,50 +504,68 @@ The look down costs (with those [searches](#look down search)) in that case are
 The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches](#update)). 
 
 - graph [type 1](#Type 1): **5NM + 4N** 
-    - Let leaf_A1-leaf_AN being member of the targeted group
-    - Let leaf_B1-leaf_BN being member of any group
-    - For the N*M leafs: N \* **5** \* M : 4 \*M the path of the leaf to the root+ N for *plg*
+    - For the N\*M leafs: N \* **5** \* M : 4 \*NM the path of the leaf to the root+ NM for *plg*
     - For the N groups: **4** \* N : 3 \* N for the path of the group to the root + N for the *plg*
-    - Note: the factor *3*(N) and *4*(M) are related to the N_up(x). If N_up(x) would have been *100* for each added member, then the cost would have been *100\* N or M*
-- graph [type 2](#Type 2): **12 \* N**
+    - Note: the factor *3*(N) and *4*(M) are related to the N_up(x). If N_up(x) would have been *100* for each added member, then the cost for each member would have been *100*
+- graph [type 2](#Type 2):  **8\*NM + 4\*N**
+    - For the N\*M leafs: N \* **8** \* M : 7 \*NM the paths of the leaf to the root+ NM for *plg*. They are paths Leaf->Grp_3_C->Grp_2_A, Grp_1_A, then Grp_3_D->Grp_2_B, then Grp_3_F.
+    - For the N groups: **4** \* N : 3 \* N for the path of the group to the root + N for the *plg*
 - graph [type 3](#Type 3): **8 \* N**
 
 The fixup cost contains several *identical searches*:
 
-- graph [type 1](#Type 1):
+- graph [type 1](#Type 1): **2 \* (M + 1) \* (N + 1)**
 
-For example, assuming N=2 leafs are new members of Grp_3_A
+For example, adding Grp_3_B and Grp_3_C as members of Grp_2_A then N=2.
 
     # M+1 times the search for path Grp_3_B->Grp_2_A->Grp_1_A
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_B)..(attr_N=Grp_3_B))" attrs=ALL
     
-    # 2(M+1) times the search for path Grp_3_C->Grp_2_A->Grp_1_A
+    # N(M+1) times the search for path Grp_3_C->Grp_2_A->Grp_1_A
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_2_A)..(attr_N=Grp_2_A))" attrs=ALL
     
     # M+1 times the search for path Grp_3_C->Grp_2_A->Grp_1_A
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_C)..(attr_N=Grp_3_C))" attrs=ALL
     
-    # 2(M+1) times the search for path Grp_3_C->Grp_2_A->Grp_1_A
+    # N(M+1) times the search for path Grp_3_C->Grp_2_A->Grp_1_A
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_1_A)..(attr_N=Grp_1_A))" attrs=ALL
     
 
-- graph [type 2](#Type 2):
+- graph [type 2](#Type 2): **6\*NM + 2N + 2**
 
-For example, assuming N leafs remain member of Grp_3_C and N leafs are new members of Grp_3_C and Grp_3_D
+For example, Grp_3_D and Grp_3_E have the exact same set of leafs than Grp_3_C, Grp_2_B has one member that is Grp_3_F. use case is add Grp_3_D and Grp_3_E as members of Grp_2_B (so N=2)
 
+    # N*M times the search for path Grp_3_C->Grp_2_A->Grp_1_A
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_C)..(attr_N=Grp_3_C))" attrs=ALL
+    
+    # N*M times the search for path Grp_3_C->Grp_2_A->Grp_1_A
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_2_A)..(attr_N=Grp_2_A))" attrs=ALL
+    
+    # N*M + 1 times the search for path Grp_3_D->Grp_2_B->Grp_1_A
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_D)..(attr_N=Grp_3_D))" attrs=ALL
+    
+    # N*M + 1 times the search for path Grp_3_E->Grp_2_B->Grp_1_A
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_E)..(attr_N=Grp_3_E))" attrs=ALL
+    
+    # N(M + 1) times the search for path Grp_3_E->Grp_2_B->Grp_1_A
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_2_B)..(attr_N=Grp_2_B))" attrs=ALL
+    
+    # N(M + 1) times the search for path Grp_3_E->Grp_2_B->Grp_1_A
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_1_A)..(attr_N=Grp_1_A))" attrs=ALL
+    
 - graph [type 3](#Type 3):
 
 If we can prevent *identical searches* , doing a single search of the *intermediates nodes*, the cost would be reduced:
 
 - graph [type 1](#Type 1):
-    - from lookup+fixup = (2+NM+N) + (5NM + 4N) = 6NM +5N +2
-    - to lookup+ fixup = 
+    - from lookup+fixup = (2+NM+N) + (5NM + 4N) = 6NM +5N +2 (for example, N=2, M=100 ==> *1212* searches)
+    - to lookup+ fixup = (2+NM+N) + (3NM + 2N - 2M - 2 + D) = 4NM + 3N - 2M  + D (for example N=2, M=100, D=4 ==> *610* searches)
 - graph [type 2](#Type 2): 
-    - from lookup+fixup = (2+2\*N) + 12\*N = 14N + 2
-    - to lookup+fixup = (2+2\*N) + (4\*N + D) = 6N + D + 2
+    - from lookup+fixup = (2+NM+N) + (8NM + 4N) = 9NM + 5N + 2 (for example, N=2, M=100 ==> *1812* searches)
+    - to lookup+fixup = (2+NM+N) + (2NM + 2N -2 + 2D) = 3NM + 3N + 2D (for example, N=2, M=100, D=4 ==> *614* searches)
 - graph [type 3](#Type 3):
-    - from lookup+fixup = (2+2\*N) + 8\*N = 10N + 2
-    - to lookup+fixup = (2+2\*N) + (4\*N + D) = 6N + D + 2
+    - from lookup+fixup = 
+    - to lookup+fixup = 
 
 
 #### Adding group(s) as member of a group
