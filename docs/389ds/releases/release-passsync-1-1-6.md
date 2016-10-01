@@ -6,7 +6,7 @@ title: "Releases/PassSync-1.1.6"
 
 The 389 Directory Server team is proud to announce 389-Passsync version 1.1.6.
 
-389 Directory Password Synchronization packages are available from the [download page](http://directory.fedoraproject.org/wiki/Download#Windows_Password_Synchronization). We encourage you to test and provide feedback to the 389-users mailing list: <https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org>.
+389 Directory Password Synchronization packages are available from the [download page](../download.html). We encourage you to test and provide feedback to the 389-users mailing list: <https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org>.
 
 The new packages and versions are:
 
