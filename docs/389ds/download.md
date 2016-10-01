@@ -75,7 +75,7 @@ See [Install Guide](legacy/install-guide.html) for more information.
 
 NOTE: If you are upgrading from version **1.1.0**, the upgrade will create a new 389 Password Sync folder and copy your files from the old Fedora Password Sync folder. It will not remove the old Fedora Password Sync folder. You can do that manually once you have verified that the new 389 version is working correctly.
 
-NOTE: If you are upgrading from a version older than **1.1.0**, install the new version first, then remove the old version from the Add/Remove Programs list in the Control Panel. The new version is **1.1.6**.
+NOTE: If you are upgrading from a version older than **1.1.0**, install the new version first, then remove the old version from the Add/Remove Programs list in the Control Panel. The new version is **1.1.7**.
 
 This is an Active Directory "plug-in" that intercepts password changes made to AD Domain Controllers and sends the clear text password over an encrypted connection (SSL/TLS) to 389 DS to keep the passwords in sync. It works in conjunction with the Windows Sync feature of 389. You must install this on every Domain Controller.
 
@@ -85,12 +85,12 @@ Tested with Windows 2008 and 2012 Server 32-bit and 64-bit.
 |--------|----|-------|-----|---------|
 |Windows 2003/2008 32-bit|[389-PassSync-1.1.5-i386.msi]({{ site.baseurl }}/binaries/389-PassSync-1.1.5-i386.msi)|4b79578e3d4bf9cdaada70e5c1212290a4e5ce3c|yes|no [*]|
 |Windows 2003/2008 64-bit|[389-PassSync-1.1.5-x86\_64.msi]({{ site.baseurl }}/binaries/389-PassSync-1.1.5-x86_64.msi)|ddac9705d305b14fa217af2f264d3529d3f3edb8|yes|no [*]|
-|Windows 2003/2008/2012 32-bit|[389-PassSync-1.1.6-i386.msi]({{ site.baseurl }}/binaries/389-PassSync-1.1.6-i386.msi)|089725b89d3918f855234a906fce5648b2cde710|no [**]|yes|
-|Windows 2003/2008/2012 64-bit|[389-PassSync-1.1.6-x86\_64.msi]({{ site.baseurl }}/binaries/389-PassSync-1.1.6-x86_64.msi)|c26fca7cd60733cc07ab675852a82e7b87ae4b86|no [**]|yes|
+|Windows 2003/2008/2012 32-bit|[389-PassSync-1.1.7-i386.msi]({{ site.baseurl }}/binaries/389-PassSync-1.1.7-i386.msi)|780e403335a74ea58dc097fb60fd481c8457e105|no [**]|yes|
+|Windows 2003/2008/2012 64-bit|[389-PassSync-1.1.7-x86\_64.msi]({{ site.baseurl }}/binaries/389-PassSync-1.1.7-x86_64.msi)|0d598943ecdd17eeca2d66174de18d9885951699|no [**]|yes|
 
 [*] 389-PassSync-1.1.5 has no support TLSv1.1 and newer.
 
-[**] 389-PassSync-1.1.6 disables SSLv3 by default.
+[**] 389-PassSync-1.1.7 disables SSLv3 by default.
 
 ### Windows Console
 
