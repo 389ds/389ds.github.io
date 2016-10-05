@@ -134,7 +134,7 @@ The update of the impacted node is done with an internal MOD. It can be caught b
 
     SRCH base="<impacted_node_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
 
-#### Adding ONE leaf as member of a group
+#### MODIFY Adding ONE leaf as member of a group
 
 The use case is a *modify\(group_DN, [\(ldap.MOD_ADD, 'member', leaf_DN\)]\)*. 
 
@@ -157,7 +157,7 @@ In conclusion:
 - **The cost of adding a leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
 
 
-#### Deleting ONE leaf from being member of a group
+#### MODIFY Deleting ONE leaf from being member of a group
 
 The use case is a *modify\(group_DN, [\(ldap.MOD_DELETE, 'member', leaf_DN\)]\)*. 
 
@@ -179,7 +179,7 @@ In conclusion:
 - The cost increases in proportion of the *depth* (number of nodes on the path) of the *updated group --> root*
 - **The cost of deleting a leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
 
-#### Replacing ONE leaf with an other leaf as member of a group
+#### MODIFY Replacing ONE leaf with an other leaf as member of a group
 
 The operation on the updated group is
 
@@ -207,7 +207,7 @@ In conclusion:
 - The MOD_REPLACE recomputes/update the *memberof* only on the impacted nodes. If a node was member and remains member, its *memberof* is not recomputed/updated.
 - **The cost of replacing one leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
 
-#### Adding N leafs as members of a group
+#### MODIFY Adding N leafs as members of a group
 
 The use case is a *modify\(group_DN, [\(ldap.MOD_ADD, 'member', [leaf_1_dn,...,leaf_N_dn\)]\)*. 
 
@@ -304,7 +304,7 @@ In conclusion:
 - The cost increases in proportion of the *depth* (number of nodes on the path) of the *updated group --> root*
 - When adding several leafs to a group, the *fixup* (more specifically the *look up*) can be improved. In fact, all (intermediate nodes*, on the path updated group back to root, are searched several times. **The cost fluctuate depending of number of paths and the number of nodes on those paths**. If we can prevent reduces those * identical searches * to a single one per intermediate node, it can roughtly reduce by more than **50%** this cost. 
 
-#### Delete N leafs as members of a group
+#### MODIFY Delete N leafs as members of a group
 
 The use case is a *modify\(group_DN, [\(ldap.MOD_DELETE, 'member', [leaf_1_dn,...,leaf_N_dn\)]\)*. 
 
@@ -356,7 +356,7 @@ In conclusion:
 - *duplicated searches* (or *identical searches*) during a MOD_DEL, occur if the removed leaf has *several parents*
 - When leafs, **with multiple parents**, are deleted from a group, the *fixup* (more specifically the *look up*) can be improved. In fact, all (*intermediate nodes*), on the path updated group back to root, are searched several times. **The cost fluctuate depending of number of paths and the number of nodes on those paths**. If we can prevent reduces those *identical searches* to a single one per intermediate node, it can roughtly reduce by more than **50%** this cost. 
 
-#### Replace N leafs with N others as members of a group
+#### MODIFY Replace N leafs with N others as members of a group
 
 The operation on the updated group is
 
@@ -485,7 +485,7 @@ In conclusion:
 - The MOD_REPLACE algo is efficient as it recomputes the membership only on the impacted members (added or removed)
 - When MOD_REPLACE add several leafs to a group, the *fixup* (more specifically the *look up*) can be improved. In fact, all (intermediate nodes*, on all the paths updated group back to root, are searched several times. **The cost fluctuate depending of number of paths and the number of nodes on those paths**. If we can reduces those * identical searches * to a single one per intermediate node, it can roughtly reduce by more than **50%** this cost. 
 
-#### Adding N groups to a group
+#### MODIFY Adding N groups to a group
 
 The use case is 
 
@@ -586,7 +586,7 @@ If we can prevent *identical searches* , doing a single search of the *intermedi
     - from look_down+fixup = (2+NM+N) + (6NM +5N) = 7NM + 6N +2 (for example, N=2, M=100 ==> *1414* searches)
     - to look_down+fixup = (2+NM+N) + (NM + 2N + D - 2) = 2NM + 3N + D (for example, N=2, M=100, D=4 ==> *410* searches) 
 
-#### Deleting N groups to a group
+#### MODIFY Deleting N groups to a group
 
 The use case is 
 
@@ -677,7 +677,7 @@ If we can prevent *identical searches* , doing a single search of the *intermedi
     - from look_down+fixup = (2+NM+N) + (5NM +4N) = 6NM + 5N +2 (for example, N=2, M=100 ==> *1212* searches)
     - to look_down+fixup = (2+NM+N) + (3NM + 2N - 2M + 2D - 2) = 4NM + 3N - 2M + 2D (for example, N=2, M=100, D=4 ==> *614* searches) 
 
-#### Replace N groups with N others as members of a group
+#### MODIFY Replace N groups with N others as members of a group
 
 The use case is 
 
@@ -824,7 +824,126 @@ If we can prevent *identical searches* , doing a single search of the *intermedi
     - from look_down+fixup = (2+2NM+2N) + (9NM + 7N) = 11NM + 9N + 2 (for example, N=2, M=100 ==> *2220* searches)
     - to look_down+fixup = (2+2NM+2N) + (6NM + 4N -4M -4 + 2D) = 8NM + 6N -4M + 2D - 2(for example, N=2, M=100, D=4 ==> *1218* searches)
 
-#### Adding group(s) as member of a group
+#### ADD group entry
+
+The use case is 
+
+- *ADD \(group_DN, [\('member', [E_1,...,E_N\)]\), add a group with N members
+- *look down* will find all members (direct/indirect) of the newly added group. *fixup* will add '*memberof: group_DN*' to of them.
+- The use case would be similar for [type 1](#Type 1), [type 2](#Type 2) or [type 3](#Type 3): ADD a Grp_0_A that has only one member *Grp_1_A*.
+
+The look down costs (with those [searches](#look down search)) in that case are
+
+- graph [type 1](#Type 1): [6M + 9](#look down search) for each direct/indirect member of the added group
+- graph [type 2](#Type 2): [6M + 9](#look down search) for each direct/indirect member of the added group. Assuming there are M common lears and all of them are between Grp_3_C and Grp_3_D.
+- graph [type 3](#Type 3): [7M + 10](#look down search) for each direct/indirect member of the added group. Grp_3_C (and its leafs) are searched twice, one on the path Grp_0_A->Grp_1_A->Grp_2_A->Grp_3_C and a second time on the path Grp_Grp_0_A->Grp_1_A->Grp_2_B->Grp_3_C. So this is like Grp_2_A has 3 Grp_3_* groups and Grp_2_B has 4 Grp_3_*, that explains the factor *7M* although there is *6M* leafs.
+
+The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) and *update*([searches](#update)). 
+
+- graph [type 1](#Type 1): **36*M + 41** 
+    - For the 6*M leafs: **6 \* 6M** : 5 for the path of each leaf to root + 1 for *plg*
+    - For the 6 Grp_3\* intermediates nodes : **5 \* 6**:  4 for the Grp_3\* path to the root + 1 for the *plg*
+    - For the 2 Grp_2\* intermediates nodes : **4 \* 2**:  3 for the Grp_2\* path to the root + 1 for the *plg*
+    - For Grp_1_A intermediate node : **3 \* 1**:  2 for the path Grp_1_A->Grp_0_A + 1 for the *plg*
+    - Note: the factors *2..5* are related to the N_up(x). If N_up(x) would have been *100* for each added member, then the cost would have been *100\*N*
+- graph [type 2](#Type 2): **40M + 41**
+    - For the 6*M leafs: *40M*
+        - from Grp_3_C: *8M* : 7 for the paths of each leaf to root + 1 for *plg*.
+        - from Grp_3_D: *8M* : idem
+        - from Grp_3_[ABEF]: *4 \* 6 \* M* : 5 for the path of each leaf to root + 1 for *plg*
+    - For the 6 Grp_3_*: **6 \* 5**:  4 for the Grp_3\* path to the root + 1 for the *plg*
+    - For the 2 Grp_2\* intermediates nodes : **4 \* 2**:  3 for the Grp_2\* path to the root + 1 for the *plg*
+    - For Grp_1_A intermediate node : **3 \* 1**:  2 for the path Grp_1_A->Grp_0_A + 1 for the *plg*
+- graph [type 3](#Type 3): **44M + 48**
+    - For the 6*M leafs: *44M*
+        - from Grp_3_C: *2 \* 7 \* M* : 6 for the paths of each leaf to root + 1 for *plg*. Leafs unders Grp_3_C are *look down* twice and so *fixup* twice*. They also have two paths to root
+        - from 5 others Grp_3_*: *5 \* 6 \* M* : 5 for the path of each leaf to root + 1 for *plg*
+    - For Grp_3_C:  *2 * 5*:  4 for the Grp_3_C path to the root + 1 for the *plg*. Grp_3_C is *look down* twice and so *fixup* twice*.
+    - For 5 others other Grp_3_*: **5 \* 5**:  4 for the Grp_3\* path to the root + 1 for the *plg*
+    - For the 2 Grp_2\* intermediates nodes : **4 \* 2**:  3 for the Grp_2\* path to the root + 1 for the *plg*
+    - For Grp_1_A intermediate node : **3 \* 1**:  2 for the path Grp_1_A->Grp_0_A + 1 for the *plg*
+    - For Grp_0_A intermediate node : **2**:  1 for the path Grp_0_A to root + 1 for the *plg*
+    - Note: the factors *2..5* are related to the N_up(x). If N_up(x) would have been *100* for each added member, then the cost would have been *100\*N*
+
+The fixup cost contains several *identical searches*:
+
+- graph [type 1](#Type 1): **24(M+1) + 7** 
+
+For example, ADD a Grp_0_A group that has only one member *Grp_1_A*
+
+    # 6*(M+1) times the search for path Grp_3*-->Grp_0_A, for the intermediates node <x> in A,B,C,D,E,F
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_<x>)..(attr_N=Grp_3_<x>))" attrs=ALL
+    
+    # 2*3*(M+1) + 1 times the search for path Grp_2_*-->Grp_0_A, for the intermediates node <x> in A,B
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_C)..(attr_N=Grp_3_C))" attrs=ALL
+    
+    # 1*6*(M+1) + 3 times the search for path Grp_1_A-->Grp_0_A
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_1_A)..(attr_N=Grp_1_A))" attrs=ALL
+    
+    # 1*6*(M+1) + 3 times the search for path Grp_0_A->Grp_0_A
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_0_A)..(attr_N=Grp_0_A))" attrs=ALL
+    
+- graph [type 2](#Type 2): **28M + 32**
+    
+For example, ADD a Grp_0_A group that has only one member *Grp_1_A*
+
+    # 2 * (2M + 1) time the search for Grp_3_C->root and Grp_3_D->root
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_C)..(attr_N=Grp_3_C))" attrs=ALL
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_D)..(attr_N=Grp_3_D))" attrs=ALL
+    
+    # 4 * (M + 1) time the search for Grp_3_<x>->root with <x> in [ABEF]
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_<x>)..(attr_N=Grp_3_<x>))" attrs=ALL
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_<x>)..(attr_N=Grp_3_<x>))" attrs=ALL
+
+    # 2 * (4M + 4) time the search for Grp_2_A->root and Grp_2_B->root
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_2_A)..(attr_N=Grp_2_A))" attrs=ALL
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_2_B)..(attr_N=Grp_2_B))" attrs=ALL
+    
+    # 2 * (6M + 9) time the search for Grp_1_A->root and Grp_0_B->root
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_1_A)..(attr_N=Grp_1_A))" attrs=ALL
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_0_B)..(attr_N=Grp_0_B))" attrs=ALL
+
+
+- graph [type 3](#Type 3): **30(M+1) + 8**
+
+For example, ADD a Grp_0_A group that has only one member *Grp_1_A*
+
+    # 2*(M+1) times the search for path Grp_3_C->root
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_C)..(attr_N=Grp_3_C))" attrs=ALL
+    
+    # 5*(M+1) times the search for path Grp_3_* (except Grp_3_C) ->root
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_3_*)..(attr_N=Grp_3_*))" attrs=ALL
+    
+    # 4*(M+1) + 1 times the search for path Grp_2_A ->root
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_2_A)..(attr_N=Grp_2_A))" attrs=ALL
+    
+    # 5*(M+1) + 1 times the search for path Grp_2_B ->root
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_2_B)..(attr_N=Grp_2_B))" attrs=ALL
+    
+    # 7*(M+1) + 3 times the search for path Grp_1_A ->root
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_1_A)..(attr_N=Grp_1_A))" attrs=ALL
+    
+    # 7*(M+1) + 3 times the search for path Grp_0_A ->root
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=Grp_0_A)..(attr_N=Grp_0_A))" attrs=ALL
+    
+
+    
+If we can prevent *identical searches* , doing a single search of the *intermediates nodes*, the cost would be reduced by:
+
+- graph [type 1](#Type 1): **60%**
+    - from look_down+fixup = (6M + 9) + (36M + 41) = 42M + 50 (for example, M=100 ==> *4250* searches)
+24(M+1) + 7
+    - to look_down+ fixup = (6M + 9) + (12M + 31 + 2D) = 18M + 40 + 2D (for example M=100, D=4 ==> *1848* searches)
+- graph [type 2](#Type 2): **60%**
+    - from look_down+fixup = (6M + 9) + (40M + 41) = 46M + 50 (for example, M=100 ==> *4651* searches)
+    - to look_down+ fixup = (6M + 9) + (12M + 9 + 2D) = 18M + 18 + 2D (for example M=100, D=4 ==> *1826* searches)
+- graph [type 3](#Type 3): **60%**
+    - from look_down+fixup = (7M + 10) + (44M + 48) = 51M +58 (for example, M=100 ==> *5158* searches)
+30(M+1) + 8
+    - to look_down+fixup = (7M + 10) + (14M + 10 + 2D) = 21M +20 +2D (for example M=100, D=4 ==> *2128* searches)
+
+
+#### to save
 
 ##### Look down the impacted members
 
@@ -869,14 +988,15 @@ Making sure that the *list of impacted nodes* does not contain duplicate ([48861
 
 #### Conclusion
 
-For all kind of operations on groups (ADD, DEL, MOD), wether it update value is a leaf or a group,
+For all kind of operations on groups (ADD, DEL, MOD_ADD, MOD_DEL, MOD_REPLACE), wether the updated value(s) is/are leaf(s) or group(s),
 
 - look down cost is the less significant part (~20%)of the overall cost
 
-The %age of the *look down* over the total cost is
+The pourcentage of the *look down* cost over the total cost is
 
-|        | ADD | DEL | MOD_ADD | MOD_DEL | MOD_REPLACE |
-|--------| --- | --- | ------- | ------- | ----------- |
+|        | ADD | DEL |         MODIFY                |||
+|        | ADD | DEL |   ADD   | DELETE  |   REPLACE   |
+|--------|:---:|:---:|:-------:|:-------:|:-----------:|
 | Leafs  | %   | %   | 12-15%  | 15-30%  |   15-18%    |
 | Groups | %   | %   | 10-15%  | 12-25%  |   13-20%    |
 
@@ -886,9 +1006,10 @@ The %age of the *look down* over the total cost is
     - It does base search with simple filter and requesting only interesting attributes
 - The *lookup* step of the *fixup* is major part (~80%) of the overall cost
     - It triggers several identical searches to retrieve *parents of the intermediates nodes*
-    - Those searches are subtree searches with complex *OR* filter
+    - Those searches are subtree searches 
+    - filter costly, it is a *OR* with equality components on attributes with many normalized (DN) values
     - Search retrieves *all* attribute that it is useless because only parent DN are used
-    - Retrieved entries are *group*, so attribute values can be huge
+    - Retrieved entries are *group*, so attribute values can be large
     - Retrieved entries are *group*, so it can be expensive to reload them if for some reason the group get out of the entry cache
 - It is possible to improve *lookup*. So that **only one search** is done for all **intermediate nodes** between impacted leafs back to root.
 
@@ -896,8 +1017,8 @@ Such improvement would reduce *lookup* cost by
 
 |        | ADD | DEL | MOD_ADD | MOD_DEL | MOD_REPLACE |
 |--------| --- | --- | ------- | ------- | ----------- |
-| Leafs  | %   | %   | 33-50%  | 0-33%  |   20-50%    |
-| Groups | %   | %   | 50-70%  | 25-50%  |  40-60%    |
+| Leafs  | -   | %   | 33-50%  | 0-33%  |   20-50%    |
+| Groups | 60% | %   | 50-70%  | 25-50%  |  40-60%    |
 
 
 
