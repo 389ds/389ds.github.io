@@ -10,7 +10,7 @@ Source tarballs are available for download at:
 
 [Download Nunc Stans Source]({{ site.baseurl }}/binaries/nunc-stans-0.2.0.tar.xz)
 
-sha256sum nunc-stans-0.2.0.tar.xz 975bf4f4df4a6592bafd957e7af09472f04aca70a4bd23cec1217dcd8c7a5864
+sha256sum nunc-stans-0.2.0.tar.xz 0000632541531efe3b420137a4b071ce1281be848f562f8a1b79fba53d4ef883
 
 Highlights in 0.2.0
 

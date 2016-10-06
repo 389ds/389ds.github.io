@@ -34,7 +34,7 @@ The source code was produced by first doing a git clone to get the repository, t
 |Source tarball|git module|git tag|More Info|SHA256SUM|
 |--------------|----------|-------|---------|-------|
 |[389-ds-base-1.3.6-git](https://git.fedorahosted.org/git/389/ds.git)|ds.git|389-ds-base-1.3.6-git|[Building](building.html)|N/A, checkout from git|
-|[nunc-stans-0.2.0.tar.xz]({{ site.baseurl }}/binaries/nunc-stans-0.2.0.tar.xz)|nunc-stans.git|0.2.0|[Building](building-nunc-stans.html)|975bf4f4df4a6592bafd957e7af09472f04aca70a4bd23cec1217dcd8c7a5864|
+|[nunc-stans-0.2.0.tar.xz]({{ site.baseurl }}/binaries/nunc-stans-0.2.0.tar.xz)|nunc-stans.git|0.2.0|[Building](building-nunc-stans.html)|0000632541531efe3b420137a4b071ce1281be848f562f8a1b79fba53d4ef883|
 |[svrcore-4.1.2.tar.bz2]({{ site.baseurl }}/binaries/svrcore-4.1.2.tar.bz2)|svrcore.git|4.1.2|[Building](building-svrcore.html)|67e51a868c8dc2ddbf5661ecb0a07dea7721a9ed99f6261cedd3351bfc4cd023|
 
 
