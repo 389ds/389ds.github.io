@@ -187,14 +187,11 @@ NSS does not currently use autotools, so there is no configure - just use make (
 
 #### SVRCORE
 
-Use the latest stable version from [<{{ site.baseurl }}/binaries/>]({{ site.baseurl }}/binaries/) or the 389 ds team git repository.
+Please see the svrcore [build instructions](development/building-svrcore.html)
 
-Then build it using configure and make. You will need to tell it where to find NSPR and NSS if it cannot find them automatically:
+#### Nunc-Stans
 
-    ./configure [--with-nspr=/path] [--with-nss=/path]
-    make [USE_64=1]
-
-Use USE\_64=1 to build the 64-bit version.
+Please see the nunc-stans [buind instructions](development/building-svrcore.html)
 
 #### LDAPSDK
 

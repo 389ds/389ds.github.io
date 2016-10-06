@@ -7,6 +7,11 @@ title: "News Archive"
 
 {% include toc.md %} 
 
+#### 389 Windows Console 1.1.15 is now available (Feburary 22, 2016)
+
+-   389 Windows Console 1.1.15
+-   [See the Release Notes](docs/389ds/releases/release-windows-console-1-1-15.html) for more information
+
 #### 389 Directory Server 1.3.5.1 is now available for testing (March 28, 2016)
 
 -   389-ds-base 1.3.5.1 for Fedora 24 and Rawhide.

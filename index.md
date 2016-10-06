@@ -75,6 +75,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
 <!-- Try to keep this list under 10 releases  -->
 
+- 2016-10-06: Released **Nunc Stans [0.2.0](docs/389ds/releases/nunc-stans-0.2.0.html)**
 - 2016-08-11: Released **389 Directory Server [1.3.4.14](docs/389ds/releases/release-1-3-4-14.html)**
 - 2016-08-11: Released **389 Directory Server [1.3.5.13](docs/389ds/releases/release-1-3-5-13.html)**
 - 2016-08-02: Released **python-lib389 [1.0.2](docs/389ds/releases/release-lib389-1-0-2.html)**
@@ -84,7 +85,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - 2016-05-09: Released **Svrcore [4.1.2](docs/389ds/releases/release-svrcore-4-1-2.html)**
 - 2016-03-23: Updated **389 Directory Password Synchronization [1.1.6](docs/389ds/releases/release-passsync-1-1-6.html)**
 - 2016-03-23: Released **389 Directory Server [1.3.4.9](docs/389ds/releases/release-1-3-4-9.html)**
-- 2016-02-22: Released **389 Windows Console [1.1.15](docs/389ds/releases/release-windows-console-1-1-15.html)**
 
     For older news, see the [News Archive](docs/389ds/releases/news-archive.html)
 
