@@ -75,7 +75,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
 <!-- Try to keep this list under 10 releases  -->
 
-- 2016-10-06: Released **Nunc Stans [0.2.0](docs/389ds/releases/nunc-stans-0.2.0.html)**
+- 2016-10-06: Released **Nunc Stans [0.2.0](docs/389ds/releases/release-nunc-stans-0.2.0.html)**
 - 2016-08-11: Released **389 Directory Server [1.3.4.14](docs/389ds/releases/release-1-3-4-14.html)**
 - 2016-08-11: Released **389 Directory Server [1.3.5.13](docs/389ds/releases/release-1-3-5-13.html)**
 - 2016-08-02: Released **python-lib389 [1.0.2](docs/389ds/releases/release-lib389-1-0-2.html)**

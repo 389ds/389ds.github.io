@@ -187,11 +187,11 @@ NSS does not currently use autotools, so there is no configure - just use make (
 
 #### SVRCORE
 
-Please see the svrcore [build instructions](development/building-svrcore.html)
+Please see the svrcore [build instructions](building-svrcore.html)
 
 #### Nunc-Stans
 
-Please see the nunc-stans [buind instructions](development/building-svrcore.html)
+Please see the nunc-stans [buind instructions](building-svrcore.html)
 
 #### LDAPSDK
 
