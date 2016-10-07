@@ -2,12 +2,10 @@
 title: "MemberOf Scalability"
 ---
 
-# MemberOf Scalability
------------------------------------------
 
 {% include toc.md %}
 
-## Overview
+# Overview
 
 Membership attributes in LDAP entries create a directed graph of entries that can contain cycles. Having cycles in membership makes almost no sense and add complexity. This is the reason why memberof plugin assums that the directed graph is actually an **acyclic directed graph** and enforce during evaluation of the graph that there is no cycle.
 
@@ -29,15 +27,15 @@ Those two actions are necessary but can be expensive in terms of:
 
 This document presents some possible improvements.
 
-## Use Case
+# Use Case
 
 An administrator needs to provision many entries (leafs or groups) within a fixed period of time(typically over a week end). He can use CLI or batch commands or even importing entries from a ldif file. The rate of the provisioning is critical to be sure to complete the task in an acceptable delay.
 
 
 
-## Design
+# Design
 
-### Simplifications
+## Simplifications
 
 The graph of membership can be very complex. For simplification, this document will evaluate the impact of membership update on limited types of graphs with same leaf depth:
 
@@ -53,7 +51,9 @@ The graph of membership can be very complex. For simplification, this document w
 
 ![Membership graph](../../../images/memberof_type_multiple_path_to_node.png "multiple paths to groups")
 
-### Cost of memberof update
+## Cost of memberof update
+
+<a name="Cost of memberof update">
 
 Tests done with [Nested groups provisioning](http://www.freeipa.org/page/V4/Performance_Improvements#Memberof_plugin) shown that **by far the main contributor** was the [Number](http://www.freeipa.org/page/V4/Performance_Improvements#Small_DB_.2810K_entries.29) of internal searches. For example with a total of 10000 leafs creating 400 nested groups tiggered **14M internal searches**.
 
@@ -75,14 +75,14 @@ The figure above shows a membership graph. At the bottom of the graph **leafs** 
 - Let **L** the maximum lenght of all paths from root to nodes and leafs (i.e. Max Depth + 1)
 - Let **update plg** is the number of plugins that triggers one internal search when a entry is *updated* (e.g. mep). It is >= 1.
 
-#### Algorythm
+### Algorythm
 
 When a group is updated, to add/del/moddn members, Memberof plugin updates the attribute **memberof** of all entries that are impacted by the update of the group. The graphs is **look down** from the target group down to the leafs to retrieve the impacted nodes. During the **look down**, each impacted node is *fixup*. The fixup of node consist of
 
 - **look up** that retrieves all the groups that have a direct or inderect membership relation with that node (i.e. all the groups that the node is member of)
 - **update** of the *memberof* values of the node.
 
-##### look down
+#### look down
 
 
 The **look down** uses the following search for **all impacted nodes \(leaf or intermediate node\)**
@@ -107,7 +107,7 @@ During a updating (MOD) the members of a group, the **look down** contains searc
 
 
 
-##### look up
+#### look up
 
 When a group is updated, for each **impacted members** it computes all the groups containing (direct or indirect) the impacted members. So for each given impacted member (leafs and intermediate nodes) it does an internal search for each node from the impacted member up to the root.
 <a name="look up search">
@@ -127,14 +127,14 @@ Assuming that attr_1,..,attr_N are indexed in equality, the searches are fast bu
 - the more there are membership attributes the more expensive it is
 - the search will retrieves *groups* that are possibly big entries. It is more expensive if the *groups* are not in the **entry cache**
 
-##### update
+#### update
 
 The update of the impacted node is done with an internal MOD. It can be caught by other plugins that can search the entry. For example **mep** plugin triggers for each update:
 <a name="update">
 
     SRCH base="<impacted_node_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
 
-#### Methodology
+### Methodology
 
 A typical update (update a Level Grp_3 group, to add 5 leafs) produces the those set of operations
 
@@ -246,7 +246,7 @@ In each of the following paragraphs, we will present various kind of updates (MO
 - evaluation of the *identical* searches
 - expected benefit if we can avoid *identical* searches
 
-#### MODIFY Adding ONE leaf as member of a group
+### MODIFY Adding ONE leaf as member of a group
 
 The use case is a *modify\(group_DN, [\(ldap.MOD_ADD, 'member', leaf_DN\)]\)*. 
 
@@ -281,7 +281,7 @@ In conclusion:
 - **The cost of adding a leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
 
 
-#### MODIFY Deleting ONE leaf from being member of a group
+### MODIFY Deleting ONE leaf from being member of a group
 
 The use case is a *modify\(group_DN, [\(ldap.MOD_DELETE, 'member', leaf_DN\)]\)*. 
 
@@ -315,7 +315,7 @@ In conclusion:
 - The cost increases in proportion of the *depth* (number of nodes on the path) of the *updated group --> root*
 - **The cost of deleting a leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
 
-#### MODIFY Replacing ONE leaf with an other leaf as member of a group
+### MODIFY Replacing ONE leaf with an other leaf as member of a group
 
 The operation on the updated group is
 
@@ -355,7 +355,7 @@ In conclusion:
 - The MOD_REPLACE recomputes/update the *memberof* only on the impacted nodes. If a node was member and remains member, its *memberof* is not recomputed/updated.
 - **The cost of replacing one leaf is inexpensive and almost optimal**. *look up* cost can fluctuate depending of number of paths and how the paths can share some parts. It could be improved in the *look down* phase where there are two identical internal searches of the updated group entry.
 
-#### MODIFY Adding N leafs as members of a group
+### MODIFY Adding N leafs as members of a group
 
 The use case is a *modify\(group_DN, [\(ldap.MOD_ADD, 'member', [leaf_1_dn,...,leaf_N_dn\)]\)*. 
 
@@ -452,7 +452,7 @@ In conclusion:
 - The cost increases in proportion of the *depth* (number of nodes on the path) of the *updated group --> root*
 - When adding several leafs to a group, the *fixup* (more specifically the *look up*) can be improved. In fact, all (intermediate nodes*, on the path updated group back to root, are searched several times. **The cost fluctuate depending of number of paths and the number of nodes on those paths**. If we can prevent reduces those * identical searches * to a single one per intermediate node, it can roughtly reduce by more than **50%** this cost. 
 
-#### MODIFY Delete N leafs as members of a group
+### MODIFY Delete N leafs as members of a group
 
 The use case is a *modify\(group_DN, [\(ldap.MOD_DELETE, 'member', [leaf_1_dn,...,leaf_N_dn\)]\)*. 
 
@@ -504,7 +504,7 @@ In conclusion:
 - *duplicated searches* (or *identical searches*) during a MOD_DEL, occur if the removed leaf has *several parents*
 - When leafs, **with multiple parents**, are deleted from a group, the *fixup* (more specifically the *look up*) can be improved. In fact, all (*intermediate nodes*), on the path updated group back to root, are searched several times. **The cost fluctuate depending of number of paths and the number of nodes on those paths**. If we can prevent reduces those *identical searches* to a single one per intermediate node, it can roughtly reduce by more than **50%** this cost. 
 
-#### MODIFY Replace N leafs with N others as members of a group
+### MODIFY Replace N leafs with N others as members of a group
 
 The operation on the updated group is
 
@@ -633,7 +633,7 @@ In conclusion:
 - The MOD_REPLACE algo is efficient as it recomputes the membership only on the impacted members (added or removed)
 - When MOD_REPLACE add several leafs to a group, the *fixup* (more specifically the *look up*) can be improved. In fact, all (intermediate nodes*, on all the paths updated group back to root, are searched several times. **The cost fluctuate depending of number of paths and the number of nodes on those paths**. If we can reduces those * identical searches * to a single one per intermediate node, it can roughtly reduce by more than **50%** this cost. 
 
-#### MODIFY Adding N groups to a group
+### MODIFY Adding N groups to a group
 
 The use case is 
 
@@ -734,7 +734,7 @@ If we can prevent *identical searches* , doing a single search of the *intermedi
     - from look_down+fixup = (2+NM+N) + (6NM +5N) = 7NM + 6N +2 (for example, N=2, M=100 ==> *1414* searches)
     - to look_down+fixup = (2+NM+N) + (NM + 2N + D - 2) = 2NM + 3N + D (for example, N=2, M=100, D=4 ==> *410* searches) 
 
-#### MODIFY Deleting N groups to a group
+### MODIFY Deleting N groups to a group
 
 The use case is 
 
@@ -825,7 +825,7 @@ If we can prevent *identical searches* , doing a single search of the *intermedi
     - from look_down+fixup = (2+NM+N) + (5NM +4N) = 6NM + 5N +2 (for example, N=2, M=100 ==> *1212* searches)
     - to look_down+fixup = (2+NM+N) + (3NM + 2N - 2M + 2D - 2) = 4NM + 3N - 2M + 2D (for example, N=2, M=100, D=4 ==> *614* searches) 
 
-#### MODIFY Replace N groups with N others as members of a group
+### MODIFY Replace N groups with N others as members of a group
 
 The use case is 
 
@@ -972,7 +972,7 @@ If we can prevent *identical searches* , doing a single search of the *intermedi
     - from look_down+fixup = (2+2NM+2N) + (9NM + 7N) = 11NM + 9N + 2 (for example, N=2, M=100 ==> *2220* searches)
     - to look_down+fixup = (2+2NM+2N) + (6NM + 4N -4M -4 + 2D) = 8NM + 6N -4M + 2D - 2(for example, N=2, M=100, D=4 ==> *1218* searches)
 
-#### ADD group entry
+### ADD group entry
 
 The use case is 
 
@@ -1091,7 +1091,7 @@ If we can prevent *identical searches* , doing a single search of the *intermedi
 30(M+1) + 8
     - to look_down+fixup = (7M + 10) + (14M + 10 + 2D) = 21M +20 +2D (for example M=100, D=4 ==> *2128* searches)
 
-#### DEL group entry
+### DEL group entry
 
 The use case is 
 
@@ -1169,53 +1169,11 @@ If we can prevent *identical searches* , doing a single search of the *intermedi
 
 
 
-#### to save
 
-##### Look down the impacted members
-
-
-The cost of the look down is C = sum from l=1 to l=L of P_down(l). For example with group of Depth 3 having **100** leafs:
-
-- graph [type 1](#Type 1): **608** - 600 paths root to each leafs + 8 paths root to intermediate nodes
-- graph [type 2](#Type 2): **608** - 600 paths root to each leafs + 8 paths root to intermediate nodes
-- graph [type 3](#Type 3): **709** - the 101 additional paths are due to Grp_3_C (and its leafs) that is found twice
-
-The search is quite efficient (it retrieves/process all the membership attributes in a single search) but it can be improved:
-
-An entry (group or leaf) can appear several times in the graph as there can be multiple paths from root to the entry. Each time it is found it triggers several int_search. The possibilities for finding entries several times are:
-
-- several paths conduct to the same entry (groups or leaf)
-- being listed in several membership attribute
-
-The ticket [48861](https://fedorahosted.org/389/ticket/48861) was opened for this improvement. It should make sure that an entry is **search once** during *Look down* (preferably) or **Fixed once** during *Look up*. This improvement has no impact if entries appears only once in the graph.
-
-The expected cost of look down with a fix for [48861](https://fedorahosted.org/389/ticket/48861), for example with groups of Depth 3 having **100** leafs
-
-- graph [type 1](#Type 1): **C = 608**: all the paths root to nodes/leafs are uniq
-- graph [type 2](#Type 2): **C - 2 = 606**: there are two paths root to LeafN and root to LeafM
-- graph [type 3](#Type 3): **C - 101 = 608**: there are two paths root to Grp_3_C and root to Grp_3_C s leafs
-
-##### Look up group membership of impacted members
-
-
-
-It is quite difficult to express in mathematical way the cost of the look down. Here is an attempt to describe it:
-Having a *list of impacted nodes* (possibly containing *duplicates*), for each of them it goes thru **all** paths from this node back to the root. Starting from a given node, the lenght of the paths can be different although they end to the root. It triggers an internal search for each nodes on each paths. So the cost (for a given node) is the sum of the number of nodes on all paths from *given node to root*. A mechanism to detect cycle can reduce the cost so that common parts of the paths are accounted once. In addition to that cost, there are for each fixup node **plg** internal searches. 
-or example with groups of Depth 3 having **100** leafs:
-
-
-- graph [type 1](#Type 1): **3030** internal searches
-- graph [type 2](#Type 2): **3036** internal searches
-- graph [type 3](#Type 3): **3736** internal searches
-
-
-Making sure that the *list of impacted nodes* does not contain duplicate ([48861](https://fedorahosted.org/389/ticket/48861)) has a significant impact during *look up*. In [type 3 graph](#Type 3), each member of Grp_3_C have 2 paths back to root so the look up cost of each of them will be divided by 2. **The more paths it exists to a node, the more expensive is the node**.
-
-
-#### Conclusions
+### Conclusions
 For all kind of operations on groups (ADD, DEL, MOD_ADD, MOD_DEL, MOD_REPLACE), wether the updated value(s) is/are leaf(s) or group(s),
 
-##### Look down
+#### Look down
 
 Look down cost is the less significant part (~20%)of the overall cost, the pourcentage of the *look down* cost over the total cost is
 
@@ -1228,29 +1186,34 @@ Look down cost is the less significant part (~20%)of the overall cost, the pourc
 |        |     |        |         |         |             |
 
 Look down cost is optimal regarding the following criteria:
-- For MOD_REPLACE, *look down* impacted nodes only in the set of replaced (add/remove) nodes.
+
+- For MOD_REPLACE, *look down* of impacted nodes only consider the set of replaced (add/remove) nodes.
 - It does  **a single base search with simple filter and requesting only memberships attributes**
 
 Look down cost is not optimal when it exists *several paths from the target node to some impacted nodes*. For examples adding Grp_0_A with [type 2](#Type 2), *look down* will find two times *Leaf_N* or with [type 3](#Type 3) it will find two times all leafs of Grp_3_C. If we imagine a graph like [type 3](#Type 3) with children of Grp_3_C being a full sub-graph all the nodes of that sub-graph will be find twice.
 
 The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent this duplicated effort of identifying several times the same impacted nodes. Currently, all found impacted nodes are *fixup*. So indentifying several times the same impacted nodes triggers several *fixup* of the same nodes with a useless high cost (fixup is more expensive than *look down*).
 
-##### Fixup
+#### Fixup
 
-*fixup* of a given node is split in *look up* of the impacted node and its *update*. The *update* cost is related to *plugins* SRCHs.  In [cost diagnostic](#Cost of memberof update), *update* cost was 1 SRCH per impacted entry. The *look up* cost is the major cost and it fluctuates depending on the graph itself. In short **the more paths to the root and the longer are those paths, the more expensive it is**. A approximate range is that **look up is accounting for ~80% of the total cost**.
+*fixup* of a given node is split in *look up* of the impacted nodes and their *update*. The *update* cost is related to *plugins* [SRCHs](#update).  In [cost diagnostic](#Cost of memberof update), *update* cost was 1 SRCH per impacted entry. The *look up* cost is the major cost and it fluctuates depending on the graph itself. In short **the more paths to the root and the longer are those paths, the more expensive it is**. A approximate range is that **look up is accounting for ~80% of the total cost**.
 
 
 The *lookup* is not optimal:
-    - It triggers several identical searches to retrieve *parents of the intermediates nodes*
-    - Those searches are subtree searches 
-    - filter is costly, it is a *OR* with equality components on attributes with many normalized (DN) values
-    - Search retrieves *all* attribute that it is useless because only parent DN are used
-    - Retrieved entries are *group*, so attribute values can be large
-    - Retrieved entries are *group*, so it can be expensive to reload them if for some reason the group get out of the entry cache
+
+- It triggers several identical searches to retrieve *parents of the intermediates nodes*
+- Those searches are subtree searches 
+- filter is costly
+    - it is a *OR* with equality components
+    - attributes are normalized (DN) values, so when entries are retrieved the evaluation of the filter is not that rapid
+- Search retrieves *all* attribute that it is useless because only parent DN are used
+- Retrieved entries are *groups*, so the number of attribute values can be large
+- Retrieved entries are *groups*, so it can be expensive to reload them if for some reason the group get out of the entry cache
 - It is possible to improve *lookup*. So that **only one search** is done for all **intermediate nodes** between impacted leafs back to root.
 
-If can reduce, in *lookup* the number of SRCH to the strictly necessary ones, it would reduce *lookup* by:
+Reducing the in *lookup* cost to the the number of SRCHs strictly necessary, it would reduce *lookup* by:
 
+|--------|-----|--------|-------------------------------|||
 |        |     |        |         MODIFY                |||
 |        |     |        |:-----------------------------:|||
 |        | ADD |   DEL  |   ADD   | DELETE  |   REPLACE   |
@@ -1262,14 +1225,14 @@ If can reduce, in *lookup* the number of SRCH to the strictly necessary ones, it
 
 
 
-### Improvements
+## Improvements
 
-#### Prevent duplicate 48861
+### Prevent duplicate 48861
 
 When updating membership attributes of a group, a direct or indirect impacted member of that group can be found several times. The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent that an impacted member is listed/fixed several times. A first [patch](https://fedorahosted.org/389/attachment/ticket/48861/0001-Ticket-48861-Memberof-plugins-can-update-several-tim.patch), caching in an hash table the already fixed nodes, divides by **2** the duration of provisioning of a graph. The graph being creates with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py)
 
 
-#### caching of groups 48856
+### caching of groups 48856
 
 The vast majority of the [Look up](#Look up group membership of impacted members) internal searches is to retrieve the *parent groups of a given node*.
 
@@ -1312,20 +1275,20 @@ Let *group_n* be the ancestor (parent or grand parent...) of **N** descendants, 
 
 
 
-#### keeping groups in the entry cache
+### keeping groups in the entry cache
 
 During internal searches, the candidates entries are retrieved from the entry cache and possibly reloaded from Database in case of cache miss. The lookup of [parent groups](#caching of groups) requires to find/reload many groups into the entry cache. A typical group is a large entry with quite few attributes having a large set of values. Loading those entries is expensive (read of several overflow pages, allocation/sort of many member values).
 
 When an entry gets to the lru it can get out of the entry cache. It would be benefical to delay a bit a group to get out of the entry cache. For example, we can imagine a counter on each entry in the lru. If the next entry to free, from the lru, is a group then increment the counter and move the entry to the begining of the lru. When the counter reaches a limit (e.g. 3) then the group is freed. When an entry goes entry_cache->lru, the counter is reset.
 
-## Implementation
+# Implementation
 
-### 48856 caching of groups parents
+## 48856 caching of groups parents
 
 
 The proposal for the ticket [48856](https://fedorahosted.org/389/ticket/48856) is to create a cache that will keep, for a given group, the parents (direct) DNs  of that group. Parents of non-group entries (leafs) are **not** stored in that cache.
 
-#### cache life cycle
+### cache life cycle
 
 The cache is hash table using the normalized group DN as a key.
 
@@ -1336,12 +1299,12 @@ The cache is emptied at the entrance of the plugin callback and also at the exit
 plugin callbacks are *post-betxn* so the membership attributes are not updated during its execution and cached values remain valid.
 
 
-#### limitation
+### limitation
 
 The cache is not valid for remote backend or sub suffixes, because membership can be updated while processing the graph.
 (TBC)
 
-#### cache memory footprint
+### cache memory footprint
 
 The cache will contains DNs. Those DNs are parents of a entry that is a group.
 
@@ -1363,7 +1326,7 @@ For example, assuming that each DN is 100 bytes long,
     - Grp_2* contain 2 values (2 times Grp_1_A): 200 bytes
     - Grp_1 contains 0 value : 0 bytes
 
-#### cache priming
+### cache priming
 
 The cache starts empty (see cache [life cycle](#cache life cycle)). Once *lookdown* has built the list of impacted nodes (leaf or groups), for each of them it will trigger a *look up* calling *memberof_fix_memberof_callback*.
 
@@ -1378,11 +1341,11 @@ If it is not a group or in the cache, do an internal search to retrieve them and
 Finally for each parents in the array of *parents of the member_DN*, call *memberof_get_groups_callback*.
 This function needs to change a bit, because it will no longer be a search callback but a normal function taking the parent_DN in place of the Slapi_entry. This does not change the algo because this function is currently only using the entry DN.
 
-#### scoping
+### scoping
 
 If the node is in excluded scopes or not in scopes (if scopes are defined), *memberof_call_foreach_dn* should not lookup the cache or do an internal search to retrieve its parent.
 
-## Major Configuration options
+# Major Configuration options
 
 # Replication
 
