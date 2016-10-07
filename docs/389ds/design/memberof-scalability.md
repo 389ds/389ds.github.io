@@ -232,13 +232,13 @@ A typical update (update a Level Grp_3 group, to add 5 leafs) produces the those
         # end of the MOD add of the 5 leafs user_601..user_605
     conn=2 op=5 RESULT err=0 tag=103 nentries=0 etime=0
 
-In this example, we can see [look down searches](#look down search), as well as [look up searches](#look up search) and [update search](#update). Also we can that some [look up searches](#look up search) are **identical** searches. For example, the following search appears **5 times** in the example.
+In this example, we can see [look down searches](#look down search), as well as [look up searches](#look up search) and [update search](#update). Also we can see that some [look up searches](#look up search) are **identical** searches. For example, the following search appears **5 times** in the example (one time for each added leaf).
 
         conn=Internal  SRCH base="dc=example,dc=com" scope=2 
             filter="(|(member=cn=group_30,ou=Groups,dc=example,dc=com)
                     (uniquemember=cn=group_30,ou=Groups,dc=example,dc=com))" attrs=ALL
 
-In each of the following paragraphs, we will present various kind of updates (MOD add/del/replace leafs/groups, ADD groups and DEL groups). For each kind of update the evaluation will follow the temple:
+In each of the following paragraphs, we will present various kind of updates (MOD add/del/replace leafs/groups, ADD groups and DEL groups). For each kind of update the evaluation will follow the template:
 
 - description of the use case
 - evaluation of the cost of *look down*
@@ -262,6 +262,18 @@ The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) 
 - graph [type 2](#Type 2): **7** - 6 for the path to the root + 1 for *update plg*
 - graph [type 3](#Type 3): **6** - 5 for the path to the root + 1 for *update plg*
 
+The fixup cost contains **NO** *identical search*. 
+
+- graph [type 1](#Type 1): no identical search
+- graph [type 2](#Type 2): no identical search
+- graph [type 3](#Type 3): no identical search
+
+Without *identical searches*, there is no optimization to do for that use case:
+
+- graph [type 1](#Type 1): no improvement
+- graph [type 2](#Type 2): no improvement
+- graph [type 3](#Type 3): no improvement
+
 In conclusion: 
 
 - The cost increases in proportion of the number of paths *updated group --> root*
@@ -284,6 +296,18 @@ The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) 
 - graph [type 1](#Type 1): **2** - 1 for the path(s) (0) of impacted leaf to the root  + 1 for *update plg*
 - graph [type 2](#Type 2): **5** - 4 for the path(s) (1) of impacted leaf to the root  + 1 for *update plg*
 - graph [type 3](#Type 3): **2** - 1 for the path(s) (0) of impacted leaf to the root of the leaf + 1 for *update plg*
+
+The fixup cost contains **NO** *identical search*. 
+
+- graph [type 1](#Type 1): no identical search
+- graph [type 2](#Type 2): no identical search
+- graph [type 3](#Type 3): no identical search
+
+Without *identical searches*, there is no optimization to do for that use case:
+
+- graph [type 1](#Type 1): no improvement
+- graph [type 2](#Type 2): no improvement
+- graph [type 3](#Type 3): no improvement
 
 In conclusion:
 
@@ -311,6 +335,18 @@ The fixup cost is the cumul of costs of *look up* ([searches](#look up search)) 
 - graph [type 1](#Type 1): **7** - 5 for the path(s) (leaf_A, Leaf_B) of impacted leaf to the root  + 1 for *update plg*
 - graph [type 2](#Type 2): **10** - 8 for the paths of impacted leafs to the root + 2 for *update plg*
 - graph [type 3](#Type 3): **8** - 6 for the paths of impacted leafs to the root  + 2 for *update plg*
+
+The fixup cost contains **NO** *identical search*. 
+
+- graph [type 1](#Type 1): no identical search
+- graph [type 2](#Type 2): no identical search
+- graph [type 3](#Type 3): no identical search
+
+Without *identical searches*, there is no optimization to do for that use case:
+
+- graph [type 1](#Type 1): no improvement
+- graph [type 2](#Type 2): no improvement
+- graph [type 3](#Type 3): no improvement
 
 In conclusion: 
 
