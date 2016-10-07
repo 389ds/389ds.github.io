@@ -134,6 +134,118 @@ The update of the impacted node is done with an internal MOD. It can be caught b
 
     SRCH base="<impacted_node_dn>" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
 
+#### Methodology
+
+A typical update (update a Level Grp_3 group, to add 5 leafs) produces the those set of operations
+
+
+        #
+        # Modify cn=group_0 to add 5 leafs user_601...user_605
+        #
+    conn=2 op=5 MOD dn="cn=group_0,ou=groups,dc=example,dc=com"
+        conn=Internal  SRCH base="cn=group_0,ou=groups,dc=example,dc=com" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+        conn=Internal  SRCH base="cn=group_0,ou=groups,dc=example,dc=com" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+    
+        # Look down for user_601
+        conn=Internal  SRCH base="uid=user_601,ou=people,dc=example,dc=com" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs="member uniquemember"
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+    
+        # fixup: Look up for user_601
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=uid=user_601,ou=People,dc=example,dc=com)
+                    (uniquemember=uid=user_601,ou=People,dc=example,dc=com))" attrs=ALL
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=cn=group_0,ou=Groups,dc=example,dc=com)
+                    (uniquemember=cn=group_0,ou=Groups,dc=example,dc=com))" attrs=ALL
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=cn=group_10,ou=Groups,dc=example,dc=com)
+                    (uniquemember=cn=group_10,ou=Groups,dc=example,dc=com))" attrs=ALL
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=cn=group_30,ou=Groups,dc=example,dc=com)
+                    (uniquemember=cn=group_30,ou=Groups,dc=example,dc=com))" attrs=ALL
+        conn=Internal  RESULT err=0 tag=48 nentries=0 etime=0
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+    
+        # Fixup: update for user_601
+        conn=Internal  MOD dn="uid=user_601,ou=People,dc=example,dc=com"
+        conn=Internal  SRCH base="uid=user_601,ou=People,dc=example,dc=com" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+        conn=Internal  RESULT err=0 tag=48 nentries=0 etime=0
+    
+        # Look down for user_602
+        conn=Internal  SRCH base="uid=user_602,ou=people,dc=example,dc=com" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs="member uniquemember"
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+    
+        # fixup: Look up for user_602
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=uid=user_602,ou=People,dc=example,dc=com)
+                    (uniquemember=uid=user_602,ou=People,dc=example,dc=com))" attrs=ALL
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=cn=group_0,ou=Groups,dc=example,dc=com)
+                    (uniquemember=cn=group_0,ou=Groups,dc=example,dc=com))" attrs=ALL
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=cn=group_10,ou=Groups,dc=example,dc=com)
+                    (uniquemember=cn=group_10,ou=Groups,dc=example,dc=com))" attrs=ALL
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=cn=group_30,ou=Groups,dc=example,dc=com)
+                    (uniquemember=cn=group_30,ou=Groups,dc=example,dc=com))" attrs=ALL
+        conn=Internal  RESULT err=0 tag=48 nentries=0 etime=0
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+    
+        # Fixup: update for user_602
+        conn=Internal  MOD dn="uid=user_602,ou=People,dc=example,dc=com"
+        conn=Internal  SRCH base="uid=user_602,ou=People,dc=example,dc=com" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
+    
+        ...
+    
+    
+        # fixup: Look up for user_605
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=uid=user_605,ou=People,dc=example,dc=com)
+                    (uniquemember=uid=user_605,ou=People,dc=example,dc=com))" attrs=ALL
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=cn=group_0,ou=Groups,dc=example,dc=com)
+                    (uniquemember=cn=group_0,ou=Groups,dc=example,dc=com))" attrs=ALL
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=cn=group_10,ou=Groups,dc=example,dc=com)
+                    (uniquemember=cn=group_10,ou=Groups,dc=example,dc=com))" attrs=ALL
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=cn=group_30,ou=Groups,dc=example,dc=com)
+                    (uniquemember=cn=group_30,ou=Groups,dc=example,dc=com))" attrs=ALL
+        conn=Internal  RESULT err=0 tag=48 nentries=0 etime=0
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+    
+        # Fixup: update for user_602
+        conn=Internal  MOD dn="uid=user_605,ou=People,dc=example,dc=com"
+        conn=Internal  SRCH base="uid=user_605,ou=People,dc=example,dc=com" scope=0 filter="(|(objectclass=*)(objectclass=ldapsubentry))" attrs=ALL
+        conn=Internal  RESULT err=0 tag=48 nentries=1 etime=0
+        conn=Internal  RESULT err=0 tag=48 nentries=0 etime=0
+    
+        # end of the MOD add of the 5 leafs user_601..user_605
+    conn=2 op=5 RESULT err=0 tag=103 nentries=0 etime=0
+
+In this example, we can see [look down searches](#look down search), as well as [look up searches](#look up search) and [update search](#update). Also we can that some [look up searches](#look up search) are **identical** searches. For example, the following search appears **5 times** in the example.
+
+        conn=Internal  SRCH base="dc=example,dc=com" scope=2 
+            filter="(|(member=cn=group_30,ou=Groups,dc=example,dc=com)
+                    (uniquemember=cn=group_30,ou=Groups,dc=example,dc=com))" attrs=ALL
+
+In each of the following paragraphs, we will present various kind of updates (MOD add/del/replace leafs/groups, ADD groups and DEL groups). For each kind of update the evaluation will follow the temple:
+
+- description of the use case
+- evaluation of the cost of *look down*
+- evaluation of the cost of *fixup* (i.e. lookup and update)
+- evaluation of the *identical* searches
+- expected benefit if we can avoid *identical* searches
+
 #### MODIFY Adding ONE leaf as member of a group
 
 The use case is a *modify\(group_DN, [\(ldap.MOD_ADD, 'member', leaf_DN\)]\)*. 
