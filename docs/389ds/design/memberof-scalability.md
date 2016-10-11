@@ -1217,7 +1217,7 @@ Reducing the in *lookup* cost to the the number of SRCHs strictly necessary, it 
 |        |     |        |         MODIFY                |||
 |        |     |        |:-----------------------------:|||
 |        | ADD |   DEL  |   ADD   | DELETE  |   REPLACE   |
-|--------| --- | ------ | ------- | ------- | ----------- |
+|--------|:---:|:------:|:-------:|:-------:|:-----------:|
 | Leafs  | -   |   -    | 33-50%  | 0-33%   |   20-50%    |
 | Groups | 60% | 25-40% | 50-70%  | 25-50%  |   40-60%    |
 |        |     |        |         |         |             |
@@ -1229,7 +1229,20 @@ Reducing the in *lookup* cost to the the number of SRCHs strictly necessary, it 
 
 ### Prevent duplicate 48861
 
-When updating membership attributes of a group, a direct or indirect impacted member of that group can be found several times. The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent that an impacted member is listed/fixed several times. A first [patch](https://fedorahosted.org/389/attachment/ticket/48861/0001-Ticket-48861-Memberof-plugins-can-update-several-tim.patch), caching in an hash table the already fixed nodes, divides by **2** the duration of provisioning of a graph. The graph being creates with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py)
+When updating membership attributes of a group, the [look down](#look-down) phase retrieves all direct and indirect impacted member of that update. 
+
+A constraint is that the graph of membership can contain several paths to a same node. For example with [type 3](#Type 3), from Grp_1_A, all leafs of Grp_3_C will be found Twice (through Grp_1_A->Grp_2_A->Grp_3_C and Grp_1_A->Grp_2_B->Grp_3_C). The problem are:
+
+- the second searches (through Grp_2_B) are useless as the nodes (Grp_3_C and its leafs) have alread been retrieved (with internal search)
+- Once retrieved as impacted node, each node is then fixed up ([look up](#look up) and [updated](#update)). This phase accounts for ~80% of the cost. Each time a node is retrieved it is also fixed up. If it is fixed up several times it is a kind of *duplicate* efforst and a waste of processing as the result will be identical at each fixup.
+
+The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent that an impacted member is listed/fixed several times. A first [patch](https://fedorahosted.org/389/attachment/ticket/48861/0001-Ticket-48861-Memberof-plugins-can-update-several-tim.patch), caching in an hash table the already fixed nodes, divides by **2** the duration of provisioning of a graph. The graph being creates with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py). This patch is not the final one. In fact it checks *duplicate effort* during fixup but miss the *duplicate effort* during the look down.
+
+The right patch should be done during [look down](#look down) because [fixup](#fixup) will benefit of it: a impacted node being found only one time will be fixup only one time.
+
+In addition, managing *duplicate* at the [fixup](#fixup) level is useless in case of memberof fixup task where nodes are found only one time by an internal search (*memberof_fix_memberof*).
+
+[look down](#look down) occurs during a **betxn** callback. The backend lock is held and in addition a memberof plugin lock (actually monitor *memberof_operation_lock*) is also held during *look down*. So only **one thread** (whatever the updated backend) can run *look down* at a given time. So we can use a **single hash table** to store **DN of look down entries**.
 
 
 ### caching of groups 48856
