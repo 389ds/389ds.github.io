@@ -11,9 +11,10 @@ If you are adding a new design document, use the [template](design-template.html
 
 {% include toc.md %}
 
-## 389 Directory Server 1.3.6 (Future)
+## 389 Directory Server 1.3.6
 
 -   [Schema with Multiple Search Paths](schema-multiple-search-paths.html)
+-   [New Error Log Format and Severity Level](errorlog-format-design.html)
 
 ------------------------------------------------
 
