@@ -137,3 +137,9 @@ DEPENDENCIES
   thin
   thor
   typogruby (~> 1.0)
+
+RUBY VERSION
+   ruby 1.9.3p545
+
+BUNDLED WITH
+   1.13.3

@@ -7,6 +7,45 @@ title: "News Archive"
 
 {% include toc.md %} 
 
+#### 389 Directory Server 1.3.5.14 is now available (October 13, 2016)
+-   389-ds-base 1.3.5.14 for Fedora 24, 25, and Rawhide.
+-   [See the Release Notes](release-notes.html) for more information
+
+#### python-lib389-1.0.2 is now available (August 2, 2016)
+
+-   python-lib389 for Fedora 24, 25, rawhide
+-   [See the Release Notes](release-notes.html) for more information
+
+#### 389 Admin and Console for EPEL6 - 1.1.43 is now available (July 25, 2016)
+
+-   Availble on EPEL6
+-   [See Release Notes](docs/389ds/releases/release-admin-and-console-epel6-1-1-43-1.html) for more info
+
+### 389 Directory Server 1.3.5.4
+
+-   389-ds-base 1.3.5.4 for Fedora 24, 25, and Rawhide.
+-   [See the Release Notes](release-notes.html) for more information
+
+### 389 Directory Server 1.3.5.3
+
+-   389-ds-base 1.3.5.3 for Fedora 24, 25, and Rawhide.
+-   [See the Release Notes](release-notes.html) for more information
+
+### Srvcore 4.1.2
+
+-   389-ds-base 1.3.5.3 for Fedora 24, 25, and Rawhide.
+-   [See the Release Notes](docs/389ds/releases/release-svrcore-4-1-2.html) for more information
+
+### 389 Directory Password Synchronization 1.1.6
+
+-   For Fedora 24, 25, and Rawhide.
+-   [See the Release Notes](docs/389ds/releases/release-svrcore-4-1-2.html) for more information
+
+### 389 Directory Server 1.3.4.9
+
+-   389-ds-base 1.3.5.3 for Fedora 24, 25, and Rawhide.
+-   [See the Release Notes](docs/389ds/releases/release-1-3-4-9.html) for more information
+
 #### 389 Windows Console 1.1.15 is now available (Feburary 22, 2016)
 
 -   389 Windows Console 1.1.15
