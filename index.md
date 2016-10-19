@@ -75,6 +75,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
 <!-- Try to keep this list under 10 releases  -->
 
+- 2016-10-19: Released **389-ds-console [1.2.16](docs/389ds/releases/release-ds-console-1.2.16.html)**
 - 2016-10-13: Released **389 Directory Server [1.3.5.14](docs/389ds/releases/release-1-3-5-14.html)**
 - 2016-10-13: Released **389-admin [1.1.45](docs/389ds/releases/release-admin-1-1-45-and-console-pkgs.html)**
 - 2016-10-13: Released **389-adminutil [1.1.23](docs/389ds/releases/release-admin-1-1-45-and-console-pkgs.html)**
@@ -84,7 +85,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - 2016-10-13: Released **idm-console-framework [1.1.17](docs/389ds/releases/release-admin-1-1-45-and-console-pkgs.html)**
 - 2016-10-06: Released **Nunc Stans [0.2.0](docs/389ds/releases/release-nunc-stans-0.2.0.html)**
 - 2016-08-11: Released **389 Directory Server [1.3.4.14](docs/389ds/releases/release-1-3-4-14.html)**
-- 2016-08-11: Released **389 Directory Server [1.3.5.13](docs/389ds/releases/release-1-3-5-13.html)**
 
     For older news, see the [News Archive](docs/389ds/releases/news-archive.html)
 

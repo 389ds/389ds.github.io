@@ -28,7 +28,7 @@ The source code was produced by first doing a git clone to get the repository, t
 |[389-adminutil.1.1.23.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.23.tar.bz2)|adminutil.git|389-adminutil-1.1.23|[Adminutil](../administration/adminutil.html)|daf72628b97337ad2b48e8753f2bc7b01a4482c0|
 |[389-console.1.1.18.tar.bz2]({{ site.baseurl }}/binaries/389-console-1.1.18.tar.bz2)|console.git|389-admin-1.1.45|[Building Console](buildingconsole.html)|ad6929bc9391d7b725aa8246fce5cc22225829b3|
 |[389-admin-console.1.1.12.tar.bz2]({{ site.baseurl }}/binaries/389-admin-console-1.1.12.tar.bz2)|admin-console.git|389-admin-console-1.1.12|[Building Console](buildingconsole.html)|ecfce08e40760f9b8ed4e3b0aa90d7e026d761f9|
-|[389-ds-console-1.2.15.tar.bz2]({{ site.baseurl }}/binaries/389-ds-console-1.2.15.tar.bz2)|ds-console.git|389-ds-console-1.2.15|[Building Console](buildingconsole.html)|b4de313564f102808bf7c1c8ad9e7bb8fd730635|
+|[389-ds-console-1.2.16.tar.bz2]({{ site.baseurl }}/binaries/389-ds-console-1.2.16.tar.bz2)|ds-console.git|389-ds-console-1.2.16|[Building Console](buildingconsole.html)|1c7977a6720e77ccc26440c54672b729f9a8820d|
 |[idm-console-framework-1.1.17.tar.bz2]({{ site.baseurl }}/binaries/idm-console-framework-1.1.17.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.17|[Building Console](buildingconsole.html)|abaa10be90f51ed61e4d16348eee7706fda19df1|
 
 ### EPEL6 packages

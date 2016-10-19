@@ -62,11 +62,11 @@ DS - checkout the source, add the fixes, set the version, tag it, and archive it
 
 -   All commits must be done before **git tag**! Otherwise you might need to use **git tag -f \$TAG**
 
--   **NAME=389-ds-base ; VERSION=1.2.11.30 ; SRCNAME=\$NAME-\$VERSION ; TAG=\$SRCNAME**
+-   **NAME=389-ds-base ; VERSION=1.2.11.30 ; TAG=\$NAME-\$VERSION**
 
 -   **git tag \$TAG**
 
--   **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$SRCNAME.tar.bz2**
+-   **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$TAG.tar.bz2**
 
 Fedora - Clone it, and update the spec files
 --------------------------------------------
@@ -129,6 +129,7 @@ Fedora - Finish editing the spec file, verify the version, and do the scratch-bu
     -    **fedpkg switch-branch \<branch\>**
     -    **git merge master**
     -    NOTE: if git merge fails, do a *git cherry-pick* instead - **git cherry-pick -x master**
+    -    You may to run this if the sources file was not updated:  **fedpkg new-sources /home/source/ds389/389-ds-base-1.2.11.30.tar.bz2**  Followed by a "git commit -a" after the scratach build completes.
     -    **fedpkg verrel**
     -    **fedpkg srpm**
     -    **fedpkg scratch-build -\\\-srpm=389-ds-base-1.2.11.30-1.xxxxx.src.rpm**
@@ -144,7 +145,7 @@ Fedora - Do the official Koji build, and do the release "update"
 
 -   Do this for each branch that you are building.
 
-    **for br in f19 f18 f17 ; do fedpkg switch-branch $br ; fedpkg build -\\\-nowait ; done**
+    **for br in f25 f24 ; do fedpkg switch-branch $br ; fedpkg build -\\\-nowait ; done**
 
 -   An email will be sent from Koji telling you if the build was successful
 
@@ -177,7 +178,7 @@ Update The Wiki (internal use only)
 
 -   Upload the source tarball
 
-        rhc scp -n 389ds -a website 389-ds-base-1.3.3.tar.bz2 app-root/data/
+        rhc scp website upload 389-ds-base-1.3.3.tar.bz2 app-root/data/
 
 -   Create a release note under the following directory (follow the previous release note as a template) 
 
@@ -194,6 +195,10 @@ Update The Wiki (internal use only)
 -   Update the "release notes" page with the new release note
 
         /SOURCE/website/docs/389ds/releases/release-notes.md
+
+-   Update the sources page
+
+        /SOURCE/website/docs/389ds/development/source.md
 
 -   Push your updates
 
