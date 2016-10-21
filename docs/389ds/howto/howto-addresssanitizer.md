@@ -26,6 +26,7 @@ LLVM is used to print the trace in a more readable format. It's not used for com
 You should configure ds with the following:
 
     cd ds
+    autoreconf -fiv
     ./configure --enable-debug --enable-asan
     make
     sudo make install
@@ -33,6 +34,7 @@ You should configure ds with the following:
 If you wish to build and test with rpms:
 
     cd ds
+    autoreconf -fiv
     ./configure --enable-debug --enable-asan
     make rpms
     yum localinstall ....

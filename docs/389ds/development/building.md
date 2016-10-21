@@ -25,6 +25,7 @@ Tools you need
 -   Perl 5.8 or later
 -   git (for checking code out of git - not required for building from srpm or tarball)
 -   GNU make 3.79.1 or later ("gmake", or just "make" on Linux systems)
+-   GNU Autotools (automake, autoconf, libtool, autoreconf) 1.12 or greater.
 
 ### Console and other Java components
 
@@ -69,6 +70,9 @@ Among the required packages are:
 -   svrcore-devel
 -   nss-devel
 -   nspr-devel
+-   autoconf
+-   automake
+-   libtool
 
 For the console
 
@@ -361,6 +365,7 @@ Building the Source
 
 The simplest way is to just do
 
+    autoreconf -fiv
     configure [options]
     make
 

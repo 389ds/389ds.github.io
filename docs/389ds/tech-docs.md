@@ -111,6 +111,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [How to Use openLdap clients](howto/howto-use-openldap-clients-in-389.html)
 -   [How to Disable SSLv3 in DS and Admin Server (Poodlebleed vulnerability)](howto/howto-disable-sslv3.html)
 -   [How to run lib389 testcases in a Jenkins job](howto/howto-run-lib389-jenkins.html)
+-   [How to enable ADDN plugin](howto/howto-addn.html)
 
 #### Directory Server Setup and Management
 
