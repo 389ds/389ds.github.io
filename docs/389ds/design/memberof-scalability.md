@@ -1229,12 +1229,12 @@ Reducing the in *lookup* cost to the the number of SRCHs strictly necessary, it 
 
 ### Prevent duplicate 48861
 
-When updating membership attributes of a group, the [look down](#look-down) phase retrieves all direct and indirect impacted member of that update. 
+When updating membership attributes of a group, the [look down](#look-down) phase retrieves all direct and indirect impacted members of that update. 
 
 A constraint is that the graph of membership can contain several paths to a same node. For example with [type 3](#Type 3), from Grp_1_A, all leafs of Grp_3_C will be found Twice (through Grp_1_A->Grp_2_A->Grp_3_C and Grp_1_A->Grp_2_B->Grp_3_C). The problem are:
 
-- the second searches (through Grp_2_B) are useless as the nodes (Grp_3_C and its leafs) have alread been retrieved (with internal search)
-- Once retrieved as impacted node, each node is then fixed up ([look up](#look up) and [updated](#update)). This phase accounts for ~80% of the cost. Each time a node is retrieved it is also fixed up. If it is fixed up several times it is a kind of *duplicate* efforst and a waste of processing as the result will be identical at each fixup.
+- the second search (through Grp_2_B) is useless as the nodes (Grp_3_C and its leafs) have alread been retrieved (with internal search)
+- Once retrieved as impacted node, each node is then fixed up ([look up](#look up) and [updated](#update)). This phase accounts for ~80% of the cost. Each time a node is retrieved it is also fixed up. If it is fixed up several times it is a kind of *duplicate* effort and a waste of processing as the result will be identical at each fixup.
 
 The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent that an impacted member is listed/fixed several times. A first [patch](https://fedorahosted.org/389/attachment/ticket/48861/0001-Ticket-48861-Memberof-plugins-can-update-several-tim.patch), caching in an hash table the already fixed nodes, divides by **2** the duration of provisioning of a graph. The graph being creates with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py). This patch is not the final one. In fact it checks *duplicate effort* during fixup but miss the *duplicate effort* during the look down.
 
@@ -1245,12 +1245,34 @@ In addition, managing *duplicate* at the [fixup](#fixup) level is useless in cas
 [look down](#look down) occurs during a **betxn** callback. The backend lock is held and in addition a memberof plugin lock (actually monitor *memberof_operation_lock*) is also held during *look down*. So only **one thread** (whatever the updated backend) can run *look down* at a given time. So we can use a **single hash table** to store **DN of look down entries**.
 
 
-### caching of groups 48856
+### 48856
 
 The vast majority of the [Look up](#Look up group membership of impacted members) internal searches is to retrieve the *parent groups of a given node*.
 
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn>))" attrs=ALL
     attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
+
+#### Option 1 - Rely on parents MO values
+
+During an update the impacted entries are updated with values based on the **memberof** attribute values of their parents entries. The algorithm is different depending on the type of operations.
+
+##### ADD, MOD_ADD or MOD_REPLACE adding values
+
+ Assuming that the parents entries have valid **memberof** attribute values, the impacted entries are updated based on the **memberof** attribute values the  the [Look up](#Look up group membership of impacted members) could stop at the direct parents. Doing the **union** of the **memberof** values of all the parents of an entry
+
+The graphic below present the update of entry Grp_1_A to add a member Grp_2_A. Because of the requirement that parent entries have valid **memberof** means that the graph is processed breadth first, from the target entry. Each found node during this processing is immediately fixup. So the way the graph is look down and look up is **breadth first**. 
+
+![Rely on parents MO value - ADD](../../../images/add_base_on_parents_mo.png "Rely on parents MO value - ADD")
+
+In case of ADD lookup (internal search) can be skipped as at each level the algo to update memberof value of a child is to do union (for example in graphic fixup #2)
+- current child memberof values -> Grp_3_A.Mo = [ Grp_2_A ]
+- parent memberof values  -> Grp_2_A.Mo = [ Grp_0_A, Grp_1_A ] in bold
+- parent DN -> Grp_2_A
+
+For add, detection of already fixup entry [48861](https://fedorahosted.org/389/ticket/48861) is possible.
+
+
+#### Option 2 - Cache the parent s DN of the groups
 
 But looking at internal searches filters we can see an increasing number of them as the *node_dn* moves toward the root. It also fluctuates  highly as soon as there are nested groups and nodes/leafs belong to several groups. 
 
