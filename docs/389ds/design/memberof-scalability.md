@@ -1278,19 +1278,45 @@ For add, detection of already fixup entry [48861](https://fedorahosted.org/389/t
 
 For the delete values the algo is a bit different. In fact, removing values (e.g. DEL a parent) does not mean we can simply remove the values from the impacted entries. In fact some removed values may be granted to an impacted node through a different path.
 The algo is to do **short** lookup at the direct parent level.
+
 In the graphic below the entry Grp_1_A is deleted. Referential integrety takes care of its membership value in Grp_0_A. Then starting look down the fixup of the impacted entry Grp_2_A is done with a "one level lookup" that computes the union of
 
-- current child memberof values (here [ Grp_0_A, Grp_1_A, Grp_1_B, Grp_1_C ]) minus 
+- current memberof values (here [ Grp_0_A, Grp_1_A, Grp_1_B, Grp_1_C ]) minus 
    - deleted parents (if any), here [ Grp_1_A ]
    - deleted parents memberof values here [ Grp_0_A ]
-- all parents memberof values  (here  [ Grp_0_A ])
-- all parents values (here [ Grp_1_B, Grp_1_C ])
+- all parents memberof values  (here  [ Grp_0_A ]), that are *lookup* with the red arrows
+- all parents values (here [ Grp_1_B, Grp_1_C ]), that are *lookup* with the red arrows
 
 ![Rely on parents MO value - DEL](../../../images/del_base_on_parents_mo.png "Rely on parents MO value - DEL")
 
 #### Problematic case
 
-Because of the requirement that parent entries have valid **memberof** means that the graph is processed breadth first, from the target entry. Each found node during this processing is immediately fixup. So the way the graph is look down and look up is **breadth first**. 
+Because of the requirement that parent entries have valid **memberof** means that the graph is processed breadth first, from the target entry. If the graph is not "balanced" it can create the following difficulty
+
+Lets have an initial graph where we delete the root node Grp_0_A, so memberof first update its child Grp_1_A
+
+![Rely on parents MO value - pb 1](../../../images/unsolve_1_base_on_parents_mo.png "Rely on parents MO value - Pb unbalance graph")
+
+Lets have an initial graph where we delete the root node Grp_0_A, so memberof first update its child Grp_1_A
+
+![Rely on parents MO value - pb 2.1](../../../images/unsolve_2_1_base_on_parents_mo.png "Rely on parents MO value - pb breadth first 1")
+
+Lets have an initial graph where we delete the root node Grp_0_A, so memberof first update its child Grp_1_A
+
+![Rely on parents MO value - pb 2.2](../../../images/unsolve_2_2_base_on_parents_mo.png "Rely on parents MO value - pb breadth first 2")
+
+Lets have an initial graph where we delete the root node Grp_0_A, so memberof first update its child Grp_1_A
+
+![Rely on parents MO value - pb 2.3](../../../images/unsolve_2_3_base_on_parents_mo.png "Rely on parents MO value - pb breadth first 3")
+
+Lets have an initial graph where we delete the root node Grp_0_A, so memberof first update its child Grp_1_A
+
+![Rely on parents MO value - pb 2.4](../../../images/unsolve_2_4_base_on_parents_mo.png "Rely on parents MO value - pb breadth first 4")
+
+
+Lets have an initial graph where we delete the root node Grp_0_A, so memberof first update its child Grp_1_A
+
+![Rely on parents MO value - pb 3.1](../../../images/unsolve_3_1_base_on_parents_mo.png "Rely on parents MO value - pb depth first 1")
 
 #### Option 2 - Cache the parent s DN of the groups
 
