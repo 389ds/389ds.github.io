@@ -1291,30 +1291,38 @@ In the graphic below the entry Grp_1_A is deleted. Referential integrety takes c
 
 #### Problematic case
 
-Because of the requirement that parent entries have valid **memberof** means that the graph is processed breadth first, from the target entry. If the graph is not "balanced" it can create the following difficulty
+Because of the requirement that parent entries have valid **memberof** values that means that the graph is processed breadth first, from the target entry. If the graph is not "balanced" it can create the following difficulty
 
-Lets have an initial graph where we delete the root node Grp_0_A, so memberof first update its child Grp_1_A
+Lets have an initial graph where we delete (in blue) the root node Grp_0_A, so memberof first fixup its child Grp_1_A
 
 ![Rely on parents MO value - pb 1](../../../images/unsolve_1_base_on_parents_mo.png "Rely on parents MO value - Pb unbalance graph")
 
-Lets have an initial graph where we delete the root node Grp_0_A, so memberof first update its child Grp_1_A
+Processing the graph in breadth first, it fixup Grp_1_B (removing Grp_0_A memberof value)
 
-![Rely on parents MO value - pb 2.1](../../../images/unsolve_2_1_base_on_parents_mo.png "Rely on parents MO value - pb breadth first 1")
+![Rely on parents MO value - pb 2.1](../../../images/unsolve_2_1_base_on_parents_mo.png "Rely on parents MO value - fixup Grp_1_B")
 
-Lets have an initial graph where we delete the root node Grp_0_A, so memberof first update its child Grp_1_A
+All child of Grp_0_A being fixup, it gets to the child of Grp_1_A and fixup Grp_3_A. Here running the DEL algo it computes the union of
 
-![Rely on parents MO value - pb 2.2](../../../images/unsolve_2_2_base_on_parents_mo.png "Rely on parents MO value - pb breadth first 2")
+- current memberof values of Grp_3_A (here [ Grp_1_A, Grp_1_B, Grp_2_A, Grp_0_A ]) minus 
+   - deleted parents (if any), here [ Grp_0_A ]. This is why *Grp_0_A* is deleted.
+   - deleted parents memberof values here [ ] as Grp_1_A was already fixup
+- all parents memberof values  (here  [ Grp_0_A , Grp_1_B]), that is *lookup* with the red arrows
+- all parents values (here [ Grp_2_A ]), that is *lookup* with the red arrows
 
-Lets have an initial graph where we delete the root node Grp_0_A, so memberof first update its child Grp_1_A
+So when processing Grp_3_A, one of its parent being not fixup, it resurrect the invalid value Grp_0_A
 
-![Rely on parents MO value - pb 2.3](../../../images/unsolve_2_3_base_on_parents_mo.png "Rely on parents MO value - pb breadth first 3")
+![Rely on parents MO value - pb 2.2](../../../images/unsolve_2_2_base_on_parents_mo.png "Rely on parents MO value - fixup Grp_3_A")
 
-Lets have an initial graph where we delete the root node Grp_0_A, so memberof first update its child Grp_1_A
+Now it completes the impacted list with Grp_2_A
 
-![Rely on parents MO value - pb 2.4](../../../images/unsolve_2_4_base_on_parents_mo.png "Rely on parents MO value - pb breadth first 4")
+![Rely on parents MO value - pb 2.3](../../../images/unsolve_2_3_base_on_parents_mo.png "Rely on parents MO value - fixup Grp_2_A")
+
+But when lookdown finds Grp_3_A, it finds that it has already been found/fixup (bug [48861](https://fedorahosted.org/389/ticket/48861)) and does not fixup it.
+
+![Rely on parents MO value - pb 2.4](../../../images/unsolve_2_4_base_on_parents_mo.png "Rely on parents MO value - skip fixup Grp_3_A")
 
 
-Lets have an initial graph where we delete the root node Grp_0_A, so memberof first update its child Grp_1_A
+Imagine we switch to depth first after fixup of Grp_1_A, we hit the same issue
 
 ![Rely on parents MO value - pb 3.1](../../../images/unsolve_3_1_base_on_parents_mo.png "Rely on parents MO value - pb depth first 1")
 
