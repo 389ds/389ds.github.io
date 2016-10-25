@@ -1254,23 +1254,43 @@ The vast majority of the [Look up](#Look up group membership of impacted members
 
 #### Option 1 - Rely on parents MO values
 
-During an update the impacted entries are updated with values based on the **memberof** attribute values of their parents entries. The algorithm is different depending on the type of operations.
+During an update the impacted entries are updated with values based on the **memberof** attribute values of their parents entries. This option relies on the strong assumption that updating a node, memberof values of **all parents are valid**. The algorithm is different depending on the type of operations.
 
 ##### ADD, MOD_ADD or MOD_REPLACE adding values
 
- Assuming that the parents entries have valid **memberof** attribute values, the impacted entries are updated based on the **memberof** attribute values the  the [Look up](#Look up group membership of impacted members) could stop at the direct parents. Doing the **union** of the **memberof** values of all the parents of an entry
+ Assuming that the parents entries have valid **memberof** attribute values, the impacted entries are updated based on the **memberof** attribute values of their parents. The [Look up](#Look up group membership of impacted members) could stop at the direct parents. Doing the **union** of the **memberof** values of all the parents of an entry. It basically propagate the memberof values from target to leaf.
+
 
 The graphic below present the update of entry Grp_1_A to add a member Grp_2_A. Because of the requirement that parent entries have valid **memberof** means that the graph is processed breadth first, from the target entry. Each found node during this processing is immediately fixup. So the way the graph is look down and look up is **breadth first**. 
 
 ![Rely on parents MO value - ADD](../../../images/add_base_on_parents_mo.png "Rely on parents MO value - ADD")
 
-In case of ADD lookup (internal search) can be skipped as at each level the algo to update memberof value of a child is to do union (for example in graphic fixup #2)
+In case of ADD lookup (internal search) can be skipped as at each level the algo to update memberof value of a child is to do union (for example in graphic fixup #2 of the entry Grp_3_A)
+
 - current child memberof values -> Grp_3_A.Mo = [ Grp_2_A ]
 - parent memberof values  -> Grp_2_A.Mo = [ Grp_0_A, Grp_1_A ] in bold
 - parent DN -> Grp_2_A
 
 For add, detection of already fixup entry [48861](https://fedorahosted.org/389/ticket/48861) is possible.
 
+##### DEL, MOD_DEL, MOD_REPLACE delete values or MODRDN
+
+
+For the delete values the algo is a bit different. In fact, removing values (e.g. DEL a parent) does not mean we can simply remove the values from the impacted entries. In fact some removed values may be granted to an impacted node through a different path.
+The algo is to do **short** lookup at the direct parent level.
+In the graphic below the entry Grp_1_A is deleted. Referential integrety takes care of its membership value in Grp_0_A. Then starting look down the fixup of the impacted entry Grp_2_A is done with a "one level lookup" that computes the union of
+
+- current child memberof values (here [ Grp_0_A, Grp_1_A, Grp_1_B, Grp_1_C ]) minus 
+   - deleted parents (if any), here [ Grp_1_A ]
+   - deleted parents memberof values here [ Grp_0_A ]
+- all parents memberof values  (here  [ Grp_0_A ])
+- all parents values (here [ Grp_1_B, Grp_1_C ])
+
+![Rely on parents MO value - DEL](../../../images/del_base_on_parents_mo.png "Rely on parents MO value - DEL")
+
+#### Problematic case
+
+Because of the requirement that parent entries have valid **memberof** means that the graph is processed breadth first, from the target entry. Each found node during this processing is immediately fixup. So the way the graph is look down and look up is **breadth first**. 
 
 #### Option 2 - Cache the parent s DN of the groups
 
