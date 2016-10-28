@@ -16,7 +16,7 @@ Source tarballs are available for download at [Download 389-ds-base Source]({{ s
 
 ### Highlights in 1.3.5.14
 
--   A security bug fix and lots of bug fixes and enhancements
+-   Bug fixes and enhancements
 
 ### Installation and Upgrade
 
