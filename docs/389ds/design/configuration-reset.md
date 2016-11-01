@@ -93,9 +93,18 @@ So we ship with nunc-stans-enabled in this version. Say we find a bug in nunc-st
 
 This would now disable nunc-stans for all instances, provided they have not explicitly enabled it.
 
-Of course, with this means great responsibility. Changing defaults *is* something we should do to improve the product, and admins who are often time pressed can't investigate every single little detail of the server we provide.
+Then for 1.3.7 we decide to enable nunc-stans again.
 
-But at the same time, it comes with risk, that we will affect the running of the server. This risk exists for any change we make to the codebase however, so we can start to look at default changes as "features" for that release now.
+So the admin does a yum upgrade. This would result in:
+
+    version 1.3.7: nunc-stans-enabled: on
+
+The admin isn't happy, so they yum downgrade:
+
+    version 1.3.6-1: nunc-stans-enabled: off
+
+No scripts or other intervention was needed to roll the setting back between the two versions.
+
 
 Author
 ======
