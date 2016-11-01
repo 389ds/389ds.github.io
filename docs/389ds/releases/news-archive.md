@@ -11,6 +11,10 @@ title: "News Archive"
 -   389-ds-base 1.3.5.14 for Fedora 24, 25, and Rawhide.
 -   [See the Release Notes](release-notes.html) for more information
 
+#### 389 Directory Server 1.3.4.14 is now available (August 8, 2016)
+-   389-ds-base 1.3.4.14 for Fedora 24, 25, and Rawhide.
+-   [See the Release Notes](release-notes.html) for more information
+
 #### python-lib389-1.0.2 is now available (August 2, 2016)
 
 -   python-lib389 for Fedora 24, 25, rawhide

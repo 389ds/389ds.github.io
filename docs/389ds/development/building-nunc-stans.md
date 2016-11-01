@@ -20,13 +20,13 @@ Or download it:
 
 For a production system:
 
-    autoreconf
+    autoreconf -fiv
     ./configure --prefix=/opt/nunc-stans
 
 If you plan to develop against nunc-stans, enable the debug flags to help you
 detect issues at runtime.
 
-    autoreconf
+    autoreconf -fiv
     ./configure --prefix=/opt/nunc-stans --enable-debug
 
 ### Build
@@ -45,6 +45,7 @@ of a client and server usage of nunc-stans.
 To build Directory Server with this nunc-stans:
 
     cd ds
+    autoreconf -fiv
     ./configure ... --with-nunc-stans=/opt/nunc-stans --enable-nunc-stans
 
 Then see the [nunc-stans](/docs/389ds/design/nunc-stans.html) page on how to enable.

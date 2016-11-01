@@ -31,7 +31,7 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 
 If you find a bug, or would like to see a new feature, file it in our Trac instance: <https://fedorahosted.org/nunc-stans/>
 
-### Detailed Changelog since 0.2.0
+### Detailed Changelog since 0.1.8
 
 - Ticket 65 - fix get set valid states
 - Ticket 64 - Remove ns_job_modify
