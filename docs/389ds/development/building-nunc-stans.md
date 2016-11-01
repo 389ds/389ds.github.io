@@ -11,10 +11,10 @@ title: "Building Nunc-Stans"
 
 Or download it:
 
-    wget http://www.port389.org/binaries/nunc-stans-0.2.0.tar.xz
-    sha256sum nunc-stans-0.2.0.tar.xz
-    echo "975bf4f4df4a6592bafd957e7af09472f04aca70a4bd23cec1217dcd8c7a5864"
-    tar -xvJf nunc-stans-0.2.0.tar.xz
+    wget http://www.port389.org/binaries/nunc-stans-0.2.1.tar.xz
+    sha256sum nunc-stans-0.2.1.tar.xz
+    echo "ee87a1e090e2b06616f3626c14c465226fadcf2d0d42bd4a178771b4a5ecf972"
+    tar -xvJf nunc-stans-0.2.1.tar.xz
 
 ### Prepare the build environment
 
