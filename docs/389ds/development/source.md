@@ -20,11 +20,11 @@ The source code was produced by first doing a git clone to get the repository, t
     git clone git://git.fedorahosted.org/389/MODULENAME
     git archive --prefix=PKGNAME/ TAG | bzip2 > PKGNAME.tar.bz2
 
-### 389 Admin Server and Console packges 1.1.45
+### 389 Admin Server and Console packges 1.1.46
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
-|[389-admin.1.1.45.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.45.tar.bz2)|admin.git|389-admin-1.1.45|[Admin](../administration/adminserver.html)|ecfce08e40760f9b8ed4e3b0aa90d7e026d761f9|
+|[389-admin.1.1.46.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.46.tar.bz2)|admin.git|389-admin-1.1.46|[Admin](../administration/adminserver.html)|735c51c0f19e448fbe9f552893ee4f9297420831|
 |[389-adminutil.1.1.23.tar.bz2]({{ site.baseurl }}/binaries/389-adminutil-1.1.23.tar.bz2)|adminutil.git|389-adminutil-1.1.23|[Adminutil](../administration/adminutil.html)|daf72628b97337ad2b48e8753f2bc7b01a4482c0|
 |[389-console.1.1.18.tar.bz2]({{ site.baseurl }}/binaries/389-console-1.1.18.tar.bz2)|console.git|389-admin-1.1.45|[Building Console](buildingconsole.html)|ad6929bc9391d7b725aa8246fce5cc22225829b3|
 |[389-admin-console.1.1.12.tar.bz2]({{ site.baseurl }}/binaries/389-admin-console-1.1.12.tar.bz2)|admin-console.git|389-admin-console-1.1.12|[Building Console](buildingconsole.html)|ecfce08e40760f9b8ed4e3b0aa90d7e026d761f9|

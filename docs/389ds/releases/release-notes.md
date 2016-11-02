@@ -4,8 +4,8 @@ title: "Release Notes"
 
 # Release Notes
 ---------------
-
--   [ 389 DS Console](release-ds-console-1-2-16.html) *(October 19 2016)*
+-   [ 389-admin 1.1.46](release-admin-1-1-46.html) *(November 2, 2016)*
+-   [ 389 DS Console 1.2.16](release-ds-console-1-2-16.html) *(October 19 2016)*
 -   [ 389 Admin Server and Console](release-admin-1-1-45-and-console-pkgs.html) *(October 14 2016)*
 -   [ 389 Directory Server 1.3.5.14](release-1-3-5-14.html) *(October 13, 2016)*
 -   [ 389 Directory Password Synchronization](release-passsync-1-1-7.html) *(September 30 2016)*
