@@ -75,7 +75,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 
 <!-- Try to keep this list under 10 releases  -->
 
-- 2016-11-02: Released ""389-admin-1.1.46](docs/389ds/releases/release-admin-1-1-46.html)**
+- 2016-11-02: Released **389-admin [1.1.46](docs/389ds/releases/release-admin-1-1-46.html)**
 - 2016-11-01: Released **Nunc Stans [0.2.1](docs/389ds/releases/release-nunc-stans-0.2.1.html)**
 - 2016-10-19: Released **389-ds-console [1.2.16](docs/389ds/releases/release-ds-console-1-2-16.html)**
 - 2016-10-13: Released **389 Directory Server [1.3.5.14](docs/389ds/releases/release-1-3-5-14.html)**
