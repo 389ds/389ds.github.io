@@ -1227,13 +1227,13 @@ Reducing the in *lookup* cost to the the number of SRCHs strictly necessary, it 
 
 ## Improvements
 
-### Prevent duplicate 48861
+### 48861: Prevent duplicate effort
 
 When updating membership attributes of a group, the [look down](#look-down) phase retrieves all direct and indirect impacted members of that update. 
 
 A constraint is that the graph of membership can contain several paths to a same node. For example with [type 3](#Type 3), from Grp_1_A, all leafs of Grp_3_C will be found Twice (through Grp_1_A->Grp_2_A->Grp_3_C and Grp_1_A->Grp_2_B->Grp_3_C). The problem are:
 
-- the second search (through Grp_2_B) is useless as the nodes (Grp_3_C and its leafs) have alread been retrieved (with internal search)
+- the second search (through Grp_2_B) is useless as the nodes (Grp_3_C and its leafs) have already been retrieved (with internal search)
 - Once retrieved as impacted node, each node is then fixed up ([look up](#look up) and [updated](#update)). This phase accounts for ~80% of the cost. Each time a node is retrieved it is also fixed up. If it is fixed up several times it is a kind of *duplicate* effort and a waste of processing as the result will be identical at each fixup.
 
 The ticket [48861](https://fedorahosted.org/389/ticket/48861) will prevent that an impacted member is listed/fixed several times. A first [patch](https://fedorahosted.org/389/attachment/ticket/48861/0001-Ticket-48861-Memberof-plugins-can-update-several-tim.patch), caching in an hash table the already fixed nodes, divides by **2** the duration of provisioning of a graph. The graph being creates with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py). This patch is not the final one. In fact it checks *duplicate effort* during fixup but miss the *duplicate effort* during the look down.
@@ -1245,18 +1245,21 @@ In addition, managing *duplicate* at the [fixup](#fixup) level is useless in cas
 [look down](#look down) occurs during a **betxn** callback. The backend lock is held and in addition a memberof plugin lock (actually monitor *memberof_operation_lock*) is also held during *look down*. So only **one thread** (whatever the updated backend) can run *look down* at a given time. So we can use a **single hash table** to store **DN of look down entries**.
 
 
-### 48856
+### 48856: reusing memberof current values to compute the new ones
 
-The vast majority of the [Look up](#Look up group membership of impacted members) internal searches is to retrieve the *parent groups of a given node*.
+
+When a group is updated, members of the group that are impacted by the update are fixup. Fixup consist of [look-up](#look-up) and [update](#update). [look-up](#look-up) is the [most expensive part](#fixup) especially because, for each impacted node, it discards current memberof values and recompute them. The computation is a recursive (from impacted node to root) set of internal searchs like below:
 
     SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn>))" attrs=ALL
     attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
 
-#### Option 1 - Rely on parents MO values
+The improvement proposed with the https://fedorahosted.org/389/ticket/48856 is to avoid (as much as possible) recursive internal searches and computes the memberof values based on the **memberof** attribute values of their parents entries.
 
-During an update the impacted entries are updated with values based on the **memberof** attribute values of their parents entries. This option relies on the strong assumption that updating a node, memberof values of **all parents are valid**. The algorithm is different depending on the type of operations.
+This option relies on the strong assumption that updating a node, memberof values of **all parents are valid**. So the way the graph is browsed will change from **depth first to breadth first**. 
 
-##### ADD, MOD_ADD or MOD_REPLACE adding values
+In addition the algorithm is different depending on the type of operations.
+
+#### ADD, MOD_ADD or MOD_REPLACE adding values
 
  Assuming that the parents entries have valid **memberof** attribute values, the impacted entries are updated based on the **memberof** attribute values of their parents. The [Look up](#Look up group membership of impacted members) could stop at the direct parents. Doing the **union** of the **memberof** values of all the parents of an entry. It basically propagate the memberof values from target to leaf.
 
@@ -1273,7 +1276,7 @@ In case of ADD lookup (internal search) can be skipped as at each level the algo
 
 For add, detection of already fixup entry [48861](https://fedorahosted.org/389/ticket/48861) is possible.
 
-##### DEL, MOD_DEL, MOD_REPLACE delete values or MODRDN
+#### DEL, MOD_DEL, MOD_REPLACE delete values or MODRDN
 
 
 For the delete values the algo is a bit different. In fact, removing values (e.g. DEL a parent) does not mean we can simply remove the values from the impacted entries. In fact some removed values may be granted to an impacted node through a different path.
@@ -1326,7 +1329,13 @@ Imagine we switch to depth first after fixup of Grp_1_A, we hit the same issue
 
 ![Rely on parents MO value - pb 3.1](../../../images/unsolve_3_1_base_on_parents_mo.png "Rely on parents MO value - pb depth first 1")
 
-#### Option 2 - Cache the parent s DN of the groups
+### 49031: cache the parents of the groups
+
+The vast majority of the [Look up](#Look up group membership of impacted members) internal searches is to retrieve the *parent groups of a given node*.
+
+    SRCH base="<suffix>" scope=2 filter="(|(attr_1=<node_dn>)..(attr_N=<node_dn>))" attrs=ALL
+    attr_1,...,attr_N: are membership attributes (defined in "cn=MemberOf Plugin,cn=plugins,cn=config")
+
 
 But looking at internal searches filters we can see an increasing number of them as the *node_dn* moves toward the root. It also fluctuates  highly as soon as there are nested groups and nodes/leafs belong to several groups. 
 
@@ -1364,7 +1373,7 @@ Let *group_n* be the ancestor (parent or grand parent...) of **N** descendants, 
 
 
 
-### keeping groups in the entry cache
+### keeping groups in the entry cache (ticket to be opened)
 
 During internal searches, the candidates entries are retrieved from the entry cache and possibly reloaded from Database in case of cache miss. The lookup of [parent groups](#caching of groups) requires to find/reload many groups into the entry cache. A typical group is a large entry with quite few attributes having a large set of values. Loading those entries is expensive (read of several overflow pages, allocation/sort of many member values).
 
