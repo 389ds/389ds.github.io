@@ -16,6 +16,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Schema with Multiple Search Paths](schema-multiple-search-paths.html)
 -   [New Error Log Format and Severity Level](errorlog-format-design.html)
 -   [Configuration Reset](configuration-reset.html)
+-   [Autotuning Memory and Threads](autotuning.md)
 
 ------------------------------------------------
 
