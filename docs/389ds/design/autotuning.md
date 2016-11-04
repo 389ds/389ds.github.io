@@ -7,9 +7,9 @@ title: "Autotuning Directory Server as a Default"
 Overview
 ========
 
-Out of the box, Directory Server is not optimally tuned for a system. There are many instances of downstream products that integrate with DS that are not performing any tuning at all. As well, many admins are time pressed, and can't invest the hours and time needed to optimally create the dbcachesize numbers that yield perfect search times.
+Out of the box, Directory Server is not optimally tuned for a system. There are many instances of downstream products that integrate with DS that are not performing any tuning at all. As well, many admins are time pressed, and can't invest the hours and time needed to optimally create the dbcachesize numbers that yield perfect search times. Some admins from other product backgrounds may not even know that you need to configure these settings at all to make Directory Server performant.
 
-Right now it's worse, as out of the box we only configure the following:
+Right now it's even worse, as out of the box we only configure the following:
 
     # LDBM
     nsslapd-dbcachesize: 10000000
@@ -22,7 +22,7 @@ Right now it's worse, as out of the box we only configure the following:
 
 Provided my maths is correct, out of the box we configure 10MB of dbcachesize, 10MB of cachememsize, 10MB of dncachesize and 30 threads. *This is insanely small for a production workload*, and means we probably have high rates of eviction which can be observed in cn=monitor on the ldbm database.
 
-Our goal should be that out of the box, we provide the fastest Directory Server we possibly can. So how can we achieve this?
+Our goal should be that out of the box, we provide the fastest Directory Server we possibly can, without sacrificing stability or reliability. We have to assume that the majority of our users and consumers will never tune their server, and their perceptions of our product depend on the defaults we ship. So how can we achieve this?
 
 Out of the box today
 ====================
