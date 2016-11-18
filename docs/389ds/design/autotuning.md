@@ -94,7 +94,7 @@ For an example, lets take an average install of FreeIPA. Say we have 1000 users.
 So my first proposal is that we change the default number from 10Mb of dbcache and entrycache to 128Mb. It's still not a lot, but it's an improvement already.
 
 
-Design for Automatic  Thread Tuning
+Design for Automatic Thread Tuning
 -----------------------------------
 
 Something else that isn't considered is that more threads is not always better. In this case, more threads may be increasing contention, which is decreasing the overall performance. So we lower the threadnumber to something more appropriate for this system (dual core i7).
@@ -114,9 +114,36 @@ As a result, if nsslapd-threadnumber is not set, we can automatically set this a
 
     nsslapd-threadnumber = (Number of Hardware Threads) * (Factor)
 
-At the moment I have not decided on what "Factor" should be. I think that we should test this on various hardware systems and load test. I suspect that the correct number for Factor will be 2, 3 or 4. This way if one thread is blocked, another can still be operating.
-
 This is a very easy, minimal and non-invasive change, and follows our own tuning advice.
+
+Scaling of threads and implementation
+-------------------------------------
+
+The default value of nsslapd-threadnumber is -1.
+
+If this value is set to -1, automatic tuning will be used.
+
+If this value is set to another value in dse.ldif (which can be set via cn=config), this will override the automatic tuning.
+
+During server operation, the value of nsslapd-threadnumber shows the value selected by the tuning algorithm.
+
+When you restart the server, it will recalculate this number, IE vms where you add more cpus.
+
+The scaling of the threads goes as follows:
+
+    Hardware threads -> DS threads.
+    1 -> 16
+    2 -> 16
+    4 -> 24
+    8 -> 32
+    16 -> 48
+    32 -> 64
+    64 -> 96
+    128 -> 192
+    256 -> 384
+    512 -> 512
+    1024 -> 512
+    2048 -> 512
 
 
 Design for Automatic Memory Tuning
