@@ -1255,11 +1255,16 @@ When a group is updated, members of the group that are impacted by the update ar
 
 The improvement proposed with the [48856](https://fedorahosted.org/389/ticket/48856) is to avoid (as much as possible) recursive internal searches and computes the memberof values based on the **memberof** attribute values of their parents entries.
 
+#### First proposal
+
+
+This option was discussed internally and this write of is just to record the result of the discussion.
+
 This option relies on the strong assumption that updating a node, memberof values of **all parents are valid**. So the way the graph is browsed will change from **depth first to breadth first**. 
 
 In addition the algorithm is different depending on the type of operations.
 
-#### ADD, MOD_ADD or MOD_REPLACE adding values
+##### ADD, MOD_ADD or MOD_REPLACE adding values
 
  Assuming that the parents entries have valid **memberof** attribute values, the impacted entries are updated based on the **memberof** attribute values of their parents. [Look up](#Look up group membership of impacted members) can be completely skipped. In fact when updating a member from a parent, we just need to provide *parent_DN* and *parent memberof*. The futur memberof values of the member would be **union** 
 
@@ -1282,7 +1287,7 @@ In case of ADD lookup (internal search) can be skipped as at each level the algo
 
 For add, detection of already fixup entry [48861](https://fedorahosted.org/389/ticket/48861) is possible.
 
-#### DEL, MOD_DEL, MOD_REPLACE delete values or MODRDN
+##### DEL, MOD_DEL, MOD_REPLACE delete values or MODRDN
 
 
 For the delete values the algo is more complex. In fact, removing values (e.g. DEL a parent) does not mean we can simply remove the values from the impacted entries. Some removed values may be granted to an impacted node through a different path.
@@ -1298,7 +1303,7 @@ In the graphic below the entry Grp_1_A is deleted. Referential integrety takes c
 
 ![Rely on parents MO value - DEL](../../../images/del_base_on_parents_mo.png "Rely on parents memeberof values - DEL")
 
-#### Problematic case
+##### Problematic case
 
 Because of the requirement that parent entries have valid **memberof** values that means that the graph is processed breadth first, from the target entry. If the graph is not "balanced" it can create the following difficulty
 
@@ -1377,6 +1382,12 @@ Let *group_n* be the ancestor (parent or grand parent...) of **N** descendants, 
 - Type 2: From ~3000 to ~600 internal searches
 - Type 3: From ~3700 to ~600 internal searches
 
+#### Second proposal
+
+
+This option comes from a brand new algo implemented is a python [prototype](https://fedorahosted.org/389/attachment/ticket/48856/0001-Ticket-48856-Reference-implementation-in-python-of-t.patch).
+
+It is still under discussion see [48856 thread](https://fedorahosted.org/389/ticket/48856)
 
 
 ### keeping groups in the entry cache (ticket to be opened)
