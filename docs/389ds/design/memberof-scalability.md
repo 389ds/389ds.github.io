@@ -1443,18 +1443,32 @@ By default it creates :
 The more there are leafs the more expensive it is. But number of leafs is **NOT** the major contributor. The tests were limited with very few leafs (5000 and 2000).
 
 
-|-----------------|-----|--------|------------------------------------|-------------------------------|||
-|                 |     |        |         duration with 5000 leafs   |  duration with 1K leafs       |||
-|                 |     |        |         and 1 member at level 4    |  and 20 members at level 4    |||
-|                 |     |        |:----------------------------------:|:-----------------------------:|||
-| 1.3.5           | ADD |   DEL  |  each group   | each rules  | total|each group| each rules  | total|
-|-----------------|:---:|:------:|:-------:|:-------:|:--------------:|:-------:|:-------:|:-----------:|
-| vanilla         | -   |   -    | 15 - 25s  | 48 - ? min   |   35h    |27 - 74s| 57min-??|     |
-| + 49031         | 60% | 25-40% | 6 - 16s  | 28 - ? min  |   20h    |||||
-| + 49031 + 48861 | 60% | 25-40% |  |   |   %    | 21-50s|2-4min|7h30||
-|                 |     |        |         |         |             |||||
+|-----------------|------------------------------------|||-------------------------------|||
+|                 |         duration with 5000 leafs   |||  duration with 1K leafs       |||
+|                 |         and 1 member at level 4    |||  and 20 members at level 4    |||
+|                 |:----------------------------------:|||:-----------------------------:|||
+| 1.3.5           |  each group   | each rules  | total  | each group| each rules  | total |
+|-----------------|:-------------:|:-----------:|:------:|:---------:|:-----------:|:-----:|
+| vanilla         | 15 - 25s      | 48 - ? min  |   35h  | 27 - 74s  |  57-84min   | >5days|
+| + 49031         | 6 - 16s       | 28 - ? min  |   20h  |    -      |    -        |       |
+| + 49031 + 48861 |   -           |    -        |    -   | 21-50s    |  2-4min     |7h30   |
 
-#### latency of the cache
+#### cache performance
+
+The performance of group addition based on the nesting level is in the table below
+
+|----------------------|------------------------------------|-----------------------------------|
+|  Nesting level       |    Hit ratio                       | Op. duration | cumul cache lookup |
+|:--------------------:|:----------------------------------:|:------------:|:------------------:|
+| 0                    |   ~66%                             |  6 - 16s     |       60ms         |
+| 1-3 with low members |   70-80%                           |  6 - 16s     |       60ms         |
+| 4 with 20 members    |   >99%                             |  2-4 min     |       ~300ms       |
+
+This shows that the cost of the cache has a not significant impact compare to the operation duration.
+
+This shows that the more the groups are nested and populated with members the more the cache is saving internal searches.
+
+
 
 ### cache structure
 
