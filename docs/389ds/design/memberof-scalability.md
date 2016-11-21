@@ -1387,10 +1387,10 @@ When an entry gets to the lru it can get out of the entry cache. It would be ben
 
 # Implementation
 
-## 48856 caching of groups parents
+## 49031 caching of groups ancestors
 
 
-The proposal for the ticket [48856](https://fedorahosted.org/389/ticket/48856) is to create a cache that will keep, for a given group, the parents (direct) DNs  of that group. Parents of non-group entries (leafs) are **not** stored in that cache.
+The proposal for the ticket [49031](https://fedorahosted.org/389/ticket/49031) is to create a cache that will keep, for a given group, the ancestors DNs  of that group. Ancestors of non-group entries (leafs) are **not keeped** in that cache.
 
 ### cache life cycle
 
@@ -1398,19 +1398,18 @@ The cache is hash table using the normalized group DN as a key.
 
 The hash table is created at plugin startup and deleted at plugin stop.
 
-The cache is emptied at the entrance of the plugin callback and also at the exit. So that each operation starts with a cleared cache.
+The cache is emptied at the entrance of the plugin callback and also at the exit. So that each operation starts with a cleared cache. access (read/write) to the cache are protected with a Monitor lock **memberof_operation_lock**.
 
 plugin callbacks are *post-betxn* so the membership attributes are not updated during its execution and cached values remain valid.
 
 
 ### limitation
 
-The cache is not valid for remote backend or sub suffixes, because membership can be updated while processing the graph.
-(TBC)
+For remote backends, the cache is valid at the condition the remote entries are updated only by one instance.
 
-### cache memory footprint
+### performance considerations
 
-The cache will contains DNs. Those DNs are parents of a entry that is a group.
+The cache will contains DNs. Those DNs are ancestors of a node that is a group.
 
 An entry is a group if *slapi_filter_test_simple(entry, config->group_filter)*
 
@@ -1430,9 +1429,32 @@ For example, assuming that each DN is 100 bytes long,
     - Grp_2* contain 2 values (2 times Grp_1_A): 200 bytes
     - Grp_1 contains 0 value : 0 bytes
 
+### cache structure
+
+The data structure is
+
+    typedef struct _memberof_cached_value
+    {
+        char *key;  /* when valid==0; pointer to the node DN used as hash key */
+        char *group_dn_val;
+        char *group_ndn_val;
+        int valid;  /* when valid==1; group_dn/ndn are one ancestors of the node */
+    } memberof_cached_value;
+
+The ancestors, of a given node, are stored in an array of ancestor DN/NDN.
+
+When computing the ancestors of a given node, we need to merge ancestors of all its direct parents in a given set. An ancestor is present **once** in that set, so it requires to compare DN. This is the reason why NDN are also stored in the cache to avoid normalizing DN again and again.
+
+A node can have no ancestor. To cache this the array element has **NULL** DN/NDN.
+
+A flag **valid** in the array indicates if we reach the end (valid==0) of the ancestors list.
+
+The ancestors of a node are stored using the node DN as the key. When freeing the ancestors of that node, the key is stored at the end of the list. So the array element with valid==0 contains **key** that is pointer to the node DN.
+
+
 ### cache priming
 
-The cache starts empty (see cache [life cycle](#cache life cycle)). Once *lookdown* has built the list of impacted nodes (leaf or groups), for each of them it will trigger a *look up* calling *memberof_fix_memberof_callback*.
+The cache starts empty (see cache [life cycle](#cache life cycle)) at the memberof callback. Once *lookdown* has built the list of impacted nodes (leaf or groups), for each of them it will trigger a *look up* calling *memberof_fix_memberof_callback*.
 
 The function that actually implements the *look up* is *memberof_get_groups_r* and *memberof_call_foreach_dn*. Their interfaces must be changed with a new PRBool attribute that says is the provided *member_sdn* is a *group*.
 
