@@ -1340,6 +1340,15 @@ Imagine we switch to depth first after fixup of Grp_1_A, we hit the same issue
 
 ![Rely on parents MO value - pb 3.1](../../../images/unsolve_3_1_base_on_parents_mo.png "Rely on parents MO value - pb depth first 1")
 
+#### Second proposal
+
+
+This option comes from a brand new algo implemented is a python [prototype](https://fedorahosted.org/389/attachment/ticket/48856/0001-Ticket-48856-Reference-implementation-in-python-of-t.patch).
+
+It is still under discussion see [48856 thread](https://fedorahosted.org/389/ticket/48856)
+
+
+
 ### 49031: cache the parents of the groups
 
 The vast majority of the [Look up](#Look up group membership of impacted members) internal searches is to retrieve the *parent groups of a given node*.
@@ -1381,14 +1390,6 @@ Let *group_n* be the ancestor (parent or grand parent...) of **N** descendants, 
 - Type 1: From ~3000 to ~600 internal searches
 - Type 2: From ~3000 to ~600 internal searches
 - Type 3: From ~3700 to ~600 internal searches
-
-#### Second proposal
-
-
-This option comes from a brand new algo implemented is a python [prototype](https://fedorahosted.org/389/attachment/ticket/48856/0001-Ticket-48856-Reference-implementation-in-python-of-t.patch).
-
-It is still under discussion see [48856 thread](https://fedorahosted.org/389/ticket/48856)
-
 
 ### keeping groups in the entry cache (ticket to be opened)
 
