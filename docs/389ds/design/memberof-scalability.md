@@ -1443,7 +1443,7 @@ By default it creates :
 The more there are leafs the more expensive it is. But number of leafs is **NOT** the major contributor. The tests were limited with very few leafs (5000 and 2000).
 
 
-|-----------------|------------------------------------|||-------------------------------|||
+|:---------------:|:----------------------------------:|||:-----------------------------:|||
 |                 |         duration with 5000 leafs   |||  duration with 1K leafs       |||
 |                 |         and 1 member at level 4    |||  and 20 members at level 4    |||
 |                 |:----------------------------------:|||:-----------------------------:|||
@@ -1453,11 +1453,37 @@ The more there are leafs the more expensive it is. But number of leafs is **NOT*
 | + 49031         | 6 - 16s       | 28 - ? min  |   20h  |    -      |    -        |       |
 | + 49031 + 48861 |   -           |    -        |    -   | 21-50s    |  2-4min     |7h30   |
 
+The test **49031 + 48861** was done with this configuration of [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py)
+
+    users=1000,
+    groups=100,
+    groups_per_user=100,
+    nested_groups_max_level=2,
+    nested_groups_per_user=5,
+    hosts=1000,
+    hostgroups=100,
+    hostgroups_per_host=100,
+    nested_hostgroups_max_level=2,
+    nested_hostgroups_per_host=5,
+    direct_sudorules=5,  # users, hosts
+    indirect_sudorules=50,  # groups, hostgroups
+    sudorules_per_user=5,
+    sudorules_per_group=10,
+    sudorules_per_host=5,
+    sudorules_per_hostgroup=10,
+    direct_hbac=5,  # users, hosts
+    indirect_hbac=50,  # groups, hostgroups
+    hbac_per_user=5,
+    hbac_per_group=10,
+    hbac_per_host=5,
+    hbac_per_hostgroup=10
+
+
 #### cache performance
 
-The performance of group addition based on the nesting level is in the table below
+The performance of the ancestor cache during group addition is in the table below. It is presented based on the nesting level.
 
-|----------------------|------------------------------------|-----------------------------------|
+|:--------------------:|------------------------------------|-----------------------------------|
 |  Nesting level       |    Hit ratio                       | Op. duration | cumul cache lookup |
 |:--------------------:|:----------------------------------:|:------------:|:------------------:|
 | 0                    |   ~66%                             |  6 - 16s     |       60ms         |
