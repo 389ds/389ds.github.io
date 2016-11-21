@@ -1407,27 +1407,54 @@ plugin callbacks are *post-betxn* so the membership attributes are not updated d
 
 For remote backends, the cache is valid at the condition the remote entries are updated only by one instance.
 
-### performance considerations
+### performance
+
+#### memory footprint
 
 The cache will contains DNs. Those DNs are ancestors of a node that is a group.
 
 An entry is a group if *slapi_filter_test_simple(entry, config->group_filter)*
 
-We can expect that membership graph will look somehow like a tree, especially with much more leafs than intermediate nodes and more nodes at Depth D than at Depth D-1. The cache will be loaded **only** with intermediate nodes (i.e. groups) DNs. In addition only part of the groups DNs will be in the cache. In fact groups that only contain leafs are not loaded, they are *parents of leafs* not *parents of groups*.
+We can expect that membership graph will look somehow like a tree, especially with much more leafs than intermediate nodes and more nodes at Depth D than at Depth D-1. The cache will be loaded **only** with intermediate nodes (i.e. groups) DNs.
 
 For example, assuming that each DN is 100 bytes long, 
 
-- graph [type 1](#Type 1): **1700 bytes**
+- graph [type 1](#Type 1): 900+2400+400=**~3K**
+     - 9 keys (Grp_*): 900
+     - 6 Grp_3* contain: 2400
+        - 2 levels(Grp2 and Grp1) times 2 DN lenght: 400
+    - 2 Grp_2* contain 1 level times 2 DN length: 400
+    - Grp_1 contains 0 value : 0 bytes
 - graph [type 2](#Type 2):  idem 
-    - 9 keys (Grp_*): 900 bytes
-    - Grp_3* contain 6 values (3 times Grp_2_1 and 3 times Grp_2_2): 600 bytes
-    - Grp_2* contain 2 values (2 times Grp_1_A): 200 bytes
-    - Grp_1 contains 0 value : 0 bytes
-- graph [type 3](#Type 3): **1800 bytes**
-    - 9 keys (Grp_*): 900 bytes
-    - Grp_3* contain 7 values (3 times Grp_2_1 and 4 times Grp_2_2): 700 bytes
-    - Grp_2* contain 2 values (2 times Grp_1_A): 200 bytes
-    - Grp_1 contains 0 value : 0 bytes
+- graph [type 3](#Type 3): **~3.5K**
+
+When running tests with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py) the memory footprint of instance with the cache was **identical** with instance without the cache.
+
+
+#### throughput
+
+We are using [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py) tool to measure the impact of the cache. This tool creates users/host/user group/hostgroup/sudo rules/hbac rules. It can be tuned to increase the number of leafs (hosts/users), the size of the groups and the nesting.
+
+By default it creates :
+
+- 3 levels of nesting for **user group** and **hostgroup**, but all leafs are at the bottom level of group (like [type 1](#Type 1)) and levels *2* and *3* have only one child. This structure was used for the tests. Only the **number of leafs* changed.
+- 4 level of nesting for **hback** and **sudo**. This top level of group may contains several members. Because of major impact on performance the **number of members of (hback/sudo)** the results are given with different number of members.
+
+The more there are leafs the more expensive it is. But number of leafs is **NOT** the major contributor. The tests were limited with very few leafs (5000 and 2000).
+
+
+|-----------------|-----|--------|------------------------------------|-------------------------------|||
+|                 |     |        |         duration with 5000 leafs   |  duration with 1K leafs       |||
+|                 |     |        |         and 1 member at level 4    |  and 20 members at level 4    |||
+|                 |     |        |:----------------------------------:|:-----------------------------:|||
+| 1.3.5           | ADD |   DEL  |  each group   | each rules  | total|each group| each rules  | total|
+|-----------------|:---:|:------:|:-------:|:-------:|:--------------:|:-------:|:-------:|:-----------:|
+| vanilla         | -   |   -    | 15 - 25s  | 48 - ? min   |   35h    |27 - 74s| 57min-??|     |
+| + 49031         | 60% | 25-40% | 6 - 16s  | 28 - ? min  |   20h    |||||
+| + 49031 + 48861 | 60% | 25-40% |  |   |   %    | 21-50s|2-4min|7h30||
+|                 |     |        |         |         |             |||||
+
+#### latency of the cache
 
 ### cache structure
 
@@ -1445,9 +1472,9 @@ The ancestors, of a given node, are stored in an array of ancestor DN/NDN.
 
 When computing the ancestors of a given node, we need to merge ancestors of all its direct parents in a given set. An ancestor is present **once** in that set, so it requires to compare DN. This is the reason why NDN are also stored in the cache to avoid normalizing DN again and again.
 
-A node can have no ancestor. To cache this the array element has **NULL** DN/NDN.
+A flag **valid** in the array indicates if we reach the end (valid==0) of the ancestors list. Slots with **valid==1** contains effective ancestor in the DN/NDN.
 
-A flag **valid** in the array indicates if we reach the end (valid==0) of the ancestors list.
+A node can have no ancestor. To cache this the array element has **NULL** DN/NDN.
 
 The ancestors of a node are stored using the node DN as the key. When freeing the ancestors of that node, the key is stored at the end of the list. So the array element with valid==0 contains **key** that is pointer to the node DN.
 
@@ -1456,16 +1483,9 @@ The ancestors of a node are stored using the node DN as the key. When freeing th
 
 The cache starts empty (see cache [life cycle](#cache life cycle)) at the memberof callback. Once *lookdown* has built the list of impacted nodes (leaf or groups), for each of them it will trigger a *look up* calling *memberof_fix_memberof_callback*.
 
-The function that actually implements the *look up* is *memberof_get_groups_r* and *memberof_call_foreach_dn*. Their interfaces must be changed with a new PRBool attribute that says is the provided *member_sdn* is a *group*.
+The function that actually implements the *look up* is *memberof_get_groups_r* that computes the set of ancestors of a given node. If the set is already caches it is used else it is computed (*memberof_call_foreach_dn*) and then cached. 
 
-If this is a group
-
-try to retrieve the member_DN from the cache to get an array of for the *parents of the member_DN*.
-
-If it is not a group or in the cache, do an internal search to retrieve them and use a new callback function to build the array of *parents of the member_DN*. Then, at the condition it is a group add the member_DN/array to the cache (using member_DN as key).
-
-Finally for each parents in the array of *parents of the member_DN*, call *memberof_get_groups_callback*.
-This function needs to change a bit, because it will no longer be a search callback but a normal function taking the parent_DN in place of the Slapi_entry. This does not change the algo because this function is currently only using the entry DN.
+At this point leaf ancestors as well as grooup ancestors are cached as it is not possible to know if the node is a group or not. In *memberof_fix_memberof_callback*, after *memberof_get_groups_r* has returned (and cache the ancestor of the node), if the node is not a group then its cached ancestors are removed from the cache.
 
 ### scoping
 
