@@ -1227,7 +1227,7 @@ Reducing the in *lookup* cost to the the number of SRCHs strictly necessary, it 
 
 ## Improvements
 
-### 48861: Prevent duplicate effort
+### 48861: Prevent to fixup the same entry several times
 
 When updating membership attributes of a group, the [look down](#look-down) phase retrieves all direct and indirect impacted members of that update. 
 
@@ -1398,6 +1398,59 @@ During internal searches, the candidates entries are retrieved from the entry ca
 When an entry gets to the lru it can get out of the entry cache. It would be benefical to delay a bit a group to get out of the entry cache. For example, we can imagine a counter on each entry in the lru. If the next entry to free, from the lru, is a group then increment the counter and move the entry to the begining of the lru. When the counter reaches a limit (e.g. 3) then the group is freed. When an entry goes entry_cache->lru, the counter is reset.
 
 # Implementation
+
+## 48861 Prevent to fixup the same entry several times
+
+The proposal for the ticket [48861](https://fedorahosted.org/389/ticket/48861) is to create a cache that will keep, for a given upddate the list of entries already fixup. 
+
+### cache life cycle
+
+The cache is hash table using the normalized group DN as a key.
+
+The hash table is created at plugin startup and deleted at plugin stop.
+
+The cache is emptied at the entrance of the plugin callback and also at the exit. So that each operation starts with a cleared cache. access (read/write) to the cache are protected with a Monitor lock **memberof_operation_lock**.
+
+plugin callbacks are *post-betxn* so the membership attributes are not updated during its execution and cached values remain valid.
+
+
+### limitation
+
+For remote backends, the cache is valid at the condition the remote entries are updated only by one instance.
+
+### performance
+
+#### memory footprint
+
+The cache will contains DNs. The DN in the cache are those of entry having already been fixup (**memberof_fix_memberof_callback**).
+
+For example, assuming that each DN is 100 bytes long and there are 100 leafs for each group (in the last level), it will consum ~609*100=60K.
+
+When running tests with [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py) the memory footprint of instance with the cache was **identical** with instance without the cache.
+
+
+#### throughput
+
+see [49031 throughput](http://www.port389.org/docs/389ds/design/memberof-scalability.html#caching-of-groups-ancestors)
+
+#### cache performance
+
+see [49031 throughput](http://www.port389.org/docs/389ds/design/memberof-scalability.html#caching-of-groups-ancestors)
+
+### cache structure
+
+The key and the value of each cached entry is its DN char pointer.
+
+### cache priming
+
+The cache starts empty (see cache [life cycle](#cache life cycle)) at the memberof callback. Once *lookdown* has built the list of impacted nodes (leaf or groups), for each of them it will trigger a *look up* calling *memberof_fix_memberof_callback*.
+
+Before fixing up the entry, *memberof_fix_memberof_callback* check if it has already been fixup (already in the hashtable). If this is the case it bailout, else it fixup the entry and add the DN in the cache.
+
+### scoping
+
+no impact
+
 
 ## 49031 caching of groups ancestors
 
