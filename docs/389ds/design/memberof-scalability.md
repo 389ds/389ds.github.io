@@ -1455,15 +1455,21 @@ By default it creates :
 The more there are leafs the more expensive it is. But number of leafs is **NOT** the major contributor. The tests were limited with very few leafs (5000 and 2000).
 
 
-|:---------------:|:----------------------------------:|||:-----------------------------:|||
-|                 |         duration with 5000 leafs   |||  duration with 1K leafs       |||
-|                 |         and 1 member at level 4    |||  and 20 members at level 4    |||
-|                 |:----------------------------------:|||:-----------------------------:|||
-| 1.3.5           |  each group   | each rules  | total  | each group| each rules  | total |
-|-----------------|:-------------:|:-----------:|:------:|:---------:|:-----------:|:-----:|
-| vanilla         | 15 - 25s      | 48 - ? min  |   35h  | 27 - 74s  |  57-84min   | >5days|
-| + 49031         | 6 - 16s       | 28 - ? min  |   20h  |    -      |    -        |       |
-| + 49031 + 48861 |   -           |    -        |    -   | 21-50s    |  2-4min     |7h30   |
+|:---------------:|:------------------------------------:|:----------------------------------:|
+|                 |         duration with 5000 leafs     |   duration with 1K leafs           |
+|                 |         and 1 member at level 4      |   and 20 members at level 4        |
+|                 |:------------------------------------:|:----------------------------------:|
+| 1.3.5           |  each group   | each rules  | total  | each group|  each rules  |   total |
+|-----------------|:-------------:|:-----------:|:------:|:---------:|:------------:|:-------:|
+| vanilla         | 15 - 25s      | 48 - ? min  |   35h  | 27 - 74s  |  57-100min   | **~6days**|
+| + 49031         | 6 - 16s       | 28 - ? min  |   20h  |    -      |     -        |     -    |
+| + 49031 + 48861 |   -           |    -        |    -   | 21-50s    |   2-4min     | **7h30**     |
+
+
+**Conclusions**: Adding a nested group with few members(20)
+
+- It is **~20times faster with 49031 + 48861** vs. DS 1.3.5
+- Even **with 49031 + 48861** the ADD **is extremly long: 2-4minutes**
 
 The test **49031 + 48861** was done with this configuration of [create_test_data.py](https://github.com/freeipa/freeipa-tools/blob/master/create-test-data.py)
 
