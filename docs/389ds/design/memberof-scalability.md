@@ -1345,7 +1345,9 @@ Imagine we switch to depth first after fixup of Grp_1_A, we hit the same issue
 
 This option comes from a brand new algo implemented is a python [prototype](https://fedorahosted.org/389/attachment/ticket/48856/0001-Ticket-48856-Reference-implementation-in-python-of-t.patch).
 
-It is still under discussion see [48856 thread](https://fedorahosted.org/389/ticket/48856)
+It is still under discussion see [48856 thread](https://fedorahosted.org/389/ticket/48856). It is an approach top-down of the update that propagate the membership update impacts from root to leafs. It uses the computed *memberof* attribute on a given node to determine if it is necessary to propagate the update to its children. A drawback of the algo is that a given node may need to be read (updated ?) several times if there are several paths to it. 
+
+Knowing that the key factor of the performance is the number of read, we need to confirm the number of lookup/(updates).
 
 
 
@@ -1390,6 +1392,27 @@ Let *group_n* be the ancestor (parent or grand parent...) of **N** descendants, 
 - Type 1: From ~3000 to ~600 internal searches
 - Type 2: From ~3000 to ~600 internal searches
 - Type 3: From ~3700 to ~600 internal searches
+
+#### Graph loop: disable the cache
+
+A corner case occurs when the update impacts a graph having a loop.
+
+When there is a loop, the recursive fixup should stop but it also means the cached ancestors are invalid. For example let a MOD operation that ADD G2 and G3 as member of G1. While G1 was member of G2 and G3. With the status:
+
+- G2 is member of G1
+- G3 is member of G1
+- G1 is member of G2
+- G1 is member of G3
+- G2 is member of G4
+- G3 is member of G5
+
+The fixup will start with G2. Ancestors of G2 are G4 plus ancestors of G1. It will search for ancestors of G1, that are ancestors of G2 and G3. It detects loop on G2 and skip ancestors of G2. Finally finds ancestors of G1 are {G2, G3, G5} and ancestors of G2 are {G4, G1, G3, G5}.
+
+Now fixup of G3 finds ancestors of G1 in the cache and the result will be {G1, G2, G5}.
+
+So G1 and G3, although they are in symmetrical situation have not the same number of ancestors because the ancestors of the first branch (G4->G2->G1) were skipped.
+
+For loop detection and cache invalidation two new fields are added to the structure used in fixup see [fixup get_groups](#fixup get_groups structure).
 
 ### keeping groups in the entry cache (ticket to be opened)
 
@@ -1588,6 +1611,23 @@ A flag **valid** in the array indicates if we reach the end (valid==0) of the an
 A node can have no ancestor. To cache this the array element has **NULL** DN/NDN.
 
 The ancestors of a node are stored using the node DN as the key. When freeing the ancestors of that node, the key is stored at the end of the list. So the array element with valid==0 contains **key** that is pointer to the node DN.
+
+### fixup get_groups structure
+
+The data structure used during recursive call to identify ancestors is enhanced
+
+     typedef struct _memberof_get_groups_data
+     {
+             MemberOfConfig *config;
+             Slapi_Value *memberdn_val;
+             Slapi_ValueSet **groupvals;
+             Slapi_ValueSet **group_norm_vals;
+             Slapi_ValueSet **already_seen_ndn_vals; /* NEW to detect loops */
+             PRBool use_cache; /* NEW to invalidate the cache */
+     } memberof_get_groups_data;
+
+Two new fields are reguired. *already_seen_ndn_vals* is the set of nodes found during the *look up*.
+*groupvals* and *group_norm_vals* are new valuesets at each level of the graph, while *already_seen_ndn_vals* and *use_cache* are the same fields passed throught all recursive calls.
 
 
 ### cache priming
