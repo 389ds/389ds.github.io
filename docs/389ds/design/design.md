@@ -98,6 +98,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [NEW Web-based Console](389-web-ui-design.html)
 -   [LDAP REST API](ldap-rest-api.html)
 -   ["o=dmc" Design Page](dmc-design.html)
+-   [Feature Roadmap](rest-roadmap.html)
 
 -------------------------------------------------
 
