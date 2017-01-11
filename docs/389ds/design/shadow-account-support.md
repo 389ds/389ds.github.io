@@ -96,7 +96,6 @@ If it does, it retrieves password policy and fills the shadowAttributes as follo
     shadowMin = passwordMinAge / (60 * 60 *24)
     shadowMax = passwordMaxAge / (60 * 60 *24)
     shadowWarning = passwordWarning / (60 * 60 *24)
-    shadowExpire = (current_time() + passwordMaxAge) / (60 * 60 *24)
     shadowFlag = 0 ## not currently in use.
 
     shadowInactive is not auto-filled since there is no corresponding policy.
