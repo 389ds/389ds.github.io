@@ -215,6 +215,43 @@ Because of the design of dse.ldif and cn=config, an admin who has previously, or
 
 These settings are only for "out of the box defaults". Existing installs will not be affected or changed. This would only apply to new deployments.
 
+Manual tuning in detail
+-----------------------
+
+To describe how the manual tuning works to override the value, we need to look at how Directory Server now picks it's cache values.
+
+
+    nsslapd-dbcachesize: 0
+    nsslapd-cachememsize: 0
+    nsslapd-autosize: 0
+    nsslapd-autosize-split: 0
+
+When a new instance is deployed, it is deployed with the following values.
+
+As the instance starts we carry out the following checks.
+
+    if nsslapd-autosize == 0:
+        nsslapd-autosize = 10% of system free ram.
+    if nsslapd-autosize-split == 0:
+        nsslapd-autosize-split = 40% of memory to dbcache, 60 to entrycache.
+
+    calculate autosizing values
+
+    if (dbcachesize == 0 && nsslapd-autosize == 0) || nsslapd-autosize > 0:
+        dbcachesize = auto db cachesize value, and write to dse.ldif
+    if (cachememsize == 0 && nsslapd-autosize == 0) || nsslapd-autosize > 0:
+        cachememsize = auto entry cachesize value, and write to dse.ldif
+
+All our values start at 0. If dbcachesize or cachememsize have a real value (ie > 0), they are *not* autosized.
+
+If the value is 0, and the autosize value is 0, we calculate the dbcachesize or cachememsize once, then write to the dse.ldif. At this point, these values are non-0 so go to the ffirst step.
+
+If autosize value has been set by the admin, we ignore dbcachesize and always use the autotuned value.
+
+For all intents, this is the same behaviour as current. If dbcachesize is set, use it, but autosize is "prefered".
+
+The difference is that rather than defaulting to a static memory size, we autotune it once on start up, then we write the value as though it was manually tuned.
+
 What happens if glibc stops fragmenting memory?
 -----------------------------------------------
 
