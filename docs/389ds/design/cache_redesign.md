@@ -2,44 +2,35 @@
 title: "DS Cache Structure"
 ---
 
-Overview
-========
+### Overview
 
 Inside of Directory Server we maintain a number of caches. This ranges from the large
 and important entry cache, the DN cache, Normalised DN cache and even the member of cache.
-
 When the NDN cache was added, it never added the performance that was expected of it. This
-is not a fault of the idea, but a fault of the chosen datastructures.
-
-Our server is highly multi threaded but today we are bottlenecked on lock contention and
-limits on our parallelism.
+is not a fault of the idea, but a fault of the chosen datastructures. Our server is highly
+multi threaded but today we are bottlenecked on lock contention which limits our parallelism.
 
 To solve our cache performance issues, and our multicore parallelism we need to rethink
 our approach to caching and locking.
 
-The problem with hashmaps
-=========================
+### The problem with hashmaps
 
-Hashmaps in isolation, are an exceptional and fast datastructure. However there are 
-two fundamental issues with the use of hashmaps in Directory Server.
+Hashmaps in isolation, are an exceptional and fast datastructure. However there are
+fundamental issues with the use of hashmaps in Directory Server.
 
-First is locking. Hash Maps can not be parallelised due to their design. You are either
+* Locking. Hash Maps can not be parallelised due to their design. You are either
 reading the map or you are changing it in some way.
-
-Second is tuning. Hash Maps rely on there being an exact number of buckets for entries
+* Tuning. Hash Maps rely on there being an exact number of buckets for entries
 to be placed into. If there are not sufficent, hash maps devolve into a linked list
 of performance. To make this worse, hashing algorithms for distribution of values are
 not always perfect, and as a result they may not disperse entries as needed for optimal
 access. Hash Maps can not *dynamically* resize to accomodate larger datasets, and need
 to be destroyed and recreated in these situations.
 
-The problem with LRU
-===================
+### The problem with LRU
 
 LRU is the "least replacement used" policy for caches. It requires maintenance of
-a doubly linked list of times.
-
-Generally, the construction of a cache is a Hash Map that points to entries of the
+a doubly linked list of items. Generally, the construction of a cache is a Hash Map that points to entries of the
 doubly linked list. When the entry is read, the item is "cut" out of the middle of the
 list and appended to the tail.
 
@@ -51,11 +42,10 @@ locking. Queues can not be manipulated by multiple threads at a time. As a resul
 to manipulate the LRU list, we need to lock it. This means that we lose parallelism
 in our system, and are serialised over access to the LRU in order to keep it maintained.
 
-The problem in Directory Server
-===============================
+### The problem in Directory Server
 
 In directory server especially, we have *not* tuned our Hash Maps (beside the entry
-cache and occasionally the NDN / DN cache. Our values tend to be in the 2047 mark, which
+cache and occasionally the NDN / DN cache. Our bucket values tend to be in the 2047 mark, which
 testing has shown falls off a performance cliff past 10,000 items. Directory Server
 often exceeds millions of objects. This is just not good enough for our needs.
 
@@ -68,8 +58,7 @@ our access to it in order to update the LRU. We can only progress one operation
 thread at a time!
 
 
-Proposal: Copy on Write Trees and LRU
-=====================================
+### Proposal: Copy on Write Trees and LRU
 
 If we invert the set of problems in our current system we can explore a list of
 properties that we need in our new system.
@@ -85,7 +74,7 @@ From this we can design a better structure that can provide this.
 I propose that we use a Copy on Write B+Tree LRU cache. This is able to satisfy
 the properties required.
 
-### Tuning
+#### Tuning
 
 B+Trees unlike Hash Maps don't fall off a cliff if they are not tuned with an
 exact number of buckets. They only require a size (or lack of) for storing items.
@@ -94,23 +83,21 @@ This means that a number of our caches where we statically allocate a size, we a
 able to either provide a better size limit as a proportion of ram (see our autotuning)
 , or we can allow them to scale as needed based on demand.
 
-### Resizing
+#### Resizing
 
 B+Trees automatically grow and contract based on values within, and do not have issues
 with resizing. If built into an LRU, you could in software change the upper or lower bound
 which would allow the values to be evicted (in case of shrink) live.
 
-### Size boundaries
+#### Size boundaries
 
 Just like a hash map, we can track the number of values and nodes in the tree to gain
-accurate values of size consumption of the cache.
+accurate values of size consumption of the cache. Rather than a hashmap which has a size
+for number of buckets, the cache would actually enforce the size boundary.
 
-Rather than a hashmap which has a size for number of buckets, the cache would actually
-enforce the size boundary.
+#### Locking and LRU
 
-### Locking and LRU
-
-These two both need to be minimised, and are key to the choice of what I am proposing.
+These two both have a high cost that needs to be minimised, and are key to the choice of what I am proposing.
 
 The cache would move through a number of states based upon the current size of the entries
 in the tree.
@@ -153,20 +140,19 @@ The trick with the maintain phase, is that we don't want to *always* maintain th
 about keeping *hot* entries that are read a lot. It's been shown that RRU (random) is as fast as LRU in most cases.
 This is basically an extended version of RRU with semi LRU semantics.
 
-### Write Back - Write Through
+#### Write Back - Write Through
 
 The cache could be designed to support write back and write through semantics. I think that for the most part
 we want Write Through anyway, so I'm not very invested in making Write Back.
 
-### Other benefits
+#### Other benefits
 
 This would allow us to distinguish between a read only transaction versus a write transaction in DS plugin
 calls. This would make our search paths faster, and allow us more parallelism in operations of the server.
 
-Questions
-=========
+### Questions
 
-### Why not just tune the Hash Maps better?
+#### Why not just tune the Hash Maps better?
 
 Because I'm sick of tuning things. Customers hate tuning things. We need to dynamically
 scale, we need to get our server right. We should not place the burden of our mistakes
@@ -175,7 +161,7 @@ on the user, we must improve ourselves.
 As well, Hash Maps are still unbounded in size, and require locking. Two things that
 will prevent us truly scaling to larger hardware in the future.
 
-### This seems really complex
+#### This seems really complex
 
 Not more so that having multiple different datastructures pulled into DS that all
 required different locking and designs. By externalising this to libsds, we have a

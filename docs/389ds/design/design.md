@@ -167,12 +167,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Logging Performance Improvement](logging-performance-improvement.html)
 -   [Dsadm and Dsconf](dsadm-dsconf.html)
 -   [Nunc Stans Workers](nunc-stans-workers.html)
-
-
-
-
-
-
-
+-   [Cache Redesign](cache_redesign.html)
+-   [Pblock Breakup](pblock-breakup.html)
 
 
