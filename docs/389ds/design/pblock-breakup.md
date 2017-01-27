@@ -40,6 +40,11 @@ The pblock uses a number of nested structs, some of which are heap allocated. No
 all the code paths of the get/set check for null pointers which may add a saftey
 risk to the structure.
 
+#### Memory fragmentation
+
+We have signifigant issues with memory fragmentation and reclaimation. Reducing
+the size of our structs will help to ease the burden on the memory allocator.
+
 ### How to resolve it
 
 The properties of the pblock really show that we tend to use different parts. We
