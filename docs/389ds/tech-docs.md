@@ -178,6 +178,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [How to SNMP Monitoring](howto/howto-snmpmonitoring.html)
 -   [How to DS Admin Migration](howto/howto-ds-admin-migration.html)
 -   [Zimbra Schema Integration (Spanish)](http://wiki.fedora-ve.org/WilmerJaramillo/ZimbraSchema)
+-   [How to MIgrate from Trac to Pagure](howto/howto-migrate-to-pagure.html)
 
 #### Legacy How To's
 
