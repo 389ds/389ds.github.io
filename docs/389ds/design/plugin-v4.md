@@ -26,6 +26,8 @@ many deadlock conditions in the past.
 
 This is *not* a backwards compatible change. Plugins must be *redesigned* to work.
 
+v3 plugins will continue to operate, but will cause errors to be logged and certain fall backs to activate.
+
 #### Pblock v4
 
 * Complete use of inttypes.h, with explicit sizings. No more int, long, long long (which are all variable length!!!).
@@ -50,17 +52,17 @@ The reason for this is you have a const type from the pblock (you shouldn't chan
 * All plugin operations are within a transaction
 * Guarantees of atomicity of configuration and plugin private data during every operation. Plugins should not need a mutex inside them!
 * The transaction may be read only or read and write
-* Plugins should return a plugin result type. For example
+* Plugins should return a plugin result type. For example:
 
-    enum uint64_t {
-        SLAPI_V4_PLUGIN_SUCCESS,
-        SLAPI_V4_PLUGIN_FAILURE
-    } typedef slapi_v4_plugin_result_codes;
+        enum uint64_t {
+            SLAPI_V4_PLUGIN_SUCCESS,
+            SLAPI_V4_PLUGIN_FAILURE
+        } typedef slapi_v4_plugin_result_codes;
 
-    struct _slapi_v4_plugin_result {
-        slapi_v4_plugin_result_codes result,
-        char *msg,
-    } typedef slapi_v4_plugin_result;
+        struct _slapi_v4_plugin_result {
+            slapi_v4_plugin_result_codes result,
+            char *msg,
+        } typedef slapi_v4_plugin_result;
 
 Now the plugin function signature would be:
 
