@@ -169,5 +169,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Nunc Stans Workers](nunc-stans-workers.html)
 -   [Cache Redesign](cache_redesign.html)
 -   [Pblock Breakup](pblock-breakup.html)
+-   [Plugin Version 4](plugin-v4.html)
+-   [Password extensibility](password-extensibility.html)
 
 
