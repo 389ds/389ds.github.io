@@ -47,7 +47,7 @@ During a password set, we need to be able to direct the cleartext password mater
 * ipaNTPassword
 * kerberos credentials
 
-A plugin would register a function as PLUGIN_PASSWORD_STORE_FN, PLUGIN_PASSWORD_STORE_COMMIT_FN and PLUGIN_PASSWORD_STORE_ABORT_FN.
+A plugin would register a function as PLUGIN_PASSWORD_STORE_FN. Please see [Plugin Version 4](plugin-v4.html) for more about transactions and how this interacts.
 
 Plugin order is non-determinined, and should not affect this operation.
 
@@ -58,9 +58,7 @@ The plugin is given the parameter block that contains a complete copy of the tar
 On an error or success the plugin returns a slapi_plugin_result. The server will send the ldap response and log a generic failure message for the plugin. After a plugin
 has errored, the operation is aborted, and rolled back.
 
-If the plugin has registered a STORE_ABORT_FN, this is called during the abort process so that external plugins may undo any changes that the internal write TXN does not cover.
-
-Only if all plugins succeed (or ignore the operation ie suceed) is the change commited. If a plugin has registered a STORE_COMMIT_FN, this is called at this point to single the operation is successful.
+Only if all plugins succeed (or ignore the operation ie suceed) is the change commited.
 
 The benefit of this is that plugins can:
 
