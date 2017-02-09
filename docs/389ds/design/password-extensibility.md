@@ -17,12 +17,15 @@ There are 4 areas we need to improve.
 
 * If possible this should be for the proposed plugin v4 api.
 * We will move current pwenc functions and verification into an internal userPassword plugin.
+* That there is a global config item boolean representing password migration mode as true or false.
 
 #### Password quality checking
 
 Before a password set operation, there have been requests to customise the password quality checking process in extended ways.
 
 A plugin would register a function as PLUGIN_PASSWORD_QUALITY_FN.
+
+If password migration is enabled (true), password quality is not checked. (Can't check quality of a hash!)
 
 Plugin order is non-determinined, and should not affect this operation.
 
@@ -48,6 +51,10 @@ During a password set, we need to be able to direct the cleartext password mater
 * kerberos credentials
 
 A plugin would register a function as PLUGIN_PASSWORD_STORE_FN. Please see [Plugin Version 4](plugin-v4.html) for more about transactions and how this interacts.
+
+If password migration mode is enabled, we do not intercept and hash values. They are written "as is" to the database, by passing the hash functions.
+
+If password migration mode is enabled and an ldap extended password change operation is performed, we fail with unwilling to perform immediately.
 
 Plugins can register attributes which the server should consider to indicate the need for a password change. For example, userPassword plugin would register that any change to
 userPassword indicates the PLUGIN_PASSWORD_STORE operation should begin, and all plugis updated. Similarly, a change to say ipaNTPassword would trigger the same. This allows any
