@@ -101,7 +101,7 @@ Only possible in cases where a custom replication hook is implemented
 
     "Error (4) Unable to parse the response to the startReplication extended operation. Replication is aborting."
 
- error, NSDS50_REPL_CONN_ERROR, "Unable to receive the response for a startReplication extended operation to consumer. Will retry later."
+    "Error (16) Unable to receive the response for a startReplication extended operation to consumer. Will retry later."
 
     "Error (0) Unable to obtain current CSN. " "Replication is aborting."
 
@@ -184,7 +184,7 @@ In the current version this is treated as FATAL error, but it could be resolved 
 Updates are sent asynchronously to the consumer, a result thread is created to collect the response messages. The (rc) gives an indication why the thread could not be created.
 
 
-    "Error (15) : Invalid parameter passed to cl5GetNextOperationToReplay"A
+    "Error (15) : Invalid parameter passed to cl5GetNextOperationToReplay"
 
 General error if changelog cannot be processed, eg if the path does not exist
 
@@ -203,10 +203,12 @@ On each server a "replica keep alive" entry is created to improve performance fo
 
 ### general send_updates result:
 
+The following messages indicate that an error occured, but the error is considered temporary. They look very similar, the differenc
+is where the error originated.
 
     "Error (18) : Incremental update transient error.  Backing off, will retry update later."
 
-An error occured during changelog processing which is not fatal. The error log will contain more details.
+An error occured on the local server during changelog processing which is not fatal. The error log will contain more details.
 
     "Error (16) : Incremental update connection error.  Backing off, will retry update later."
 
