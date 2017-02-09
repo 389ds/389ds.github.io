@@ -49,6 +49,11 @@ During a password set, we need to be able to direct the cleartext password mater
 
 A plugin would register a function as PLUGIN_PASSWORD_STORE_FN. Please see [Plugin Version 4](plugin-v4.html) for more about transactions and how this interacts.
 
+Plugins can register attributes which the server should consider to indicate the need for a password change. For example, userPassword plugin would register that any change to
+userPassword indicates the PLUGIN_PASSWORD_STORE operation should begin, and all plugis updated. Similarly, a change to say ipaNTPassword would trigger the same. This allows any
+change to a value, to keep all password items in sync. This also allows virtual attributes to be set (ie ipaKerberosPassword) which can be intercepted then removed from the
+operation.
+
 Plugin order is non-determinined, and should not affect this operation.
 
 This function would be called within a write transaction.
