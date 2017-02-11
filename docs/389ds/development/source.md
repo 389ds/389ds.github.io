@@ -11,13 +11,14 @@ These are the sources used by the directory server which are provided by the pro
 
 [All the source tarballs]({{ site.baseurl }}/binaries/)
 
-All of the source is now in git. The git module given below is a sub-directory of the base git URL **git://git.fedorahosted.org/389/** - so for the base directory server, the full git URL is **git://git.fedorahosted.org/389/ds.git**
+All of the source is now in git. The git module given below is a sub-directory of the base git URL **git@pagure.io/389-ds-base.git** - so for the base directory server, the full git URL is **https://pagure.io/389-ds-base.git**
 
-The idm-console-framework is not under 389/ it is at **git://git.fedorahosted.org/idm-console-framework.git**
+The idm-console-framework is not under 389/ it is at **git://git@pagure.io/idm-console-framework.git**
 
 The source code was produced by first doing a git clone to get the repository, then a git archive to produce the source tarball
 
-    git clone git://git.fedorahosted.org/389/MODULENAME
+    git clone https://git@pagure.io/389-ds-base.git
+
     git archive --prefix=PKGNAME/ TAG | bzip2 > PKGNAME.tar.bz2
 
 ### 389 Admin Server and Console packges 1.1.46
@@ -42,7 +43,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA256SUM|
 |--------------|----------|-------|---------|-------|
-|[389-ds-base-1.3.6-git](https://git.fedorahosted.org/git/389/ds.git)|ds.git|389-ds-base-1.3.6-git|[Building](building.html)|N/A, checkout from git|
+|[389-ds-base-1.3.6-git](https://pagure.io/389-ds-base.git)|ds.git|389-ds-base-1.3.6-git|[Building](building.html)|N/A, checkout from git|
 |[nunc-stans-0.2.1.tar.xz]({{ site.baseurl }}/binaries/nunc-stans-0.2.1.tar.xz)|nunc-stans.git|0.2.1|[Building](building-nunc-stans.html)|ee87a1e090e2b06616f3626c14c465226fadcf2d0d42bd4a178771b4a5ecf972|
 |[svrcore-4.1.2.tar.bz2]({{ site.baseurl }}/binaries/svrcore-4.1.2.tar.bz2)|svrcore.git|4.1.2|[Building](building-svrcore.html)|67e51a868c8dc2ddbf5661ecb0a07dea7721a9ed99f6261cedd3351bfc4cd023|
 
@@ -59,7 +60,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 ### 389 Directory Server 1.3.4
 
-389-ds-base uses git repo 389/ds.git branch 389-ds-base-1.3.4 (branched 19-Jun-2015)
+389-ds-base uses git repo https://pagure.io/389-ds-base.git branch 389-ds-base-1.3.4 (branched 19-Jun-2015)
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|

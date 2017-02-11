@@ -42,7 +42,7 @@ Source Code and Build Instructions
 
 |Component|GIT Repository|Clone the Repository|
 |---------|------|
-|**Directory Server** ([build & debug instructions](development/building.html))| <https://git.fedorahosted.org/git/389/ds.git>| git clone git://git.fedorahosted.org/git/389/ds.git<br>git clone ssh://git.fedorahosted.org/git/389/ds.git|
+|**Directory Server** ([build & debug instructions](development/building.html))| <https://git@pagure.io/389-ds-base.git>| git clone https://git@pagure.io/389-ds-base.git<br>git clone ssh://git@pagure.io/389-ds-base.git|
 |**Nunc-Stans** ([build & debug instructions](development/building-nunc-stans.html))| <https://git.fedorahosted.org/git/nunc-stans.git>| git clone git://git.fedorahosted.org/git/nunc-stans.git<br>git clone ssh://git.fedorahosted.org/git/nunc-stans.git|
 |**AdminUtil** ([build instructions](administration/adminutil.html)) | <https://git.fedorahosted.org/git/389/adminutil.git>| git clone git://git.fedorahosted.org/git/389/adminutil.git<br>git clone ssh://git.fedorahosted.org/git/389/adminutil.git|
 |**Admin Server** ([build & debug instructions](administration/adminserver.html#build)) | <https://git.fedorahosted.org/git/389/admin.git>| git clone git://git.fedorahosted.org/git/389/admin.git<br>git clone ssh://git.fedorahosted.org/git/389/admin.git|

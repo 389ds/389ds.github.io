@@ -1,5 +1,5 @@
 # Do not use tabs in this file!
-repository: https://git.fedorahosted.org/cgit/389/
+repository: https://pagure.io/389-ds-base/
 
 # Required for running on Ruby 1.9
 encoding: utf-8
