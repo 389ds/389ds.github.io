@@ -7,16 +7,26 @@ title: Development Page
 
 {% include toc.md %}
 
+Directory Server is huge! Where do I even start?
+------------------------------------------------
+
+The best way to start is not to try and write code straight up. Install a Directory Server instance, and use it. Join our users list and ask questions - We are nice people, no question is bad (read our archives if you don't believe me).
+
+As you use a piece of software, you'll start to see rough edges, things that could be better, even ways you wish you could use it differently. Talk to us, and see if you could help by giving us ideas, or even writing it yourself. We'll help guide you in the process. Raising a bug is just as important as the potential to write a fix.
+
+Many of us in the team started by asking questions and raising bugs - Not by jumping in the deep end with patches.
+
 Developer's
 -----------
 
 Developers should check out our [building](development/building.html) and [install](legacy/install-guide.html) guides to see how to build and install the server from source. Then you can get working on fixing [bugs](FAQ/bugs.html), adding new [features](FAQ/features.html), adding new test cases to [lib389 Continuous Integration](FAQ/upstream-test-framework.html), or improving our [documentation](documentation.html).  For other ideas see [ways to contribute](FAQ/ways-to-contribute.html).
 
-To browse through our backlog of development tickets, access the [389 Trac instance](FAQ/bugs.html).
+To browse through our backlog of development tickets, access the [389 Trac instance](FAQ/bugs.html). The team can help advise you on the potential complexity or simpliticy of any issue want to attempt.
 
-If you want to contribute code to the project you should look at our [contributing](development/contributing.html) page. It contains information on the process you have to go through to be able to submit patches we will accept as well as getting a git. From a more technical standpoint, before submitting a patch you should check out our [coding style](development/coding-style.html) guide. Once your patch is approved, see the [Git rules](development/git-rules.html) before checking anything in.
+If you want to contribute code to the project you should look at our ICLA on this page. It contains information on the process you have to go through to be able to submit patches we will accept as well as getting a git. From a more technical standpoint, before submitting a patch you should check out our [coding style](development/coding-style.html) guide. Once your patch is approved, see the [Git rules](development/git-rules.html) before checking anything in.
 
 Please take some time to review our [license](FAQ/licensing.html).
+
 
 Guidelines
 ------------
@@ -106,7 +116,6 @@ If you know python, you can add to the *Continuous Integration Testing Framework
 What can you do?
 ----------------
 
--   [How to Contribute](FAQ/ways-to-contribute.html)
 -   [Write a Wiki Page](howto/howto-write-wiki-page.html)
 -   [Roadmap](FAQ/roadmap.html)
 -   Timelines
@@ -120,4 +129,19 @@ Contributors
 -   [Mailing Lists, IRC](mailing-lists.html)
 -   [389 Trac instance](FAQ/bugs.html)
 -   Players (people involved)
+
+Contributor License Agreement
+-----------------------------
+
+If you want to submit code and patches you need to sign the Fedora [Individual Contributor License Agreement](individual-contributor-license-agreement.html).
+
+### Individual Contributor License Agreement
+
+This is easy to do. Just follow these steps:
+
+-   Go to <https://admin.fedoraproject.org/accounts/user/new> and create a new account - or Login if you already have an account
+-   Go to <https://admin.fedoraproject.org/accounts/cla/> and submit the on-line form
+    -   Some older versions of this text say that you have to print out, sign, and mail/fax/email the form. This is no longer a requirement for the ICLA - the click through is sufficient for the ICLA.
+
+
 

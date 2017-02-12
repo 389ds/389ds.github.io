@@ -35,8 +35,6 @@ A Directory Server is not a valuable piece of software in and of itself. It's im
 ### **Contributing to it...**
 ------------------------------
 
-The 389 Directory Server Project is an open source project. This means that we would hope that - whether or a you're a user or a developer - you will contribute back to the project. There are quite a few ways that you can do this, no matter what your skill level. Our [ways to contribute](ways-to-contribute.html) page contains a lot of information on how you might get more involved in the project. You should also have a look at our [mission](mission.html) page which describes what we're trying to do here.
-
-Our [contributing](../development/contributing.html) page contains the steps that you will need to take to get set up so you can contribute code to the project.
+The 389 Directory Server Project is an open source project. This means that we would hope that - whether or a you're a user or a developer - you will contribute back to the project. There are quite a few ways that you can do this, no matter what your skill level. Our [development](../development.html) page contains a lot of information on how you might get more involved in the project. You should also have a look at our [mission](mission.html) page which describes what we're trying to do here.
 
 

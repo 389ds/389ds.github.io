@@ -103,13 +103,7 @@ In general we follow the [guidelines](http://fedoraproject.org/wiki/FAQ) of the 
 
 ### How can I help?
 
-You can [assist](ways-to-contribute.html) in any number of ways:
-
--   [Testing](../development.html)
--   [Participate in mailing lists](../mailing-lists.html)
--   [Documentation](../documentation.html)
--   [Report Bugs](bugs.html )
--   [Fix Bugs](../development.html)
+You can in any number of ways: See our [development](../development.html)page for more!
 
 ### How is 389 different from OpenLDAP?
 
@@ -258,7 +252,7 @@ You can certainly rebrand the software to fit your needs. The [licensing](licens
 
 ### Who maintains this project?
 
-Along with [contributors](ways-to-contribute.html) from the community this project is maintained by Red Hat.
+Along with [contributors](../development.html) from the community this project is maintained by Red Hat.
 
 ### What are the goals of this project in the future?
 
@@ -275,11 +269,11 @@ Yes, we have them. We're most interested in building a community around the Dire
 
 ### How do I contribute to the code base?
 
-Firstly, please read [Contributing](../development/contributing.html). In order for the Project to accept any contributions into CVS, you will need to follow the instructions and fill out the form listed on that page.
+Please read [Contributing](../development.html).
 
 ### Why do I have to hand over the copyright in my work to Red Hat in order to contribute?
 
-In short, so that the rights on the licensing, copyright, and patent fronts are clear. This gives us the ability to re-license the code (e.g. upgrade to GPLv3 when it is available) without having to contact all N copyright holders first (a big problem for some open source projects). Please refer to the "About the CLA" section on the [Contributing](../development/contributing.html) page for more information.
+In short, so that the rights on the licensing, copyright, and patent fronts are clear. This gives us the ability to re-license the code (e.g. upgrade to GPLv3 when it is available) without having to contact all N copyright holders first (a big problem for some open source projects). Please refer to the "About the CLA" section on the [Contributing](../development.html) page for more information.
 
 ### But this gives you the ability to be evil!
 
@@ -291,14 +285,6 @@ We're not taking away any rights you currently have. You're just granting us the
 ---------------------------------------
 
 See the [Building](../development/building.html) page for detailed instructions.
-
-### Failure building cyrus-sasl
-
-If you are having problems building cyrus-sasl and receiving an error message like:
-
-    ./plugins/sasldb.c:129: fatal error: opening dependency file .deps/../plugins/sasldb.Tpo: No such file or directory
-
-Try installing the db4-devel package.
 
 ### Apache httpd for Admin Server
 
