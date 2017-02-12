@@ -23,7 +23,7 @@ There are 4 areas we need to improve.
 
 Before a password set operation, there have been requests to customise the password quality checking process in extended ways.
 
-A plugin would register a function as PLUGIN_PASSWORD_QUALITY_FN.
+A plugin would register a function as PLUGIN_PASSWORD_QUALITY_FN. (NOTE: Could be renamed to PLUGIN_PASSWORD_POLICY_FN to indicate it can do more than just "check quality", but can apply more broad decisions?)
 
 If password migration is enabled (true), password quality is not checked. (Can't check quality of a hash!)
 
@@ -32,6 +32,8 @@ Plugin order is non-determinined, and should not affect this operation.
 This function would be called within a write transaction - but should not write to the system.
 
 The plugin is given the parameter block that contains a complete copy of the target entry, and the cleartext password material from the modification (userPassword field or extended operation).
+
+Depending on requirements, we may provide the operation context to the plugin for decisions (IE is this extop vs modify). (NOTE: May not actually be needed, it's a weak usecase. You probably want the checks on all operations, not just "some", because else you would bypass the quality / policy).
 
 On an error or success the plugin returns a slapi_plugin_result. The server will send the ldap response and log a generic failure message for the plugin. After a plugin
 has errored, the operation is aborted, and rolled back.

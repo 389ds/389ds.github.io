@@ -26,11 +26,27 @@ General Rules
 -------------
 
 -   All source and header files should include a copy of the license.
+-   C99 is the minimum version we target (no c89 mode).
 -   Stick to a K&R coding style.
     -   Space after keywords
     -   Curly braces on same line as if/while.
 -   Prefer NSPR functions for file, string, memory allocation, etc. if at all possible.
 -   All code should be peer reviewed before being checked in.
+-   Our code is used internationally, so use simple english in messages.
+-   Don't add extra dependencies unless they are needed. Every dependency is a potential "new project" we may need to adopt. If we need a small function, just write that rather than using micro dependencies.
+-   Keep messages short, direct, and offer direction. For example, a bad message is:
+
+    An error occured, please check the error log.
+
+A better message is:
+
+    An error occured processing operation=X: Invalid dn.
+
+A great message is:
+
+    ERROR: Processing add operation=X: DN containing "z" is invalid.
+
+Messages should direct a user or admin where to go to solve the problem, not to just make them aware of it.
 
 Statements
 ----------
@@ -57,13 +73,6 @@ Statements
         } else {     
             /* stuff that only uses one line */     
         }     
-
--   The corollary is also true; don't use braces if there's only one line for both:
-
-        if (foo)     
-            bar();     
-        else     
-            baz();     
 
 -   Avoid last-return-in-else problem. Code should look like this:
 
@@ -111,6 +120,14 @@ Statements
             break;     
         }     
 
+-   Braces are required on all conditionals and for loops. Code like the following will be rejected at review. The reason for this is it can cause accidental logic mistakes that are hard to detect.
+
+        if (foo)     
+            bar();     
+        else     
+            baz();     
+
+
 Comments
 --------
 
@@ -125,7 +142,8 @@ Comments
 Indentation
 -----------
 
--   Try to keep lines 80 characters or less.
+-   There is no limit on characters per line, but excessive wide text should be avoided. This is a very subjective topic, so if you want a hard number, less than 120 chars.
+-   Avoid spliting strings across lines: If a message is long, leave it on one line, or make the message clearer and simpler.
 -   Indentation is 4 spaces.
 -   No tabs, use spaces. Your editor should take care of most of this but in patches tabs stick out like sore thumbs.
 -   When wrapping lines, try to break it:
@@ -151,6 +169,29 @@ Variable Declarations
 
 -   Initialize at declaration time when possible.
 -   Declare variables at the beginning of a block to maintain C99 compatibility.
-
 -   No tabs, use spaces. Your editor should take care of most of this but in patches tabs stick out like sore thumbs.
+-   Avoid the use of memset. You can either use {0} for struct or arrays on the stack, or use calloc. memset has signifigant performance impact on our system.
+
+    Slapi_PBlock pb = {0};
+    uint64_t arr[10] = {0};
+    struct foo *f = slapi_ch_calloc(sizeof(foo));
+
+-   Avoid variable reuse. Free and allocate a new one, or in a loop, declare inside the loop block. Don't reuse structs as this allow corruption to pass through iterations, and breaks dynamic analysis tools.
+
+Types
+-----
+
+- Avoid nested struct definitions. This is inefficent for memory allocation and hard to follow the struct contents. IE:
+
+    struct x {
+        struct y {
+            member z;
+        }
+    ...
+    }
+
+
+- Avoid void * in all possible cases. Unless you are writing a low level datastructure (you shouldn't be), you should not need this! Having concrete types lets the compiler find mistakes for us - We are only human after all.
+- Avoid the use of variable size types. This includes int, long, long long, double etc. Please use concrete types from inttypes.h or nspr.h. (ie int32_t, PRUint64)
+
 
