@@ -15,6 +15,10 @@ Goals
 
 This project isn't just about software, it's also about people. We need to operate as a community of mutually respected peers. There can be no rule by fiat here, only a technical meritocracy.
 
+**Correct and usable out of the box**
+
+You shouldn't need to do a security audit of Directory Server when you install it: It should be secure (correct access controls, strong crypto, clear behaviour) out of the box. The default settings should be correct (automatic tuning, safe scalable settings, useful plugins). But if not, it should be clear how to adjust settings of your instance.
+
 **To integrate with as much software as possible.**
 
 Want a place to store settings for the desktop? This is the place. Have a data set that is searched more than it's updated? Maybe putting it in this directory server is the right way to go. Need a central location for authorization and authentication information? This is the obvious location. It's not enough that this software be used in the classic directory server places: we want it to be ubiquitous.
