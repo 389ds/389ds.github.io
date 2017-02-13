@@ -104,3 +104,19 @@ Relocating "plugin_call_acl_plugin" call prior to BE_PRE plug-in.
 ## Notes
 
 The order change does not impact the acceptance test results.
+
+## Details after implementation and consideration
+
+Update: 2017-02-13
+
+This has now been implemented in https://pagure.io/389-ds-base/issue/47925.
+
+As per the notes, this does not change the acceptance test results.
+
+We now execute ADD, MODIFY and DELETE with:
+
+    ACI Check
+    Call plugins
+
+This means plugins are privileged and can act on behalf of a user: This is a good thing! It means a user doesn't need access to other subtrees to create user private groups etc. It also means we exit sooner if an invalid add/mod/delete is provided, before we start work on plugins then having to roll back. This makes failures faster.
+
