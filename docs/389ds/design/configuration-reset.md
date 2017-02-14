@@ -105,6 +105,14 @@ The admin isn't happy, so they yum downgrade:
 
 No scripts or other intervention was needed to roll the setting back between the two versions.
 
+Notes
+=====
+
+Password Storage Scheme
+-----------------------
+
+These configurations include the default password storage scheme for the system password policy. We have chosen the scheme to be the most widely avaliable on all currently
+supported versions of Directory Server. This scheme will be upgraded like any other configuration as server requirements change, and older versions EOL. We hope to continually improve our password storage scheme through this function, without need for administrator intervention.
 
 Author
 ======
