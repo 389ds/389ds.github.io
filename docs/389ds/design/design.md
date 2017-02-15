@@ -172,5 +172,6 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Pblock Breakup](pblock-breakup.html)
 -   [Plugin Version 4](plugin-v4.html)
 -   [Password extensibility](password-extensibility.html)
+-   [Transactional Operations](transactional-operations.html)
 
 
