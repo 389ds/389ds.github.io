@@ -3,6 +3,9 @@ title: "Transactional operations in server"
 ---
 {% include toc.md %}
 
+# Transactional operations in Directory Server
+----------------------------------------------
+
 ## Overview
 -----------
 
@@ -279,32 +282,32 @@ Goals:
 
 * cleanup source tree  G1:
 
-    proposed hierarchy
-    └── ds
-        ├── configure.ac
-        ├── docs
-        │   └── ds.doxy
-        ├── m4
-        ├── Makefile.am
-        ├── rfcs
-        ├── rpm
-        └── src
-            ├── libsds
-            ├── libslapd
-            ├── libspal
-            ├── ns-slapd
-            │   └── plugins
-            ├── ns-slapd-tools
-            │   ├── dbscan
-            │   ├── dsktune
-            │   ├── infadd
-            │   ├── ldclt
-            │   ├── ldif
-            │   ├── migratecred
-            │   ├── mmldif
-            │   ├── pwdhash
-            │   └── rsearch
-            └── nunc-stans
+        proposed hierarchy
+        └── ds
+            ├── configure.ac
+            ├── docs
+            │   └── ds.doxy
+            ├── m4
+            ├── Makefile.am
+            ├── rfcs
+            ├── rpm
+            └── src
+                ├── libsds
+                ├── libslapd
+                ├── libspal
+                ├── ns-slapd
+                │   └── plugins
+                ├── ns-slapd-tools
+                │   ├── dbscan
+                │   ├── dsktune
+                │   ├── infadd
+                │   ├── ldclt
+                │   ├── ldif
+                │   ├── migratecred
+                │   ├── mmldif
+                │   ├── pwdhash
+                │   └── rsearch
+                └── nunc-stans
 
 * Fix code white space  G1
 * Clean up headers and visibility  G3 [ds 49124](https://pagure.io/389-ds-base/issue/49124)
