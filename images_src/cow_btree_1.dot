@@ -1,0 +1,24 @@
+digraph g {
+node [shape = record,height=.1];
+nodehdr[label = "COW B+Tree txn_id=1 "];
+subgraph c2 {
+    rank="same";
+    txn_1 [label ="txn_1"];
+}
+subgraph c1 { 
+    rank="same";
+    node_0x60200000fc40 [label =" {  node=0x60200000fc40 items=1 txn=1 | { <f0> | 4 | <f1> | 0 | <f2> | 0 | <f3> | 0 | <f4> | 0 | <f5> }}"]; 
+}
+subgraph c0 { 
+    rank="same";
+    node_0x60200000fe40 [label =" {  node=0x60200000fe40 items=3 txn=0 | { <f0> | 1 | <f1> | 2 | <f2> | 3 | <f3> | 0 | <f4> | 0 | <f5> }}"]; 
+}
+subgraph c0 { 
+    rank="same";
+    node_0x60200000fd40 [label =" {  node=0x60200000fd40 items=3 txn=1 | { <f0> | 4 | <f1> | 5 | <f2> | 6 | <f3> | 0 | <f4> | 0 | <f5> }}"]; 
+}
+"txn_1" -> "node_0x60200000fc40";
+"node_0x60200000fc40":f0 -> "node_0x60200000fe40"; 
+"node_0x60200000fc40":f1 -> "node_0x60200000fd40"; 
+}
+

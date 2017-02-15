@@ -8,4 +8,7 @@ all:
 	dot -o ../images/o_dmc_configuration_tree.svg -Tsvg o_dmc_configuration_tree.dot
 	dot -o ../images/marks_dmc_tree.svg -Tsvg marks_dmc_tree.dot	
 	dot -o ../images/marks_dmc_tree_20160125_wibrown.svg -Tsvg marks_dmc_tree_20160125_wibrown.dot
+	dot -o ../images/cow_btree_1.svg -Tsvg cow_btree_1.dot
+	dot -o ../images/cow_btree_2.svg -Tsvg cow_btree_2.dot
+	dot -o ../images/cow_btree_3.svg -Tsvg cow_btree_3.dot
 
