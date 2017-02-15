@@ -16,6 +16,17 @@ The risk of this is that this performance that makes it good for cryptographic v
 
 Key derivation functions on the other hand are design to force you to expend resources, through multiple rounds (CPU hard), memory usage (memory hard) or others. PBKDF2 is a CPU hard KDF, with variable tuning. Overtime we will adjust the timing in DS as CPU power increases, so that there is no risk of admins "forgetting" and weakening their systems.
 
+## Parameters
+-------------
+
+PBKDF2 takes a number of "rounds", or the number of times to apply SHA256 to the input.
+
+Due to the risk of this value being forgotten or incorrectly set by an admin, we retain this value as a compile time value in DS.
+
+As of 1.3.6 this value in 30,000 rounds. This will be incremented in the future, so consult the documentation or code for this.
+
+The number of rounds is encoded to the hash output, so an older hash with fewer iterations will still work on a newer server with a greater value.
+
 ## What about scrypt or argon?
 ------------------------------
 
