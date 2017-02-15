@@ -283,7 +283,6 @@ Goals:
 
 * cleanup source tree  G1:
 
-        proposed hierarchy
         └── ds
             ├── configure.ac
             ├── docs
