@@ -114,6 +114,10 @@ Password Storage Scheme
 These configurations include the default password storage scheme for the system password policy. We have chosen the scheme to be the most widely avaliable on all currently
 supported versions of Directory Server. This scheme will be upgraded like any other configuration as server requirements change, and older versions EOL. We hope to continually improve our password storage scheme through this function, without need for administrator intervention.
 
+So to be explicit, as of 2017-02-15 we use SSHA512 for 1.3.x and 1.2.x as the "strongest hash on all supported platforms". This way we do NOT introduce replication issues.
+
+In a future date, if we find that 1.3.6 is the lowest supported version, we can lift this to PBKDF2.
+
 Author
 ======
 

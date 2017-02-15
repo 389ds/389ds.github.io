@@ -148,6 +148,14 @@ We can see that the 712 byte allocation takes roughly twice the time to execute.
 many more branch misses, and greater number of pagefaults, more cpucycles. This is even just
 allocating and freeing, let alone using the struct.
 
+### Compatability checking
+
+A critical point of this change is that we do not want to break the pblock for plugin v3 api.
+
+To ensure this, before changes are made we must guarantee they are tested in the cmocka tests behaviourally,
+so that when we make the underlying change, we do not affect the api.
+
+
 ### Conclusion
 
 The pblock is a low hanging fruit, and cleanup and improvement of our structure can potentially

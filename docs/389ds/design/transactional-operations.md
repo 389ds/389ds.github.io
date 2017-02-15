@@ -231,6 +231,15 @@ For example, the change to a connection table will benefit us without the full s
 
 It is key that as a team we distribute this work so we each have an understanding of the safety model of these structures (even if you can't implement it, you need to know how it works). This way, we are not reliant on a single person to understand the entire system.
 
+### Testing
+-----------
+
+Not such much a risk, but something we should do. Each of these features should be extensively tested *before* and *after*. In some cases, we may reveal the before is broken!
+
+This is not just about stability, but about performance (no regressions), security (no leaks of info, etc), and of stability (no crashes, leaks). This should involve a combination of the cmocka tests, and the lib389 tests. Additionally, we should not just test these features, but commit to broad tests like replication and load tests with these changes, to check for changes in behaviour. An example is a change to the cn=config partition may cause a change to replication that consumes the configuration.
+
+Each feature should documents it's risks and associated required tests. [Pblock Breakup](pblock-breakup.html) already documents these for the v3 compatability guarantee.
+
 ### Serialisation of operations
 -------------------------------
 

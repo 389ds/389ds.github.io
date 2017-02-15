@@ -147,6 +147,16 @@ In the list of proposed function hooks, you will notice these types.
 
 These allow an external plugin to register for events related to transactions. For example, if the kdc were bound to these, it could allow transactions in the kdc to be synced with transaction in the Directory Server. This is vital for external password databases for example. This allows better, generic behaviour of plugins, without needing complex hacks, and keeping them in sync with Directory Server behaviours.
 
+#### Testing
+
+The v4 pblock/plugin test should guarantee:
+
+* No memory leaks
+* Interface guarantees (so if we change items we don't break the behaviour)
+* correct type enforcement
+
+This can be done with sample plugins that assert certain behaviours, or cmocka in certain cases.
+
 #### Limitations of new design
 
 * Mixing v3 and v4 plugins will cause the related RO transaction types of the V4 system to become write transactions (depending on design). For example, a v3 pre_search plugin, would cause the v4 ro pre search to become write transaction. This has parallelism impacts.
