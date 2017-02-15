@@ -134,15 +134,15 @@ I propose that we use copy on write datastructures to achieve this design. A cop
 
 In the first image we see the original state of the tree. We have can take a read only transaction to txn_id 1 here.
 
-![Initial](../../../cow_btree_1.svg)
+![Initial](../../../images/cow_btree_1.svg)
 
 In this image, we can see that we have a read only transaction to txn_id 1, and a write occuring in txn_id 2. Note the way that the tree branch is copied during the write, so the content of txn_id 1 is consistent through out it's operation. After this is commited, all new read transactions would begin on txn_id 2.
 
-![RO txn and write](../../../cow_btree_2.svg)
+![RO txn and write](../../../images/cow_btree_2.svg)
 
 Finally, we close the read transaction on txn_id 1. Since there are no more users of the txn, we can trim the unreferenced nodes, and continue with the tree state as txn_2
 
-![Close](../../../cow_btree_3.svg)
+![Close](../../../images/cow_btree_3.svg)
 
 Multiple read transactions states can be present. In other words if you do:
 
@@ -250,34 +250,34 @@ Read throughput would be unblocked from writes, which should allow us to see an 
 
 Goals:
 
-1) Core and clean up
-2) Modularisation
-3) Plugin version 4
-4) Transactions
+* 1) Core and clean up
+* 2) Modularisation
+* 3) Plugin version 4
+* 4) Transactions
 
 #### 1.3.6 (outside of DS)
 --------------------------
 
-* Finish COW B+Tree (4 https://pagure.io/libsds/issue/1 )
-* Decouple transaction manager  (2 https://pagure.io/libsds/issue/9 )
-* Write cache implementation   (4 https://pagure.io/libsds/issue/2 )
-* Finish nunc-stans tickets   (2 https://pagure.io/nunc-stans )
+* Finish COW B+Tree  G4 (https://pagure.io/libsds/issue/1)
+* Decouple transaction manager  G2 (https://pagure.io/libsds/issue/9)
+* Write cache implementation  G4 (https://pagure.io/libsds/issue/2)
+* Finish nunc-stans tickets  G2 (https://pagure.io/nunc-stans)
 
 #### 1.3.7
 ----------
 
-* bundle libraries (svrcore, nunc-stans)  (2  )
-* begin breakout of slapi platform abstraction library  (1, 2, https://pagure.io/389-ds-base/issue/49115)
-* Introduce private only slapi v4 api to begin work. No public access, no need to support. (3  )
-* Pblock clean up (1 https://pagure.io/389-ds-base/issue/49097 )
-* Nunc-Stans worker threads  (1 https://pagure.io/389-ds-base/issue/49099 )
-* COW B+Tree for connection management  (4 https://pagure.io/389-ds-base/issue/49098 )
-* COW B+Tree for plugin management   (4  )
+* bundle libraries (svrcore, nunc-stans)  G2
+* begin breakout of slapi platform abstraction library  G1 G2 (https://pagure.io/389-ds-base/issue/49115)
+* Introduce private only slapi v4 api to begin work. No public access, no need to support. G3
+* Pblock clean up G1 (https://pagure.io/389-ds-base/issue/49097)
+* Nunc-Stans worker threads  G1 (https://pagure.io/389-ds-base/issue/49099)
+* Async logging improvements  G1 (https://pagure.io/389-ds-base/issue/48365)
+* COW B+Tree for connection management  G4 (https://pagure.io/389-ds-base/issue/49098)
+* COW B+Tree for plugin management  G4
 
 1.4.0
 
-* cleanup source tree  (1  ):
-
+* cleanup source tree  G1:
 
     └── ds
         ├── configure.ac
@@ -305,34 +305,33 @@ Goals:
             │   └── rsearch
             └── nunc-stans
 
-* Fix code white space  (1)
-* Clean up headers and visibility (3 https://pagure.io/389-ds-base/issue/49124 )
-* Symbol visibility   (1  )
-* v4 api for RH only use  (3)
-* clean configure with pkg-config over hard paths  (1 https://pagure.io/389-ds-base/issue/49119 )
-* COW B+Tree for ACI internal storage  (4)
-* COW B+Tree for fedse.c (cn=config, cn=schema)  (4)
-* COW B+TRee for configuration variable storage  (4)
-* Async logging improvements (1 https://pagure.io/389-ds-base/issue/48365 )
+* Fix code white space  G1
+* Clean up headers and visibility  G3 (https://pagure.io/389-ds-base/issue/49124)
+* Symbol visibility  G1
+* v4 api for RH only use  G3
+* clean configure with pkg-config over hard paths  G1 (https://pagure.io/389-ds-base/issue/49119)
+* COW B+Tree for ACI internal storage  G4
+* COW B+Tree for fedse.c (cn=config, cn=schema)  G4
+* COW B+TRee for configuration variable storage  G4
 
 * NOTE!! Are there more places we need to make operate in parallel for this?
 
 #### 1.4.1
 ----------
 
-* Convert plugins to plugin v4 api (retaining locks) (3)
+* Convert plugins to plugin v4 api (retaining plugin locks) G3
 
 #### 1.4.2
 ----------
 
-* COW B+Tree cache for LDBM before we have LMDB  (4 https://pagure.io/389-ds-base/issue/49096)
+* COW B+Tree cache for LDBM before we have LMDB  G4 (https://pagure.io/389-ds-base/issue/49096)
 * LMDB  (4)
-* Per-operation transactions for related transactional elements  (4 https://pagure.io/389-ds-base/issue/573 )
+* Per-operation transactions for related transactional elements  G4 (https://pagure.io/389-ds-base/issue/573)
 
 #### 1.4.3
 ----------
 
-* Remove locks inside of plugins  (4)
+* Remove locks inside of plugins  G4
 
 ## Author
 ---------
