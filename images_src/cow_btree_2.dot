@@ -1,6 +1,6 @@
 digraph g {
 node [shape = record,height=.1];
-nodehdr[label = "COW B+Tree txn_id=1 "];
+nodehdr[label = "COW B+Tree txn_id=2 "];
 subgraph c2 {
     rank="same";
     txn_1 [label ="txn_1"];

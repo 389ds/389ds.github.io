@@ -12,7 +12,7 @@
 <!-- nodehdr -->
 <g id="node1" class="node"><title>nodehdr</title>
 <polygon fill="none" stroke="black" points="137,-168.5 137,-191.5 285,-191.5 285,-168.5 137,-168.5"/>
-<text text-anchor="middle" x="211" y="-176.3" font-family="Times,serif" font-size="14.00">COW B+Tree txn_id=1</text>
+<text text-anchor="middle" x="211" y="-176.3" font-family="Times,serif" font-size="14.00">COW B+Tree txn_id=2</text>
 </g>
 <!-- txn_2 -->
 <g id="node2" class="node"><title>txn_2</title>

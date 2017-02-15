@@ -258,27 +258,28 @@ Goals:
 #### 1.3.6 (outside of DS)
 --------------------------
 
-* Finish COW B+Tree  G4 (https://pagure.io/libsds/issue/1)
-* Decouple transaction manager  G2 (https://pagure.io/libsds/issue/9)
-* Write cache implementation  G4 (https://pagure.io/libsds/issue/2)
-* Finish nunc-stans tickets  G2 (https://pagure.io/nunc-stans)
+* Finish COW B+Tree  G4 [sds 1](https://pagure.io/libsds/issue/1)
+* Decouple transaction manager  G2 [sds 9](https://pagure.io/libsds/issue/9)
+* Write cache implementation  G4 [sds 2](https://pagure.io/libsds/issue/2)
+* Finish nunc-stans tickets  G2 [nuncstans](https://pagure.io/nunc-stans)
 
 #### 1.3.7
 ----------
 
 * bundle libraries (svrcore, nunc-stans)  G2
-* begin breakout of slapi platform abstraction library  G1 G2 (https://pagure.io/389-ds-base/issue/49115)
+* begin breakout of slapi platform abstraction library  G1 G2 [ds 49115](https://pagure.io/389-ds-base/issue/49115)
 * Introduce private only slapi v4 api to begin work. No public access, no need to support. G3
-* Pblock clean up G1 (https://pagure.io/389-ds-base/issue/49097)
-* Nunc-Stans worker threads  G1 (https://pagure.io/389-ds-base/issue/49099)
-* Async logging improvements  G1 (https://pagure.io/389-ds-base/issue/48365)
-* COW B+Tree for connection management  G4 (https://pagure.io/389-ds-base/issue/49098)
+* Pblock clean up G1 [ds 49097](https://pagure.io/389-ds-base/issue/49097)
+* Nunc-Stans worker threads  G1 [ds 49099](https://pagure.io/389-ds-base/issue/49099)
+* Async logging improvements  G1 [ds 48365](https://pagure.io/389-ds-base/issue/48365)
+* COW B+Tree for connection management  G4 [ds 49098](https://pagure.io/389-ds-base/issue/49098)
 * COW B+Tree for plugin management  G4
 
 1.4.0
 
 * cleanup source tree  G1:
 
+    proposed hierarchy
     └── ds
         ├── configure.ac
         ├── docs
@@ -306,10 +307,10 @@ Goals:
             └── nunc-stans
 
 * Fix code white space  G1
-* Clean up headers and visibility  G3 (https://pagure.io/389-ds-base/issue/49124)
+* Clean up headers and visibility  G3 [ds 49124](https://pagure.io/389-ds-base/issue/49124)
 * Symbol visibility  G1
 * v4 api for RH only use  G3
-* clean configure with pkg-config over hard paths  G1 (https://pagure.io/389-ds-base/issue/49119)
+* clean configure with pkg-config over hard paths  G1 [ds 49119](https://pagure.io/389-ds-base/issue/49119)
 * COW B+Tree for ACI internal storage  G4
 * COW B+Tree for fedse.c (cn=config, cn=schema)  G4
 * COW B+TRee for configuration variable storage  G4
@@ -324,9 +325,9 @@ Goals:
 #### 1.4.2
 ----------
 
-* COW B+Tree cache for LDBM before we have LMDB  G4 (https://pagure.io/389-ds-base/issue/49096)
+* COW B+Tree cache for LDBM before we have LMDB  G4 [ds 49096](https://pagure.io/389-ds-base/issue/49096)
 * LMDB  (4)
-* Per-operation transactions for related transactional elements  G4 (https://pagure.io/389-ds-base/issue/573)
+* Per-operation transactions for related transactional elements  G4 [ds 573](https://pagure.io/389-ds-base/issue/573)
 
 #### 1.4.3
 ----------
