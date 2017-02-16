@@ -205,6 +205,99 @@ Plugins would be able to drop their internal locking of config etc, because they
 
 Plugins would be able to drop their internal locking in reads, because if they read their config from cn=config, this is guaranteed to be protected during the critical segment of a read (IE after the operation the new config would take effect).
 
+To summarise, there are the hard requirements of a plugin for this API:
+
+* Read and writes must be able to run simultaneously.
+* Reads must operate in parallel.
+* A write transaction must be able to begin a nested read transaction.
+* A read transaction must be able to begin a nested write transaction.
+* Commits must be guaranteed to work. If you have a write error you must raise it in the write operation, not at commit time.
+* Aborts must be guaranteed to clean up their allocated data, without impact on other transactions. Aborts are run in parallel to new write transactions.
+* Uncommited writes must not affect read only operations in anyway
+
+As the plugin framework we guarantee:
+
+* There will be one, and only one write thread in the critical section at a time.
+* During a commit, no new read transactions will begin. This is your chance to update pointers.
+* Aborts are run concurrent to new transactions.
+* That reads and writes will *not* block, and we will run them in parallel.
+* That we will run multiple concurrent reads.
+* That all reads and writes have the correct cpu coherency applied - IE you do not need barriers or mutexes provided you follow the steps above.
+* Abort() is called once per transaction
+* Commit() is called once per transaction
+* Close() on a read is not accesible post close
+* Aborted and Comitted transactions are not accessable post call.
+
+We request this, because we will use those properties stated above, and there is a risk that plugins who do not follow these explicit rules may cause corruption.
+
+NOTES: We may add a difference between a sync abort and async abort for structures that do not support async operation. We prefer async due to performance benefits.
+
+#### Example
+------------
+
+An example of this working is that you have a plugin that registers the hooks on the transactions. In the real final version, these transactions will be tied to the global
+transaction manager, to help prevent double free/abort/commit etc.
+
+The following is psuedo code for a working design:
+
+    struct foo {...};
+    struct plugin_txn {
+        ref_count ...;
+        struct *foo fref;
+    }
+    static struct *plugin_txn active = NULL;
+
+    fn read_operation(plugin_txn) {
+        return plugin_txn->fref;
+    }
+
+    // Reads are happening in parallel to this, but only one write!
+    fn write_operation(plugin_txn) {
+        if plugin_txn->fref is NULL {
+            plugin_txn->fref = new_foo();
+        }
+        plugin_txn->fref->member = ...;
+    }
+
+    /*
+     * Ref counts go in phases. First, they'll only increase when you are active and reads are taken. They will decrease
+     * only to 1 (never lower).
+     * as soon as a new write is commited, they begin to decrease *only* eventually to 0.
+     */
+    fn dec_ref_count(plugin_txn) {
+        result = atomic_decrement(plugin_txn->ref_count);
+        if result == 0 {
+            free(plugin_txn->fref);
+            free(plugin_txn);
+        }
+    }
+
+    fn inc_ref_count(plugin_txn) {
+        atomic_increment(plugin_txn->ref_count);
+    }
+
+    fn read_begin() {
+        inc_ref_count(active);
+        return active;
+    }
+
+    fn read_close(plugin_txn) {
+        dec_ref_count(plugin_txn);
+    }
+
+    // Is done async, no one else saw plugin_txn that we wrote to!
+    fn abort_operation(plugin_txn) {
+        free(plugin_txn);
+    }
+
+    // This is done in a way that blocks new reads, so we can update active.
+    fn commit_operation(plugin_txn) {
+        dec_ref_count(active);
+        active = plugin_txn;
+        inc_ref_count(active);
+    }
+
+
 ## Risks and mitigation strategy
 --------------------------------
 
@@ -268,23 +361,24 @@ Goals:
 * 3) Plugin version 4
 * 4) Transactions
 
-#### 1.3.6 (outside of DS)
+#### 1.3.6
 --------------------------
 
 * Finish COW B+Tree  G4 [sds 1](https://pagure.io/libsds/issue/1)
 * Decouple transaction manager  G2 [sds 9](https://pagure.io/libsds/issue/9)
 * Write cache implementation  G4 [sds 2](https://pagure.io/libsds/issue/2)
 * Finish nunc-stans tickets  G2 [nuncstans](https://pagure.io/nunc-stans)
+* bundle libraries (svrcore, nunc-stans)  G2
 
 #### 1.3.7
 ----------
 
-* bundle libraries (svrcore, nunc-stans)  G2
 * begin breakout of slapi platform abstraction library  G1 G2 [ds 49115](https://pagure.io/389-ds-base/issue/49115)
 * Introduce private only slapi v4 api to begin work. No public access, no need to support. G3
 * Pblock clean up G1 [ds 49097](https://pagure.io/389-ds-base/issue/49097)
 * Nunc-Stans worker threads  G1 [ds 49099](https://pagure.io/389-ds-base/issue/49099)
 * Async logging improvements  G1 [ds 48365](https://pagure.io/389-ds-base/issue/48365)
+* Global server transaction manager (to allow items to register to, and coordinate transactions)  G4
 * COW B+Tree for connection management  G4 [ds 49098](https://pagure.io/389-ds-base/issue/49098)
 * COW B+Tree for plugin management  G4
 
@@ -345,6 +439,15 @@ Goals:
 ----------
 
 * Remove locks inside of plugins  G4
+
+### Questions
+-------------
+
+#### Is this removing the fat cache lock?
+-----------------------------------------
+
+Yes, but in itself we are proposing a pretty large lock in a way. The difference is the transaction we propose is this document, while it covers the full server, does not
+block other threads simultaneously, so it will not have the same costs associated with a fat lock.
 
 ## Author
 ---------

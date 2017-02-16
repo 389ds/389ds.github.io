@@ -169,3 +169,67 @@ single source of high quality, extensively tested, parallelised and documented s
 and we can stop rolling new caches, trees, lists for each module. We can remove thousands
 of lines of code from DS, and we can use something better.
 
+#### How are we maintaining entry pages?
+
+If we get pages from the database that are in memory (ie pointers to mmap db pages, not copies in memory), we need a way
+to ensure these are not altered.
+
+This is relying on an assumption that the COW Tree only copies references to an entry. This depends upon *your* value duplication function.
+
+You may choose to allow the tree to use reference counted pointers to the same entries in the tree. Alternately, you can do a true deep copy
+on the copy operation.
+
+So assuming this was an entry cache, the most sense would be to deepcopy entries in the cache on modification so previous versions were not affected.
+
+This means that entries in the cache *must not* be pointers to memory mapped from the database. They must have been allocated by the system allocator by us!
+
+You may be able to use a hybrid approach with a change to the dup function, where values on copy leave a "shadow" entry, but the live "written to" item is a proper
+pointer to the DB page. This would be quite expensive though.
+
+#### How do we add an entry to the tree during a cache miss?
+
+This partially ties to the question above, about how we will maintain entries in the cache when they are required to be owned in certain ways.
+
+The issue is that we may have mulitple reads in the cache at a time, but if there is a cache miss, we now need to include the missed data into the cache: Other threads might need it too!
+
+There are two solutions to this problem.
+
+##### Solution 1
+
+At startup we populate the cache with shadow, empty entries for each entry that exists in id2entry. This means we would *find* the entry in the tree, but it's data hadn't been filled in. We can then change the state of and populate the shadow entry. Eviction of this cache entry, would result in it becoming another shadow entry, deletion would remove it entierly.
+
+
+This means that entries would have a lifecycle of:
+
+    shadow (empty, no data)
+    populated (no changes, all can view)
+    expired (no change, will be removed soon)
+    dirty (changed relative to db and older txns)
+    deleted (IE not in tree)
+
+We would allow the following transitions:
+
+    shadow -> populated
+    populated -> deleted, expired
+    populated -> dirty, expired
+    expired -> deleted
+    dirty -> populated
+    populated -> shadow
+
+Each of these represents what can occur during the runtime of the cache.
+
+* To delete an entry in the shadow state, we must populate it. This is so older transactions have the "data" in them if they access the entry.
+* Writing to an entry cause it to split. We copy the entry for the write and future transactions to dirty state and on. We leave the old populated entry as "expired" to mark that once the read only transactions that are active are complete, we can remove this item.
+* dirty items are written back to the database and considered "populated" again.
+* expired items are deleted once there are no more references.
+* populated items may be evicted from the cache and turned into shadow pointers again.
+
+This means each entry has a small lifetime of it's own, and must maintain is own coherency (likely a per-entry rwlock). This would not be access a lot, only to change states, and to ensure counting of each item.
+
+
+##### Solution 2
+
+We leave the tree "as is", and on cache miss, we bypass and go to a staging cache. The staging cache has a seperated transaction lifecycle to the main cache. We pull up the entry to the staging cache, and access it from there. On the next write operation (or async task) the contents of the stage cache are moved to the main cache.
+
+This way, if the item is in the main cache we pay no penalty, but if we miss, we have still got a fast copy on write structure we can reference, and we can then async populate the main cache.
+
