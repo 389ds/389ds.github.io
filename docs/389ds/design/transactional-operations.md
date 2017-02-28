@@ -364,11 +364,11 @@ Goals:
 #### 1.3.6
 --------------------------
 
-* Finish COW B+Tree  G4 [sds 1](https://pagure.io/libsds/issue/1)
+* ~~Finish COW B+Tree  G4 [sds 1](https://pagure.io/libsds/issue/1)~~
 * Decouple transaction manager  G2 [sds 9](https://pagure.io/libsds/issue/9)
 * Write cache implementation  G4 [sds 2](https://pagure.io/libsds/issue/2)
-* Finish nunc-stans tickets  G2 [nuncstans](https://pagure.io/nunc-stans)
-* bundle libraries (svrcore, nunc-stans)  G2
+* ~~Finish nunc-stans tickets  G2 [nuncstans](https://pagure.io/nunc-stans)~~
+* ~~bundle libraries (svrcore, nunc-stans)  G2~~
 
 #### 1.3.7
 ----------
