@@ -13,7 +13,7 @@ Starting in 389-ds-base-1.3.6 (and RHEL 7.4) the Directory Server will be using 
 Major configuration options and enablement
 ------------------------------------------
 
-There is no server configuration.  This is enabled at compile time by using the ``configure`` option "--with-tcmalloc".
+There is no server configuration.  This is enabled at compile time by using the ``configure`` option "--enable-tcmalloc".
 
 Dependencies
 ------------
