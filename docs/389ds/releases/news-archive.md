@@ -7,6 +7,22 @@ title: "News Archive"
 
 {% include toc.md %} 
 
+#### 389-ds-console 1.2.15
+
+-   Released 2016-10-13
+
+#### 389-admin-console 1.1.12
+
+-   Released 2016-10-13
+
+#### idm-console-framework 1.1.17
+
+-   Released 2016-10-13
+
+#### Nunc Stans 0.2.0
+-   Relased 2016-10-06: Released **Nunc Stans 
+-   [release notes](docs/389ds/releases/release-nunc-stans-0.2.0.html)
+
 #### 389 Directory Server 1.3.5.14 is now available (October 13, 2016)
 -   389-ds-base 1.3.5.14 for Fedora 24, 25, and Rawhide.
 -   [See the Release Notes](release-notes.html) for more information

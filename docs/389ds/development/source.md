@@ -39,12 +39,11 @@ The source code was produced by first doing a git clone to get the repository, t
 |[389-admin-console-1.1.11.tar.bz2]({{ site.baseurl }}/binaries/389-admin-console-1.1.11.tar.bz2)|admin-console.git|389-admin-console-1.1.11|[Building Console](buildingconsole.html)|852a1c121923137b9048b7e498b7f03965cc0d3b|
 |[idm-console-framework-1.1.15.tar.bz2]({{ site.baseurl }}/binaries/idm-console-framework-1.1.15.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.15|[Building Console](buildingconsole.html)|86ca70b34bba1ceffb206cd945a5d077544a83f7|
 
-### 389 Directory Server 1.3.6 (pre-release)
+### 389 Directory Server 1.3.6
 
 |Source tarball|git module|git tag|More Info|SHA256SUM|
 |--------------|----------|-------|---------|-------|
-|[389-ds-base-1.3.6-git](https://pagure.io/389-ds-base.git)|ds.git|389-ds-base-1.3.6-git|[Building](building.html)|N/A, checkout from git|
-|[nunc-stans-0.2.1.tar.xz]({{ site.baseurl }}/binaries/nunc-stans-0.2.1.tar.xz)|nunc-stans.git|0.2.1|[Building](building-nunc-stans.html)|ee87a1e090e2b06616f3626c14c465226fadcf2d0d42bd4a178771b4a5ecf972|
+|[389-ds-base-1.3.6.1.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.1.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.1|[Building](building.html)|a814776ce153dd75e86ebcc7bbf4106ef1ee7492bcccf41c2eb5b984de31a48a|
 |[svrcore-4.1.2.tar.bz2]({{ site.baseurl }}/binaries/svrcore-4.1.2.tar.bz2)|svrcore.git|4.1.2|[Building](building-svrcore.html)|67e51a868c8dc2ddbf5661ecb0a07dea7721a9ed99f6261cedd3351bfc4cd023|
 
 
