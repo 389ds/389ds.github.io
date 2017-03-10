@@ -194,4 +194,67 @@ Types
 - Avoid void * in all possible cases. Unless you are writing a low level datastructure (you shouldn't be), you should not need this! Having concrete types lets the compiler find mistakes for us - We are only human after all.
 - Avoid the use of variable size types. This includes int, long, long long, double etc. Please use concrete types from inttypes.h or nspr.h. (ie int32_t, PRUint64)
 
+Configuration
+-------------
+
+This is a description of how we should create configuration options for our server.
+
+- Configuration options should be positive. Consider the following examples:
+
+    feature: on/off
+    feature-enable: on/off
+    feature-disable: on/off
+
+The first example is the best. We have a feature and a clear english "on/off". We know that feature: on means on, and feature: off means off. The second is the same, but has the word -enable. This is redundant,
+as the on-off already conveys this. The third will be REJECTED on review, because it's confusing. feature-disable: on is counter intuitive, meaning it's disabled. This is hard for a native english speaker, let alone a second language speaker.
+
+- Configuration names should be self documenting. For example:
+
+    cachememorysize: 100
+    cache: 100
+
+In our example we have a cache memory size. This is a good name as we know this is about the cache, memory and size: We can infer that it's the amount of memory the cache will occupy, and given context by the value as it has a quantifier in it.
+
+The second is bad, because we have no context to what "cache" is related to, be it a size or otherwise. This would require looking documentation.
+
+Remember: DOCUMENTATION exists as an artifact of POOR DESIGN CHOICES. Every piece of documentation represents a possible design flaw in our system.
+
+- Configuration names should be complete english, not abbreviations. For example:
+
+    cachememsz
+    cachememorysize
+
+For a non-native speaker the contraction of memory size to memsz would be confusing.
+
+Command line tools
+------------------
+
+This describes how we should create command line tools
+
+- Group common activities. Rather than 100 utilites, we should have 1 utility that shows what is possible. These should be grouped together. This enables discoverability. An admin may know about "ns-activate.pl" but not about the password policy tools. However, contrast to dsconf, and when we type dsconf --help, we see a list of *all* of these possibilities. We have enabled the admin to find more tools and help about their system by collating tools. To take this further we can nest this for example:
+
+    dsconf --help
+    ...
+        plugins ...
+        indices ...
+        backend ...
+
+    dsconf backend --help
+        create
+        set_readonly
+        set_readwrite
+        delete
+        backup
+        restore
+
+- Command line tools should be memorable. If you have to read the man page every single time, the tool is flawed. You should be able to easily and fluently type the action you want to achieve, and in a way that is friendly.
+
+- Forgiving: Tools should not cause damage if used incorrectly. If a tool has the wrong arguments, or incorrect or mismatched types it should validate these and give guidance.
+
+- Command line tools should be easy to type. Consider:
+
+    dsadm start instance
+    dsadm --start --instance=instance
+
+One of these two is easier to type, and more "natural" to use than the other (hint, it's the shorter one).
 
