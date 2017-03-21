@@ -102,7 +102,7 @@ The following setup script allows you to checkout/compile and deploy the current
            mkdir $DIR_SRC/$i
        done
        cd $DIR_SRC_DIR
-       git clone git://git.fedorahosted.org/git/389/ds.git
+       git clone https://pagure.io/389-ds-base.git
        cd $DIR_SRC_PKG
        git clone git://pkgs.fedoraproject.org/389-ds-base
     }
@@ -185,8 +185,8 @@ Open the tests you want to run (e.g. ticketxyz\_test.py)
         mkdir $DIR    
         # checkout tests and lib389    
         cd $DIR    
-        git clone git://git.fedorahosted.org/git/389/ds.git
-        git clone git://git.fedorahosted.org/git/389/lib389.git
+        git clone https://pagure.io/389-ds-base.git
+        git clone https://pagure.io/lib389.git
         # define PYTHONPATH    
         export PYTHONPATH=/usr/lib64/python2.7:/usr/lib64/python2.7/plat-linux2:/usr/lib64/python2.7/lib-dynload:/usr/lib64/python2.7/site-packages:/usr/lib/python2.7/site-packages:/usr/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info    
         LIB389=$DIR/lib389    
@@ -237,9 +237,9 @@ Both method are valid, but it has some interest to set it directly into the test
     mkdir 389-ds
     mkdir lib389
     cd $HOME/test/389-ds
-    git clone ssh://git.fedorahosted.org/git/389/ds.git
+    git clone https://pagure.io/389-ds-base.git
     cd $HOME/test/lib389
-    git clone ssh://git.fedorahosted.org/git/389/lib389.git
+    git clone https://pagure.io/lib389.git
     launch eclipse... 
     -> in 'select workspace' entry $HOME/test
     -> File->New->Project selects PyDev Project
@@ -266,8 +266,8 @@ Run the following script. If you need more detail on tests processing, uncomment
     mkdir $DIR
     # checkout tests and lib389
     cd $DIR
-    git clone git://git.fedorahosted.org/git/389/ds.git
-    git clone git://git.fedorahosted.org/git/389/lib389.git
+    git clone https://pagure.io/389-ds-base.git
+    git clone https://pagure.io/lib389.git
     # define PYTHONPATH
     export PYTHONPATH=/usr/lib64/python2.7:/usr/lib64/python2.7/plat-linux2:/usr/lib64/python2.7/lib-dynload:/usr/lib64/python2.7/site-packages:/usr/lib/python2.7/site-packages:/usr/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info
     LIB389=$DIR/lib389
@@ -308,7 +308,7 @@ lib389 Design
 
 ### Repos
 
-This library is opened source and is available under <https://git.fedorahosted.org/cgit/389/lib389.git/>
+This library is opened source and is available under <https://pagure.io/lib389.git/>
 
 ### Methodology
 
@@ -1859,7 +1859,7 @@ Design
 
 ### Repos
 
-The 389 upstream tests will be pushed to the 389 Directory Server repository <http://git.fedorahosted.org/git/389/ds.git>
+The 389 upstream tests will be pushed to the 389 Directory Server repository <https://pagure.io/389-ds-base.git>
 
 ### Layout
 
@@ -1951,9 +1951,9 @@ How to run a single test
     mkdir 389-ds
     mkdir lib389
     cd $HOME/test/389-ds
-    git clone ssh://git.fedorahosted.org/git/389/ds.git
+    git clone https://pagure.io/389-ds-base.git
     cd $HOME/test/lib389
-    git clone ssh://git.fedorahosted.org/git/389/lib389.git
+    git clone https://pagure.io/lib389.git
     launch eclipse
     -> in 'select workspace' entry $HOME/test
     -> File->New->Project selects PyDev Project

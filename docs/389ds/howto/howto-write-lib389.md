@@ -19,7 +19,7 @@ After you checkout the source code, you can find the testing framework as follow
 
     mkdir /home/<USER>/ds-source
     cd /home/<USER>/ds-source
-    git clone ssh://git.fedorahosted.org/git/389/ds.git
+    git clone https://pagure.io/389-ds-base.git
     cd ds/dirsrvtests
 
 Under *ds/dirsrvtests/* we see the following directories
@@ -42,7 +42,7 @@ To start working with lib389, we need to get the lib389 framework:
 
     mkdir /home/<USER>/lib389
     cd /home/<USER>/lib389
-    git clone ssh://git.fedorahosted.org/git/389/lib389.git
+    git clone https://pagure.io/lib389.git
 
 External users will use "**git clone git://**" instead of "**git clone ssh://**"
 
