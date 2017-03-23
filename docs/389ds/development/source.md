@@ -43,6 +43,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA256SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.3.6.3.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.3.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.3|[Building](building.html)|bd45bc424d58e91d0855f075614ff3cdd99be9b517789743c44f6d6a025aecce|
 |[389-ds-base-1.3.6.1.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.1.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.1|[Building](building.html)|a814776ce153dd75e86ebcc7bbf4106ef1ee7492bcccf41c2eb5b984de31a48a|
 |[svrcore-4.1.2.tar.bz2]({{ site.baseurl }}/binaries/svrcore-4.1.2.tar.bz2)|svrcore.git|4.1.2|[Building](building-svrcore.html)|67e51a868c8dc2ddbf5661ecb0a07dea7721a9ed99f6261cedd3351bfc4cd023|
 
