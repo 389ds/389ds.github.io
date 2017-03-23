@@ -51,9 +51,10 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
-|[389-ds-base-1.3.5.15.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.15.tar.bz2)|ds.git|389-ds-base-1.3.5.15|[Building](building.html)|856753525d074c36acdba087880f68edb0236211|
-|[389-ds-base-1.3.5.14.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.14.tar.bz2)|ds.git|389-ds-base-1.3.5.14|[Building](building.html)|9c81ce4093790dfa31ca9eba1ebbf10f024e7684|
-|[389-ds-base-1.3.5.13.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.13.tar.bz2)|ds.git|389-ds-base-1.3.5.13|[Building](building.html)|cef01f8347c3164f14089b4f647b9e986ef667cd|
+|[389-ds-base-1.3.5.16.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.16.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.16|[Building](building.html)|29cdd0066447a0de9b5455444a2020a9d1a0aca8|
+|[389-ds-base-1.3.5.15.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.15.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.15|[Building](building.html)|856753525d074c36acdba087880f68edb0236211|
+|[389-ds-base-1.3.5.14.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.14.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.14|[Building](building.html)|9c81ce4093790dfa31ca9eba1ebbf10f024e7684|
+|[389-ds-base-1.3.5.13.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.13.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.13|[Building](building.html)|cef01f8347c3164f14089b4f647b9e986ef667cd|
 |[nunc-stans-0.1.8.tar.bz2]({{ site.baseurl }}/binaries/nunc-stans-0.1.8.tar.bz2)|nunc-stans.git|0.1.8|[Building](building.html)|835c9788650d1b9ef0896c267b06b9e529612835|
 |[svrcore-4.1.2.tar.bz2]({{ site.baseurl }}/binaries/svrcore-4.1.2.tar.bz2)|svrcore.git|4.1.2|[Building](building.html)|699db1b2294e7d15c8f576037fc5ff9bc6d8e001|
 
