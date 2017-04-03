@@ -223,23 +223,23 @@ To describe how the manual tuning works to override the value, we need to look a
 
     nsslapd-dbcachesize: 0
     nsslapd-cachememsize: 0
-    nsslapd-autosize: 0
-    nsslapd-autosize-split: 0
+    nsslapd-cache-autosize: 0
+    nsslapd-cache-autosize-split: 0
 
 When a new instance is deployed, it is deployed with the following values.
 
 As the instance starts we carry out the following checks.
 
-    if nsslapd-autosize == 0:
-        nsslapd-autosize = 10% of system free ram.
-    if nsslapd-autosize-split == 0:
-        nsslapd-autosize-split = 40% of memory to dbcache, 60 to entrycache.
+    if nsslapd-cache-autosize == 0:
+        nsslapd-cache-autosize = 10% of system free ram.
+    if nsslapd-cache-autosize-split == 0:
+        nsslapd-cache-autosize-split = 40% of memory to dbcache, 60 to entrycache.
 
     calculate autosizing values
 
-    if (dbcachesize == 0 && nsslapd-autosize == 0) || nsslapd-autosize > 0:
+    if (dbcachesize == 0 && nsslapd-cache-autosize == 0) || nsslapd-cache-autosize > 0:
         dbcachesize = auto db cachesize value, and write to dse.ldif
-    if (cachememsize == 0 && nsslapd-autosize == 0) || nsslapd-autosize > 0:
+    if (cachememsize == 0 && nsslapd-cache-autosize == 0) || nsslapd-cache-autosize > 0:
         cachememsize = auto entry cachesize value, and write to dse.ldif
 
 All our values start at 0. If dbcachesize or cachememsize have a real value (ie > 0), they are *not* autosized.
