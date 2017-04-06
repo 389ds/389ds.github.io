@@ -13,8 +13,6 @@ title: "Documentation"
 
 ##### [FAQ's, Tech Docs, and How To's](tech-docs.html)
 
-##### [Developer Docs](development.html)
-
 ##### [Continuous Integration Testing (lib389)](FAQ/upstream-test-framework.html)
 
 ##### [Design Docs](design/design.html)

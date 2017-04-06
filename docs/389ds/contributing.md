@@ -1,0 +1,224 @@
+---
+title: Contributing to 389 Directory Server
+---
+
+# Contributing to 389 Directory Server
+----------------------------------
+
+{% include toc.md %}
+
+Why should I contribute to 389 Directory Server?
+------------------------------------------------
+
+389 Directory Server is a high performance LDAP server, trusted and used around the world for identity management and authentication systems. It is the foundation of other open source projects, and businesses everywhere - from universities to cloud providers. The project is well known for it's engineering excellence, stability and performance.
+
+Contributing to 389 Directory Server is an opportunity to connect with a global team of engineers working on a high profile open source project. Not only will you be able to learn valuable engineering skills, your contribution will help to improve a project that impacts the security of individuals and businesses around the world.
+
+We welcome individuals of all skill levels and backgrounds. -- Char to make this better
+
+Directory Server is huge! Where do I even start?
+------------------------------------------------
+
+Before you jump into the code, here are some things you can do to familarise yourself with the 389 Directory Server project:
+
+-   Read our [code of conduct](https://getfedora.org/code-of-conduct)
+-   Install a 389 Directory Server instance
+    -   Add [users and groups](howto/howto-users-and-groups.html)
+    -   Connect SSSD for [system authentication](howto/howto-sssd.md)
+    -   Explore and enable Directory Server plugins
+-   Join our [users mailing list](https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org/)
+    -   Once you join, introduce yourself
+    -   Ask questions, we are always happy to help
+-   Do you have ideas of what could be better? Found something which might be an issue? Raise an issue on [pagure](https://pagure.io/389-ds-base)
+    -   Raising a bug is just as important as the fix itself
+    -   To use [pagure](https://pagure.io/389-ds-base) you need to sign up for a [Fedora Account](https://admin.fedoraproject.org/accounts)
+-   Take a look at the list of [easy fix](https://pagure.io/389-ds-base/issues?status=Open&tags=Easyfix) issues
+    -   Join our [developers mailing list](https://lists.fedoraproject.org/admin/lists/389-devel.lists.fedoraproject.org/), and let us know you want to contribute code. We'll help you through the process.
+
+Many of us in the team started by asking questions and raising bugs.
+
+Communicating with the team
+---------------------------
+
+We can be contacted via our mailing lists for [users](https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org/) or [developers](https://lists.fedoraproject.org/admin/lists/389-devel.lists.fedoraproject.org/).
+
+We are often in irc on irc.freenode.org - we use the #389 channel. We are distributed all around the world, so we may not answer. Email is your best communication option.
+
+Issues and requests for enhancement can be raised on our [pagure instance](https://pagure.io/389-ds-base/)
+
+
+Building the project
+--------------------
+
+### What you will need
+
+We recommend Fedora or CentOS as build platforms: this is what our team uses, so it works very well.
+
+### Get the code:
+
+|Component|GIT Repository|Clone the Repository|
+|---------|------|
+|**Directory Server** | <https://pagure.io/389-ds-base.git>| git clone https://pagure.io/389-ds-base.git<br>git clone ssh://git@pagure.io/389-ds-base.git|
+|**Python Framework for DS** | <https://pagure.io/lib389.git>| git clone https://pagure.io/lib389.git<br>git clone ssh://git@pagure.io/lib389.git|
+|**Svrcore** (NOTE: This is optional)|<https://pagure.io/svrcore.git>| git clone https://pagure.io/svrcore.git|
+
+### Get the dependencies
+
+On Fedora:
+
+    sudo dnf install @buildsys-build cmocka make
+    sudo dnf builddep --setopt=strict=False lib389/python-lib389.spec
+    sudo dnf builddep --setopt=strict=False 389-ds-base/rpm/389-ds-base.spec.in
+
+On CentOS:
+
+    sudo yum install @buildsys-build make epel-release
+    sudo yum install --skip-broken `grep -E "^(Build)?Requires" 389-ds-base/rpm/389-ds-base.spec.in lib389/python-lib389.spec | grep -v -E '(name|MODULE)' | awk '{ print $2 }' | grep -v "^/" | grep -v pkgversion | sort | uniq|  tr '\n' ' '`
+
+### Build and install the server
+
+    cd lib389/
+    make build
+    sudo make install
+
+    cd 389-ds-base/
+    autoreconf -fiv
+    ./configure --enable-debug --with-openldap --enable-cmocka --enable-asan
+    make
+    make check
+    sudo make install
+
+
+Testing the server
+------------------
+
+Once you have installed the server you can run our tests on them
+
+389-ds-base support cmocka unit tests:
+
+    make check
+
+In addition we ship function tests that deploy and run directory server to test it. You can run these with py.test
+
+    sudo py.test -s 389-ds-base/dirsrvtests/tests/suites/basic/
+
+When you write code, it's a great idea to run our tests as well as providing your own for the feature.
+
+Creating a patch for review
+---------------------------
+
+### ICLA
+
+When you submit code to the 389 Directory Server project, you are required to complete the Fedora [Individual Contributor License Agreement](individual-contributor-license-agreement.html). This can be complete on the [Fedora account system](https://admin.fedoraproject.org/accounts/) under the "My Account" tab.
+
+### Create your working branch
+
+    git checkout master
+    git pull
+    git checkout -b my-awesome-feature
+    # Your work goes here!
+
+### Ask us for pre-review
+
+When you first start, it's a good idea to ask for advice along the way. We are happy to check your code in a git branch or patch as your progress. We want to help your code improve and be a good submission.
+
+### Getting the patch ready
+
+When you have finished your code, you have had it pre-reviewed, it's time to get the patch ready.
+
+If you are working on existing issue in pagure, take note of it's issue number and URL.
+
+If you are working on a new feature, make a new RFE issue, and take note of it's issue number and URL.
+
+Make sure that your work is a single commit with no extraneous files. You can turn multiple commits into one through a rebase-squash process.
+
+    git log
+    # identify the top 3 commits as the work you want to submit
+    git rebase -i HEAD~3
+
+Now you will see a list of commits like:
+
+    pick 2431753 Ticket 48864 - Cleanup memory detection before we add cgroup support
+    pick 9b5a69f Ticket 49206 - Add missing make dependency
+    pick 62e033d Ticket 48864 - Add cgroup memory limit detection to 389-ds
+
+These are in order of "oldest to newest".
+
+You want to squash the "newest" commits to your first commit. So you change the lines to the following:
+
+    pick 2431753 Ticket 48864 - Cleanup memory detection before we add cgroup support
+    squash 9b5a69f Ticket 49206 - Add missing make dependency
+    squash 62e033d Ticket 48864 - Add cgroup memory limit detection to 389-ds
+
+Now save and exit your text editor. You'll be presented with a chance to review the commit message. We like to use the
+following format.
+
+    Ticket ##### - <SUMMARY>
+
+    Bug Description:  <DESC>
+
+    Fix Description:  <DESC>
+
+    <Ticket URL>
+
+    Author: <your name here>
+
+    Review by: ???
+
+Fill in the commit message and save. You now have a single well formed commit to send us.
+
+Finally, create the patch file with:
+
+    git format-patch HEAD~1
+
+### Sending the patch
+
+Add the patch file as an attachment to your issue on pagure. Set the metadata flag "reviewstatus" to "review".
+
+Finally, send an email to the 389-devel@lists.fedoraproject.org mailing list like the following:
+
+    Subject: Please review: Issue XXXXX - fix issue, add feature,... 
+
+    https://pagure.io/389-ds-base/issue/XXXXX
+
+    https://pagure.io/389-ds-base/issue/raw/files/<link to your patch here!>
+
+### Collaborate on the review process.
+
+We'll provide comments in the pagure issue about the code, offering suggestions or asking questions. Finally, once we are happy and have worked with you on the review, we'll set the reviewstatus to "ack", and will merge your code to the master branch.
+
+
+Creating a new feature
+----------------------
+
+Creating a new feature is slightly different to creating a patch to an issue. We ask that you submit a design for review before you start work.
+
+### Talk to us about the idea
+
+Contact us on the 389-devel@lists.fedoraproject.org mailing list about your idea. We'll let you know how best to implement it or approach the problem.
+
+### Write your design document
+
+Follow the [design document template](design/design-template.html), and have a look at other existing designs for inspiration (design/design.html).
+
+### Have the design reviewed
+
+Send the markdown file to 389-devel@lists.fedoraproject.org and we'll discuss it with you. Once you and the team are happy with it, we'll put it on the website.
+
+### Write the feature.
+
+Now, write the code just like you would a patch!
+
+Detailed project processes
+--------------------------
+
+-   [Release Procedure](development/release-procedure.html)
+-   [Nightly Builds](development/nightly-builds.html)
+
+
+Other points of interest
+------------------------
+
+-   [Write a Wiki Page](howto/howto-write-wiki-page.html)
+-   [History](FAQ/history.html)
+
