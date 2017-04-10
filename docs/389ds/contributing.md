@@ -14,14 +14,14 @@ Why should I contribute to 389 Directory Server?
 
 Contributing to 389 Directory Server is an opportunity to connect with a global team of engineers working on a high profile open source project. Not only will you be able to learn valuable engineering skills, your contribution will help to improve a project that impacts the security of individuals and businesses around the world.
 
-We welcome individuals of all skill levels and backgrounds. -- Char to make this better
+We welcome individuals of all skill levels and backgrounds.
 
 Directory Server is huge! Where do I even start?
 ------------------------------------------------
 
 Before you jump into the code, here are some things you can do to familarise yourself with the 389 Directory Server project:
 
--   Read our [code of conduct](https://getfedora.org/code-of-conduct)
+-   Read our [code of conduct](https://getfedora.org/code-of-conduct).
 -   Install a 389 Directory Server instance
     -   Add [users and groups](howto/howto-users-and-groups.html)
     -   Connect SSSD for [system authentication](howto/howto-sssd.md)
@@ -109,7 +109,7 @@ Creating a patch for review
 
 ### ICLA
 
-When you submit code to the 389 Directory Server project, you are required to complete the Fedora [Individual Contributor License Agreement](individual-contributor-license-agreement.html). This can be complete on the [Fedora account system](https://admin.fedoraproject.org/accounts/) under the "My Account" tab.
+When you submit code to the 389 Directory Server project, you are required to complete the Fedora [Individual Contributor License Agreement](individual-contributor-license-agreement.html). This can be completed on the [Fedora account system](https://admin.fedoraproject.org/accounts/) under the "My Account" tab.
 
 ### Create your working branch
 
