@@ -10,8 +10,11 @@ This page serves as a central collection point for feature design documents. Fea
 If you are adding a new design document, use the [template](design-template.html).  Don't forget to add a link under the proper release on this page!
 
 {% include toc.md %}
+## 389 Directory Server 1.3.7 (RHEL 7.5)
 
-## 389 Directory Server 1.3.6
+-   [Replication Diff Tool](repl-diff-tool-design.html)
+
+## 389 Directory Server 1.3.6 (RHEL 7.4)
 
 -   [Schema with Multiple Search Paths](schema-multiple-search-paths.html)
 -   [New Error Log Format and Severity Level](errorlog-format-design.html)
@@ -22,7 +25,7 @@ If you are adding a new design document, use the [template](design-template.html
 
 ------------------------------------------------
 
-## 389 Directory Server 1.3.5
+## 389 Directory Server 1.3.5 (RHEL 7.3)
 
 -   [Shadow Account Support](shadow-account-support.html)
 -   [Password Expiring Control Configuration](password-expiring-design.html)
