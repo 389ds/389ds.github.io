@@ -107,9 +107,9 @@ When you write code, it's a great idea to run our tests as well as providing you
 Creating a patch for review
 ---------------------------
 
-### ICLA
+### Fedora Project Contributor Agreement
 
-When you submit code to the 389 Directory Server project, you are required to complete the Fedora [Individual Contributor License Agreement](individual-contributor-license-agreement.html). This can be completed on the [Fedora account system](https://admin.fedoraproject.org/accounts/) under the "My Account" tab.
+When you submit code to the 389 Directory Server project, you are required to complete the [Fedora Project Contributor Agreement](https://fedoraproject.org/wiki/Legal:Fedora_Project_Contributor_Agreement). This can be completed on the [Fedora account system](https://admin.fedoraproject.org/accounts/) under the "My Account" tab.
 
 ### Create your working branch
 
@@ -171,6 +171,10 @@ Finally, create the patch file with:
 
     git format-patch HEAD~1
 
+### Final checks
+
+While we hope you were running tests as you developed your patch, we ask that you run the tests once more here with your single patch to make sure there are no issues here to surprise us!
+
 ### Sending the patch
 
 Add the patch file as an attachment to your issue on pagure. Set the metadata flag "reviewstatus" to "review".
@@ -221,4 +225,10 @@ Other points of interest
 
 -   [Write a Wiki Page](howto/howto-write-wiki-page.html)
 -   [History](FAQ/history.html)
+
+Acknowledgements
+----------------
+
+Thanks to @charcol for contribuing to this page, and advice on it's content.
+
 
