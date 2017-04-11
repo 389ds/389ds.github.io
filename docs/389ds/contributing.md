@@ -24,7 +24,7 @@ Before you jump into the code, here are some things you can do to familarise you
 -   Read our [code of conduct](https://getfedora.org/code-of-conduct).
 -   Install a 389 Directory Server instance
     -   Add [users and groups](howto/howto-users-and-groups.html)
-    -   Connect SSSD for [system authentication](howto/howto-sssd.md)
+    -   Connect SSSD for [system authentication](howto/howto-sssd.html)
     -   Explore and enable Directory Server plugins
 -   Join our [users mailing list](https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org/)
     -   Once you join, introduce yourself

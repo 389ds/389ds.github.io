@@ -14,12 +14,12 @@ SSSD has a concept of domains and provides. Here is an example configuration tha
     [sssd]
     services = nss, pam, ssh, sudo
     config_file_version = 2
-    domains = blackhats.net.au
+    domains = default
 
     [nss]
     homedir_substring = /home
 
-    [domain/blackhats.net.au]
+    [domain/default]
     # If you have large groups (IE 50+ members), you should set this to True
     ignore_group_members = False
     debug_level=3
