@@ -7,6 +7,22 @@ title: "News Archive"
 
 {% include toc.md %} 
 
+#### Nunc Stans 0.2.1
+
+Released 2016-10-13
+
+#### 389-ds-console 1.2.16
+
+Released 2016-10-19
+
+#### 389-adminutil 1.1.23
+
+Released 2016-10-13
+
+#### 389-console 1.1.18
+
+Released 2016-10-13
+
 #### 389-ds-console 1.2.15
 
 -   Released 2016-10-13

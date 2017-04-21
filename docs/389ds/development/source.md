@@ -43,6 +43,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA256SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.3.6.4.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.4.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.4|[Building](building.html)|e370270391d9e4bac4eb969380f76fbc715886a8f0b156433fee932d2701fbedd8f0460369a2878dd8f134ac5f35393ea2ea76b25cb24e91b744c1de2af3d879|
 |[389-ds-base-1.3.6.3.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.3.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.3|[Building](building.html)|bd45bc424d58e91d0855f075614ff3cdd99be9b517789743c44f6d6a025aecce|
 |[389-ds-base-1.3.6.1.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.1.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.1|[Building](building.html)|a814776ce153dd75e86ebcc7bbf4106ef1ee7492bcccf41c2eb5b984de31a48a|
 |[svrcore-4.1.2.tar.bz2]({{ site.baseurl }}/binaries/svrcore-4.1.2.tar.bz2)|svrcore.git|4.1.2|[Building](building-svrcore.html)|67e51a868c8dc2ddbf5661ecb0a07dea7721a9ed99f6261cedd3351bfc4cd023|
@@ -50,8 +51,9 @@ The source code was produced by first doing a git clone to get the repository, t
 
 ### 389 Directory Server 1.3.5
 
-|Source tarball|git module|git tag|More Info|SHA1SUM|
+|Source tarball|git module|git tag|More Info|SHA1SUM/SHA256SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.3.5.17.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.17.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.17|[Building](building.html)|5b96b19cea7dc80c64eaade31127d04c228f7e4dc1999ec19b341cf080ee4570757c84e8dae151c2cb3bcebe1398d50238d74ca362ce07fceafcb66fba590833|
 |[389-ds-base-1.3.5.16.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.16.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.16|[Building](building.html)|29cdd0066447a0de9b5455444a2020a9d1a0aca8|
 |[389-ds-base-1.3.5.15.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.15.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.15|[Building](building.html)|856753525d074c36acdba087880f68edb0236211|
 |[389-ds-base-1.3.5.14.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.14.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.14|[Building](building.html)|9c81ce4093790dfa31ca9eba1ebbf10f024e7684|
