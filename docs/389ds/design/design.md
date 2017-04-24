@@ -10,9 +10,12 @@ This page serves as a central collection point for feature design documents. Fea
 If you are adding a new design document, use the [template](design-template.html).  Don't forget to add a link under the proper release on this page!
 
 {% include toc.md %}
+
 ## 389 Directory Server 1.3.7 (RHEL 7.5)
 
 -   [Replication Diff Tool](repl-diff-tool-design.html)
+-   [Dynaminc Certificate Mapping](certmap-ipa.html)
+-   [Pblock Breakup](pblock-breakup.html)
 
 ## 389 Directory Server 1.3.6 (RHEL 7.4)
 
@@ -174,9 +177,9 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Dsadm and Dsconf](dsadm-dsconf.html)
 -   [Nunc Stans Workers](nunc-stans-workers.html)
 -   [Cache Redesign](cache_redesign.html)
--   [Pblock Breakup](pblock-breakup.html)
 -   [Plugin Version 4](plugin-v4.html)
 -   [Password extensibility](password-extensibility.html)
 -   [Transactional Operations](transactional-operations.html)
+-   [PAD/PAC anchor cretaino](pad-pac-anchor-creation.html)
 
 
