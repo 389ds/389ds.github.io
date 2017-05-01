@@ -5,12 +5,14 @@ title: "Replication Diff Tool Design Page"
 # Replication Diff Tool
 ----------------
 
+{% include toc.md %}
+
 ## Overview
 --------
 
-This tool checks the synchronization status between two replicas.  It checks for missing entries & and inconsistencies between entries.  There are two modes to can run the tool under: *online* and *offline*.  "Offline" mode compares two LDIF files (ideally exported using "*db2ldif -r*" to get the replication state information, but either a regular *db2ldif*, or a ldapsearch of the entire database redirected to a file can also be used.
+This tool checks the synchronization status between two replicas.  It checks for missing entries & and inconsistencies between entries.  There are two modes to can run the tool under: *online* and *offline*.  "Offline" mode compares two LDIF files (ideally exported using "*db2ldif -r*" to get the replication state information, but either a regular *db2ldif*, or a ldapsearch of the entire database redirected to a file, can also be used.
 
-Since "*online mode *" is run on live servers technically they will never be in sync at the same time if they are under constant load.  To combat this pitfall a "lag" allowance is used.  By default the lag time is set to 5 minutes (300 seconds), but it can be set to any value.  So if an inconsistency is detected, and it is within this lag allowance it will *NOT* be reported.  While this is not perfect due to the nature of the replication, it will help reduce false positives.  Setting the lag time to 0 disables this feature.
+Since "*online mode *" is run on live servers technically they will never be in sync at the same time if they are under steady load.  To combat this pitfall a "lag" allowance is used.  By default the lag time is set to 5 minutes (300 seconds), but it can be set to any value.  So if an inconsistency is detected, and it is within this lag allowance it will *NOT* be reported.  While this is not perfect due to the nature of the replication, it will help reduce false positives.  Setting the lag time to 0 disables this feature.
 
 
 ## Design
@@ -30,12 +32,11 @@ The entry gathering is done using a search with the "paged result control" to br
 ```
 Usage: repl-diff.py [options]
 
-Replication Comparison Tool (v1.0).  This script  can be used to compare two
+Replication Comparison Tool (v1.2).  This script can be used to compare two
 replicas to see if they are in sync.
 
 Options:
   -h, --help            show this help message and exit
-  -v, --verbose         Verbose output
   -o FILE, --outfile FILE
                         The output file
   -D BINDDN, --binddn BINDDN
@@ -63,14 +64,19 @@ Options:
   -R RLDIF, --rldif RLDIF
                         Replica LDIF file (offline mode)
 
+
 ```
 
 ## Understanding the Report
 -----------------------
 
+### Tombstone Entries
+
+Displays the number of tombstone entries on each replica.  These entries are added to the total entry count.
+
 ### Conflict Entries
 
-Lists the DN's of each conflict entry and the date it was created
+Lists the DN's of each conflict entry, the conflict type, and the date it was created.
 
 ### Missing Entries
 
@@ -78,11 +84,11 @@ Lists the DN's of each missing entry and the creation date from the replica wher
 
 ### Entry Inconsistencies
 
-Lists the DN of the entry, then it displays the "Attribute" that is different and what those values are on each replica.  If state information is available it is also displayed.  If there is no state information for an attribute it is listed as an **Origin value**.  This means the value has not been touched since the database was first initialized, in other words it means the value is pristine and was never updated.
+Lists the DN of the entry, then it displays the "Attribute" that is different and what those values are on each replica.  If state information is available it is also displayed.  If there is no state information for an attribute it is listed as an **Origin value**.  This means the value has not been touched since replication was first initialized, in other words it means the value is pristine and was never updated.
 
 
 
-## Example
+## Usage Examples
 ---------------
 
 ### LDAP connection
@@ -111,9 +117,21 @@ sudo python repl-diff.py -D "cn=directory manager" -w PASSWORD -m ldapi://%2fvar
 sudo python repl-diff.py -D "cn=directory manager" -w PASSWORD -m ldapi://%2fvar%2frun%2fslapd-ID.socket -r ldap://otherhost.domain.com:389 -b "dc=example,dc=com"
 ```
 
-### Output Example
+### LDIF
 
 ```
+sudo python repl-diff.py -b dc=example,dc=com -M /tmp/replicaA.ldif -R /tmp/replicaB.ldif
+```
+
+## Output Example
+---------------------------
+
+```
+
+# repl-diff.py -m ldap://localhost:389 -r ldap://localhost:5555 -D "cn=directory manager" -w password -b dc=example,dc=com
+
+Performing online report...
+
 ================================================================================
          Replication Synchronization Report  (Fri Apr  7 16:30:29 2017)
 ================================================================================
@@ -135,19 +153,45 @@ Replica RUV:
 
 Entry Counts
 =====================================================
+
 Master:  12
+Replica: 10
+
+
+Tombstones
+=====================================================
+
+Master:  10
 Replica: 10
 
 
 Conflict Entries
 =====================================================
 
-Master Conflict Entries (1)
-  - cn=nsuniqueid=345345-3453dsf-345sdfg345,dc=example,com  (Created on Wed Apr 12 14:43:24 2017)
+Master Conflict Entries: 2
 
-Replica Conflict Entries (2)
-  - cn=nsuniqueid=adadaa-3453dsf-345sdfg345,dc=example,com  (Created on Wed Apr 12 14:43:24 2017)
-  - cn=nsuniqueid=ffffff-3453dsf-345sdfg345,dc=example,com  (Created on Wed Apr 12 14:40:24 2017)
+ - nsuniqueid=48177227-2ab611e7-afcb801a-ecef6d49+uid=steve038,dc=example,dc=com
+    - Conflict:   namingConflict (add) uid=steve038,dc=example,dc=com
+    - Glue entry: no
+    - Created:    Wed Apr 26 20:27:40 2017
+
+ - nsuniqueid=48177228-2ab611e7-afcb801a-ecef6d49+uid=steve039,dc=example,dc=com
+    - Conflict:   namingConflict (add) uid=steve039,dc=example,dc=com
+    - Glue entry: no
+    - Created:    Wed Apr 26 20:27:40 2017
+
+
+Replica Conflict Entries: 2
+
+ - nsuniqueid=48177227-2ab611e7-afcb801a-ecef6d49+uid=steve038,dc=example,dc=com
+    - Conflict:   namingConflict (add) uid=steve038,dc=example,dc=com
+    - Glue entry: no
+    - Created:    Wed Apr 26 20:27:40 2017
+
+ - nsuniqueid=48177228-2ab611e7-afcb801a-ecef6d49+uid=steve039,dc=example,dc=com
+    - Conflict:   namingConflict (add) uid=steve039,dc=example,dc=com
+    - Glue entry: no
+    - Created:    Wed Apr 26 20:27:40 2017
 
 
 Missing Entries
