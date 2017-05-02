@@ -30,7 +30,7 @@ The entry gathering is done using a search with the "paged result control" to br
 ---------------
 
 ```
-Usage: repl-diff.py [options]
+Usage: ds-replcheck [options]
 
 Replication Comparison Tool (v1.2).  This script can be used to compare two
 replicas to see if they are in sync.
@@ -94,33 +94,33 @@ Lists the DN of the entry, then it displays the "Attribute" that is different an
 ### LDAP connection
 
 ```
-python repl-diff.py -D "cn=directory manager" -w PASSWORD -m ldap://myhost.domain.com:389 -r ldap://otherhost.domain.com:389 -b "dc=example,dc=com"
+# ds-replcheck -D "cn=directory manager" -w PASSWORD -m ldap://myhost.domain.com:389 -r ldap://otherhost.domain.com:389 -b "dc=example,dc=com"
 ```
 
 ### LDAP with StartTLS
 
 ```
-sudo python repl-diff.py -D "cn=directory manager" -w PASSWORD -m ldap://myhost.domain.com:389 -r ldap://otherhost.domain.com:389 -b "dc=example,dc=com" -Z /etc/dirsrv/slapd-myinstance
+# ds-replcheck -D "cn=directory manager" -w PASSWORD -m ldap://myhost.domain.com:389 -r ldap://otherhost.domain.com:389 -b "dc=example,dc=com" -Z /etc/dirsrv/slapd-myinstance
 ```
 
 ### LDAPS
 
 ```
-sudo python repl-diff.py -D "cn=directory manager" -w PASSWORD -m ldaps://myhost.domain.com:636 -r ldaps://otherhost.domain.com:636 -b "dc=example,dc=com" -Z /etc/dirsrv/slapd-myinstance
+# ds-replcheck -D "cn=directory manager" -w PASSWORD -m ldaps://myhost.domain.com:636 -r ldaps://otherhost.domain.com:636 -b "dc=example,dc=com" -Z /etc/dirsrv/slapd-myinstance
 ```
 
 ### LDAPI
 
 ```
-sudo python repl-diff.py -D "cn=directory manager" -w PASSWORD -m ldapi://%2fvar%2frun%2fslapd-ID.socket -r ldap://otherhost.domain.com:389 -b "dc=example,dc=com" -Z /etc/dirsrv/slapd-myinstance
+# ds-replcheck -D "cn=directory manager" -w PASSWORD -m ldapi://%2fvar%2frun%2fslapd-ID.socket -r ldap://otherhost.domain.com:389 -b "dc=example,dc=com" -Z /etc/dirsrv/slapd-myinstance
 
-sudo python repl-diff.py -D "cn=directory manager" -w PASSWORD -m ldapi://%2fvar%2frun%2fslapd-ID.socket -r ldap://otherhost.domain.com:389 -b "dc=example,dc=com"
+# ds-replcheck -D "cn=directory manager" -w PASSWORD -m ldapi://%2fvar%2frun%2fslapd-ID.socket -r ldap://otherhost.domain.com:389 -b "dc=example,dc=com"
 ```
 
 ### LDIF
 
 ```
-sudo python repl-diff.py -b dc=example,dc=com -M /tmp/replicaA.ldif -R /tmp/replicaB.ldif
+# ds-replcheck -b dc=example,dc=com -M /tmp/replicaA.ldif -R /tmp/replicaB.ldif
 ```
 
 ## Output Example
@@ -128,7 +128,7 @@ sudo python repl-diff.py -b dc=example,dc=com -M /tmp/replicaA.ldif -R /tmp/repl
 
 ```
 
-# repl-diff.py -m ldap://localhost:389 -r ldap://localhost:5555 -D "cn=directory manager" -w password -b dc=example,dc=com
+# ds-replcheck -m ldap://localhost:389 -r ldap://localhost:5555 -D "cn=directory manager" -w password -b dc=example,dc=com
 
 Performing online report...
 
