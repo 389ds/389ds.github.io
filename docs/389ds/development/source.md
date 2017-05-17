@@ -43,6 +43,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA256SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.3.6.5.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.5.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.5|[Building](building.html)|a0bcdcb6231399c507a7d28c3282fe2bb226bea39ee1a7b2604aeae88059a797|
 |[389-ds-base-1.3.6.4.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.4.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.4|[Building](building.html)|e370270391d9e4bac4eb969380f76fbc715886a8f0b156433fee932d2701fbedd8f0460369a2878dd8f134ac5f35393ea2ea76b25cb24e91b744c1de2af3d879|
 |[389-ds-base-1.3.6.3.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.3.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.3|[Building](building.html)|bd45bc424d58e91d0855f075614ff3cdd99be9b517789743c44f6d6a025aecce|
 |[389-ds-base-1.3.6.1.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.1.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.1|[Building](building.html)|a814776ce153dd75e86ebcc7bbf4106ef1ee7492bcccf41c2eb5b984de31a48a|
@@ -67,6 +68,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.3.4.15.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.4.15.tar.bz2)|ds.git|389-ds-base-1.3.4.15|[Building](building.html)|d453f6a982253d96efa4f616089b600331d5c740|
 |[389-ds-base-1.3.4.14.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.4.14.tar.bz2)|ds.git|389-ds-base-1.3.4.14|[Building](building.html)|3c45f7a97b5c8c5475370df9efc8797a7346ff44|
 |[nunc-stans-0.1.5.tar.bz2]({{ site.baseurl }}/binaries/nunc-stans-0.1.5.tar.bz2)|nunc-stans.git|0.1.5|[Building](building.html)|7e52309f61c38b241fcdaf0284559d683f3ba700|
 |[389-admin.1.1.42.tar.bz2]({{ site.baseurl }}/binaries/389-admin-1.1.42.tar.bz2)|admin.git|389-admin-1.1.42|[Admin](../administration/adminserver.html)|3d931830ce832b7e0f820689ca30e5996b873f75|

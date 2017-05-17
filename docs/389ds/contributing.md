@@ -62,6 +62,10 @@ We recommend Fedora or CentOS as build platforms: this is what our team uses, so
 |**Python Framework for DS** | <https://pagure.io/lib389.git>| git clone https://pagure.io/lib389.git<br>git clone ssh://git@pagure.io/lib389.git|
 |**Svrcore** (NOTE: This is optional)|<https://pagure.io/svrcore.git>| git clone https://pagure.io/svrcore.git|
 
+#### Source tarballs
+
+Also see our source code & tarball page [here](development/source.html)
+
 ### Get the dependencies
 
 On Fedora:

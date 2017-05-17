@@ -74,6 +74,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 ## News
 
 <!-- Try to keep this list under 10 releases  -->
+- 2017-04-29: Released **389-ds-base [1.3.6.5](docs/389ds/releases/release-1-3-6-5.html)**
 - 2017-04-21: Released **389-ds-base [1.3.6.4](docs/389ds/releases/release-1-3-6-4.html)**
 - 2017-04-21: Released **389-ds-base [1.3.15.17](docs/389ds/releases/release-1-3-5-17.html)**
 - 2017-03-23: Released **389-ds-base [1.3.6.3](docs/389ds/releases/release-1-3-6-3.html)**
@@ -82,8 +83,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - 2017-02-11: Switched from Trac to [Pagure](https://pagure.io/389-ds-base) for handling tickets/issues
 - 2016-11-05: Released **389-ds-base [1.3.15.15](docs/389ds/releases/release-1-3-5-15.html)**
 - 2016-11-02: Released **389-admin [1.1.46](docs/389ds/releases/release-admin-1-1-46.html)**
-
-    For older news, see the [News Archive](docs/389ds/releases/news-archive.html)
 
 - Check out **[What's New on port389.org](whats_new.html)**
 
