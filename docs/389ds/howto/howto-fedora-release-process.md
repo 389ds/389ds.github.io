@@ -62,7 +62,7 @@ DS - checkout the source, add the fixes, set the version, tag it, and archive it
 
 -   All commits must be done before **git tag**! Otherwise you might need to use **git tag -f \$TAG**
 
--   **NAME=389-ds-base ; VERSION=1.2.11.30 ; TAG=\$NAME-\$VERSION**
+-   **TAG=389-ds-base-1.3.6.7**
 
 -   **git tag \$TAG**
 
@@ -88,7 +88,7 @@ DS - Create version specific archive and gather the changes
 
 -   **sh -x /home/source/fedora/389-ds-base/389-ds-base-git-local.sh /home/source/ds389/ds** --> this does the same thing as the git archive command above
 
--   **git log -\\\-oneline 389-ds-base-1.2.11.29.. \> /tmp/cl-info** - The version should be the current version. This gathers all the changes since the last release.
+-   **git log -\\\-oneline 389-ds-base-1.3.6.6.. \> /tmp/cl-info** - The version should be the current version. This gathers all the changes since the last release.
 
 -   Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and trac bugs. Leave the hash for coverity/misc updates.
 
@@ -105,19 +105,19 @@ Fedora - Finish editing the spec file, verify the version, and do the scratch-bu
 
 -   Add the header line:
 
-       * Fri Feb 3 2013 Mark Reynolds     <mreynolds@redhat.com>     - 1.2.11.30-1
+       * Fri Feb 3 2013 Mark Reynolds     <mreynolds@redhat.com>     - 1.3.6.7-1
 
 -   Then copy in the contents of **cl-info** underneath the header
 
 -   **fedpkg verrel** - Verify changes to spec file are producing the correct version.
 
--   **fedpkg new-sources /home/source/ds389/389-ds-base-1.2.11.30.tar.bz2**
+-   **fedpkg new-sources /home/source/ds389/389-ds-base-1.3.6.7.tar.bz2**
 
 -   **git status** - Should show the "sources" and ".gitignore" are staged
 
 -   **fedpkg srpm** - Create a “*.src.rpm” file
 
--   **fedpkg scratch-build -\\\-srpm=389-ds-base-1.2.11.30-1.xxxxx.src.rpm** - Submits the srpm to the koji build system. Takes a few minutes to run.
+-   **fedpkg scratch-build -\\\-srpm=389-ds-base-1.3.7-1.xxxxx.src.rpm** - Submits the srpm to the koji build system. Takes a few minutes to run.
 
 -   **fedpkg clog**
 
@@ -129,10 +129,10 @@ Fedora - Finish editing the spec file, verify the version, and do the scratch-bu
     -    **fedpkg switch-branch \<branch\>**
     -    **git merge master**
     -    NOTE: if git merge fails, do a *git cherry-pick* instead - **git cherry-pick -x master**
-    -    You may to run this if the sources file was not updated:  **fedpkg new-sources /home/source/ds389/389-ds-base-1.2.11.30.tar.bz2**  Followed by a "git commit -a" after the scratach build completes.
+    -    You may to run this if the sources file was not updated:  **fedpkg new-sources /home/source/ds389/389-ds-base-1.3.6.7.tar.bz2**  Followed by a "git commit -a" after the scratach build completes.
     -    **fedpkg verrel**
     -    **fedpkg srpm**
-    -    **fedpkg scratch-build -\\\-srpm=389-ds-base-1.2.11.30-1.xxxxx.src.rpm**
+    -    **fedpkg scratch-build -\\\-srpm=389-ds-base-1.3.6.7-1.xxxxx.src.rpm**
     -    **git push**
 
 
@@ -145,7 +145,7 @@ Fedora - Do the official Koji build, and do the release "update"
 
 -   Do this for each branch that you are building.
 
-    **for br in f25 f24 ; do fedpkg switch-branch $br ; fedpkg build -\\\-nowait ; done**
+    **for br in f26 f25 ; do fedpkg switch-branch $br ; fedpkg build -\\\-nowait ; done**
 
 -   An email will be sent from Koji telling you if the build was successful
 
@@ -169,16 +169,16 @@ NOTE: Do not git push -\\\-tags - you may inadvertently push tags you did not in
 
 -   **cd /home/source/ds389/ds**
 
--   **git push origin 389-ds-base-1.2.11**
+-   **git push origin 389-ds-base-1.3.6**
 
--   **git push origin refs/tags/389-ds-base-1.2.11.30**
+-   **git push origin refs/tags/389-ds-base-1.3.6.7**
 
 Update The Wiki (internal use only)
 ------------------------------------
 
 -   Upload the source tarball
 
-        rhc scp website upload 389-ds-base-1.3.3.tar.bz2 app-root/data/
+        rhc scp website upload 389-ds-base-1.3.6.7.tar.bz2 app-root/data/
 
 -   Create a release note under the following directory (follow the previous release note as a template) 
 
@@ -188,10 +188,6 @@ Update The Wiki (internal use only)
 
         /SOURCE/website/index.md
 
-   -   If the release list now exceeds 10 releases, then move older releases from the home page to the archive page
-
-            /SOURCE/website/docs/389ds/releases/news-archive.md
- 
 -   Update the "release notes" page with the new release note
 
         /SOURCE/website/docs/389ds/releases/release-notes.md
