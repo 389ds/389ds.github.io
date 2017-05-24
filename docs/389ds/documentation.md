@@ -7,80 +7,154 @@ title: "Documentation"
 
 {% include toc.md %}
 
-### Resources
+## Resources
 
-##### [Red Hat Directory Server Documentation](redhat-docs.html)
+### Directory Server Documentation
 
-##### [FAQ's, Tech Docs, and How To's](tech-docs.html)
+The best documentation for use and deployment can be found in the [Red Hat Directory Server documentation](https://access.redhat.com/site/documentation/Red_Hat_Directory_Server/). Although these documents are for Red Hat Directory Server, they apply to 389 DS as well. However, be sure to read the [Release Notes](releases/release-notes.html) and [Install Guide](legacy/install-guide.html) for 389 DS first in case there are important differences.
 
-##### [Continuous Integration Testing (lib389)](FAQ/upstream-test-framework.html)
+- [Red Hat Directory Server 10, 1.3.x series](https://access.redhat.com/documentation/en/red-hat-directory-server/?version=10)
+- [Red Hat Directory Server 9, 1.2.x series](https://access.redhat.com/documentation/en/red-hat-directory-server/?version=9)
 
-##### [Design Docs](design/design.html)
+### Design Documents
 
-##### [Release Notes](releases/release-notes.html)
+All our features are initially planned and developed from these documents:
 
-##### [Legacy Documentation](legacy/legacy.html)
+- [Design Docs](design/design.html)
 
-<br>
+### How Tos
 
-### Directory Server Plugins
+We maintain a number of how to guides for 389 Directory Server
 
-It's possible to write plugins that allow you to extend the functionality of the Directory Server. Our [plugins](design/plugins.html) page contains information on the API and the scope of the functionality. You might also want to look at our [annotated license](FAQ/annotated-gpl-exception-license.html) page for some legal information on using the plugin api.
+#### Common Server Configuration Tasks
 
-<br>
+-   [How to Setup TLS/SSL](howto/howto-ssl.html)
+-   [How to Reset Root DN password ](howto/howto-resetdirmgrpassword.html) - How to reset the directory manager password
+-   [How to Reset a Locked Password](howto/howto-passwordreset.html) - How to reset a password that has been locked out due to excessive failed attempts
+-   [How to Certificate Mapping](howto/howto-certmapping.html) - Map a certificate subjectDN to the user's entry when using client certificate based authentication.
+-   [How to Chain on Update](howto/howto-chainonupdate.html) - Allow read-only replicas to "follow" referrals on behalf of clients, and enabled global password policy.
+-   [How to MMR](howto/howto-multimasterreplication.html) - How to configure multi-master replication without using the administration console.
+-   [How to Monitor Replication](howto/howto-replicationmonitoring.html) - How to check replication without using administration console or website
+-   [How to SystemD](howto/howto-systemd.html) - How to use 389 with systemd (systemd is the SysV Init replacement in Fedora 15 and later)
+-   [How to COS](howto/howto-classofservice.html) - Class of Service (CoS) examples
+-   [How to Use Access Control](howto/howto-accesscontrol.html) - How to use access control
+-   [How to Operation Attributes](howto/howto-operationalattributes.html) - How to access operational attributes
+-   [How to Logging Performance Impact](howto/howto-logsystemperf.html) - Do I need to turn off access log to improve system performances
+-   [How to Ldapsearch without line wrapping](howto/howto-unlimitedwidthldapsearch.html) - How do I set an unlimited line width for ldapsearch
+-   [How to Sizelimit and Ldapsearch](howto/howto-ldapsearchsizelimit.html) - Why do I get this error message "ldap\_search: Administrative limit exceeded"
+-   [How to Ldapsearch and attributes ](howto/howto-ldapsearchmanyattr.html) - How to count large number of attribute entries using an anonymous bind
+-   [How to Secure MMR Walkthrough](howto/howto-walkthroughmultimasterssl.html) - Setting up FDS with multi-master replication, TLS/SSL and importing OpenLDAP schema
+-   [How to PAM Passthru Authentication](howto/howto-pam-pass-through.html) - Setting up the PAM pass through authentication plugin
+-   [How to Use DNA Plugin](howto/howto-dna.html) - How to use Distributed Numeric Assignment to auto-generate uidNumber and gidNumber
+-   [How to Host Based Attributes](howto/howto-hostbasedattributes.html) - How to have different values for attributes on different hosts e.g. have a different login shell on certain hosts
+-   [How to Clean RUVs](howto/howto-cleanruv.html) - How to get rid of obsolete masters from your replication meta-data (i.e. the database RUV)
+-   [How to Copy ACIs](howto/howto-copyacis.html) - How to copy ACIs from one server to another
+-   [How to Fix Time Skew](howto/howto-fix-and-reset-time-skew.html) - When the replication CSN time skew grows too large, how to reset the CSN generator everywhere to get rid of time skew
+-   [How to Roles as Posix Groups](howto/howto-rolesasgroupsrequirements.html) - Use roles as posix groups
+-   [How to Use Named pipe Log Script](howto/howto-use-named-pipe-log-script.html)
+-   [How to Use openLdap clients](howto/howto-use-openldap-clients-in-389.html)
+-   [How to run lib389 testcases in a Jenkins job](howto/howto-run-lib389-jenkins.html)
+-   [How to enable ADDN plugin](howto/howto-addn.html)
+-   [How to enable Attribute Uniqueness](howto/howto-uid-uniqueness.html) - Configuration of attribute uniqueness plugin.
 
-### Berkeley DB
+#### Directory Server Setup and Management
 
-Here is the new location at oracle.com - [<http://download.oracle.com/docs/cd/E17076_02/html/toc.htm>](http://download.oracle.com/docs/cd/E17076_02/html/toc.htm)
+-   [How to Migrate to 389](howto/howto-migratetoldap.html)
+-   [How to Migrate from openLdap](howto/howto-openldapmigration.html)
+-   [How to StartTLS](howto/howto-starttls.html)
+-   [How to Only Accept TLS/SSL Connections](howto/howto-listensslonly.html)
+-   [How to Change UID](howto/howto-changeuid.html)
+-   [How to Upgrade DN Format](howto/howto-upgrade-to-new-dn-format.html)
+-   [How to Use SSF Restrictions](howto/howto-use-ssf-restrictions.html)
 
-<br>
+#### Operating System
 
-### LSB/LANANA
+-   [How to Posix](howto/howto-posix.html)
+-   [How to Configure NSS LDAP for TLS/SSL ](howto/howto-ldapnsswithssl.html)
+-   [How to PAM](howto/howto-pam.html)
+-   [How to Debian Packages](howto/howto-debianpackages.html)
+-   [How to Build RPMS on CentOS ](howto/howto-buildrpmsforcentos-rhel.html)
+-   [GSSAPI Behind Load Balancer](howto/howto-loadbalance-gssapi.html) - Configuration of SLAPD behind a load balancer with GSSAPI
+-   [How to Automount](howto/howto-automount.html)
 
--   initscripts - The name "dirsrv" has been registered with LSB/LANANA (Linux Standards Base/Linux Assigned Names And Numbers Authority) for use by initscripts
-    -   <http://www.lanana.org/index.html> is the official link
-    -   as of December 11, 2009, the name hasn't shown up in the official list, but it is in the unofficial list at <http://spreadsheets.google.com/pub?key=ryJELLdkiF3qYry5_E4SWvQ&single=true&gid=0&output=html>
-    -   dirsrv - the main directory server
-    -   dirsrv-admin - the administration server
-    -   dirsrv-snmp - the snmp sub-agent
+#### Development processes
 
-<br><a name="rfcs"></a>
+-   [Address Sanitizer Testing](howto/howto-addresssanitizer.html) - Using Address Saniziter to find and correct issues.
+-   [How to Fedora Release](howto/howto-fedora-release-process.html) - The Fedora release process
+-   [How to write a wiki page](howto/howto-write-wiki-page.html)
+-   [How to Migrate from Trac to Pagure](howto/howto-migrate-to-pagure.html)
 
-### RFCs
----------
+#### Mail
 
-Some relevant RFCs that Directory Server supports include:
+-   [How to QMail](howto/howto-qmail.html)
+-   [How to Sendmail](howto/howto-sendmail.html)
+-   [How to Postfix](howto/howto-postfix.html)
+-   [How to Dovecot](howto/howto-dovecot.html)
 
--   [RFC 1274](https://www.ietf.org/rfc/rfc1274.txt) - The COSINE and Internet X.500 Schema
--   [RFC 1558](https://www.ietf.org/rfc/rfc1558.txt) - A String Representation of LDAP Search Filters
--   [RFC 1777](https://www.ietf.org/rfc/rfc1777.txt) - Lightweight Directory Access Protocol
--   [RFC 1778](https://www.ietf.org/rfc/rfc1778.txt) - The String Representation of Standard Attribute Syntax's
--   [RFC 1779](https://www.ietf.org/rfc/rfc1779.txt) - A String Representation of Distinguished Names
--   [RFC 1823](https://www.ietf.org/rfc/rfc1823.txt) - The LDAP Application Program Interface
--   [RFC 2222](https://www.ietf.org/rfc/rfc2222.txt) - Simple Authentication and Security Layer (SASL)
--   [RFC 2247](https://www.ietf.org/rfc/rfc2247.txt) - Using Domains in LDAP/X.500 Distinguished Names
--   [RFC 2251](https://www.ietf.org/rfc/rfc2251.txt) - Lightweight Directory Access Protocol (v3)
--   [RFC 2252](https://www.ietf.org/rfc/rfc2252.txt) - Lightweight Directory Access Protocol (v3): Attribute Syntax Definitions
--   [RFC 2253](https://www.ietf.org/rfc/rfc2253.txt) - Lightweight Directory Access Protocol (v3): UTF-8 String Representation of Distinguished Names
--   [RFC 2254](https://www.ietf.org/rfc/rfc2254.txt) - The String Representation of LDAP Search Filters
--   [RFC 2255](https://www.ietf.org/rfc/rfc2255.txt) - The LDAP URL Format
--   [RFC 2256](https://www.ietf.org/rfc/rfc2256.txt) - A Summary of the X.500(96) User Schema for use with LDAPv3
--   [RFC 2307](https://www.ietf.org/rfc/rfc2307.txt) - An Approach for Using LDAP as a Network Information Service
--   [RFC 2377](https://www.ietf.org/rfc/rfc2377.txt) - Naming Plan for Internet Directory-Enabled Applications
--   [RFC 2829](https://www.ietf.org/rfc/rfc2829.txt) - Authentication Methods for LDAP
--   [RFC 2830](https://www.ietf.org/rfc/rfc2830.txt) - Lightweight Directory Access Protocol (v3): Extension for Transport Layer Security
--   [RFC 2849](https://www.ietf.org/rfc/rfc2849.txt) - The LDAP Data Interchange Format (LDIF) - Technical Specification
--   [RFC 3377](https://www.ietf.org/rfc/rfc3377.txt) - Lightweight Directory Access Protocol (v3): Technical Specification
--   [RFC 3673](https://www.ietf.org/rfc/rfc3673.txt) - LDAPv3: All Operational Attributes
--   [RFC 4527](https://www.ietf.org/rfc/rfc4527.txt) - Support for Read Entry Controls (pre and post read)
+#### DNS
 
+-   [How to BIND](howto/howto-bind.html)
 
-### What's New on port389.org?
+#### Database
+
+-   [How to Oracle](howto/howto-oracle.html)
+
+#### Web/Console
+
+-   [How to Apache](howto/howto-apache.html)
+-   [How to Subversion Apache](howto/howto-subversion-apache-ldap.html) - How to get your Subversion server to use LDAP for authenticating users
+-   [How to use 389 Console with Anonymous Access Disabled](administration/console-login-and-anonymous-access.html)
+
+#### Other
+
+-   [How to openLdap Integration](howto/howto-openldapintegration.html)
+-   [How to Kerberos](howto/howto-kerberos.html)
+-   [How to Persistent search](howto/howto-persistent-search.html)
+-   [How to SNMP Monitoring](howto/howto-snmpmonitoring.html)
+-   [How to DS Admin Migration](howto/howto-ds-admin-migration.html)
+-   [Zimbra Schema Integration (Spanish)](http://wiki.fedora-ve.org/WilmerJaramillo/ZimbraSchema)
+
+#### Legacy How To's
+
+These are potentially outdated or incorrect for the current DS version.
+
+-   [How to Windows Domain Controller Certificate Enrollment](howto/howto-windows-domain-controller-certificate-enrollment.html)
+-   [How to Windows Webserver Certificate Enrollment](howto/howto-windows-webserver-certificate-enrollment.html)
+-   [How build on Etch](howto/howto-buildonetch.html)
+-   [How to build 389 on Debian Gnu/Linux 4.0 (Etch) ](howto/howto-gentoodsbuildinstallation.html)
+-   [How to Use LDAP monitoring tools](howto/howto-cn-equals-monitor-ldap-monitoring.html)
+-   [How to Configure MMC](howto/howto-configure-mmc.html) - Configure Microsoft Management Console
+-   [How to Daemon Tools](howto/howto-daemontools.html)
+-   [How to Debian Ubuntu](howto/howto-debianubuntu.html)
+-   [How to Java on FedoraCore](howto/howto-javaonfedoracore.html)
+-   [How to Use LdapAdmin tool ](howto/howto-ldapadmin.html)
+-   [How to OpenWebmail](howto/howto-openwebmail.html)
+-   [How to Postfix with IMAP](howto/howto-postfix-imap.html)
+-   [How to Samba](howto/howto-samba.html)
+-   [How to Fixup-UID-Script](howto/howto-uidfixup.html)
+-   [How to Admin Server LDAP Management](howto/howto-adminserverldapmgmt.html) - How to manage the Admin Server using LDAP
+-   [How to SysVInit](howto/howto-sysvinit.html) - How to start the directory server automatically at boot time.
+-   [How to Set default objectclass in Console](howto/howto-default-console-object-objectclass.html) - How to set the list of default objectclasses the console uses to create new objects (Users, Groups, etc.)
+-   [How to Disable SSLv3 in DS and Admin Server (Poodlebleed vulnerability)](howto/howto-disable-sslv3.html)
+-   [How to Use Netgroups](howto/howto-netgroups.html)
+-   [How to Solaris to 389](howto/howto-solarisclient.html)
+-   [How to Use Windows Console](howto/howto-windowsconsole.html)
+-   [How to Windows Sync](howto/howto-windowssync.html)
+-   [How to One Way AD Sync](howto/howto-one-way-active-directory-sync.html)
+-   [How to Deploy From Kickstart](howto/howto-deployfromkickstart.html)
+-   [How to Chain to AD](howto/howto-chaintoad.html) - Setting up chaining (database link) to a Windows Active Directory
+-   [How to Create Child Domain](howto/howto-create-a-child-domain-in-an-existing-domain-tree.html) - Create a child domain in an existing domain tree
+-   [How to Create Domain in Existing Forest](howto/howto-create-an-additional-domain-controller-in-an-existing forest.html) - Create an Additional Domain Controller in an Existing Forest
+-   [How to Create Domain in New Forest](howto/howto-create-a-new-domain-tree-in-a-new-forest.html) - Create a New Domain Tree in a New Forest
+-   [How to PHP and Admin Server](howto/howto-phpldapadmin.html)
+
+### FAQ and tech docs
+
+We have some less maintained FAQ's and tech docs related to the server here:
+
+- [FAQ's, Tech docs](tech-docs.html)
+
+## What's New on port389.org?
 
 Check out the latest additions and updates [here](../../whats_new.html)
-
-### Contribute to the Wiki
-
-Simply write up your new page in MarkDown, see [How to write a wiki page](howto/howto-write-wiki-page.html), then file a [ticket](https://fedorahosted.org/389/newticket), select "**wiki**" as the component, and attach the file.  Then we will post your content asap.
-
 

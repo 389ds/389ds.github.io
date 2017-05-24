@@ -105,3 +105,31 @@ A web application that shows the organizational chart of the user data in a tree
 
 DSMLv2 is a SOAP/HTTP based protocol for communicating with directory services. 389 DS provides a gateway that runs apart from the server on a web or application server (such as Tomcat).
 
+### Supported RFCS
+
+Some relevant RFCs that Directory Server supports include:
+
+-   [RFC 1274](https://www.ietf.org/rfc/rfc1274.txt) - The COSINE and Internet X.500 Schema
+-   [RFC 1558](https://www.ietf.org/rfc/rfc1558.txt) - A String Representation of LDAP Search Filters
+-   [RFC 1777](https://www.ietf.org/rfc/rfc1777.txt) - Lightweight Directory Access Protocol
+-   [RFC 1778](https://www.ietf.org/rfc/rfc1778.txt) - The String Representation of Standard Attribute Syntax's
+-   [RFC 1779](https://www.ietf.org/rfc/rfc1779.txt) - A String Representation of Distinguished Names
+-   [RFC 1823](https://www.ietf.org/rfc/rfc1823.txt) - The LDAP Application Program Interface
+-   [RFC 2222](https://www.ietf.org/rfc/rfc2222.txt) - Simple Authentication and Security Layer (SASL)
+-   [RFC 2247](https://www.ietf.org/rfc/rfc2247.txt) - Using Domains in LDAP/X.500 Distinguished Names
+-   [RFC 2251](https://www.ietf.org/rfc/rfc2251.txt) - Lightweight Directory Access Protocol (v3)
+-   [RFC 2252](https://www.ietf.org/rfc/rfc2252.txt) - Lightweight Directory Access Protocol (v3): Attribute Syntax Definitions
+-   [RFC 2253](https://www.ietf.org/rfc/rfc2253.txt) - Lightweight Directory Access Protocol (v3): UTF-8 String Representation of Distinguished Names
+-   [RFC 2254](https://www.ietf.org/rfc/rfc2254.txt) - The String Representation of LDAP Search Filters
+-   [RFC 2255](https://www.ietf.org/rfc/rfc2255.txt) - The LDAP URL Format
+-   [RFC 2256](https://www.ietf.org/rfc/rfc2256.txt) - A Summary of the X.500(96) User Schema for use with LDAPv3
+-   [RFC 2307](https://www.ietf.org/rfc/rfc2307.txt) - An Approach for Using LDAP as a Network Information Service
+-   [RFC 2377](https://www.ietf.org/rfc/rfc2377.txt) - Naming Plan for Internet Directory-Enabled Applications
+-   [RFC 2829](https://www.ietf.org/rfc/rfc2829.txt) - Authentication Methods for LDAP
+-   [RFC 2830](https://www.ietf.org/rfc/rfc2830.txt) - Lightweight Directory Access Protocol (v3): Extension for Transport Layer Security
+-   [RFC 2849](https://www.ietf.org/rfc/rfc2849.txt) - The LDAP Data Interchange Format (LDIF) - Technical Specification
+-   [RFC 3377](https://www.ietf.org/rfc/rfc3377.txt) - Lightweight Directory Access Protocol (v3): Technical Specification
+-   [RFC 3673](https://www.ietf.org/rfc/rfc3673.txt) - LDAPv3: All Operational Attributes
+-   [RFC 4527](https://www.ietf.org/rfc/rfc4527.txt) - Support for Read Entry Controls (pre and post read)
+
+

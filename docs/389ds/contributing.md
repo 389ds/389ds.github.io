@@ -217,12 +217,17 @@ Send the markdown file to 389-devel@lists.fedoraproject.org and we'll discuss it
 
 Now, write the code just like you would a patch!
 
+Contribute to the Wiki
+----------------------
+
+Simply write up your new page in MarkDown, see [How to write a wiki page](howto/howto-write-wiki-page.html), then file a [ticket](https://fedorahosted.org/389/newticket), select "**wiki**" as the component, and attach the file.  Then we will post your content asap.
+
 Detailed project processes
 --------------------------
 
 -   [Release Procedure](development/release-procedure.html)
 -   [Nightly Builds](development/nightly-builds.html)
-
+-   [Plugin Development](design/plugins.html)
 
 Other points of interest
 ------------------------

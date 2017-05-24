@@ -214,3 +214,12 @@ Note that mod\_nss is a separate package, so we need to figure out where the Apa
 |admin-serv/ldif|%{\_datadir}/dirsrv/data|ldif templates for admin server configuration|
 
 
+### LSB/LANANA
+
+-   initscripts - The name "dirsrv" has been registered with LSB/LANANA (Linux Standards Base/Linux Assigned Names And Numbers Authority) for use by initscripts
+    -   <http://www.lanana.org/index.html> is the official link
+    -   as of December 11, 2009, the name hasn't shown up in the official list, but it is in the unofficial list at <http://spreadsheets.google.com/pub?key=ryJELLdkiF3qYry5_E4SWvQ&single=true&gid=0&output=html>
+    -   dirsrv - the main directory server
+    -   dirsrv-admin - the administration server
+    -   dirsrv-snmp - the snmp sub-agent
+
