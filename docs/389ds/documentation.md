@@ -28,6 +28,7 @@ We maintain a number of how to guides for 389 Directory Server
 
 #### Common Server Configuration Tasks
 
+-   [How to Configure Changelog Trimming](FAQ/changelog-trimming.html)
 -   [How to Setup TLS/SSL](howto/howto-ssl.html)
 -   [How to Reset Root DN password ](howto/howto-resetdirmgrpassword.html) - How to reset the directory manager password
 -   [How to Reset a Locked Password](howto/howto-passwordreset.html) - How to reset a password that has been locked out due to excessive failed attempts
