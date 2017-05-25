@@ -61,7 +61,7 @@ nsslapd-changelogcompactdb-interval: 300
 nsslapd-changelogtrim-interval: 30
 ```
 
-These settings will remove any "changes" that are older than 3 days, and it should trim the entries, and then compact db within 5 minutes.  Remember to restart the server after making these config changes.  Once the changelog size has been reduced, then you should set the values as described in the next section.
+These settings will remove any "changes" that are older than 3 days, and it should trim the entries, and then compact db within 5 minutes.  Remember to restart the server after making these config changes, and then it requires that you make an update to the database to trigger the trimming thread - if the server is idle, it won't trim!  Once the changelog size has been reduced then you should set the values as described in the next section and restart the server.
 
 ### Suggested Changelog Trimming Settings
 
