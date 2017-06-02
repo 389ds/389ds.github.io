@@ -91,37 +91,54 @@ In summary, the current logging design in Directory Server is a bottleneck that 
 Future Logging Design
 =====================
 
-The design I propose for logging is based on nunc-stans and liblfds. At server startup a multiple producer multiple consumer queue is created from lfds.
+We should extract our logging from the core of the server, and how it works and design it to be able to function seperately (so it can be used in ns/sds).
 
-See: http://liblfds.org/mediawiki/index.php?title=r7.1.0:Queue_%28unbounded,_many_producer,_many_consumer%29
+We would have a logging system that accepts various live reconfiguration options. By default, the logging system would be:
 
-Current threads would still write to slapi_log_access as they do currently.
+* synchronous
+* write to stdout/stderr
 
-slapi_log_access would then carry out the following operations.
+Then when directed, the server could reconfigure this to use files and buffered logginging in queues. The writing thread would be self managed by the logging
+system, as to prevent ns-workers getting filled up, and to allow async events.
 
-    Check logging is enabled, and at this level
-    Collect the current time data
-    Create a "log event" with the time data and unformated message.
-    Queue the log event to the access_log queue.
+### Message processing
 
-We still have to serialise into the queue, but as can be seen in the benchmarks, the mpmcq in almost all cases outperforms mutexes across a high number of threads. We are also doing minimal processing inline with the operation thread, which already provides a performance improvement.
+This is the same *regardless* of sync/async
 
-At server start up a job is created in nunc-stans on a timer. This job is the log writer.
+First, we take a clone of the config. This is the config for the "duration" of the logging event. IE we dont want someone to change log file, or something else from under us.
 
-It would wake, and begin to consume the events from the queue. The log writer does the formatting of the strings, timestamps, and writing to the log. Once it has emptied the queue it would rearm itself on a timer for a few seconds later, and would repeat this activity.
+We make a logevent structure that would contain:
 
-This solves the issues with the current log design by:
+* timestamp
+* the message
+* the level
+* the service we came from (access,err, audit).
 
-* Removing the locks, and using the much faster queue from liblfds.
-* Moves all string formating and manipulation out of the search / result thread, and pushes the work to a dedicated logging thread. This way we do not impact the performance of operations.
-* We no longer stall operation threads due to needing to flush the log while they are working.
+Now we look at the config to determine if this was sync or async.
 
-This would also be useful to create a buffered audit log and or error log depending on circumstance.
+### Sync processing
 
-For un-buffered logs, we would either:
+If this was a sync message, we would take the output lock, and write to our various outputs, perform filerotation. Basically, we bypass the queue step. This step would also perform formatting of the timestamp.
 
-* Still need a mutex, and just call the log writer, bypassing the queue.
-* Add the log event to the queue, but run the logging thread more frequently.
+### Async processing
+
+We take the logevent structure (and before we do string processing etc), we push it to the logevent queue. we then send a condvar notify to the logging thread to wake up and write the message. The caller now returns.
+
+The logging thread when it recievs the condvar message is either already awake, or it woke because of the condvar notify.
+
+When we wake, we take a clone of the config, and until we sleep again, we keep using it.
+
+We would loop over the queue, dequeuing log events, and then running the sync write on the events.
+
+As we are about to sleep, we would release our config.
+
+If a reconfiguration happened from async->sync, because we hold the output lock, we would finish flushing all our queued messages before we gave up to the sync logger.
+
+### Reconfiguration
+
+Because the configuration is cloned by the caller, this means we can reconfigure at anytime, and inflight messages are still logged by the old config, but new ones get the new config.
+
+
 
 Initial Benchmarks
 ==================
