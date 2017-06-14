@@ -189,6 +189,18 @@ The localhost:port refers to a specific *Replica*. If there are 3 servers (ldap:
 
 This is a log level that records replication events (from both Replica and Replica Agreements). Those logs can be difficult to interpret because of parallelism. In fact if only one update can be processed by the *Replica*, severals *replica agreements* can be running at the same time. Lines of logs of all those threads are mixed making troubleshooting difficult the more there are updates and replica agreements.
 
+## Troubleshoot approach
+
+In order to accelerate diagnostic it is important to track issues independently. Several issues may popup around the same time. They could be related but it is not sure. It is better to focus on a specfic one, get the related dataset and submit the case.
+
+Most of the issues can be understood with access/errors logs and configuration (dse.ldif).
+
+    - Isolate in the access log when the issue starts using timestamps
+    - Check the error log for messages around that time
+    - If you suspect specfic components to be part of the issue, enable the related logs (replication, acl, plugins, connection..)
+    - When you identify something you think suspicious, report precise time when it starts/stop. It really help to focus rapidely on your real concern
+
+
 # Major Configuration options
 
 None
