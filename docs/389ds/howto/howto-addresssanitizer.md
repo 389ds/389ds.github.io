@@ -5,7 +5,7 @@ title: Address Sanitization
 # Introduction
 --------------
 
-Address Sanitization is a gcc extension which can be used to detect overflows and other memory errors in applications. It was introduced to 389 in [ticket 48350](https://fedorahosted.org/389/ticket/48350)
+Address Sanitization is a gcc extension which can be used to detect overflows and other memory errors in applications. It was introduced to 389 in [ticket 48350](https://pagure.io/389-ds-base/issue/48350)
 
 # Dependencies
 --------------
@@ -116,7 +116,7 @@ The contents of such an error will be as such:
       ASan internal:         fe
     ==30761== ABORTING
 
-From here you can then determine the fault in ns-slapd. This fault has already been isolated in [ticket 48351](https://fedorahosted.org/389/ticket/48351)
+From here you can then determine the fault in ns-slapd. This fault has already been isolated in [ticket 48351](https://pagure.io/389-ds-base/issue/48351)
 
 # Extra
 -------

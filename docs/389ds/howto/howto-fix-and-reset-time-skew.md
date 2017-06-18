@@ -225,5 +225,5 @@ How can you monitor for this in the future?
 
 The readnsState.py script mentioned above can be used to output the effective skew of the system date vs the CSN generator. You can set a crontab to run this script and monitor its output to catch any future severe drifts.
 
-Ticket information for some of the fixes that have been implemented because of this work so far: <https://fedorahosted.org/389/ticket/47516>
+Ticket information for some of the fixes that have been implemented because of this work so far: <https://pagure.io/389-ds-base/issue/47516>
 

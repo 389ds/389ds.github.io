@@ -222,7 +222,7 @@ Now, write the code just like you would a patch!
 Contribute to the Wiki
 ----------------------
 
-Simply write up your new page in MarkDown, see [How to write a wiki page](howto/howto-write-wiki-page.html), then file a [ticket](https://fedorahosted.org/389/newticket), select "**wiki**" as the component, and attach the file.  Then we will post your content asap.
+Simply write up your new page in MarkDown, see [How to write a wiki page](howto/howto-write-wiki-page.html), then file a [ticket](https://apgure.io/389-ds-base/new_issue), select "**wiki**" as the component, and attach the file.  Then we will post your content asap.
 
 Detailed project processes
 --------------------------

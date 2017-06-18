@@ -17,9 +17,9 @@ The schema is in a slightly different format. Fedora DS uses a strict RFC 2252 a
 
 [Here](http://directory.fedoraproject.org/download/ol2rhds.pl) is a script that handles the RFC 2252 strictness when converting schema.
 
-The perl script ol-schema-migrate.pl [here](http://www.netauth.com/~jacksonm/ldap/ol-schema-migrate.pl) or [here](http://directory.fedoraproject.org/download/ol-schema-migrate.pl) will convert the schema and also nicely format the schema definitions.
+The perl script ol-schema-migrate.pl [here](http://www.port389.org/binaries/ol-schema-migrate.pl) will convert the schema and also nicely format the schema definitions.
 
-[This](http://directory.fedoraproject.org/download/ol-macro-expand.pl) script will recursively expand the OID macro format used in OpenLDAP schema files. The following Perl script may also be helpful:
+[This](http://www.port389.org/binaries/ol-macro-expand.pl) script will recursively expand the OID macro format used in OpenLDAP schema files. The following Perl script may also be helpful:
 
     <nowiki>
     #!/usr/bin/perl -w

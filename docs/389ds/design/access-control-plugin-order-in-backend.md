@@ -32,7 +32,7 @@ Unfortunately, we cannot change DN/ipaTokenUniqueID in betxnpreop. For modify op
 the ACIs are currently evaluated before bepreop. One possible solution would be to move 
 the add operation behavior to be the same as the modify operation.
 
-See also <b>https://fedorahosted.org/389/ticket/47925</b>
+See also <b>https://pagure.io/389-ds-base/issue/47925</b>
 
 ## Observation
 

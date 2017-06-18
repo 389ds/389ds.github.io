@@ -111,7 +111,7 @@ Use the following exact text to reach the "binaries" directory
 
 ### Community Contributions
 
-Please file a [ticket](https://fedorahosted.org/389/newticket) and select "**wiki**" as the component and attach the new MarkDown file(file.md)
+Please file a [ticket](https://pagure.io/389-ds-base/new_issue) and select "**wiki**" as the component and attach the new MarkDown file(file.md)
 
 ### Advanced Wiki Configuration (internal only)
 

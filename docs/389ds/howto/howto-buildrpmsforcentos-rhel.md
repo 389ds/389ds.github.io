@@ -60,9 +60,9 @@ Preparing
 
 Fetch the revelant source tar that you wish to build from.
 
-    wget http://directory.fedoraproject.org/sources/389-ds-base-<version>.tar.bz2
+    wget http://www.port389.org/binaries/389-ds-base-<version>.tar.bz2
 
-    git clone git://git.fedorahosted.org/git/389/ds.git
+    git clone https://pagure.io/389-ds-base.git
     git checkout tags/<version>
 
     export SRCDIR=`pwd`

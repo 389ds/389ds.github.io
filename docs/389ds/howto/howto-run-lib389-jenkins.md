@@ -62,7 +62,7 @@ This script install python p[ip environment, checks out a fresh copy of the Dire
     pip install pyopenssl ndg-httpsclient pyasn1
     pip install requests==2.5.3
     pip install --pre --upgrade -r $WORKSPACE/requirements.txt
-    pip --cert /etc/pki/tls/cert.pem install git+http://git.fedorahosted.org/git/389/lib389.git
+    pip --cert /etc/pki/tls/cert.pem install https://pagure.io/lib389.git
     . venv/bin/activate
 
     #
@@ -80,7 +80,7 @@ This script install python p[ip environment, checks out a fresh copy of the Dire
     #
     echo Checking out the Directory Server source code...
 
-    git clone git://git.fedorahosted.org/git/389/ds.git
+    git clone https://pagure.io/389-ds-base.git
     cd ds
     git checkout master
     cd ..

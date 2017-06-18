@@ -139,7 +139,7 @@ The new behavior will be turned off by default, so upgrades should not change th
 Dependencies
 ------------
 
-The SID ID mapping functionality is implemented in SSSD. We should make every effort to use their existing library, which will require us to add a dependency on SSSD. Most of what we need is already exposed by libsss\_idmap.so, but there are some pieces that still need to be exposed. This has been filed as a ticket for the SSSD team at <https://fedorahosted.org/sssd/ticket/1844>.
+The SID ID mapping functionality is implemented in SSSD. We should make every effort to use their existing library, which will require us to add a dependency on SSSD. Most of what we need is already exposed by libsss\_idmap.so, but there are some pieces that still need to be exposed. This has been filed as a ticket for the SSSD team at <https://pagure.io/sssd/issue/1844>.
 
 External Impact
 ---------------

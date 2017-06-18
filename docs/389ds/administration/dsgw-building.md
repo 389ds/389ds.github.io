@@ -10,7 +10,7 @@ Get the source
 
 You can obtain the latest source code from CVS:
 
-    git clone git://git.fedorahosted.org/git/389/dsgw.git
+    git clone https://pagure.io/389-dsgw.git
 
 The latest [tarballs]({{ site.baseurl }}/binaries/)
 

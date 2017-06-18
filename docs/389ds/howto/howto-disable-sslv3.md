@@ -41,10 +41,15 @@ You need to restart the server for this to take effect.
 ### Disable SSLv3 in favor of TLSv1.1(or higher) in 389 Administration Server
 
 -   Stop the Admin Server
--   Edit /etc/dirsrv/admin-serv/console.conf
+-   Edit **/etc/dirsrv/admin-serv/console.conf**
 
         Change: NSSProtocol SSLv3,TLSv1
         To:     NSSProtocol TLSv1.1
+
+-   Edit **/etc/dirsrv/admin-serv/adm.conf**, and add these two settings
+
+        sslVersionMin: TLS1.1
+        sslVersionMax: TLS1.2
 
 -   Start the Admin server
 

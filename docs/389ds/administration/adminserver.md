@@ -140,6 +140,8 @@ Also note that if you use ldaps instead of ldap, and the secure port instead of 
 -   SuiteSpotUserID - the directory server userid for the process (e.g. nobody)
 -   SuiteSpotGroup - the group that both sysuser and SuiteSpotUserID must belong to
 -   isie - ???
+-   sslVersionMin - The minimum SSL version to use:  SSL3, TLS1.0, TLS1.1, TLS1.2
+-   sslVersionMax - The maximum SSL version to use:  SSL3, TLS1.0, TLS1.1, TLS1.2
 
 ### Location
 
@@ -158,7 +160,9 @@ The format is keyword ":" whitespace value e.g.
     ldapurl: ldap://hostname.example.com:389/o=NetscapeRoot
     ldapStart: /usr/lib/dirsrv/slapd-hostname/start-slapd
     isie: cn=Fedora Administration Server, cn=Server Group, cn=hostname.example.com, ou=example.com, o=NetscapeRoot
-    AdminDomain: example.com`
+    AdminDomain: example.com
+    sslVersionMin: TLS1.1
+    sslVersionMax: TLS1.2
 
 ### Files
 

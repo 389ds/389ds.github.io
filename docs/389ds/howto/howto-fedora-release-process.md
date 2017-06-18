@@ -31,9 +31,9 @@ git push access - you will need to be a member of the git389 group in FAS
 -   <https://admin.fedoraproject.org/accounts/group/view/git389>
 -   Request access, then bug a 389 developer to add you
 
-DS = the 389 source code SCM - <ssh://git.fedorahosted.org/git/389/ds.git>
+DS = the 389 source code SCM - git clone ssh://git@pagure.io/389-ds-base.git
 
-Fedora = the DS clone location which contains the spec files - <git://pkgs.fedoraproject.org/389-ds-base.git> (use **fedpkg clone 389-ds-base**)
+Fedora = the DS clone location which contains the spec files - (use **fedpkg clone 389-ds-base**)
 
 DS - checkout the source, add the fixes, set the version, tag it, and archive it
 --------------------------------------------------------------------------------

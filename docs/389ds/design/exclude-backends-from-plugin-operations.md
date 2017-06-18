@@ -42,4 +42,4 @@ Suggested solution
 Tickets
 =======
 * Several tickets involving deadlocks or crashes, eg: 48388
-* Ticket [\#48812](https://fedorahosted.org/389/ticket/48812) Exclude Backends From Plugin Operations
+* Ticket [\#48812](https://pagure.io/389-ds-base/issue/48812) Exclude Backends From Plugin Operations

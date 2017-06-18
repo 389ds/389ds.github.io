@@ -225,6 +225,42 @@ You must now restart the Directory Server instance.
     service dirsrv restart
 
 
+Configuring Admin Server and Console
+====================================
+
+After creating and installing your certificates the Admin Server and Console have additional condfigurations you might want to see.  This is in regards to setting the SSL version range.  We recommend the following:
+
+-   Stop the Admin Server
+
+-   Edit **/etc/dirsrv/admin-serv/console.conf**
+
+        Change: NSSProtocol SSLv3,TLSv1
+        To:     NSSProtocol TLSv1.1
+
+-   Edit **/etc/dirsrv/admin-serv/adm.conf**, and add these two settings:
+
+        sslVersionMin: TLS1.1
+        sslVersionMax: TLS1.2
+
+-   Edit **~/.389-console/Console.1.1.12.Login.preferences**, and add these two settings:
+
+        sslVersionMin: TLS1.1
+        sslVersionMax: TLS1.2
+
+-   Start the Admin server
+
+
+### Enforce TLS verson range in the console
+
+Edit the console preferences file and add the following lines:
+
+
+    # vi ~/.389-console/Console.1.1.12.Login.preferences
+
+    sslVersionMin: TLS1.1
+    sslVersionMax: TLS1.2
+
+
 # Author and Acknowledgement
 ----------------------------
 

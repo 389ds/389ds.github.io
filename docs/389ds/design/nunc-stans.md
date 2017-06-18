@@ -16,7 +16,7 @@ giving us the ability to easily support other high performance event mechanisms
 now and in the future (e.g. Grand Central Dispatch, completion ports, etc.).
 Also, rather than just using something like libevent directly, we decided to
 use an event framework wrapper, with some addition thread safety and thread
-pooling functionality, called [Nunc Stans](http://fedorahosted.org/nunc-stans
+pooling functionality, called [Nunc Stans](https://pagure.io/nunc-stans
 "Nunc Stans").
 
 The "main loop" for 389 uses poll().  Before every poll call, the array of FDs
@@ -160,7 +160,7 @@ closing, the function `connection_release_nolock_ext` will call
 
 ### Known Problems
 
-[Ticket #48184](https://fedorahosted.org/389/ticket/48184 "Ticket #48184")
+[Ticket #48184](https://pagure.io/389-ds-base/issue/48184 "Ticket #48184")
 
 The server relies on the idletimeout to add the I/O timeout job.  If there is
 no idletimeout, or the user (e.g. directory manager) has no idletimeout, the

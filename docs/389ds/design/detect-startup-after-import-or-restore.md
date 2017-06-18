@@ -103,4 +103,4 @@ after an online initialization, either an import task or an online replica initi
 
 Tickets
 =======
-* Ticket [\#48402](https://fedorahosted.org/389/ticket/48402) allow plugins to detect a restore or import
+* Ticket [\#48402](https://pagure.io/389-ds-base/issue/48402) allow plugins to detect a restore or import
