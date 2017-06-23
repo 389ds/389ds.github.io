@@ -21,6 +21,14 @@ The source code was produced by first doing a git clone to get the repository, t
 
     git archive --prefix=PKGNAME/ TAG | bzip2 > PKGNAME.tar.bz2
 
+
+### python-lib389 1.0.4
+
+|Source tarball|git module|git tag|More Info|SHA256SUM|
+|--------------|----------|-------|---------|-------|
+|[python-lib389-1.0.4.tar.bz2]({{ site.baseurl }}/binaries/python-lib389-1.0.4.tar.bz2)|lib389.git|python-lib389-1.0.4|[lib389](http://www.port389.org/docs/389ds/FAQ/upstream-test-framework.html)|6b22fd9277adebd595e30ac614741d21f8df91d4e9e303c3c5fa3044609060bb|
+
+
 ### 389 Admin Server and Console packges 1.1.46
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|

@@ -4,6 +4,7 @@ title: "Release Notes"
 
 # Release Notes
 ---------------
+-   [ python-lib389 1.0.4](release-lib389-1-0-4.html) *(Jun 23, 2017)*
 -   [ 389 Directory Server 1.3.6.6](release-1-3-6-6.html) *(May 22, 2017)*
 -   [ 389 Directory Server 1.3.6.5](release-1-3-6-5.html) *(April 29, 2017)*
 -   [ 389 Directory Server 1.3.6.4](release-1-3-6-4.html) *(April 21, 2017)*
