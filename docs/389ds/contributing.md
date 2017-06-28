@@ -70,7 +70,7 @@ Also see our source code & tarball page [here](development/source.html)
 
 On Fedora:
 
-    sudo dnf install @buildsys-build cmocka make
+    sudo dnf install @buildsys-build make
     sudo dnf builddep --setopt=strict=False lib389/python-lib389.spec
     sudo dnf builddep --setopt=strict=False 389-ds-base/rpm/389-ds-base.spec.in
     # This grabs the *runtime* requirements rather than rpm build requirements
