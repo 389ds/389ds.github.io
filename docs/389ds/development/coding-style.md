@@ -27,14 +27,18 @@ General Rules
 
 -   All source and header files should include a copy of the license.
 -   C99 is the minimum version we target (no c89 mode).
+-   Do not use bare int or long. Use inttypes.h (see Types)
 -   Stick to a K&R coding style.
     -   Space after keywords
     -   Curly braces on same line as if/while.
--   Prefer NSPR functions for file, string, memory allocation, etc. if at all possible.
+-   We provide slapi_* functions for various tasks - these should be your first reference.
+-   Avoid NSPR functions for file, string, memory allocation, etc. if at all possible. They add excess overhead to the platform.
 -   All code should be peer reviewed before being checked in.
 -   Our code is used internationally, so use simple english in messages.
 -   Don't add extra dependencies unless they are needed. Every dependency is a potential "new project" we may need to adopt. If we need a small function, just write that rather than using micro dependencies.
--   Keep messages short, direct, and offer direction. For example, a bad message is:
+-   Keep messages short, direct, and offer direction. For example:
+
+A bad message is:
 
     An error occured, please check the error log.
 
@@ -160,8 +164,8 @@ Variable Declarations
 
 -   One declaration per line is preferred.
 
-        int foo;     
-        int bar;     
+        int32_t foo;     
+        int32_t bar;     
 
     instead of
 
@@ -170,7 +174,7 @@ Variable Declarations
 -   Initialize at declaration time when possible.
 -   Declare variables at the beginning of a block to maintain C99 compatibility.
 -   No tabs, use spaces. Your editor should take care of most of this but in patches tabs stick out like sore thumbs.
--   Avoid the use of memset. You can either use {0} for struct or arrays on the stack, or use calloc. memset has signifigant performance impact on our system.
+-   Avoid the use of memset. You can either use {0} for struct or arrays on the stack, or use calloc. memset has signifigant performance impact on systems.
 
     Slapi_PBlock pb = {0};
     uint64_t arr[10] = {0};
@@ -192,7 +196,10 @@ Types
 
 
 - Avoid void * in all possible cases. Unless you are writing a low level datastructure (you shouldn't be), you should not need this! Having concrete types lets the compiler find mistakes for us - We are only human after all.
-- Avoid the use of variable size types. This includes int, long, long long, double etc. Please use concrete types from inttypes.h or nspr.h. (ie int32_t, PRUint64)
+- Avoid the use of variable size types. This includes int, long, long long, double etc. Please use concrete types from inttypes.h. (ie int32_t, int_fast32_t, uint64_t)
+- Use 64 bit types.
+- Only use 32 bit types to maintain compatability with existing / external apis.
+- Arrays are indexed by size_t.
 
 Configuration
 -------------
