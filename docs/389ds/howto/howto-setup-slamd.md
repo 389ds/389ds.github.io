@@ -12,7 +12,7 @@ This document gives a general overview of setting SLAMD, and creating a modrate 
 
 Download slamd 2.0.1 [here]({{ site.baseurl }}/binaries/slamd-2.0.1.zip)
 
-# Setup SLAMD
+## Setup SLAMD
 --------
 
 - Get slamd-2.0.1.zip  ( I can provide this if you would like)
