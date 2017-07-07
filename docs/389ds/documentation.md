@@ -114,6 +114,7 @@ We maintain a number of how to guides for 389 Directory Server
 -   [How to SNMP Monitoring](howto/howto-snmpmonitoring.html)
 -   [How to DS Admin Migration](howto/howto-ds-admin-migration.html)
 -   [Zimbra Schema Integration (Spanish)](http://wiki.fedora-ve.org/WilmerJaramillo/ZimbraSchema)
+-   [How to Setup SLAMD Performance Benchmarking Tool](howto/howto-setup-slamd.html)
 
 #### Legacy How To's
 
