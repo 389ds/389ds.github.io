@@ -5,7 +5,9 @@ title: "How To Setup SLAMD"
 # How To Setup SLAMD
 ----------------
 
-This document gives a general overview of setting up SLAMD, and creating a modrate slamd job
+SLAMD is an open source project created by Neil Wilson while he was employed by Sun Microsystems, Inc. SLAMD is a tool for conducting directory server benchmarks and performance analysis.  This document gives a general overview of setting up SLAMD, and creating a modrate slamd job.
+
+See more info on SLAMD [here](http://dl.thezonemanager.com/slamd/)
 
 <br>
 
