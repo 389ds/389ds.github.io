@@ -5,12 +5,16 @@ title: "How To Setup SLAMD"
 # How To Setup SLAMD
 ----------------
 
-This document gives a general overview of setting SLAMD, and creating a modrate slamd job
+This document gives a general overview of setting up SLAMD, and creating a modrate slamd job
+
+<br>
 
 ## Get SLAMD
 ------------
 
 Download slamd 2.0.1 [here]({{ site.baseurl }}/binaries/slamd-2.0.1.zip)
+
+<br>
 
 ## Setup SLAMD
 --------
@@ -32,6 +36,7 @@ Download slamd 2.0.1 [here]({{ site.baseurl }}/binaries/slamd-2.0.1.zip)
 - bin/startup.sh
 - slamd_client/start_client.sh
 
+<br>
 
 ## Configure a Job
 ---------------------
