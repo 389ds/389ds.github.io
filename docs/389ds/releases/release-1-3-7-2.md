@@ -8,8 +8,9 @@ The 389 Directory Server team is proud to announce 389-ds-base version 1.3.7.2
 
 Fedora packages are available on Fedora 27 and 28(Rawhide).
 
-https://koji.fedoraproject.org/koji/taskinfo?taskID=21401020   - Fedora 28
-https://koji.fedoraproject.org/koji/taskinfo?taskID=21401182   - Fedora 27
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=21401020>   - Fedora 28
+
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=21401182>   - Fedora 27
 
 The new packages and versions are:
 

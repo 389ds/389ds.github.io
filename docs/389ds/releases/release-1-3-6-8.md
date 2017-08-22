@@ -8,7 +8,7 @@ The 389 Directory Server team is proud to announce 389-ds-base version 1.3.6.8
 
 Fedora packages are available from the Fedora 26.
 
-https://bodhi.fedoraproject.org/updates/FEDORA-2017-c95a212f02
+<https://bodhi.fedoraproject.org/updates/FEDORA-2017-c95a212f02>
 
 
 The new packages and versions are:
@@ -19,7 +19,7 @@ Source tarballs are available for download at [Download 389-ds-base Source]({{ s
 
 ### Highlights in 1.3.6.8
 
-- Security fix, bug fixes, and enhancements
+- Bug fix
 
 ### Installation and Upgrade 
 See [Download](../download.html) for information about setting up your yum repositories.
