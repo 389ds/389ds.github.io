@@ -47,10 +47,21 @@ The source code was produced by first doing a git clone to get the repository, t
 |[389-admin-console-1.1.11.tar.bz2]({{ site.baseurl }}/binaries/389-admin-console-1.1.11.tar.bz2)|admin-console.git|389-admin-console-1.1.11|[Building Console](buildingconsole.html)|852a1c121923137b9048b7e498b7f03965cc0d3b|
 |[idm-console-framework-1.1.15.tar.bz2]({{ site.baseurl }}/binaries/idm-console-framework-1.1.15.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.15|[Building Console](buildingconsole.html)|86ca70b34bba1ceffb206cd945a5d077544a83f7|
 
+### 389 Directory Serfer 1.3.7
+
+|Source tarball|git module|git tag|More Info|SHA256SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-1.3.7.3.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.7.3.tar.bz2)|389-ds-base.git|389-ds-base-1.3.7.3|[Building](building.html)|ccbbee067142a8c7e005a57e6b0eb2df8b7581b02ccce4e6d4c86b89b71f1d69|
+|[389-ds-base-1.3.7.2.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.7.2.tar.bz2)|389-ds-base.git|389-ds-base-1.3.7.2|[Building](building.html)|dbbf2dcc76a6cf2527a1a59f3bf4315717e233e321a9d3ee1cdf67e17ab33e48|
+|[389-ds-base-1.3.7.1.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.7.1.tar.bz2)|389-ds-base.git|389-ds-base-1.3.7.1|[Building](building.html)|3f5b85988f2d5c17c4c3f021593863f1798a32b43d594c08163a06bf3d5ed2fe|
+
+
 ### 389 Directory Server 1.3.6
 
 |Source tarball|git module|git tag|More Info|SHA256SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.3.6.8.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.8.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.8|[Building](building.html)|447997455d0b9cf97c9bb86f23066d119c73c3a12b473fa45b4f1a8299d50e8a|
+|[389-ds-base-1.3.6.7.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.7.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.7|[Building](building.html)|d6a8a4dbe1ebd30eff2ad20f550fe2e1b2673ca632cbfbee46baaff2671062db|
 |[389-ds-base-1.3.6.6.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.6.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.6|[Building](building.html)|d1f2e3f8a44bb035b2724aa2dc5c7d7b751fbe305f935a4377dea821dad1be94|
 |[389-ds-base-1.3.6.5.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.5.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.5|[Building](building.html)|a0bcdcb6231399c507a7d28c3282fe2bb226bea39ee1a7b2604aeae88059a797|
 |[389-ds-base-1.3.6.4.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.4.tar.bz2)|389-ds-base.git|389-ds-base-1.3.6.4|[Building](building.html)|e370270391d9e4bac4eb969380f76fbc715886a8f0b156433fee932d2701fbedd8f0460369a2878dd8f134ac5f35393ea2ea76b25cb24e91b744c1de2af3d879|
@@ -63,6 +74,9 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA1SUM/SHA256SUM|
 |--------------|----------|-------|---------|-------|
+
+|[389-ds-base-1.3.5.19.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.19.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.19|[Building](building.html)|ad55aadd4155cabdb7cc66dbca3bbe43faf865750da01032c9a1f8ed3a2136e4|
+|[389-ds-base-1.3.5.18.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.18.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.18|[Building](building.html)|cf86bbeb21096d3d5dc51398790a74ed8c8f7aefbb54c233f4962b0c99216997|
 |[389-ds-base-1.3.5.17.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.17.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.17|[Building](building.html)|5b96b19cea7dc80c64eaade31127d04c228f7e4dc1999ec19b341cf080ee4570757c84e8dae151c2cb3bcebe1398d50238d74ca362ce07fceafcb66fba590833|
 |[389-ds-base-1.3.5.16.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.16.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.16|[Building](building.html)|29cdd0066447a0de9b5455444a2020a9d1a0aca8|
 |[389-ds-base-1.3.5.15.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.5.15.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.15|[Building](building.html)|856753525d074c36acdba087880f68edb0236211|
