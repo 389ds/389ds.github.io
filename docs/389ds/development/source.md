@@ -51,6 +51,8 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA256SUM|
 |--------------|----------|-------|---------|-------|
+bc5021b37c240a848f9567b31dc91ee7e8dea564360cceedf42a962a910aee5e
+|[389-ds-base-1.3.7.4.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.7.4.tar.bz2)|389-ds-base.git|389-ds-base-1.3.7.4|[Building](building.html)|bc5021b37c240a848f9567b31dc91ee7e8dea564360cceedf42a962a910aee5e|
 |[389-ds-base-1.3.7.3.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.7.3.tar.bz2)|389-ds-base.git|389-ds-base-1.3.7.3|[Building](building.html)|ccbbee067142a8c7e005a57e6b0eb2df8b7581b02ccce4e6d4c86b89b71f1d69|
 |[389-ds-base-1.3.7.2.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.7.2.tar.bz2)|389-ds-base.git|389-ds-base-1.3.7.2|[Building](building.html)|dbbf2dcc76a6cf2527a1a59f3bf4315717e233e321a9d3ee1cdf67e17ab33e48|
 |[389-ds-base-1.3.7.1.tar.bz2]({{ site.baseurl }}/binaries/389-ds-base-1.3.7.1.tar.bz2)|389-ds-base.git|389-ds-base-1.3.7.1|[Building](building.html)|3f5b85988f2d5c17c4c3f021593863f1798a32b43d594c08163a06bf3d5ed2fe|
