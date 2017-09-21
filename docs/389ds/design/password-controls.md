@@ -85,7 +85,7 @@ The expiring control (2.16.840.1.113730.3.4.5) is sent under the following circu
     - If the password policy response control was requested (1.3.6.1.4.1.42.2.27.8.5.1) the control field **timeBeforeExpiration** is set to the number of seconds before the password will expire.
 
 
-- Using a configuration option described below (*passwordSendExpiringTime: on*), the EXPIRING control is always returned, regardless if the password is within the warning period.
+- Using a password policy configuration option (*passwordSendExpiringTime: on*), the EXPIRING control is always returned, regardless if the password is within the warning period.
     - If the password policy response control was requested the control field **timeBeforeExpiration** is set to the number of seconds before the password will expire.
 
 <br>
@@ -132,12 +132,14 @@ This shows a sequence of binds showing grace logins in action
 
 ### Password reset, user must change password
 
-This example shows when Directory Manager, or a Password Admin, resets someones password, and **passwordMustChange** is set to *on*.
+This example shows when Directory Manager, or a Password Admin, resets someone's password, and **passwordMustChange** is set to *on*.
 
     ldapsearch -D "uid=mreynolds,dc=example,dc=com" -xLLL  -w myTestPassword1 -b "" -s base -e ppolicy
     ldap_bind: Success (0); Password must be changed (Password expires in 0 seconds)
     Server is unwilling to perform (53)
 
 This is a really a bind and search.  So the bind was successful, but performing a search is not allowed (error 53) until the password is reset by the user.
+
+<br>
 
 
