@@ -49,6 +49,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [jemalloc testing](FAQ/jemalloc-testing.html) - Basic Memory/performance profiling with jemalloc and 389-ds-base-1.3.4
 -   [Troubleshoot CleanAllRUV Task](FAQ/troubleshoot-cleanallruv.html)
 -   [Change Log Trimming and Management](FAQ/changelog-trimming.html)
+-   [Password Policy Response Controls](design/password-controls.html)
 
 <br><a name="web-apps"></a>
 

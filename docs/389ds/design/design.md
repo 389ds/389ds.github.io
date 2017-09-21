@@ -16,6 +16,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Replication Diff Tool](repl-diff-tool-design.html)
 -   [Dynaminc Certificate Mapping](certmap-ipa.html)
 -   [Pblock Breakup](pblock-breakup.html)
+-   [Password Policy Controls]{password-controls.html)
 
 ## 389 Directory Server 1.3.6 (RHEL 7.4)
 
