@@ -11,7 +11,7 @@ title: "Password Expiration Controls"
 
 When authenticating/binding against the server, and your password is expired, is about to expire, or it needs to be reset, the server can return two types of controls: "expired/expiring" control, and an optional bind response control if requested by the client.  The expired/expiring controls just indicate that the password is expired, or it is about to expire.  The bind response control contains more detailed information about the state of the password that is expired or expiring.
 
-This document applies to later versions of 389-ds-base-1.3.6 and up. Older versions behave slightly differently.
+This document applies to later versions of 389-ds-base-1.3.6 and up.  Older versions do not send the EXPIRED control during grace logins.
 
 <br>
 
@@ -92,7 +92,9 @@ The expiring control (2.16.840.1.113730.3.4.5) is sent under the following circu
 
 ## Examples
 
-Here are some examples using ldapsearch.  With ldapsearch you use a built option for requesting the password policy controls:  "**-e ppolicy**"
+Here are some examples using ldapsearch.  With ldapsearch you use a built option for requesting the password policy controls:  "**-e ppolicy**".
+
+**Although these examples use ldapsearch, it is the BIND op, not the SEARCH op, that triggers the controls sent by the server.**
 
 ### Expiring
 
