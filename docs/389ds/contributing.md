@@ -74,7 +74,7 @@ On Fedora:
     sudo dnf builddep --setopt=strict=False lib389/python-lib389.spec
     sudo dnf builddep --setopt=strict=False 389-ds-base/rpm/389-ds-base.spec.in
     # This grabs the *runtime* requirements rather than rpm build requirements
-    sudo dnf install --setopt=strict=False `grep -E "^(Build)?Requires" ds/rpm/389-ds-base.spec.in lib389/python-lib389.spec | grep -v -E '(name|MODULE)' | awk '{ print $$2 }' | sed 's/%{python3_pkgversion}/3/g' | grep -v "^/" | grep -v pkgversion | sort | uniq | tr '\n' ' '`
+    sudo dnf install --setopt=strict=False `grep -E "^(Build)?Requires" 389-ds-base/rpm/389-ds-base.spec.in lib389/python-lib389.spec | grep -v -E '(name|MODULE)' | awk '{ print $2 }' | sed 's/%{python3_pkgversion}/3/g' | grep -v "^/" | grep -v pkgversion | sort | uniq | tr '\n' ' '`
 
 On CentOS:
 
