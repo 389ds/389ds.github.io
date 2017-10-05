@@ -5,135 +5,136 @@ title: "Release Notes"
 # Release Notes
 ---------------
 
--   [ 389 Directory Server 1.4.0.0](release-1-4-0-0.html) *(September 22, 2017)*
--   [ 389 Directory Server 1.3.7.5](release-1-3-7-5.html) *(September 22, 2017)*
--   [ 389 Directory Server 1.3.7.4](release-1-3-7-4.html) *(September 6, 2017)*
--   [ 389 Directory Server 1.3.7.3](release-1-3-7-3.html) *(September 1, 2017)*
--   [ 389 Directory Server 1.3.7.2](release-1-3-6-8.html) *(August 22, 2017)*
--   [ 389 Directory Server 1.3.6.8](release-1-3-7-2.html) *(August 22, 2017)*
--   [ 389 Directory Server 1.3.6.7](release-1-3-6-7.html) *(August 14, 2017)*
--   [ 389 Directory Server 1.3.5.19](release-1-3-5-19.html) *(August 14, 2017)*
--   [ 389 Directory Server 1.3.5.18](release-1-3-5-18.html) *(July 12, 2017)*
--   [ python-lib389 1.0.4](release-lib389-1-0-4.html) *(Jun 23, 2017)*
--   [ 389 Directory Server 1.3.6.6](release-1-3-6-6.html) *(May 22, 2017)*
--   [ 389 Directory Server 1.3.6.5](release-1-3-6-5.html) *(April 29, 2017)*
--   [ 389 Directory Server 1.3.6.4](release-1-3-6-4.html) *(April 21, 2017)*
--   [ 389 Directory Server 1.3.5.17](release-1-3-5-17.html) *(April 21, 2017)*
--   [ 389 Directory Server 1.3.6.3](release-1-3-6-3.html) *(March 23, 2017)*
--   [ 389 Directory Server 1.3.5.16](release-1-3-5-16.html) *(March 22, 2017)*
--   [ 389 Directory Server 1.3.6.1](release-1-3-6-1.html) *(March 10, 2017)*
--   [ 389 Directory Server 1.3.5.15](release-1-3-5-15.html) *(November 5, 2016)*
--   [ 389-admin 1.1.46](release-admin-1-1-46.html) *(November 2, 2016)*
--   [ 389 DS Console 1.2.16](release-ds-console-1-2-16.html) *(October 19 2016)*
--   [ 389 Admin Server and Console](release-admin-1-1-45-and-console-pkgs.html) *(October 14 2016)*
--   [ 389 Directory Server 1.3.5.14](release-1-3-5-14.html) *(October 13, 2016)*
--   [ 389 Directory Password Synchronization](release-passsync-1-1-7.html) *(September 30 2016)*
--   [ 389 Directory Server 1.3.4.14](release-1-3-4-14.html) *(August 11, 2016)*
--   [ 389 Directory Server 1.3.5.13](release-1-3-5-13.html) *(August 11, 2016)*
--   [ 389 Admin Server / Console for EPEL 6](release-epel6.html) *(July 25, 2016)*
--   [ 389 Directory Server 1.3.5.4](release-1-3-5-4.html) *(May 18, 2016)*
--   [ 389 Directory Server 1.3.5.3](release-1-3-5-3.html) *(May 9, 2016)*
--   [ 389 Directory Server 1.3.5.3](release-1-3-5-3.html) *(May 9, 2016)*
--   [ Svrcore 4.1.2](release-svrcore-4.1.2.html) *(May 9, 2016)*
--   [ Svrcore 4.1.1](release-svrcore-4.1.1.html) *(April 14, 2016)*
--   [ Svrcore 4.1.0](release-svrcore-4.1.0.html) *(April 8, 2016)*
--   [ 389 Directory Server 1.3.5.2](release-1-3-5-1.html) *(March 28, 2016)*
--   [ 389 Directory Server 1.3.4.9](release-1-3-4-9.html) *(March 23, 2016)*
--   [ 389 Directory Server 1.3.4.8](release-1-3-4-8.html) *(February 12, 2016)*
--   [ 389 Directory Server 1.3.4.5](release-1-3-4-5.html) *(November 19, 2015)*
--   [ 389 Directory Server 1.3.3.14](release-1-3-3-14.html) *(November 19, 2015)*
--   [ 389 Windows Console 1.1.15](release-windows-console-1-1-15.html) *(September 11, 2015)*
--   [ 389 Directory Server 1.3.4.4](release-1-3-4-4.html) *(September 4, 2015)*
--   [ 389 Directory Server 1.3.3.13](release-1-3-3-13.html) *(September 4, 2015)*
--   [ 389 Directory Server 1.3.4.1](release-1-3-4-1.html) *(June 24, 2015)*
--   [ 389 Directory Server 1.3.4.0](release-1-3-4-0.html) *(June 20, 2015)*
--   [ 389 Directory Server 1.3.3.12](release-1-3-3-12.html) *(June 17, 2015)*
--   [ 389 Admin Server 1.1.42](release-admin-1-1-42.html) *(June 12, 2015)*
--   [ 389 Ds Console 1.2.12](release-ds-console-1-2-12.html) *(June 12, 2015)*
--   [ 389 Directory Server 1.3.3.10](release-1-3-3-10.html) *(April 28, 2015)*
--   [ 389 Console 1.1.9](release-console-1-1-9.html) *(March 9, 2015)*
--   [ 389 Admin Server 1.1.38](release-admin-1-1-38.html) *(March 9, 2015)*
--   [ 389 Directory Server 1.3.3.9](release-1-3-3-9.html) *(March 8, 2015)*
--   [ 389 Directory Server 1.3.2.27](release-1-3-2-27.html) *(March 8, 2015)*
--   [ 389 Directory Server 1.3.3.8](release-1-3-3-8.html) *(February 5, 2015)*
--   [ 389 Directory Server 1.3.2.26](release-1-3-2-26.html) *(February 5, 2015)*
--   [ 389 Directory Password Synchronization](release-passsync-1-1-6.html) *(January 28 2015)*
--   [ 389 Directory Server 1.2.11.X is discontinued soon](end-1-2-11.html) *(October 23, 2014)* 
--   [ 389 Directory Server 1.3.3.5](release-1-3-3-5.html) *(October 16, 2014)*
--   [ 389 Directory Server 1.3.2.24](release-1-3-2-24.html) *(October 16, 2014)*
--   [ 389 Directory Server 1.3.3.3](release-1-3-3-3.html) *(September 12, 2014)*
--   [ 389 Directory Server 1.3.3.2](release-1-3-3-2.html) *(September 11, 2014)*
--   [ 389 Directory Server 1.2.11.32](release-1-2-11-32.html) *(September 8, 2014)* 
--   [ 389 Directory Server 1.3.3.0](release-1-3-3-0.html) *(September 3, 2014)*
--   [ 389 Directory Server 1.3.2.23](release-1-3-2-23.html) *(August 28, 2014)*
--   [ 389 Directory Server 1.3.2.22](release-1-3-2-22.html) *(August 12, 2014)*
--   [ 389 Directory Server 1.3.2.19](release-1-3-2-19.html) *(July, 9, 2014)*
--   [ 389 Directory Server 1.2.11.29](release-1-2-11-29.html) *(April 4, 2014)*
--   [ 389 Directory Server 1.3.2.16](release-1-3-2-16.html) *(March 14, 2014)*
--   [ 389 Directory Server 1.3.1.22](release-1-3-1-22.html) *(March 14, 2014)*
--   [ 389 Directory Server 1.2.11.28](release-1-2-11-28.html) *(March 14, 2014)*
--   [ 389 Directory Server 1.3.2.13](release-1-3-2-13.html) *(February 28, 2014)*
--   [ 389 Directory Server 1.3.1.19](release-1-3-1-19.html) *(February 28, 2014)*
--   [ 389 Directory Server 1.3.2.11](release-1-3-2-11.html) *(February 5, 2014)*
--   [ 389 Directory Server 1.3.1.18](release-1-3-1-18.html) *(February 5, 2014)*
--   [ 389 Directory Server 1.3.2.10](release-1-3-2-10.html) *(January 8, 2014)*
--   [ 389 Directory Server 1.3.1.17](release-1-3-1-17.html) *(January 8, 2014)*
--   [ 389 Directory Server 1.3.2.9](release-1-3-2-9.html) *(December 17, 2013)*
--   [ 389 Directory Server 1.3.2.8](release-1-3-2-8.html) *(December 6, 2013)*
--   [ 389 Directory Server 1.3.2.7](release-1-3-2-7.html) *(November 25, 2013)*
--   [ 389 Directory Server 1.3.2.6](release-1-3-2-6.html) *(November 22, 2013)*
--   [ 389 Directory Server 1.3.1.16](release-1-3-1-16.html) *(November 22, 2013)*
--   [ 389 Directory Server 1.2.11.25](release-1-2-11-25.html) *(November 21, 2013)*
--   [ 389 Directory Server 1.3.0.9](release-1-3-0-9.html) *(November 21, 2013)*
--   [ 389 Directory Server 1.3.1.15](release-1-3-1-15.html) *(November 21, 2013)*
--   [ 389 Directory Server 1.3.2.5](release-1-3-2-5.html) *(November 21, 2013)*
--   [ 389 Directory Server 1.3.2.4](release-1-3-2-4.html) *(November 20, 2013)*
--   [ 389 Directory Server 1.3.1.14](release-1-3-1-14.html) *(November 8, 2013)*
--   [ 389 Directory Server 1.3.1.13](release-1-3-1-13.html) *(November 6, 2013)*
--   [ 389 Directory Server 1.3.2.3](release-1-3-2-3.html) *(October 28, 2013)*
--   [ 389 Directory Server 1.3.2.2](release-1-3-2-2.html) *(October 11, 2013)*
--   [ 389 Directory Server 1.3.1.12](release-1-3-1-12.html) *(October 11, 2013)*
--   [ 389 Directory Server 1.2.11.23](release-1-2-11-23.html) *(October 2, 2013)*
--   [ 389 Directory Server 1.3.1.11](release-1-3-1-11.html) *(September 30, 2013)*
--   [ 389 Directory Server 1.3.1.10](release-1-3-1-10.html) *(September 27, 2013)*
--   [ 389 Directory Server 1.3.1.9](release-1-3-1-9.html) *(September 13, 2013)*
--   [ 389 Directory Server 1.3.1.8](release-1-3-1-8.html) *(September 6, 2013)*
--   [ 389 Directory Server 1.3.0.8](release-1-3-0-8.html) *(August 28, 2013)*
--   [ 389 Directory Server 1.3.1.7](release-1-3-1-7.html) *(August 28, 2013)*
--   [ 389 Directory Server 1.3.1.6](release-1-3-1-6.html) *(August 1, 2013)*
--   [ 389 Directory Server 1.2.11.22](release-1-2-11-22.html) *(August 1, 2013)*
--   [ 389 Directory Server 1.3.1.5](release-1-3-1-5.html) *(July 31, 2013)*
--   [ 389 Directory Server 1.3.0.7](release-1-3-0-7.html) *(July 31, 2013)*
--   [ 389 Directory Server 1.3.1.4](release-1-3-1-4.html) *(July 19, 2013)*
--   [ 389 Directory Server 1.3.1.3](release-1-3-1-3.html) *(July 3, 2013)*
--   [ 389 Directory Server 1.3.1.2](release-1-3-1-2.html) *(June 17, 2013)*
--   [ 389 Directory Server 1.3.1.1](release-1-3-1-1.html) *(June 14, 2013)*
--   [ 389 Directory Password Synchronization](release-passsync-1-1-5.html) *(June 3, 2013)*
--   [ 389 Directory Server Gateway 1.1.10](release-1-1-10.html) *(March 13, 2013)*
--   [ 389 Directory Server 1.3.1.0](release-1-3-1-0.html) *(May 3, 2013)*
--   [ 389 Directory Server 1.3.0.6](release-1-3-0-6.html) *(April 10, 2013)*
--   [ 389 Directory Server 1.3.0.5](release-1-3-0-5.html) *(April 1, 2013)*
--   [ 389 Directory Server 1.3.0.4](release-1-3-0-4.html) *(March 11, 2013)*
--   [ 389 Directory Server 1.3.0.3](release-1-3-0-3.html) *(February 14, 2013)*
--   [ 389 Directory Server 1.3.0.2](release-1-3-0-2.html) *(January 21, 2013)*
--   [ 389 Directory Server 1.2.11.21](release-1-2-11-21.html) *(April 9, 2013)*
--   [ 389 Directory Server 1.2.11.20](release-1-2-11-20.html) *(April 1, 2013)*
--   [ 389 Directory Server 1.2.11.19](release-1-2-11-19.html) *(March 11, 2013)*
--   [ 389 Directory Server 1.2.11.17](release-1-2-11-17.html) *(Decemeber 10, 2012)*
--   [ 389 Directory Server 1.2.11.15](release-1-2-11-15.html) *(September 25, 2012)*
--   [ 389 Directory Server 1.2.11.14](release-1-2-11-14.html) *(September 7, 2012)*
--   [ 389 Directory Server 1.2.11.13](release-1-2-11-13.html) *(September 5, 2012)*
--   [ 389 Directory Server 1.2.11.12](release-1-2-11-12.html) *(Aug 31, 2012)*
--   [ 389 Directory Server 1.2.11.11](release-1-2-11-11.html) *(Aug 20, 2012)*
--   [ 389 Directory Server 1.2.11.10](release-1-2-11-10.html) *(Aug 15, 2012)*
--   [ 389 Directory Server 1.2.11.9](release-1-2-11-9.html) *(Aug 7, 2012)*
--   [ 389 Directory Server 1.2.11.8](release-1-2-11-8.html) *(Aug 6, 2012)*
--   [ 389 Directory Server 1.2.11.6](release-1-2-11-6.html) *(Jun 22, 2012)*
--   [ 389 Directory Server 1.2.11.5](release-1-2-11-5.html) *(Jun 18, 2012)*
--   [ 389 Directory Server 1.2.11.1](release-1-2-11-1.html) *(May 3, 2012)*
+-   [389 Directory Server 1.4.0.0](release-1-4-0-0.html) *(September 22, 2017)*
+-   [389 Directory Server 1.3.7.5](release-1-3-7-5.html) *(September 22, 2017)*
+-   [389 Directory Server 1.3.7.4](release-1-3-7-4.html) *(September 6, 2017)*
+-   [389 Directory Server 1.3.7.3](release-1-3-7-3.html) *(September 1, 2017)*
+-   [389 Directory Server 1.3.7.2](release-1-3-6-8.html) *(August 22, 2017)*
+-   [389 Directory Server 1.3.6.8](release-1-3-7-2.html) *(August 22, 2017)*
+-   [389 Directory Server 1.3.6.7](release-1-3-6-7.html) *(August 14, 2017)*
+-   [389 Directory Server 1.3.5.19](release-1-3-5-19.html) *(August 14, 2017)*
+-   [389 Directory Server 1.3.5.18](release-1-3-5-18.html) *(July 12, 2017)*
+-   [python-lib389 1.0.4](release-lib389-1-0-4.html) *(Jun 23, 2017)*
+-   [389 Directory Server 1.3.6.6](release-1-3-6-6.html) *(May 22, 2017)*
+-   [389 Directory Server 1.3.6.5](release-1-3-6-5.html) *(April 29, 2017)*
+-   [389 Directory Server 1.3.6.4](release-1-3-6-4.html) *(April 21, 2017)*
+-   [389 Directory Server 1.3.5.17](release-1-3-5-17.html) *(April 21, 2017)*
+-   [389 Directory Server 1.3.6.3](release-1-3-6-3.html) *(March 23, 2017)*
+-   [389 Directory Server 1.3.5.16](release-1-3-5-16.html) *(March 22, 2017)*
+-   [389 Directory Server 1.3.6.1](release-1-3-6-1.html) *(March 10, 2017)*
+-   [389 Directory Server 1.3.5.15](release-1-3-5-15.html) *(November 5, 2016)*
+-   [389-admin 1.1.46](release-admin-1-1-46.html) *(November 2, 2016)*
+-   [389 DS Console 1.2.16](release-ds-console-1-2-16.html) *(October 19 2016)*
+-   [389 Admin Server and Console](release-admin-1-1-45-and-console-pkgs.html) *(October 14 2016)*
+-   [389 Directory Server 1.3.5.14](release-1-3-5-14.html) *(October 13, 2016)*
+-   [389 Directory Password Synchronization](release-passsync-1-1-7.html) *(September 30 2016)*
+-   [389 Directory Server 1.3.4.14](release-1-3-4-14.html) *(August 11, 2016)*
+-   [389 Directory Server 1.3.5.13](release-1-3-5-13.html) *(August 11, 2016)*
+-   [389 Admin Server / Console for EPEL 6](release-epel6.html) *(July 25, 2016)*
+-   [389 Directory Server 1.3.5.4](release-1-3-5-4.html) *(May 18, 2016)*
+-   [389 Directory Server 1.3.5.3](release-1-3-5-3.html) *(May 9, 2016)*
+-   [389 Directory Server 1.3.5.3](release-1-3-5-3.html) *(May 9, 2016)*
+-   [Svrcore 4.1.2](release-svrcore-4.1.2.html) *(May 9, 2016)*
+-   [Svrcore 4.1.1](release-svrcore-4.1.1.html) *(April 14, 2016)*
+-   [Svrcore 4.1.0](release-svrcore-4.1.0.html) *(April 8, 2016)*
+-   [389 Directory Server 1.3.5.2](release-1-3-5-1.html) *(March 28, 2016)*
+-   [389 Directory Server 1.3.4.9](release-1-3-4-9.html) *(March 23, 2016)*
+-   [389 Directory Server 1.3.4.8](release-1-3-4-8.html) *(February 12, 2016)*
+-   [389 Directory Server 1.3.4.5](release-1-3-4-5.html) *(November 19, 2015)*
+-   [389 Directory Server 1.3.3.14](release-1-3-3-14.html) *(November 19, 2015)*
+-   [389 Windows Console 1.1.15](release-windows-console-1-1-15.html) *(September 11, 2015)*
+-   [389 Directory Server 1.3.4.4](release-1-3-4-4.html) *(September 4, 2015)*
+-   [389 Directory Server 1.3.3.13](release-1-3-3-13.html) *(September 4, 2015)*
+-   [389 Directory Server 1.3.4.1](release-1-3-4-1.html) *(June 24, 2015)*
+-   [389 Directory Server 1.3.4.0](release-1-3-4-0.html) *(June 20, 2015)*
+-   [389 Directory Server 1.3.3.12](release-1-3-3-12.html) *(June 17, 2015)*
+-   [389 Admin Server 1.1.42](release-admin-1-1-42.html) *(June 12, 2015)*
+-   [389 Ds Console 1.2.12](release-ds-console-1-2-12.html) *(June 12, 2015)*
+-   [389 Directory Server 1.3.3.10](release-1-3-3-10.html) *(April 28, 2015)*
+-   [389 Console 1.1.9](release-console-1-1-9.html) *(March 9, 2015)*
+-   [389 Admin Server 1.1.38](release-admin-1-1-38.html) *(March 9, 2015)*
+-   [389 Directory Server 1.3.3.9](release-1-3-3-9.html) *(March 8, 2015)*
+-   [389 Directory Server 1.3.2.27](release-1-3-2-27.html) *(March 8, 2015)*
+-   [389 Directory Server 1.3.3.8](release-1-3-3-8.html) *(February 5, 2015)*
+-   [389 Directory Server 1.3.2.26](release-1-3-2-26.html) *(February 5, 2015)*
+-   [389 Directory Password Synchronization](release-passsync-1-1-6.html) *(January 28 2015)*
+-   [389 Directory Server 1.2.11.X is discontinued soon](end-1-2-11.html) *(October 23, 2014)* 
+-   [389 Directory Server 1.3.3.5](release-1-3-3-5.html) *(October 16, 2014)*
+-   [389 Directory Server 1.3.2.24](release-1-3-2-24.html) *(October 16, 2014)*
+-   [389 Directory Server 1.3.3.3](release-1-3-3-3.html) *(September 12, 2014)*
+-   [389 Directory Server 1.3.3.2](release-1-3-3-2.html) *(September 11, 2014)*
+-   [389 Directory Server 1.2.11.32](release-1-2-11-32.html) *(September 8, 2014)* 
+-   [389 Directory Server 1.3.3.0](release-1-3-3-0.html) *(September 3, 2014)*
+-   [389 Directory Server 1.3.2.23](release-1-3-2-23.html) *(August 28, 2014)*
+-   [389 Directory Server 1.3.2.22](release-1-3-2-22.html) *(August 12, 2014)*
+-   [389 Directory Server 1.3.2.19](release-1-3-2-19.html) *(July, 9, 2014)*
+-   [389 Directory Server 1.2.11.29](release-1-2-11-29.html) *(April 4, 2014)*
+-   [389 Directory Server 1.3.2.16](release-1-3-2-16.html) *(March 14, 2014)*
+-   [389 Directory Server 1.3.1.22](release-1-3-1-22.html) *(March 14, 2014)*
+-   [389 Directory Server 1.2.11.28](release-1-2-11-28.html) *(March 14, 2014)*
+-   [389 Directory Server 1.3.2.13](release-1-3-2-13.html) *(February 28, 2014)*
+-   [389 Directory Server 1.3.1.19](release-1-3-1-19.html) *(February 28, 2014)*
+-   [389 Directory Server 1.3.2.11](release-1-3-2-11.html) *(February 5, 2014)*
+-   [389 Directory Server 1.3.1.18](release-1-3-1-18.html) *(February 5, 2014)*
+-   [389 Directory Server 1.3.2.10](release-1-3-2-10.html) *(January 8, 2014)*
+-   [389 Directory Server 1.3.1.17](release-1-3-1-17.html) *(January 8, 2014)*
+-   [389 Directory Server 1.3.2.9](release-1-3-2-9.html) *(December 17, 2013)*
+-   [389 Directory Server 1.3.2.8](release-1-3-2-8.html) *(December 6, 2013)*
+-   [389 Directory Server 1.3.2.7](release-1-3-2-7.html) *(November 25, 2013)*
+-   [389 Directory Server 1.3.2.6](release-1-3-2-6.html) *(November 22, 2013)*
+-   [389 Directory Server 1.3.1.16](release-1-3-1-16.html) *(November 22, 2013)*
+-   [389 Directory Server 1.2.11.25](release-1-2-11-25.html) *(November 21, 2013)*
+-   [389 Directory Server 1.3.0.9](release-1-3-0-9.html) *(November 21, 2013)*
+-   [389 Directory Server 1.3.1.15](release-1-3-1-15.html) *(November 21, 2013)*
+-   [389 Directory Server 1.3.2.5](release-1-3-2-5.html) *(November 21, 2013)*
+-   [389 Directory Server 1.3.2.4](release-1-3-2-4.html) *(November 20, 2013)*
+-   [389 Directory Server 1.3.1.14](release-1-3-1-14.html) *(November 8, 2013)*
+-   [389 Directory Server 1.3.1.13](release-1-3-1-13.html) *(November 6, 2013)*
+-   [389 Directory Server 1.3.2.3](release-1-3-2-3.html) *(October 28, 2013)*
+-   [389 Directory Server 1.3.2.2](release-1-3-2-2.html) *(October 11, 2013)*
+-   [389 Directory Server 1.3.1.12](release-1-3-1-12.html) *(October 11, 2013)*
+-   [389 Directory Server 1.2.11.23](release-1-2-11-23.html) *(October 2, 2013)*
+-   [389 Directory Server 1.3.1.11](release-1-3-1-11.html) *(September 30, 2013)*
+-   [389 Directory Server 1.3.1.10](release-1-3-1-10.html) *(September 27, 2013)*
+-   [389 Directory Server 1.3.1.9](release-1-3-1-9.html) *(September 13, 2013)*
+-   [389 Directory Server 1.3.1.8](release-1-3-1-8.html) *(September 6, 2013)*
+-   [389 Directory Server 1.3.0.8](release-1-3-0-8.html) *(August 28, 2013)*
+-   [389 Directory Server 1.3.1.7](release-1-3-1-7.html) *(August 28, 2013)*
+-   [389 Directory Server 1.3.1.6](release-1-3-1-6.html) *(August 1, 2013)*
+-   [389 Directory Server 1.2.11.22](release-1-2-11-22.html) *(August 1, 2013)*
+-   [389 Directory Server 1.3.1.5](release-1-3-1-5.html) *(July 31, 2013)*
+-   [389 Directory Server 1.3.0.7](release-1-3-0-7.html) *(July 31, 2013)*
+-   [389 Directory Server 1.3.1.4](release-1-3-1-4.html) *(July 19, 2013)*
+-   [389 Directory Server 1.3.1.3](release-1-3-1-3.html) *(July 3, 2013)*
+-   [389 Directory Server 1.3.1.2](release-1-3-1-2.html) *(June 17, 2013)*
+-   [389 Directory Server 1.3.1.1](release-1-3-1-1.html) *(June 14, 2013)*
+-   [389 Directory Password Synchronization](release-passsync-1-1-5.html) *(June 3, 2013)*
+-   [389 Directory Server Gateway 1.1.10](release-1-1-10.html) *(March 13, 2013)*
+-   [389 Directory Server 1.3.1.0](release-1-3-1-0.html) *(May 3, 2013)*
+-   [389 Directory Server 1.3.0.6](release-1-3-0-6.html) *(April 10, 2013)*
+-   [389 Directory Server 1.3.0.5](release-1-3-0-5.html) *(April 1, 2013)*
+-   [389 Directory Server 1.3.0.4](release-1-3-0-4.html) *(March 11, 2013)*
+-   [389 Directory Server 1.3.0.3](release-1-3-0-3.html) *(February 14, 2013)*
+-   [389 Directory Server 1.3.0.2](release-1-3-0-2.html) *(January 21, 2013)*
+-   [389 Directory Server 1.2.11.21](release-1-2-11-21.html) *(April 9, 2013)*
+-   [389 Directory Server 1.2.11.20](release-1-2-11-20.html) *(April 1, 2013)*
+-   [389 Directory Server 1.2.11.19](release-1-2-11-19.html) *(March 11, 2013)*
+-   [389 Directory Server 1.2.11.17](release-1-2-11-17.html) *(Decemeber 10, 2012)*
+-   [389 Directory Server 1.2.11.15](release-1-2-11-15.html) *(September 25, 2012)*
+-   [389 Directory Server 1.2.11.14](release-1-2-11-14.html) *(September 7, 2012)*
+-   [389 Directory Server 1.2.11.13](release-1-2-11-13.html) *(September 5, 2012)*
+-   [389 Directory Server 1.2.11.12](release-1-2-11-12.html) *(Aug 31, 2012)*
+-   [389 Directory Server 1.2.11.11](release-1-2-11-11.html) *(Aug 20, 2012)*
+-   [389 Directory Server 1.2.11.10](release-1-2-11-10.html) *(Aug 15, 2012)*
+-   [389 Directory Server 1.2.11.9](release-1-2-11-9.html) *(Aug 7, 2012)*
+-   [389 Directory Server 1.2.11.8](release-1-2-11-8.html) *(Aug 6, 2012)*
+-   [389 Directory Server 1.2.11.6](release-1-2-11-6.html) *(Jun 22, 2012)*
+-   [389 Directory Server 1.2.11.5](release-1-2-11-5.html) *(Jun 18, 2012)*
+-   [389 Directory Server 1.2.11.1](release-1-2-11-1.html) *(May 3, 2012)*
 
-Release Notes For Older Versions
+# Release Notes For Older Versions
 ================================
 
 [Old Release Notes](old-release-notes.html)
+
 
