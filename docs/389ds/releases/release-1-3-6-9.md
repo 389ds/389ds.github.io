@@ -1,6 +1,7 @@
 ---
-title: "Releases/1.3.6."9
+title: "Releases/1.3.6.9"
 ---
+
 389 Directory Server 1.3.6.9
 -----------------------------
 
