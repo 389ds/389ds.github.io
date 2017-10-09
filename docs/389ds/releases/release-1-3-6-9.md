@@ -9,7 +9,7 @@ The 389 Directory Server team is proud to announce 389-ds-base version 1.3.6.9
 
 Fedora packages are available from the Fedora 26.
 
-<https://bodhi.fedoraproject.org/updates/FEDORA-2017-c95a212f02>
+<https://bodhi.fedoraproject.org/updates/FEDORA-2017-800c2374d3> - Fedora 26
 
 
 The new packages and versions are:
