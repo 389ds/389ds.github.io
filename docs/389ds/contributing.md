@@ -59,7 +59,6 @@ We recommend Fedora or CentOS as build platforms: this is what our team uses, so
 |Component|GIT Repository|Clone the Repository|
 |---------|------|
 |**Directory Server** | <https://pagure.io/389-ds-base.git>| git clone https://pagure.io/389-ds-base.git<br>git clone ssh://git@pagure.io/389-ds-base.git|
-|**Python Framework for DS** | <https://pagure.io/lib389.git>| git clone https://pagure.io/lib389.git<br>git clone ssh://git@pagure.io/lib389.git|
 |**Svrcore** (NOTE: This is optional)|<https://pagure.io/svrcore.git>| git clone https://pagure.io/svrcore.git|
 
 #### Source tarballs
@@ -71,28 +70,24 @@ Also see our source code & tarball page [here](development/source.html)
 On Fedora:
 
     sudo dnf install @buildsys-build make
-    sudo dnf builddep --setopt=strict=False lib389/python-lib389.spec
-    sudo dnf builddep --setopt=strict=False 389-ds-base/rpm/389-ds-base.spec.in
     # This grabs the *runtime* requirements rather than rpm build requirements
-    sudo dnf install --setopt=strict=False `grep -E "^(Build)?Requires" 389-ds-base/rpm/389-ds-base.spec.in lib389/python-lib389.spec | grep -v -E '(name|MODULE)' | awk '{ print $2 }' | sed 's/%{python3_pkgversion}/3/g' | grep -v "^/" | grep -v pkgversion | sort | uniq | tr '\n' ' '`
+    sudo dnf install --setopt=strict=False `grep -E "^(Build)?Requires" 389-ds-base/rpm/389-ds-base.spec.in | grep -v -E '(name|MODULE)' | awk '{ print $2 }' | sed 's/%{python3_pkgversion}/3/g' | grep -v "^/" | grep -v pkgversion | sort | uniq | tr '\n' ' '`
 
 On CentOS:
 
     sudo yum install @buildsys-build make epel-release
-    sudo yum install --skip-broken `grep -E "^(Build)?Requires" 389-ds-base/rpm/389-ds-base.spec.in lib389/python-lib389.spec | grep -v -E '(name|MODULE)' | awk '{ print $2 }' | grep -v "^/" | grep -v pkgversion | sort | uniq|  tr '\n' ' '`
+    sudo yum install --skip-broken `grep -E "^(Build)?Requires" 389-ds-base/rpm/389-ds-base.spec.in | grep -v -E '(name|MODULE)' | awk '{ print $2 }' | grep -v "^/" | grep -v pkgversion | sort | uniq|  tr '\n' ' '`
 
 ### Build and install the server
-
-    cd lib389/
-    make build
-    sudo make install
 
     cd 389-ds-base/
     autoreconf -fiv
     ./configure --enable-debug --with-openldap --enable-cmocka --enable-asan
     make
+    make lib389
     make check
     sudo make install
+    sudo make lib389-install
 
 
 Testing the server
