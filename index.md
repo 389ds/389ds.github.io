@@ -61,6 +61,9 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 ## News
 
 <!-- Try to keep this list under 10 releases  -->
+- 2017-10-09: Released **389-ds-base [1.4.0.2](docs/389ds/releases/release-1-4-0-2.html)**
+- 2017-10-09: Released **389-ds-base [1.3.7.7](docs/389ds/releases/release-1-3-7-7.html)**
+- 2017-10-09: Released **389-ds-base [1.3.6.10](docs/389ds/releases/release-1-3-6-10.html)**
 - 2017-10-09: Released **389-ds-base [1.4.0.1](docs/389ds/releases/release-1-4-0-1.html)**
 - 2017-10-09: Released **389-ds-base [1.3.7.6](docs/389ds/releases/release-1-3-7-6.html)**
 - 2017-10-09: Released **389-ds-base [1.3.6.9](docs/389ds/releases/release-1-3-6-9.html)**
@@ -69,8 +72,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - 2017-09-06: Released **389-ds-base [1.3.7.4](docs/389ds/releases/release-1-3-7-4.html)**
 - 2017-08-22: Released **389-ds-base [1.3.6.8](docs/389ds/releases/release-1-3-6-8.html)**
 - 2017-08-14: Released **389-ds-base [1.3.6.7](docs/389ds/releases/release-1-3-6-7.html)**
-- 2017-08-14: Released **389-ds-base [1.3.5.19](docs/389ds/releases/release-1-3-5-19.html)**
-- 2017-04-21: Released **389-ds-base [1.3.5.18](docs/389ds/releases/release-1-3-5-18.html)**
 - 2017-06-23: Released **python-lib389 [1.0.4](docs/389ds/releases/release-lib389-1-0-4.html)**
 - 2017-02-11: Switched from Trac to [Pagure](https://pagure.io/389-ds-base) for handling tickets/issues
 - 2016-11-02: Released **389-admin [1.1.46](docs/389ds/releases/release-admin-1-1-46.html)**
