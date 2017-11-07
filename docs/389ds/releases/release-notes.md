@@ -6,6 +6,10 @@ title: "Release Notes"
 
 ========================================================================
 
+- [389 Directory Server 1.3.6.11](release-1-3-6-11.html) *(November 7, 2017)*
+- [389 Directory Server 1.4.0.2](release-1-4-0-2.html) *(October 14, 2017)*
+- [389 Directory Server 1.3.7.7](release-1-3-7-7.html) *(October 14, 2017)*
+- [389 Directory Server 1.3.6.10](release-1-3-6-10.html) *(October 14, 2017)*
 - [389 Directory Server 1.4.0.1](release-1-4-0-1.html) *(October 9, 2017)*
 - [389 Directory Server 1.3.7.6](release-1-3-7-6.html) *(October 9, 2017)*
 - [389 Directory Server 1.3.6.9](release-1-3-6-9.html) *(October 9, 2017)*
