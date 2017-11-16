@@ -75,7 +75,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - 2017-08-14: Released **389-ds-base [1.3.6.7](docs/389ds/releases/release-1-3-6-7.html)**
 - 2017-06-23: Released **python-lib389 [1.0.4](docs/389ds/releases/release-lib389-1-0-4.html)**
 - 2017-02-11: Switched from Trac to [Pagure](https://pagure.io/389-ds-base) for handling tickets/issues
-- 2016-11-02: Released **389-admin [1.1.46](docs/389ds/releases/release-admin-1-1-46.html)**
 
 - [All past release notes](releases/release-notes.html)
 
