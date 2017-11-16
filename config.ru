@@ -16,6 +16,6 @@ if File.directory?(ENV['OPENSHIFT_DATA_DIR'])
     "/" => Rack::Jekyll.new(:no_render => true)
   })
 else
-  run Rack::Jekyll.new
+  run Rack::Jekyll.new(:auto => false)
 end
 

@@ -9,12 +9,12 @@ baseurl: ''
 
 exclude:
   - 'bin'
+  # For some reason Openshift 3 installs gems to "bundle" instead of "vendor"
+  - 'bundle'
   - 'vendor'
   - 'Gemfile*'
   - 'README.md'
   - 'config.ru'
-  - 'guard.ru'
-  - 'Guardfile'
 
 # The tilde is YAML for nil.  Categories not in this map get nil and placed at the end.
 category-order: {usage: 1, developers: 2, design: 3, uncategorized: ~}
@@ -42,5 +42,6 @@ defaults:
   - scope: { path: "_posts" }
     values: { layout: "news" }
 
-gems:
+plugins:
   - jekyll-sitemap
+  - jekyll-paginate
