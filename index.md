@@ -52,7 +52,7 @@ If you're [new to the project](docs/389ds/users.html) you should start with our 
 -   Secure authentication and transport (TLS, and SASL)
 -   LDAPv3 compliant server
 
-    For more see our [Features](docs/389ds/FAQ/features.html) page
+    For more see our [Features](docs/389ds/FAQ/features.html) page.
 
 ## Community
 
@@ -78,5 +78,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - [All past release notes](releases/release-notes.html)
 
 - Check out **[What's New on port389.org](whats_new.html)**
+
 
 <br>
