@@ -83,10 +83,10 @@ Tested with Windows 2008 and 2012 Server 32-bit and 64-bit.
 
 |Platform|File|SHA1SUM|SSLv3|>=TLSv1.1|
 |--------|----|-------|-----|---------|
-|Windows 2003/2008 32-bit|[389-PassSync-1.1.5-i386.msi]({{ site.baseurl }}/binaries/389-PassSync-1.1.5-i386.msi)|4b79578e3d4bf9cdaada70e5c1212290a4e5ce3c|yes|no [*]|
-|Windows 2003/2008 64-bit|[389-PassSync-1.1.5-x86\_64.msi]({{ site.baseurl }}/binaries/389-PassSync-1.1.5-x86_64.msi)|ddac9705d305b14fa217af2f264d3529d3f3edb8|yes|no [*]|
-|Windows 2003/2008/2012 32-bit|[389-PassSync-1.1.7-i386.msi]({{ site.baseurl }}/binaries/389-PassSync-1.1.7-i386.msi)|780e403335a74ea58dc097fb60fd481c8457e105|no [**]|yes|
-|Windows 2003/2008/2012 64-bit|[389-PassSync-1.1.7-x86\_64.msi]({{ site.baseurl }}/binaries/389-PassSync-1.1.7-x86_64.msi)|0d598943ecdd17eeca2d66174de18d9885951699|no [**]|yes|
+|Windows 2003/2008 32-bit|[389-PassSync-1.1.5-i386.msi]({{ site.binaries_url }}/binaries/389-PassSync-1.1.5-i386.msi)|4b79578e3d4bf9cdaada70e5c1212290a4e5ce3c|yes|no [*]|
+|Windows 2003/2008 64-bit|[389-PassSync-1.1.5-x86\_64.msi]({{ site.binaries_url }}/binaries/389-PassSync-1.1.5-x86_64.msi)|ddac9705d305b14fa217af2f264d3529d3f3edb8|yes|no [*]|
+|Windows 2003/2008/2012 32-bit|[389-PassSync-1.1.7-i386.msi]({{ site.binaries_url }}/binaries/389-PassSync-1.1.7-i386.msi)|780e403335a74ea58dc097fb60fd481c8457e105|no [**]|yes|
+|Windows 2003/2008/2012 64-bit|[389-PassSync-1.1.7-x86\_64.msi]({{ site.binaries_url }}/binaries/389-PassSync-1.1.7-x86_64.msi)|0d598943ecdd17eeca2d66174de18d9885951699|no [**]|yes|
 
 [*] 389-PassSync-1.1.5 has no support TLSv1.1 and newer.
 
@@ -102,8 +102,8 @@ Tested with Java 7 on Windows 2008/2012 Server.
 
 |Platform|File|SHA1SUM|
 |--------|----|-------|
-|Windows 2008/2012 32-bit|[389-Console-1.1.15-i386.msi]({{ site.baseurl }}/binaries/389-Console-1.1.15-i386.msi)|772e4691daea66dcdef97cb220d9ae77ab9fbe78|
-|Windows 2008/2012 64-bit|[389-Console-1.1.15-x86\_64.msi]({{ site.baseurl }}/binaries/389-Console-1.1.15-x86_64.msi)|35ec5bad0d309c334ba8c5e8ac0ab183f004d7fd|
+|Windows 2008/2012 32-bit|[389-Console-1.1.15-i386.msi]({{ site.binaries_url }}/binaries/389-Console-1.1.15-i386.msi)|772e4691daea66dcdef97cb220d9ae77ab9fbe78|
+|Windows 2008/2012 64-bit|[389-Console-1.1.15-x86\_64.msi]({{ site.binaries_url }}/binaries/389-Console-1.1.15-x86_64.msi)|35ec5bad0d309c334ba8c5e8ac0ab183f004d7fd|
 
 NOTE: You must have Java in your PATH in order for this to work. Or you can just edit the batch file to tell it where to find Java.
 
@@ -118,18 +118,18 @@ These releases are very old, and provided for historical purposes only.
 
 The following is only required for NT4 sync. It is not required for Active Directory sync.
 
--   [NTDS]({{ site.baseurl }}/binaries/ntds.msi) md5sum 74e0ada5ff519ade5295ae0bf75ddb84
+-   [NTDS]({{ site.binaries_url }}/binaries/ntds.msi) md5sum 74e0ada5ff519ade5295ae0bf75ddb84
 
 ### Fedora Directory Server 1.x 
 
-These rpm packages are no longer available for download, but the source code for each version is, and they can be located [here]({{ site.baseurl }}/binaries/)
+These rpm packages are no longer available for download, but the source code for each version is, and they can be located [here]({{ site.binaries_url }}/binaries/)
 
 ### Fedora Directory Server 7.1
 
 The FDS 7.1 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help. Since the Admin Server and related files in this legacy package are not available as open source, please refer to the [Licensing](FAQ/licensing.html) for these Binary packages. 
 
--   [FDS 7.1 Source Code]({{ site.baseurl }}/binaries/fedora-ds-7.1.tar.gz)
--   [FDS 7.1 SRPM]({{ site.baseurl }}/binaries/fedora-ds-7.1-2.src.rpm)
+-   [FDS 7.1 Source Code]({{ site.binaries_url }}/binaries/fedora-ds-7.1.tar.gz)
+-   [FDS 7.1 SRPM]({{ site.binaries_url }}/binaries/fedora-ds-7.1-2.src.rpm)
 
 
 ## Source Code Packages

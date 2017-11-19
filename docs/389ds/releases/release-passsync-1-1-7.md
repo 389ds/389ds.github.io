@@ -12,7 +12,7 @@ The new packages and versions are:
 
 -   389-PassSync-1.1.7
 
-A source tarball is available for download at [Download Source]({{ site.baseurl }}/binaries/passsync-win-1.1.7-1-sources.zip)
+A source tarball is available for download at [Download Source]({{ site.binaries_url }}/binaries/passsync-win-1.1.7-1-sources.zip)
 
 ### Highlights in 1.1.7
 

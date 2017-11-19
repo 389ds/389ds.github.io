@@ -249,7 +249,7 @@ If you have commit access, use
 
 You will have to apply for commit access - see our [contributing](../development/contributing.html) page on more information on how to get commit access.
 
-A source tarball is available at [mod\_nss-1.0.9.tar.gz]({{ site.baseurl }}/binaries/mod_nss-1.0.9.tar.gz)
+A source tarball is available at [mod\_nss-1.0.9.tar.gz]({{ site.binaries_url }}/binaries/mod_nss-1.0.9.tar.gz)
 
 How do I build it?
 ------------------

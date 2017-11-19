@@ -13,7 +13,7 @@ The new packages and versions are:
 -   389-ds-console-1.2.16-1
 
 Source tarballs are available for download at 
-[Download 389 Ds Console Source]({{ site.baseurl }}/binaries/389-ds-console-1.2.16.tar.bz2), 
+[Download 389 Ds Console Source]({{ site.binaries_url }}/binaries/389-ds-console-1.2.16.tar.bz2), 
 
 ### Highlights in 389-ds-console-1.2.16
 

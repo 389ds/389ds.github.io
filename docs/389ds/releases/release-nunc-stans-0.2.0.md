@@ -8,7 +8,7 @@ The 389 Directory Server team is proud to announce nunc-stans version 0.2.0.
 
 Source tarballs are available for download at:
 
-[Download Nunc Stans Source]({{ site.baseurl }}/binaries/nunc-stans-0.2.0.tar.xz)
+[Download Nunc Stans Source]({{ site.binaries_url }}/binaries/nunc-stans-0.2.0.tar.xz)
 
 sha256sum nunc-stans-0.2.0.tar.xz 0000632541531efe3b420137a4b071ce1281be848f562f8a1b79fba53d4ef883
 

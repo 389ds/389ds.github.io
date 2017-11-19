@@ -215,7 +215,7 @@ Or put this in your \$HOME/.bash\_profile for safekeeping.
 
 ### Some patches are required
 
-Start the build. It should go through quite a bit until mod\_nss. Then, using [this patch]({{ site.baseurl }}/binaries/fds104.mod_nss.debian31.patch), do this:
+Start the build. It should go through quite a bit until mod\_nss. Then, using [this patch]({{ site.binaries_url }}/binaries/fds104.mod_nss.debian31.patch), do this:
 
     cd dsbuild-fds104/ds/mod_nss/work/mod_nss-1.0.5    
     patch -p0 < /path/to/patchfile    
@@ -225,7 +225,7 @@ Then continue the build
     cd dsbuild-fds104/meta/ds    
     make ... make args ... # continue one step build as above    
 
-The next stop is in mod\_restartd. Using [this patch]({{ site.baseurl }}/binaries/fds104.mod_restartd.debian31.patch), do this:
+The next stop is in mod\_restartd. Using [this patch]({{ site.binaries_url }}/binaries/fds104.mod_restartd.debian31.patch), do this:
 
     cd dsbuild-fds104/ds/mod_restartd/work/mod_restartd-1.0.3    
     patch -p0 < /path/to/patchfile    

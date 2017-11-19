@@ -13,7 +13,7 @@ The new packages and versions are:
 
 -   389-dsgw-1.1.10-1
 
-A source tarball is available for download at [Download Source]({{ site.baseurl }}/binaries/389-dsgw-1.1.10.tar.bz2)
+A source tarball is available for download at [Download Source]({{ site.binaries_url }}/binaries/389-dsgw-1.1.10.tar.bz2)
 
 ### Highlights in 1.1.10
 

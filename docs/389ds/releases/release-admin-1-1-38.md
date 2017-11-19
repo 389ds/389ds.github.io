@@ -13,8 +13,8 @@ The new packages and versions are:
 -   389-admin-1.1.38-1
 -   389-adminutil-1.1.21-1
 
-Source tarballs are available for download at [Download Admin Source]({{ site.baseurl }}/binaries/389-admin-1.1.38.tar.bz2) and 
-[Download Adminutil Source]({{ site.baseurl }}/binaries/389-adminutil-1.1.21.tar.bz2).
+Source tarballs are available for download at [Download Admin Source]({{ site.binaries_url }}/binaries/389-admin-1.1.38.tar.bz2) and 
+[Download Adminutil Source]({{ site.binaries_url }}/binaries/389-adminutil-1.1.21.tar.bz2).
 
 ### Highlights in 389-admin-1.1.38 and 389-adminutil-1.1.21
 

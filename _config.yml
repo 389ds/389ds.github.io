@@ -7,6 +7,8 @@ encoding: utf-8
 # Change this if we ever need the site to reside in a sub-directory
 baseurl: ''
 
+binaries_url: https://fedorapeople.org/groups/389ds/
+
 exclude:
   - 'bin'
   # For some reason Openshift 3 installs gems to "bundle" instead of "vendor"

@@ -14,8 +14,8 @@ The new packages and versions are:
 -   idm-console-framework-1.1.14-1
 
 Source tarballs are available for download at 
-[Download 389 Ds Console Source]({{ site.baseurl }}/binaries/389-ds-console-1.2.12.tar.bz2), 
-[Download Idm Console Framework Source]({{ site.baseurl }}/binaries/idm-console-framework-1.1.14.tar.bz2).
+[Download 389 Ds Console Source]({{ site.binaries_url }}/binaries/389-ds-console-1.2.12.tar.bz2), 
+[Download Idm Console Framework Source]({{ site.binaries_url }}/binaries/idm-console-framework-1.1.14.tar.bz2).
 
 ### Highlights in 389-ds-console-1.2.12 and idm-console-framework-1.1.14-1
 

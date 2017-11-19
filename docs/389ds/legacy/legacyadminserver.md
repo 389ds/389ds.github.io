@@ -29,7 +29,7 @@ To build Admin Server including the dependent components manually, you will need
     <srcroot>/onlinehelp
     <srcroot>/adminserver
 
-Their build instructions are available on the [Directory Server Building](../development/building.html) page as well as [AdminUtil](../administration/adminutil.html), [SetupUtil](../FAQ/setuputil.html), [Mod\_nss](../administration/mod-nss.html), [Mod\_admserv](../administration/mod-admserv.html), [BuildingConsole](../development/buildingconsole.html), [Mod\_restartd](../administration/mod-restartd.html) and [Onlinehelp](onlinehelp.html) pages. The Admin Server source is found [here]({{ site.baseurl }}/binaries/fedora-adminserver-1.0.1.tar.gz).
+Their build instructions are available on the [Directory Server Building](../development/building.html) page as well as [AdminUtil](../administration/adminutil.html), [SetupUtil](../FAQ/setuputil.html), [Mod\_nss](../administration/mod-nss.html), [Mod\_admserv](../administration/mod-admserv.html), [BuildingConsole](../development/buildingconsole.html), [Mod\_restartd](../administration/mod-restartd.html) and [Onlinehelp](onlinehelp.html) pages. The Admin Server source is found [here]({{ site.binaries_url }}/binaries/fedora-adminserver-1.0.1.tar.gz).
 
 Or you can check out the source code:
 

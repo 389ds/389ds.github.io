@@ -7,7 +7,7 @@ python-lib389-1.0.4
 
 The 389 Directory Server team is proud to announce python-lib389 version 1.0.4.
 
-Source tarballs are available for download at [Download python-lib389 source code]({{ site.baseurl }}/binaries/python-lib389-1.0.4.tar.bz2).
+Source tarballs are available for download at [Download python-lib389 source code]({{ site.binaries_url }}/binaries/python-lib389-1.0.4.tar.bz2).
 
 Fedora packages are in testing for Fedora 25, 26, and Rawhide repositories.
 

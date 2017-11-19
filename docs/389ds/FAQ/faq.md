@@ -533,7 +533,7 @@ You can replace the access log with a [Named_Pipe](../howto/howto-use-named-pipe
 If the size of the daemon process ns-slapd keeps growing, there are 2 possibilities -- memory leak or fragmentation.
 
 #### How to check if the memory growth is from memory leak or not ####
--   Download [ns-slapd.sh]({{ site.baseurl }}/binaries/ns-slapd.sh)
+-   Download [ns-slapd.sh]({{ site.binaries_url }}/binaries/ns-slapd.sh)
 -   sudo mv /usr/sbin/ns-slapd /usr/sbin/ns-slapd.orig
 -   sudo mv /path/to/downloaded/ns-slapd.sh /usr/sbin/ns-slapd
 -   sudo chmod 755 /usr/sbin/ns-slapd

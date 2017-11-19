@@ -12,7 +12,7 @@ The new packages and versions are:
 
 -   389-ds-base-1.3.6.1-2
 
-Source tarballs are available for download at [Download 389-ds-base Source]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.1.tar.bz2)
+Source tarballs are available for download at [Download 389-ds-base Source]({{ site.binaries_url }}/binaries/389-ds-base-1.3.6.1.tar.bz2)
 
 ### Highlights in 1.3.6.1
 

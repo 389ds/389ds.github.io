@@ -17,12 +17,12 @@ The new packages and versions are:
 -   389-admin-console-1.1.11-1.el6
 -   idm-console-framework-1.1.15-1.el6
 
-Source tarballs are available for download at [Download Admin Source]({{ site.baseurl }}/binaries/389-admin-1.1.43.tar.bz2),
-[Download Adminutil Source]({{ site.baseurl }}/binaries/389-adminutil-1.1.22.tar.bz2),
-[Download 389-console Source]({{ site.baseurl }}/binaries/389-console-1.1.17.tar.bz2),
-[Download 389-ds-console Source]({{ site.baseurl }}/binaries/389-ds-console-1.2.12.tar.bz2),
-[Download 389-admin-console Source]({{ site.baseurl }}/binaries/389-admin-console-1.1.11.tar.bz2), and
-[Download idm-console-framework Source]({{ site.baseurl }}/binaries/idm-console-framework-1.1.15.tar.bz2).
+Source tarballs are available for download at [Download Admin Source]({{ site.binaries_url }}/binaries/389-admin-1.1.43.tar.bz2),
+[Download Adminutil Source]({{ site.binaries_url }}/binaries/389-adminutil-1.1.22.tar.bz2),
+[Download 389-console Source]({{ site.binaries_url }}/binaries/389-console-1.1.17.tar.bz2),
+[Download 389-ds-console Source]({{ site.binaries_url }}/binaries/389-ds-console-1.2.12.tar.bz2),
+[Download 389-admin-console Source]({{ site.binaries_url }}/binaries/389-admin-console-1.1.11.tar.bz2), and
+[Download idm-console-framework Source]({{ site.binaries_url }}/binaries/idm-console-framework-1.1.15.tar.bz2).
 
 ### Highlights in 389-admin-1.1.43, 389-adminutil-1.1.22, 389-console-1.1.17, 389-ds-console-1.2.12, 389-admin-console-1.1.11, and idm-console-framework-1.1.15
 

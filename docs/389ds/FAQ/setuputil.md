@@ -19,7 +19,7 @@ To build SetupUtil including the dependent component manually, you will need moz
 
     <srcroot>/mozilla
 
-The build instructions are available on the [Directory Server Building](../development/building.html) page. The SetupUtil source is found [here]({{ site.baseurl }}/binaries/fedora-setuputil-1.0.tar.gz).
+The build instructions are available on the [Directory Server Building](../development/building.html) page. The SetupUtil source is found [here]({{ site.binaries_url }}/binaries/fedora-setuputil-1.0.tar.gz).
 
 Or you can check out the source code:
 
@@ -47,7 +47,7 @@ The built libraries and the RPM packages are found in <srcroot>/<MM.DD> director
 
 ### One-Step Build
 
-One-Step Build [setuputilbuild]({{ site.baseurl }}/binaries/setuputilbuild-0.1.tar) is available on the platform on which GAR is installed.
+One-Step Build [setuputilbuild]({{ site.binaries_url }}/binaries/setuputilbuild-0.1.tar) is available on the platform on which GAR is installed.
 
     % tar xzf setuputilbuild-0.1.tar
     % cd to setuputilbuild/meta/setuputil
