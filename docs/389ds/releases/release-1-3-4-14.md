@@ -12,7 +12,7 @@ The new packages and versions are:
 
 -   389-ds-base-1.3.4.14-1
 
-Source tarballs are available for download at [Download 389-ds-base Source]({{ site.baseurl }}/binaries/389-ds-base-1.3.4.14.tar.bz2) and [Download nunc-stans Source]({{ site.baseurl }}/binaries/nunc-stans-0.1.5.tar.bz2).
+Source tarballs are available for download at [Download 389-ds-base Source]({{ site.binaries_url }}/binaries/389-ds-base-1.3.4.14.tar.bz2) and [Download nunc-stans Source]({{ site.binaries_url }}/binaries/nunc-stans-0.1.5.tar.bz2).
 
 ### Highlights in 1.3.4.14
 

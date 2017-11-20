@@ -14,7 +14,7 @@ See more info on SLAMD [here](http://dl.thezonemanager.com/slamd/)
 ## Get SLAMD
 ------------
 
-[Download slamd 2.0.1]({{ site.baseurl }}/binaries/slamd-2.0.1.zip)
+[Download slamd 2.0.1]({{ site.binaries_url }}/binaries/slamd-2.0.1.zip)
 
 <br>
 

@@ -12,7 +12,7 @@ You can obtain the latest source code from CVS:
 
     git clone https://pagure.io/389-dsgw.git
 
-The latest [tarballs]({{ site.baseurl }}/binaries/)
+The latest [tarballs]({{ site.binaries_url }}/binaries/)
 
 Requirements for building
 -------------------------

@@ -276,9 +276,9 @@ NOTE:: Because we are using prebiult jars, we will be skipping the last 2 steps 
 
 Next, grab the tarballs of idm-common-framework and the fedora-idm-console.
 
-[idm-common-framework-1.1.1.tar.bz2]({{ site.baseurl }}/binaries/idm-common-framework-1.1.1.tar.bz2)
+[idm-common-framework-1.1.1.tar.bz2]({{ site.binaries_url }}/binaries/idm-common-framework-1.1.1.tar.bz2)
 
-[fedora-idm-console-1.1.1.tar.bz2]({{ site.baseurl }}/binaries/fedora-idm-console-1.1.1.tar.bz2)
+[fedora-idm-console-1.1.1.tar.bz2]({{ site.binaries_url }}/binaries/fedora-idm-console-1.1.1.tar.bz2)
 
 and untar them to /usr/src/
 

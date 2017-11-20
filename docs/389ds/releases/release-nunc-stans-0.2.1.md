@@ -10,7 +10,7 @@ This is an important release, as it corrects a defect found in 0.2.0. The defect
 
 Source tarballs are available for download at:
 
-[Download Nunc Stans Source]({{ site.baseurl }}/binaries/nunc-stans-0.2.1.tar.xz)
+[Download Nunc Stans Source]({{ site.binaries_url }}/binaries/nunc-stans-0.2.1.tar.xz)
 
 sha256sum nunc-stans-0.2.1.tar.xz ee87a1e090e2b06616f3626c14c465226fadcf2d0d42bd4a178771b4a5ecf972
 

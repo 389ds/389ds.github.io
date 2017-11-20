@@ -19,17 +19,17 @@ The new packages and versions are:
 
 Source tarballs are available for download at 
 
-[Download Admin Source]({{ site.baseurl }}/binaries/389-admin-1.1.45.tar.bz2)  
+[Download Admin Source]({{ site.binaries_url }}/binaries/389-admin-1.1.45.tar.bz2)  
 
-[Download Adminutil Source]({{ site.baseurl }}/binaries/389-adminutil-1.1.23.tar.bz2)
+[Download Adminutil Source]({{ site.binaries_url }}/binaries/389-adminutil-1.1.23.tar.bz2)
 
-[Download 389-console Source]({{ site.baseurl }}/binaries/389-console-1.1.18.tar.bz2)
+[Download 389-console Source]({{ site.binaries_url }}/binaries/389-console-1.1.18.tar.bz2)
 
-[Download 389-ds-console Source]({{ site.baseurl }}/binaries/389-ds-console-1.2.15.tar.bz2)
+[Download 389-ds-console Source]({{ site.binaries_url }}/binaries/389-ds-console-1.2.15.tar.bz2)
 
-[Download 389-admin-console Source]({{ site.baseurl }}/binaries/389-admin-console-1.1.12.tar.bz2)
+[Download 389-admin-console Source]({{ site.binaries_url }}/binaries/389-admin-console-1.1.12.tar.bz2)
 
-[Download idm-console-framework Source]({{ site.baseurl }}/binaries/idm-console-framework-1.1.17.tar.bz2)
+[Download idm-console-framework Source]({{ site.binaries_url }}/binaries/idm-console-framework-1.1.17.tar.bz2)
 
 
 ### Highlights

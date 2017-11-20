@@ -132,7 +132,7 @@ Then push the dsbuild tarball to /var/www/html/sources on the wiki site.
 
 This is mostly the same as the instructions on [Building](Building "wikilink"), but you can do this:
 
-    wget {{ site.baseurl }}/binaries/dsbuild-fds$RELEASE.tar.gz
+    wget {{ site.binaries_url }}/binaries/dsbuild-fds$RELEASE.tar.gz
     gunzip -c dsbuild-fds$RELEASE.tar.gz | tar xf -    
     cd dsbuild-fds$RELEASE/meta/ds    
     make BUILD_RPM=1 2>&1 | tee logfile    

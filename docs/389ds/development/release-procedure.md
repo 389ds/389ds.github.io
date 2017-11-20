@@ -166,7 +166,7 @@ Push the Source Tarball to [Source](source.html)
 
 This requires getting in touch with the owner of port389.et.redhat.com and requesting scp/ssh access.
 
-Once the source tarball is available from [here]({{ site.baseurl }}/binaries/), update the [Source](source.html) page with the URL, tag, and sha1sum of the source tarball.
+Once the source tarball is available from [here]({{ site.binaries_url }}/binaries/), update the [Source](source.html) page with the URL, tag, and sha1sum of the source tarball.
 
 Update [Release Notes](../releases/release-notes.html)
 -------------------------------------------------

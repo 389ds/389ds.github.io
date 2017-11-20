@@ -12,7 +12,7 @@ The new packages and versions are:
 
 -   389-PassSync-1.1.5
 
-A source tarball is available for download at [Download Source]({{ site.baseurl }}/binaries/389-passsync-1.1.5.tar.bz2)
+A source tarball is available for download at [Download Source]({{ site.binaries_url }}/binaries/389-passsync-1.1.5.tar.bz2)
 
 ### Highlights in 1.1.5
 

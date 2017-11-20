@@ -15,7 +15,7 @@ The new packages and versions are:
 -   389-ds-base-1.3.6.6-1  Fedora 26
 -   389-ds-base-1.3.6.6-2  Rawhide(F27)
 
-Source tarballs are available for download at [Download 389-ds-base Source]({{ site.baseurl }}/binaries/389-ds-base-1.3.6.6.tar.bz2)
+Source tarballs are available for download at [Download 389-ds-base Source]({{ site.binaries_url }}/binaries/389-ds-base-1.3.6.6.tar.bz2)
 
 ### Highlights in 1.3.6.6
 

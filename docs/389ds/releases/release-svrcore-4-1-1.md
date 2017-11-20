@@ -6,7 +6,7 @@ Svrcore 4.1.1
 
 The 389 Directory Server team is proud to announce svrcore version 4.1.1.
 
-Source tarballs are available for download at [Download 389-ds-base Source]({{ site.baseurl }}/binaries/svrcore-4.1.1.tar.bz2).
+Source tarballs are available for download at [Download 389-ds-base Source]({{ site.binaries_url }}/binaries/svrcore-4.1.1.tar.bz2).
 
 Fedora packages are avaliable for Fedora 24 and Rawhide repositories.
 

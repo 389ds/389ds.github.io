@@ -6,7 +6,7 @@ title: "Releases/windows-console-1.1.15"
 
 The 389 Directory Server team is proud to announce 389-console-win version 1.1.15.
 
-Windows installers are available to download from [Download 389 Windows Console (32-bit)]({{ site.baseurl }}/binaries/389-Console-1.1.15-i386.msi) and [Download 389 Windows Console (64-bit)]({{ site.baseurl }}/binaries/389-Console-1.1.15-x86_64.msi). 
+Windows installers are available to download from [Download 389 Windows Console (32-bit)]({{ site.binaries_url }}/binaries/389-Console-1.1.15-i386.msi) and [Download 389 Windows Console (64-bit)]({{ site.binaries_url }}/binaries/389-Console-1.1.15-x86_64.msi). 
 
 ### Highlights in 389-console-win-1.1.15
 
