@@ -22,7 +22,7 @@ no_date: true
     <ul>
     {% capture prev_page_date %}{{ current_page_date }}{% endcapture %}
   {% endif %}
-  <li><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
+  <li><a href="{{ site.baseurl }}{{ page.url }}.html">{{ page.title }}</a></li>
   {% if forloop.last %}
     </ul>
   {% endif %}
