@@ -61,6 +61,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 ## News
 
 <!-- Try to keep this list under 10 releases  -->
+- 2018-01-29: Released **389-ds-base [1.4.0.4](docs/389ds/releases/release-1-4-0-4.html)**
 - 2017-11-20: Released **389-ds-base [1.3.6.12](docs/389ds/releases/release-1-3-6-12.html)**
 - 2017-11-20: Released **389-ds-base [1.4.0.3](docs/389ds/releases/release-1-4-0-3.html)**
 - 2017-11-20: Released **389-ds-base [1.3.7.8](docs/389ds/releases/release-1-3-7-8.html)**

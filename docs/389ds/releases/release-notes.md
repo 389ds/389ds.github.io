@@ -3,9 +3,9 @@ title: "Release Notes"
 ---
 
 # Release Notes
-
 ========================================================================
 
+- [389 Directory Server 1.4.0.4](release-1-4-0-4.html) *(January 29, 2017)*
 - [389 Directory Server 1.3.6.11](release-1-3-6-11.html) *(November 7, 2017)*
 - [389 Directory Server 1.4.0.2](release-1-4-0-2.html) *(October 14, 2017)*
 - [389 Directory Server 1.3.7.7](release-1-3-7-7.html) *(October 14, 2017)*
@@ -65,7 +65,6 @@ title: "Release Notes"
 - [389 Directory Password Synchronization](release-passsync-1-1-6.html) *(January 28 2015)*
 
 # Release Notes For Older Versions
-
 ================================
 
 [Old Release Notes](old-release-notes.html)
