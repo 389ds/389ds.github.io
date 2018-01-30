@@ -2,6 +2,8 @@
 title: "dsctl, dsconf and dsidm"
 ---
 
+{% include toc.md %}
+
 Introduction
 ==============
 
@@ -74,14 +76,6 @@ A major component of this, is that dsadm will not use or rely on any of the exis
 
 The new installer itself uses a simplified inf format compared to the current answer file.
 
-A minimal install should only need:
-
-    [general]
-    config_version = 2
-    [slapd]
-    instance_name = standalone
-    root_password = `pwdhash-bin password`
-
 A complete example can be generated with:
 
     dscreate example > /tmp/instance.inf
@@ -99,17 +93,12 @@ The command line interface can be unit tested, and the current components are al
 
 You can run these tests with the following:
 
-    sudo PREFIX=/opt/dirsrv py.test-3 lib389/tests/cli/*
-    sudo PREFIX=/opt/dirsrv py.test-3 lib389/tests/instance/*
+    sudo py.test-3 lib389/tests/cli/ lib389/tests/instance/
 
 As we add more commands and functions, we must add these to be tested also.
 
 Example usage
 =============
-
-Listing instances of Directory Server
-
-    ???
 
 Displaying the example inf
 
