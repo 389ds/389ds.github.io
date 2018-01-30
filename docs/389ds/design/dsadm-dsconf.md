@@ -23,9 +23,9 @@ Naming
 
 There are three tools we provide
 
-dsctl - controls all aspects of a local instance. Generally needs root permissions.
-dsconf - controls all aspects of an instances configuration. Uses ldap protocol against a live server, and can be used remotely. Generally needs cn=Directory Manager access.
-dsidm - controls all aspects of data in a backend, ie users, groups, permissions. Can be used for self service commands. Can have delegated permissions.
+* dsctl - controls all aspects of a local instance. Generally needs root permissions.
+* dsconf - controls all aspects of an instances configuration. Uses ldap protocol against a live server, and can be used remotely. Generally needs cn=Directory Manager access.
+* dsidm - controls all aspects of data in a backend, ie users, groups, permissions. Can be used for self service commands. Can have delegated permissions.
 
 
 Design
