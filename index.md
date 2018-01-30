@@ -73,7 +73,7 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - 2017-09-22: Released **389-ds-base [1.4.0.0](docs/389ds/releases/release-1-4-0-0.html)**
 - 2017-06-23: Released **python-lib389 [1.0.4](docs/389ds/releases/release-lib389-1-0-4.html)**
 
-- [All past release notes](releases/release-notes.html)
+- [All past release notes](docs/389ds/releases/release-notes.html)
 
 - Check out **[What's New on port389.org](whats_new.html)**
 
