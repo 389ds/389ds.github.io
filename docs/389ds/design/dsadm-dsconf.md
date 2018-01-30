@@ -143,7 +143,7 @@ Configure our .dsrc to make our instance easier to administer:
     uri = ldaps://localhost
     basedn = dc=example,dc=com
     binddn = cn=Directory Manager
-    tls_cacertdir = /opt/dirsrv/etc/dirsrv/slapd-localhost/
+    tls_cacertdir = /etc/dirsrv/slapd-localhost/
 
 Now that we have an instance, show the backends. Remember, backends store suffixes of data like users and groups:
 
