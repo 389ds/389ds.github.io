@@ -61,6 +61,9 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 ## News
 
 <!-- Try to keep this list under 10 releases  -->
+- 2018-01-31: Released **389-ds-base [1.4.0.5](docs/389ds/releases/release-1-4-0-5.html)**
+- 2018-01-31: Released **389-ds-base [1.3.6.13](docs/389ds/releases/release-1-3-6-13.html)**
+- 2018-01-31: Released **389-ds-base [1.3.7.9](docs/389ds/releases/release-1-3-7-9.html)**
 - 2018-01-29: Released **389-ds-base [1.4.0.4](docs/389ds/releases/release-1-4-0-4.html)**
 - 2017-11-20: Released **389-ds-base [1.3.6.12](docs/389ds/releases/release-1-3-6-12.html)**
 - 2017-11-20: Released **389-ds-base [1.4.0.3](docs/389ds/releases/release-1-4-0-3.html)**
@@ -68,10 +71,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - 2017-11-07: Released **389-ds-base [1.3.6.11](docs/389ds/releases/release-1-3-6-11.html)**
 - 2017-10-09: Released **389-ds-base [1.4.0.2](docs/389ds/releases/release-1-4-0-2.html)**
 - 2017-10-09: Released **389-ds-base [1.3.7.7](docs/389ds/releases/release-1-3-7-7.html)**
-- 2017-10-09: Released **389-ds-base [1.3.6.10](docs/389ds/releases/release-1-3-6-10.html)**
-- 2017-10-09: Released **389-ds-base [1.4.0.1](docs/389ds/releases/release-1-4-0-1.html)**
-- 2017-09-22: Released **389-ds-base [1.4.0.0](docs/389ds/releases/release-1-4-0-0.html)**
-- 2017-06-23: Released **python-lib389 [1.0.4](docs/389ds/releases/release-lib389-1-0-4.html)**
 
 - [All past release notes](docs/389ds/releases/release-notes.html)
 
