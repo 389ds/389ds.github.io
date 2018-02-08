@@ -141,20 +141,20 @@ backend offline --> replica offline --> agmt pause ?
 
 in cleanallruv
 
-### Exporting the changelog
+### Exporting the Changelog
 
 
-## State changes affecting changelog
+## State changes affecting Changelog
 
 ### Startup and Shutdown
 
-### Backend state change
+### Backend State Change
 
-### replication config change
+### Replication Config Change
 
-#### replica flags
+#### Replica Flags
 
-#### trimming configuration
+#### Trimming Configuration
 
 
 Impacted areas
@@ -162,11 +162,32 @@ Impacted areas
 
 ## Export and Import of Database
 
+In the current implemtation there are tasks for an ldif export of the changelog and for import of the changelog. But the reimport of an online export will inmost cases
+lead to an mismatch between changelog and database. The motivation for reimport was probably the case of encrypted changelog and certificate change or to comapct the chamgelog
+database by reimporting.
+
+The export/import of the changelogdatabase does only make sense if it is done together with an export/import of the main database. Only then database and changelog will
+match after import. Therefor the export and import modes will be extended and have an optional changleog export/import.
+
+Also reimporting the changelog is only useful in connection with ldif exports including replication meta data. It requires the "-r" option. 
+
+The new option is:
+
+     -R    export the changelog database 
+           this enforces -r for export of the main database
+           if the ldif file for export is <ldif_file_name>.ldif the changelog will
+           be exported to <ldif_file_name>_cl.ldif
 
 ## Backup  and Restore of Database
 
+The changelog database is part of the backend directory and will automatically included in backup/restore.
+All the extra code for handling the separate changelog directory cna be removed.
+As the writing of the changelog RUV in a backup is also unnecessary this extra handling can also be removed, see ticket ....
+
 =======
-* Ticket [\#49476](https://pagure.io/389-ds-base/issue/49476) refactor ldbm backend to allow replacement of BDB
+* Ticket [\#49562](https://pagure.io/389-ds-base/issue/49562) integrate changelog database to main database
 
 Related tickets: 
-* Ticket [\#49469](https://pagure.io/389-ds-base/issue/49469)  cleanup backend code (1)
+* Ticket [\#49476](https://pagure.io/389-ds-base/issue/49476) refactor ldbm backend to allow replacement of BDB
+* Ticket [\#49550](https://pagure.io/389-ds-base/issue/49550) do not write changelog RUV in online backup
+* Ticket [\#49525](https://pagure.io/389-ds-base/issue/49525) Improve attr encryption key rollover
