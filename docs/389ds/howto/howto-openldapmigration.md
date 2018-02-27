@@ -5,21 +5,15 @@ title: "Howto: OpenLDAPMigration"
 # Migrating from OpenLDAP to 389 Directory Server
 --------------------------------------------------
 
-{% include toc.md %}
-
-### All In One
-
-[LdapImport](http://wiki.babel.com.au/index.php?area=Linux_Projects&page=LdapImport) is a script which can be used to migrate data and schema from OpenLDAP into Fedora DS.
-
 ### Schema
 
 The schema is in a slightly different format. Fedora DS uses a strict RFC 2252 and LDIF format while OpenLDAP is slightly different. In OpenLDAP, the attribute type definition begins with "attributetype" while in Fedora DS it begins with "attributetypes:". In OpenLDAP, the objectclass definition begins with "objectclass" while in Fedora DS it begins with "objectclasses:". Continuation lines in OpenLDAP may have more than one space but Fedora DS follows the LDIF convention that the continuation line begins with a single space character. Other than that, the actual text of the schema definition is the same.
 
-[Here](http://directory.fedoraproject.org/download/ol2rhds.pl) is a script that handles the RFC 2252 strictness when converting schema.
+[Here]({{ site.binaries_url }}/binaries/ol2rhds.pl) is a script that handles the RFC 2252 strictness when converting schema.
 
-The perl script ol-schema-migrate.pl [here](http://www.port389.org/binaries/ol-schema-migrate.pl) will convert the schema and also nicely format the schema definitions.
+The perl script ol-schema-migrate.pl [here]({{ site.binaries_url }}/binaries/ol-schema-migrate.pl) will convert the schema and also nicely format the schema definitions.
 
-[This](http://www.port389.org/binaries/ol-macro-expand.pl) script will recursively expand the OID macro format used in OpenLDAP schema files. The following Perl script may also be helpful:
+[This]({{ site.binaries_url }}/binaries/ol-macro-expand.pl) script will recursively expand the OID macro format used in OpenLDAP schema files. The following Perl script may also be helpful:
 
     <nowiki>
     #!/usr/bin/perl -w
