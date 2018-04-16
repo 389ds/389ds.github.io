@@ -11,17 +11,17 @@ Fedora packages are available on Fedora 28 and 29(rawhide).
 
 Rawhide(F29)
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=26347575>
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=26398181>
 
 F28
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=26348320>
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=26398269>
 
-<https://bodhi.fedoraproject.org/updates/FEDORA-2018-7082fefd2e>
+<https://bodhi.fedoraproject.org/updates/FEDORA-2018-3c1ec0b939>
 
 The new packages and versions are:
 
--   389-ds-base-1.4.0.7-1
+-   389-ds-base-1.4.0.7-2
 
 Source tarballs are available for download at [Download 389-ds-base Source](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.0.7.tar.bz2)
 
