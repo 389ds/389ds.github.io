@@ -102,7 +102,7 @@ If you have more than one suffix/db, you will have to do this for each one that 
 -   Import the data from the known good ldif. This will mark all the changes with CSNs that match the current time/date stamps
 
         # chmod 644 /tmp/master-389.ldif    
-        # /usr/bin/ldif2db -Z EXAMPLE-COM -n userRoot -a /tmp/master-389.ldif    
+        # /usr/bin/ldif2db -Z EXAMPLE-COM -n userRoot -i /tmp/master-389.ldif    
 
     If you have more than one suffix/db, you will have to do this for each one that the readNsState.py script reports.
 
