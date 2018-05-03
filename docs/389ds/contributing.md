@@ -112,6 +112,12 @@ Creating a patch for review
 
 When you submit code to the 389 Directory Server project, you are required to complete the [Fedora Project Contributor Agreement](https://fedoraproject.org/wiki/Legal:Fedora_Project_Contributor_Agreement). This can be completed on the [Fedora account system](https://admin.fedoraproject.org/accounts/) under the "My Account" tab.
 
+### Fork the repository
+
+Go to <https://pagure.io/389-ds-base> and fork the repo. Add the forked repo link as a remote to your local git repo:
+
+    git remote add myfork ssh://git@pagure.io/forks/USERNAME/389-ds-base.git
+
 ### Create your working branch
 
     git checkout master
@@ -168,17 +174,29 @@ following format.
 
 Fill in the commit message and save. You now have a single well formed commit to send us.
 
-Finally, create the patch file with:
+### Create a pull-request
 
-    git format-patch HEAD~1
+Push the commit to your remote forked repo
+
+    git push myfork
+
+Go to https://pagure.io/389-ds-base/pull-requests
+Press “File Pull Request” button and choose your branch.
+Check that all fields have a right information and press ‘Create’ button.
+
+Alternatively you can create and upload a patch file (it was an old way before the pull-requests) You can run the next command to generate a patch file from the last commit:
+
+    git format-patch -1
+
+Add the patch file as an attachment to your issue on pagure.
 
 ### Final checks
 
 While we hope you were running tests as you developed your patch, we ask that you run the tests once more here with your single patch to make sure there are no issues here to surprise us!
 
-### Sending the patch
+### Sending a review request 
 
-Add the patch file as an attachment to your issue on pagure. Set the metadata flag "reviewstatus" to "review".
+Go to your pagure issue and set the metadata flag "reviewstatus" to "review".
 
 Finally, send an email to the 389-devel@lists.fedoraproject.org mailing list like the following:
 
@@ -186,6 +204,8 @@ Finally, send an email to the 389-devel@lists.fedoraproject.org mailing list lik
 
     https://pagure.io/389-ds-base/issue/XXXXX
 
+    https://pagure.io/389-ds-base/pull-request/XXXXX
+    # or a link to the patch
     https://pagure.io/389-ds-base/issue/raw/files/<link to your patch here!>
 
 ### Collaborate on the review process.
