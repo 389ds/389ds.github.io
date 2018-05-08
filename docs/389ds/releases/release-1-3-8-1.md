@@ -11,7 +11,7 @@ Fedora packages are available on Fedora 27.
 
 <https://koji.fedoraproject.org/koji/taskinfo?taskID=26850516>
 
-<https://bodhi.fedoraproject.org/updates/FEDORA-2018-8778e84fa9>
+<https://bodhi.fedoraproject.org/updates/FEDORA-2018-0113049e0c>
 
 The new packages and versions are:
 
