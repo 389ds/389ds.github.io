@@ -49,4 +49,15 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 
 If you find a bug, or would like to see a new feature, file it in our Pagure project: <https://pagure.io/389-ds-base>
 
+* Tue May 8 2018 Mark Reynolds <mreynolds@redhat.com> - 1.4.0.9-1
+- Bump version to 1.4.0.9
+- Ticket 49661 - CVE-2018-1089 - Crash from long search filter
+- Ticket 49652 - DENY aci's are not handled properly
+- Ticket 49650 - lib389 enable_tls doesn't work on F28
+- Ticket 49538 - replace cacertdir_rehash with openssl rehash
+- Ticket 49406 - Port backend_test.py test to DSLdapObject implementation
+- Ticket 49649 - Use reentrant crypt_r()
+- Ticket 49642 - lib389 should generate a more complex password
+- Ticket 49612 - lib389 remove_ds_instance() does not remove systemd units
+- Ticket 49644 - crash in debug build
 
