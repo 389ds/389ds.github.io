@@ -42,6 +42,8 @@ The source code was produced by first doing a git clone to get the repository, t
 
 ### EPEL6 packages
 
+|Source tarball|git module|git tag|More Info|SHA1SUM|
+|--------------|----------|-------|---------|-------|
 |[389-admin.1.1.43.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-1.1.43.tar.bz2)|admin.git|389-admin-1.1.43|[Admin](../administration/adminserver.html)|3d931830ce832b7e0f820689ca30e5996b873f75|
 |[389-console-1.1.17.tar.bz2]({{ site.binaries_url }}/binaries/389-console-1.1.17.tar.bz2)|console.git|389-console-1.1.17|[Building Console](buildingconsole.html)|b63c5c53936752e55ba205ba827af7cc96658cbb|
 |[389-admin-console-1.1.11.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-console-1.1.11.tar.bz2)|admin-console.git|389-admin-console-1.1.11|[Building Console](buildingconsole.html)|852a1c121923137b9048b7e498b7f03965cc0d3b|
@@ -114,7 +116,6 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA1SUM/SHA256SUM|
 |--------------|----------|-------|---------|-------|
-
 |[389-ds-base-1.3.5.19.tar.bz2]({{ site.binaries_url }}/binaries/389-ds-base-1.3.5.19.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.19|[Building](building.html)|ad55aadd4155cabdb7cc66dbca3bbe43faf865750da01032c9a1f8ed3a2136e4|
 |[389-ds-base-1.3.5.18.tar.bz2]({{ site.binaries_url }}/binaries/389-ds-base-1.3.5.18.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.18|[Building](building.html)|cf86bbeb21096d3d5dc51398790a74ed8c8f7aefbb54c233f4962b0c99216997|
 |[389-ds-base-1.3.5.17.tar.bz2]({{ site.binaries_url }}/binaries/389-ds-base-1.3.5.17.tar.bz2)|389-ds-base.git|389-ds-base-1.3.5.17|[Building](building.html)|5b96b19cea7dc80c64eaade31127d04c228f7e4dc1999ec19b341cf080ee4570757c84e8dae151c2cb3bcebe1398d50238d74ca362ce07fceafcb66fba590833|
