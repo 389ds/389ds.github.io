@@ -35,7 +35,7 @@ See [Download](../download.html) for information about setting up your yum repos
 
 To install, use **dnf install 389-ds-base**, then run **dscreate**.  For Cockput UI plugin use "dnf install cockpit-389-ds"
 
-See [Install\_Guide](../howto-install-389) for more information about the initial installation, setup, and upgrade
+See [Install\_Guide](../howto-install-389.html) for more information about the initial installation, setup, and upgrade
 
 See [Source](../development/source.html) for information about source tarballs and SCM (git) access.
 
