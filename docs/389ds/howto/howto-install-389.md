@@ -121,5 +121,5 @@ Here is an example
 
     # restart-dirsrv
 
-** The Cockpit UI is not fully functional yet and it just in a DEMO mode for now.  We are actively working on finishing it asap as it will be replacing the old Java Console (389-console) in Fedora 28 and up. **
+**The Cockpit UI is not fully functional yet and it just in a DEMO mode for now.  We are actively working on finishing it asap as it will be replacing the old Java Console (389-console) in Fedora 28 and up.**
 
