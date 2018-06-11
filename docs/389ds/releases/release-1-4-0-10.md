@@ -54,7 +54,7 @@ If you find a bug, or would like to see a new feature, file it in our Pagure pro
 - Ticket 49741 - UI - View/Edit replication agreement hangs WebUI
 - Ticket 49703 - UI - Set default values in create instance form
 - Ticket 49742 - Fine grained password policy can impact search performance
-- Ticket 49768 - Under network intensive load persistent search can erronously decrease connection refcnt
+- Ticket 49768 - Under network intensive load persistent search can erronously decrease connection refcnt(Security Fix)
 - Ticket 49765 - compiler warning
 - Ticket 49689 - Cockpit subpackage does not build in PREFIX installations
 - Ticket 49765 - Async operations can hang when the server is running nunc-stans
