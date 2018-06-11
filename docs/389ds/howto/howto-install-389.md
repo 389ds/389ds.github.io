@@ -53,7 +53,7 @@ Here is a snip of the template file
 
 Every setting has a default value.  To customize any of the settings remove the preceding semi-colon from the directive, and set the desired value.  Then you are ready to create your instance:
 
-    dscreate --fromfile /tmp/instance.inf
+    dscreate fromfile /tmp/instance.inf
 
 ### INF File Examples
 
