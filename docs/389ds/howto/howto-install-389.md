@@ -27,7 +27,7 @@ For help upgrading to the latest version of **389-ds-base-1.3.x** see the old [I
 
 ## Create an instance of Directory Server
 
-The new python installer **dscreate** takes a configuration file (INF file) to load the isntance confiruation settings.  This INF file is very similiar to the silent install file used in previous versions of Directory Server, but the format has changed.
+The new python installer **dscreate** takes a configuration file (INF file) to load the instance configuration settings.  This INF file is very similiar to the silent install file used in previous versions of Directory Server, but the format has changed.
 
 The setup can can create a template INF file for you and then you must set the options for your set up.
 
@@ -54,6 +54,12 @@ Here is a snip of the template file
 Every setting has a default value.  To customize any of the settings remove the preceding semi-colon from the directive, and set the desired value.  Then you are ready to create your instance:
 
     dscreate --fromfile /tmp/instance.inf
+
+### Examples
+
+--> coming soon
+
+## Removing an instance
 
 For completeness here is how you remove an instance:
 
