@@ -55,9 +55,31 @@ Every setting has a default value.  To customize any of the settings remove the 
 
     dscreate --fromfile /tmp/instance.inf
 
-### Examples
+### INF File Examples
 
---> coming soon
+Here is an example of the bare minimum you need in the install file to create an instance.  If you you just want the defaults then this is all you need:
+
+    [general]
+    config_version = 2
+    full_machine_name = localhost.localdomain
+
+    [slapd]
+    instance_name = localhost
+    root_password = YOUR_PASSWORD_FOR_CN=DIRECTORY_MANAGER
+
+Here's another exmaple with customization.  Note - you now have the option to create a self signed certificate database as well
+
+    [general]
+    config_version = 2
+    full_machine_name = localhost.localdomain
+
+    [slapd]
+    instance_name = localhost
+    root_dn = cn=manager
+    root_password = YOUR_PASSWORD_FOR_CN=MANAGER
+    port = 3890
+    secure_port = 636
+    self_sign_cert = True
 
 ## Removing an instance
 
@@ -68,5 +90,36 @@ For completeness here is how you remove an instance:
     dsctl localhost remove --doit
 
 
+## Installing Cockpit UI Plugin
 
+To start using the new UI you just need to enable the cockpit service:
+
+Open up firewall for port 9090 (if necessary)
+
+    # firewall-cmd --add-port=9090/tcp
+    # firewall-cmd --permanent --add-port=9090/tcp
+
+Enable Cockpit
+
+    # systemctl enable cockpit.socket
+    # systemctl start cockpit.socket
+
+The UI is using LDAPI for authentication to the Directory Server.  So logging into Cockpit as root is the same as logging in as "cn=Directory Manager".  This also means that if you are upgrading to 389-ds-base-1.4.0, you must enable the LDAPI socket in the Directory Server before you can start using the UI.  For more information please see:
+
+<https://access.redhat.com/documentation/en-us/red_hat_directory_server/10/html/administration_guide/ldapi-enabling>
+
+Here is an example
+
+    # ldapmodify -D "cn=directory manager" -W
+    dn: cn=config
+    changetype: modify
+    replace: nsslapd-ldapilisten
+    nsslapd-ldapilisten: on
+    -
+    add: nsslapd-ldapifilepath
+    nsslapd-ldapifilepath: /var/run/slapd-localhost.socket
+
+    # restart-dirsrv
+
+** The Cockpit UI is not fully functional yet and it just in a DEMO mode for now.  We are actively working on finishing it asap as it will be replacing the old Java Console (389-console) in Fedora 28 and up. **
 
