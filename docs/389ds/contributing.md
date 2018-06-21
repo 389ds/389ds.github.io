@@ -10,7 +10,7 @@ title: Contributing to 389 Directory Server
 Why should I contribute to 389 Directory Server?
 ------------------------------------------------
 
-389 Directory Server is a high performance LDAP server, trusted and used around the world for identity management and authentication systems. It is the foundation of other open source projects, and businesses everywhere - from universities to cloud providers. The project is well known for it's engineering excellence, stability and performance.
+389 Directory Server is a high performance LDAP server, trusted and used around the world for identity management and authentication systems. It is the foundation of other open source projects, and businesses everywhere - from universities to cloud providers. The project is well known for its engineering excellence, stability and performance.
 
 Contributing to 389 Directory Server is an opportunity to connect with a global team of engineers working on a high profile open source project. Not only will you be able to learn valuable engineering skills, your contribution will help to improve a project that impacts the security of individuals and businesses around the world.
 
@@ -255,6 +255,6 @@ Other points of interest
 Acknowledgements
 ----------------
 
-Thanks to @charcol for contribuing to this page, and advice on it's content.
+Thanks to @charcol for contributing to this page, and advice on its content.
 
 
