@@ -119,6 +119,12 @@ The new compute_entry_tombstone_dn now creates a proper tombstone dn:
                                      uniqueid,
                                      entrydn);
 
+### Handle tombstoneID attribute
+
+When a tombstone with the new RDN is created the new attribute tombstoneID needs to be added to the entry to get a correct entry.
+When a tombstone is resurrected this attribute nees to be removed along with the other tombstone specific attributes
+
+
 ### Manage nested tombstones
 
 The problem with nested tombstones is that if an entry which has tombstone children is deleted these 
@@ -165,6 +171,14 @@ both naming schemes. The new version can be installed over an instance with exis
 
 If a ldif file contains tombstones following the old naming scheme these tombstones will be imported correctly
 
+### Behaviour in replication topologies with older versions
+
+Tombstones are maintained locally, so each server can have its own method to handle and name tombstones.
+
+But in replication initialization the tombstones are included as well and the receiving server needs to be able to handle them. With online initialization from
+a server with this new naming scheme to an older one it will work as no schema checking is done. Also if the "schema learning" works correctly there will be no prolems.
+
+For offline initialization there is no schema update and import can fail because of "tombstoneID not allwed". The schema woul have to be managed by an administrativ task.
 
 Related Ticket/Bug
 ------------------
