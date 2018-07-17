@@ -130,7 +130,7 @@ Dryrun installing an instance (will verify your environment)
 
     I0> dscreate fromfile -n /tmp/instance.inf
 
-Actually instal an instance
+Actually install an instance
 
     I0> dscreate fromfile /tmp/instance.inf
     READY: Preparing installation for localhost

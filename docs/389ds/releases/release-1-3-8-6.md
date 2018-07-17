@@ -1,28 +1,28 @@
 ---
-title: "Releases/1.3.8.5"
+title: "Releases/1.3.8.6"
 ---
 
-389 Directory Server 1.3.8.5
+389 Directory Server 1.3.8.6
 -----------------------------
 
-The 389 Directory Server team is proud to announce 389-ds-base version 1.3.8.5
+The 389 Directory Server team is proud to announce 389-ds-base version 1.3.8.6
 
 Fedora packages are available on Fedora 27.
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=28375593>
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=28470951>
 
-<https://bodhi.fedoraproject.org/updates/FEDORA-2018-997817e633>
+<https://bodhi.fedoraproject.org/updates/FEDORA-2018-3c876babb9>
 
 
 The new packages and versions are:
 
--   389-ds-base-1.3.8.5-1
+-   389-ds-base-1.3.8.6-1
 
-Source tarballs are available for download at [Download 389-ds-base Source](https://releases.pagure.org/389-ds-base/389-ds-base-1.3.8.5.tar.bz2)
+Source tarballs are available for download at [Download 389-ds-base Source](https://releases.pagure.org/389-ds-base/389-ds-base-1.3.8.6.tar.bz2)
 
-### Highlights in 1.3.8.5
+### Highlights in 1.3.8.6
 
-- Bug fixes and Security fix
+- Bug fix
 
 ### Installation and Upgrade 
 See [Download](../download.html) for information about setting up your yum repositories.
@@ -43,14 +43,4 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 
 If you find a bug, or would like to see a new feature, file it in our Pagure project: <https://pagure.io/389-ds-base>
 
-- Bump version to 1.3.8.5
-- Ticket 49789 - By default, do not manage unhashed password (Security Fix)
-- Ticket 49546 - Fix issues with MIB file
-- Ticket 49840 - ds-replcheck command returns traceback errors against ldif files having garbage content when run in offline mode
-- Ticket 48818 - For a replica bindDNGroup, should be fetched the first time it is used not when the replica is started
-- Ticket 49780 - acl_copyEval_context double free
-- Ticket 49830 - Import fails if backend name is "default"
-- Ticket 49432 - filter optimise crash
-- Ticket 49372 - filter optimisation improvements for common queries
-- Update Source0 URL in rpm/389-ds-base.spec.in
 

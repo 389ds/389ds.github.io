@@ -141,6 +141,7 @@ Here is an example
     replace: nsslapd-ldapimaprootdn
     nsslapd-ldapimaprootdn: cn=Directory Manager
     
+    <press enter twice to send this modification operation>
 
     # restart-dirsrv
 
