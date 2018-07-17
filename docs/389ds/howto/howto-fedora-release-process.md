@@ -7,18 +7,6 @@ title: "Fedora Release Process"
 
 {% include toc.md %}
 
-### Building from RHEL?
-
-Fedora already has all of the packaging packages in the default repos - no additional configuration is required.
-
-If you are using RHEL/CentOS/similar derivative to do Fedora packaging, you will need to configure the EPEL repos. For example, for EL6:
-
-    yum install http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm
-
-Then, install the packager packages:
-
-    yum install fedpkg fedora-packager
-
 
 ### Prerequisites
 
@@ -34,27 +22,27 @@ git push access - you will need to be a member of the git389 group in FAS
 -   <https://admin.fedoraproject.org/accounts/group/view/git389>
 -   Request access, then bug a 389 developer to add you
 
-DS = the 389 source code SCM - git clone ssh://git@pagure.io/389-ds-base.git
+**DS** = the 389 source code SCM - git clone ssh://git@pagure.io/389-ds-base.git
 
-Fedora = the DS clone location which contains the spec files - (use **fedpkg clone 389-ds-base**)
+**Fedora** = the DS clone location which contains the spec files - (use **fedpkg clone 389-ds-base**)
 
 
 ### Do the Upstream Release
 
-DS - checkout the source, add the fixes, set the version, tag it, and archive it
+**DS** - checkout the source, add the fixes, set the version, tag it, and archive it
 --------------------------------------------------------------------------------
 
 -   **mkdir /home/source/ds389; cd /home/source/ds389**
 
--   **git clone <ssh://git.fedorahosted.org/git/389/ds.git>**
+-   **git clone ssh://git@pagure.io/389-ds-base.git**
 
--   **cd ds**
+-   **cd 389-ds-base**
 
 -   **git checkout 389-ds-base-1.x.x**
 
 -   Commit any fixes that have not yet been applied
 
--   Do a **git log** to make sure all the commits are done
+-   Do a **git log** to make sure all the commits are done!
 
 -   Open/edit **VERSION.sh**
 
@@ -62,64 +50,49 @@ DS - checkout the source, add the fixes, set the version, tag it, and archive it
 
 -   Set the new version string
 
--   **git add VERSION.sh**
-
--   **git commit -m “**bump version to \<new version\>**"**
+-   **git commit -a -m “**bump version to \<new version\>**"**
 
 -   All commits must be done before **git tag**! Otherwise you might need to use **git tag -f \$TAG**
 
--   **TAG=389-ds-base-1.3.6.7**
+-   **TAG=389-ds-base-1.4.0.12** ; **git tag \$TAG** ; **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$TAG.tar.bz2**
 
--   **git tag \$TAG**
-
--   **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$TAG.tar.bz2**
-
--   **git log -\\\-oneline 389-ds-base-1.3.6.6.. \> /tmp/cl-info** - The version should be the current version. This gathers all the changes since the last release.
+-   **git log -\\\-oneline 389-ds-base-1.4.0.12.. \> /tmp/cl-info** - The version should be the current version. This gathers all the changes since the last release.
 
 -   Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and trac bugs. Leave the hash for coverity/misc updates.
 
 
-Fedora - Clone it, and update the spec files
+**Fedora** - Clone it, and update the spec files
 --------------------------------------------
 
 -   **mkdir /fedora; cd /fedora**
 
 -   **fedpkg clone 389-ds-base**
 
--   **cd /fedora/389-ds-base/**
-
--   **fedpkg switch-branch master** - Make sure you’re on master
-
--   Edit the **389-ds-base.spec** file, and change the version. In the spec file make sure the **release** field is set back to **1: %{?relprefix}1%{?prerel}%{?dist}**
-
-
-
-Fedora - Finish editing the spec file, verify the version, and do the scratch-build
------------------------------------------------------------------------------------
-
--   **cd /fedora/389-ds-base/**
+-   **cd 389-ds-base**
 
 -   First copy the contents of the edited **cl-info** file
 
 -   Edit the spec file **/fedora/389-ds-base/389-ds-base.spec**
 
+-   Change the version in the spec file.  Make sure the **release** field is set back to **1: %{?relprefix}1%{?prerel}%{?dist}**
+
 -   Goto the **changelog** section
 
 -   Add the header line:
 
-       * Fri Feb 3 2013 Mark Reynolds \<mreynolds@redhat.com\> - 1.3.6.7-1
+       * Tue Jul 17 2018 Mark Reynolds \<mreynolds@redhat.com\> - 1.4.0.12-1
 
 -   Then copy in the contents of **cl-info** underneath the header
 
--   **fedpkg verrel** - Verify changes to spec file are producing the correct version.
+-   **fedpkg verrel** - Verify changes to spec file is producing the correct version.
 
--   **fedpkg new-sources /home/source/ds389/389-ds-base-1.3.6.7.tar.bz2**
+-   **fedpkg new-sources /home/source/ds389/389-ds-base-1.4.0.12.tar.bz2**  - tar ball created by git archive cmd from above
 
 -   **git status** - Should show the "sources" and ".gitignore" are staged
 
 -   **fedpkg srpm** - Create a “*.src.rpm” file
 
--   **fedpkg scratch-build -\\\-srpm=389-ds-base-1.3.7-1.xxxxx.src.rpm** - Submits the srpm to the koji build system. Takes a few minutes to run.
+-   **fedpkg scratch-build -\\\-srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm** - Submits the srpm to the koji build system. Takes a few minutes to run.
 
 -   **fedpkg clog**
 
@@ -129,16 +102,15 @@ Fedora - Finish editing the spec file, verify the version, and do the scratch-bu
 
 -   If you need to update sub branches of master
     -    **fedpkg switch-branch \<branch\>**
-    -    **git merge master**
-    -    NOTE: if git merge fails, do a *git cherry-pick* instead - **git cherry-pick -x master**
-    -    You may to run this if the sources file was not updated:  **fedpkg new-sources /home/source/ds389/389-ds-base-1.3.6.7.tar.bz2**  Followed by a "git commit -a" after the scratch build completes.
+    -    **git cherry-pick -x master**
+    -    You may to run *new-sources* if the sources file was not updated:  **fedpkg new-sources /home/source/ds389/389-ds-base-1.4.0.12.tar.bz2**  Followed by a "git commit -a" after the scratch build completes.
     -    **fedpkg verrel**
     -    **fedpkg srpm**
-    -    **fedpkg scratch-build -\\\-srpm=389-ds-base-1.3.6.7-1.xxxxx.src.rpm**
+    -    **fedpkg scratch-build -\\\-srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm**
     -    **git push**
 
 
-Fedora - Do the official Koji build, and do the release "update"
+**Fedora** - Do the official Koji build, and do the release "update"
 ----------------------------------------------------------------
 
 -   **fedpkg switch-branch master**
@@ -167,9 +139,9 @@ NOTE: Do not git push -\\\-tags - you may inadvertently push tags you did not in
 
 -   **cd /home/source/ds389/ds**
 
--   **git push origin 389-ds-base-1.3.6**
+-   **git push origin 389-ds-base-1.4.0.12**
 
--   **git push origin refs/tags/389-ds-base-1.3.6.7**
+-   **git push origin refs/tags/389-ds-base-1.4.0.12**
 
 Update The Wiki (internal use only)
 ------------------------------------

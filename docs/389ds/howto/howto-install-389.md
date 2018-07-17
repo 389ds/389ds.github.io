@@ -27,11 +27,17 @@ For help upgrading to the latest version of **389-ds-base-1.3.x** see the old [I
 
 ## Create an instance of Directory Server
 
-The new python installer **dscreate** takes a configuration file (INF file) to load the instance configuration settings.  This INF file is very similiar to the silent install file used in previous versions of Directory Server, but the format has changed.
+The new python installer **dscreate** takes a configuration file (INF file) to load the instance configuration settings, or it can be run in an interactive mode using 
 
-The setup can can create a template INF file for you and then you must set the options for your set up.
+    dscreate interactive
 
-    dscreate example > /tmp/instance.inf
+The interactive mode only asks for basic configuration settings.  If you need to script the install, or you want to have fine-grained control over installation options then use the INF file installation mode.  Our INF file is very similiar to the silent install file used in previous versions of Directory Server, but the format has slightly changed.
+
+The installation script can also create a template INF file for you.  Then you set the options for your particular set up.
+
+    dscreate create-template   --> Write the template to STDOUT
+
+    dscreate create-template /tmp/instance.inf   --> The script creates the actual file
 
 Here is a snip of the template file
 
@@ -61,13 +67,14 @@ Here is an example of the bare minimum you need in the install file to create an
 
     [general]
     config_version = 2
-    full_machine_name = localhost.localdomain
+    full_machine_name = SYSTEMS_FQDN
 
     [slapd]
     instance_name = localhost
     root_password = YOUR_PASSWORD_FOR_CN=DIRECTORY_MANAGER
 
-Here's another exmaple with customization.  Note - you now have the option to create a self signed certificate database as well
+
+Here's another example with other customizations as well as creating two backends (see \[backend-*YOUR_BACKEND_NAME*\]).  You also have the option to create a self signed certificate database as part of the installation (the default is True).
 
     [general]
     config_version = 2
@@ -80,6 +87,15 @@ Here's another exmaple with customization.  Note - you now have the option to cr
     port = 3890
     secure_port = 636
     self_sign_cert = True
+
+    [backend-userroot]
+    suffix = dc=example,dc=com
+    sample_entries = yes
+    require_index = yes
+
+    [backend-ipaca]
+    suffix = o=ipaca
+
 
 ## Removing an instance
 
@@ -116,8 +132,15 @@ Here is an example
     replace: nsslapd-ldapilisten
     nsslapd-ldapilisten: on
     -
-    add: nsslapd-ldapifilepath
+    replace: nsslapd-ldapifilepath
     nsslapd-ldapifilepath: /var/run/slapd-localhost.socket
+    -
+    replace: nsslapd-ldapiautobind
+    nsslapd-ldapiautobind: on
+    -
+    replace: nsslapd-ldapimaprootdn
+    nsslapd-ldapimaprootdn: cn=Directory Manager
+    
 
     # restart-dirsrv
 

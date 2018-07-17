@@ -68,6 +68,10 @@ This allows you to use "aliases" of the configuration, rather than always typing
 
     dsconf localhost backend list
 
+If you are not using a ~/.dsrc file, then you can set the localinstance name as well:
+
+    dsconf slapd-localhost backend create dc=example,dc=com userRoot
+
 
 New installer
 ---------------
@@ -78,13 +82,19 @@ The new installer itself uses a simplified inf format compared to the current an
 
 A complete example can be generated with:
 
-    dscreate example > /tmp/instance.inf
+    dscreate create-template > /tmp/instance.inf
+
+Or, to have it write the file for you with the correct permissions you can do:
+
+    dscreate create-template /tmp/instance.inf
 
 The example being *generated* over commited, means we keep the internal code helptext up to date, and it *will* throw exceptions if it's not there. We are forced to keep it correct and up to date as a result.
 
 The instance can then be installed with:
 
-    dscreate fromfile /tmp/instance.inf
+    dscreate install /tmp/instance.inf
+
+**dscreate** also has an interactive installer.  Just run **dscreate install** to enter the interactive mode, but you can not set all the options in interactive mode - just the core settings needed to create the instance.
 
 Unit testing
 --------------
@@ -100,16 +110,27 @@ As we add more commands and functions, we must add these to be tested also.
 Example usage
 =============
 
-Displaying the example inf
 
-    I0> dscreate example
+Run the install script in an interactive mode that asks for a limited number of installation options
+
+    I0> dscreate interactive
+
+Or, use the INF file installation method...
+
+Displaying an example inf
+
+    I0> dscreate create-template
     ...snip...
+
+Or have the script write the INF file to disk
+
+    I0> dscreate create-template /tmp/instance.inf
 
 Dryrun installing an instance (will verify your environment)
 
     I0> dscreate fromfile -n /tmp/instance.inf
 
-Actually installing an instance
+Actually instal an instance
 
     I0> dscreate fromfile /tmp/instance.inf
     READY: Preparing installation for localhost
@@ -164,7 +185,7 @@ Create a backend. First checking help for what we might need.
                             Value of nsslapd-suffix
       --cn [CN]             Value of cn
 
-    I0> dsconf localhost backend create       
+    I0> dsconf localhost backend create
     Enter password for cn=Directory Manager on ldaps://localhost : 
     Enter value for nsslapd-suffix : dc=example,dc=com
     Enter value for cn : userRoot
