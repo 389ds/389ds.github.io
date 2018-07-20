@@ -43,4 +43,6 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 
 If you find a bug, or would like to see a new feature, file it in our Pagure project: <https://pagure.io/389-ds-base>
 
+- Bump version to 1.3.8.6
+- Ticket 49789 - backout original security fix as it caused a regression in FreeIPA
 
