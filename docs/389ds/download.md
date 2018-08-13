@@ -25,33 +25,33 @@ EXPORT CONTROL. As required by U.S. law, you (Licensee) represents and warrants 
 
 **NOTE**: The EL7 admin server and console bits will not be available until after RHEL 7.1 has been released.  These bits will then be available from EPEL7.
 
-For the admin server and console bits, you must first install EPEL from <https://fedoraproject.org/wiki/EPEL>. There is no direct link to the RPM, you must first find a mirror. Go here to find the RPM:
-
-[EPEL 6](http://download.fedoraproject.org/pub/epel/6/x86_64/repoview/epel-release.html)
-[EPEL 7](http://download.fedoraproject.org/pub/epel/7/x86_64/repoview/epel-release.html)
-
-That will direct you to a mirror where you can download the epel-release X (6 or 7) RPM:
-
-    yum install http://site/path/to/epel-release-X-N.noarch.rpm
+For the admin server and console bits, you must first install EPEL from <https://fedoraproject.org/wiki/EPEL>.
 
 Then you can install 389-ds-base and get all of the core directory server, admin server, and console components as per the directions below.
 
-### 389 Directory Server 1.1 and later
+### 389 Directory Server 1.3.x or older
 
 -   yum is used to install on platforms that use yum for package installation and management.
 -   Enterprise Linux packages are available from EPEL
     -   How to use - <https://fedoraproject.org/wiki/EPEL/FAQ#howtouse>
     -   More info on EPEL - <https://fedoraproject.org/wiki/EPEL>
 
-New Install:
+#### New Install:
 
-    yum install 389-ds-base
+- Install the server and the admin server/java console
+
+    yum install 389-ds-base 389-admin 389-ds-console 389-admin-console
     setup-ds-admin.pl
 
-Upgrade an existing system:
+- Install just DS
+
+    yum install 389-ds-base
+    setup-ds.pl
+
+#### Upgrade an existing system:
 
     yum [--enablerepo=updates-testing|--enablerepo=epel-testing] upgrade [389-ds-base ...other packages...]
-    setup-ds-admin.pl -u
+    setup-ds-admin.pl -u    --> Use "setup-ds.pl" instead if you are not using the Admin Server/Console
 
 If you specify package names on the command line, only those packages will be updated - useful for testing, if you just want to test certain packages without upgrading every package on your system to the testing version. You can use *yum downgrade pkgname ... pkgname* to downgrade the package from the testing version to the stable version.
 
@@ -63,13 +63,21 @@ If you specify package names on the command line, only those packages will be up
     -   See the [Release Notes](releases/release-notes.html) for the current list of testing packages
 -   Upgrade - **yum upgrade**
     -   The 389 packages are designed to obsolete and replace the fedora-ds packages - you must use yum **upgrade** *not update* in order for yum and rpm to process the obsolete directives
-    -   You **must** run **setup-ds-admin.pl -u** after the upgrade to refresh your admin server and console configuration
+    -   You **must** run **setup-ds-admin.pl -u** after the upgrade to refresh your admin server and console configuration.  If not using the Admin Server/Console run **setup-ds.pl -u**.
 -   New Install - **yum install 389-ds-base**
-    -   Run **setup-ds-admin.pl** to set up your directory server
+    -   Run **setup-ds-admin.pl** to set up your directory server.  If not using Admin Server/Console then run **setup-ds.pl**.
 
 Upgrading and installing will install many dependencies too, including Java if your platform supports it. If not, see [Install Guide](legacy/install-guide.html) for more information about Java.
 
 See [Install Guide](legacy/install-guide.html) for more information.
+
+### 389 Directory Server 1.4.x
+
+Directory Server 1.4.x now uses a new python installer called **dscreate**.  There are no upgrade options needed in 1.4.x.  After installing the latest 389-ds-base-1.4.x package you just need to restart the server.
+
+The new Web UI (Cockpit plugin) requires **cockpit-389-ds** to be installed (which is a subpackage of 389-ds-base)
+
+See the new [Install Guide](http://www.port389.org/docs/389ds/howto/howto-install-389.html) for more information.
 
 ### Windows Password Synchronization
 
@@ -108,28 +116,6 @@ Tested with Java 7 on Windows 2008/2012 Server.
 NOTE: You must have Java in your PATH in order for this to work. Or you can just edit the batch file to tell it where to find Java.
 
 <br>
-
-## Legacy Releases
-------------------
-
-These releases are very old, and provided for historical purposes only.
-
-### Windows Synchronization
-
-The following is only required for NT4 sync. It is not required for Active Directory sync.
-
--   [NTDS]({{ site.binaries_url }}/binaries/ntds.msi) md5sum 74e0ada5ff519ade5295ae0bf75ddb84
-
-### Fedora Directory Server 1.x 
-
-These rpm packages are no longer available for download, but the source code for each version is, and they can be located [here]({{ site.binaries_url }}/binaries/)
-
-### Fedora Directory Server 7.1
-
-The FDS 7.1 package includes the core DS, the Admin Server, the Management Console, web applications, and other support code for those apps, including online help. Since the Admin Server and related files in this legacy package are not available as open source, please refer to the [Licensing](FAQ/licensing.html) for these Binary packages. 
-
--   [FDS 7.1 Source Code]({{ site.binaries_url }}/binaries/fedora-ds-7.1.tar.gz)
--   [FDS 7.1 SRPM]({{ site.binaries_url }}/binaries/fedora-ds-7.1-2.src.rpm)
 
 
 ## Source Code Packages

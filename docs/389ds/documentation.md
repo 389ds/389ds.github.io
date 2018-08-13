@@ -149,6 +149,7 @@ These are potentially outdated or incorrect for the current DS version.
 -   [How to Create Domain in Existing Forest](howto/howto-create-an-additional-domain-controller-in-an-existing forest.html) - Create an Additional Domain Controller in an Existing Forest
 -   [How to Create Domain in New Forest](howto/howto-create-a-new-domain-tree-in-a-new-forest.html) - Create a New Domain Tree in a New Forest
 -   [How to PHP and Admin Server](howto/howto-phpldapadmin.html)
+-   [Building Directory Server](development/legacy-building.html)
 
 ### FAQ and tech docs
 
