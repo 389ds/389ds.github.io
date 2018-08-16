@@ -5,6 +5,7 @@ title: "Release Notes"
 # Release Notes
 ========================================================================
 
+- [389 Directory Server 1.4.0.15](release-1-4-0-15.html) *(August 16, 2018)*
 - [389 Directory Server 1.4.0.14](release-1-4-0-14.html) *(August 10, 2018)*
 - [389 Directory Server 1.3.8.7](release-1-3-8-7.html) *(August 10, 2018)*
 - [389 Directory Server 1.3.8.6](release-1-3-8-6.html) *(July 19, 2018)*
