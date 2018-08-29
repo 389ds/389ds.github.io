@@ -68,13 +68,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - 2018-07-19: Released **389-ds-base [1.3.8.7](docs/389ds/releases/release-1-3-8-7.html)**
 - 2018-07-19: Released **389-ds-base [1.3.8.6](docs/389ds/releases/release-1-3-8-6.html)**
 - 2018-07-19: Released **389-ds-base [1.4.0.13](docs/389ds/releases/release-1-4-0-13.html)**
-- 2018-07-17: Released **389-ds-base [1.3.8.5](docs/389ds/releases/release-1-3-8-5.html)**
-- 2018-07-17: Released **389-ds-base [1.4.0.12](docs/389ds/releases/release-1-4-0-12.html)**
-- 2018-06-21: Released **389-ds-base [1.3.8.4](docs/389ds/releases/release-1-3-8-4.html)**
-- 2018-06-11: Released **389-ds-base [1.4.0.11](docs/389ds/releases/release-1-4-0-11.html)**
-- 2018-06-11: Released **389-ds-base [1.3.8.3](docs/389ds/releases/release-1-3-8-3.html)**
-- 2018-06-10: Released **389-ds-base [1.4.0.10](docs/389ds/releases/release-1-4-0-10.html)**
-- 2018-05-24: Released **389-ds-base [1.3.8.2](docs/389ds/releases/release-1-3-8-2.html)**
 
 - [All past release notes](docs/389ds/releases/release-notes.html)
 
