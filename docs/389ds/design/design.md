@@ -11,6 +11,17 @@ If you are adding a new design document, use the [template](design-template.html
 
 {% include toc.md %}
 
+
+## 389 Directory Server 1.4.0
+
+-   [New Password Poliy Syntax Checks](pwpolicy-syntax-design.html)
+-   [New Python CLI Tools](dsadm-dsconf.html)
+-   New Web UI (Cockpit plugin)  --> Design doc in the works...
+
+## 389 Directory Server 1.3.8 (RHEL 7.6)
+
+-   Just bug fixes
+
 ## 389 Directory Server 1.3.7 (RHEL 7.5)
 
 -   [Replication Diff Tool](repl-diff-tool-design.html)
