@@ -89,6 +89,13 @@ On CentOS:
     sudo make install
     sudo make lib389-install
 
+You can build rpms and rpms by using these commands:
+
+    make -f rpm.mk rpms
+
+    make -f rpm.mk srpms
+
+These packages are then located in dist/rpms or dist/srpms
 
 Testing the server
 ------------------
