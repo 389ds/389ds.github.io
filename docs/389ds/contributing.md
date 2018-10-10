@@ -125,6 +125,8 @@ Go to <https://pagure.io/389-ds-base> and fork the repo. Add the forked repo lin
 
     git remote add myfork ssh://git@pagure.io/forks/USERNAME/389-ds-base.git
 
+Also see the *Pull-Request Cheatsheet* [here](howto/howto-do-pull-requests.html)
+
 ### Create your working branch
 
     git checkout master

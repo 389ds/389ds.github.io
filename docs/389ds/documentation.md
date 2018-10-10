@@ -82,8 +82,9 @@ We maintain a number of how to guides for 389 Directory Server
 
 -   [Address Sanitizer Testing](howto/howto-addresssanitizer.html) - Using Address Saniziter to find and correct issues.
 -   [How to Fedora Release](howto/howto-fedora-release-process.html) - The Fedora release process
--   [How to write a wiki page](howto/howto-write-wiki-page.html)
+-   [How to Write a Wiki Page](howto/howto-write-wiki-page.html)
 -   [How to Migrate from Trac to Pagure](howto/howto-migrate-to-pagure.html)
+-   [How to Do Pull-Requests in Pagure](howto/howto-do-pull-requests.html)
 
 #### Mail
 
