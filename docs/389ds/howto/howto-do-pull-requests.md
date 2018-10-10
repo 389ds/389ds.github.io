@@ -2,14 +2,14 @@
 title: "Howto: Do Pull Requests in Pagure"
 ---
 
-How to do Pull Requests in Pagure
+# How to do Pull Requests in Pagure
 -----------------------------
 
-## Description
+### Description
 
 This is a brief discussion on one way you can setup your workspace to use *Pull Requests* in Pagure.  This is the current method the Directory Server development uses, and to make it easier to contribute it would be best to use this same approach.
 
-## Setup Your Workspace
+### Setup Your Workspace
 
 You must first create a fork of the project, then you will clone the main repo, and add your fork to it.  Then initialize your new fork with master branch (this is a one time task for setting up the fork for the first time).
 
@@ -21,7 +21,7 @@ You must first create a fork of the project, then you will clone the main repo, 
     $ git push myfork --force
 
 
-## Work On A New Fix
+### Work On A New Fix
 
 You will create a new branch under the *master* branch.  Make changes and commit them as usual.  When you are done you will need to push your new branch to your fork.
 
@@ -35,7 +35,7 @@ You will create a new branch under the *master* branch.  Make changes and commit
 Then file a pull-request in Pagure,  You will see this branch (ticket49999) in the Pagure UI.  Then send out a "please review" email to 389-devel mailing list <389-devel@lists.fedoraproject.org>.
 
 
-## Amending A Fix
+### Amending A Fix
 
 So to make changes to a PR go to your branch, make changes, and commit them.  Then you MUST do *forced* push to your fork which will automatically update the PR.
 
@@ -45,7 +45,7 @@ So to make changes to a PR go to your branch, make changes, and commit them.  Th
     $ git push myfork --force 
 
 
-## Merging Your PR
+### Merging Your PR
 
 Once you gets your acks or *LGTM (Looks Good To Me)*, then rebase your branch with master again, in case someone else pushed a patch, and then push the branch to your fork again.
 
