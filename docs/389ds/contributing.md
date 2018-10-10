@@ -125,7 +125,7 @@ Go to <https://pagure.io/389-ds-base> and fork the repo. Add the forked repo lin
 
     git remote add myfork ssh://git@pagure.io/forks/USERNAME/389-ds-base.git
 
-Also see the *Pull-Request Cheatsheet* [here](howto/howto-do-pull-requests.html)
+Also see the [Pull-Request Cheatsheet](howto/howto-do-pull-requests.html)
 
 ### Create your working branch
 
@@ -171,11 +171,15 @@ following format.
 
     Ticket ##### - <SUMMARY>
 
-    Bug Description:  <DESC>
+    Bug Description:
 
-    Fix Description:  <DESC>
+    <DESC>
 
-    <Ticket URL>
+    Fix Description:
+
+    <DESC>
+
+    <The Ticket URL>
 
     Author: <your name here>
 
