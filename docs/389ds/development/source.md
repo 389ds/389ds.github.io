@@ -35,6 +35,7 @@ The source code was produced by first doing a git clone to get the repository, t
 |--------------|----------|-------|---------|-------|
 |[389-admin.1.1.46.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-1.1.46.tar.bz2)|admin.git|389-admin-1.1.46|[Admin](../administration/adminserver.html)|735c51c0f19e448fbe9f552893ee4f9297420831|
 |[389-adminutil.1.1.23.tar.bz2]({{ site.binaries_url }}/binaries/389-adminutil-1.1.23.tar.bz2)|adminutil.git|389-adminutil-1.1.23|[Adminutil](../administration/adminutil.html)|daf72628b97337ad2b48e8753f2bc7b01a4482c0|
+|[389-console.1.1.19.tar.bz2](https://releases.pagure.org/389-console/389-console-1.1.18.tar.bz2)|389-console.git|389-console-1.1.19|[Building Console](buildingconsole.html)|8713628b1d0042acd59ff09ec487d4dccf1b3e8acf6008e7d1499e7954835744d601039ee2b6232a9d5f4022a1d56e7258fd1745dd75279b459050262599b466|
 |[389-console.1.1.18.tar.bz2]({{ site.binaries_url }}/binaries/389-console-1.1.18.tar.bz2)|console.git|389-admin-1.1.45|[Building Console](buildingconsole.html)|ad6929bc9391d7b725aa8246fce5cc22225829b3|
 |[389-admin-console.1.1.12.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-console-1.1.12.tar.bz2)|admin-console.git|389-admin-console-1.1.12|[Building Console](buildingconsole.html)|ecfce08e40760f9b8ed4e3b0aa90d7e026d761f9|
 |[389-ds-console-1.2.16.tar.bz2]({{ site.binaries_url }}/binaries/389-ds-console-1.2.16.tar.bz2)|ds-console.git|389-ds-console-1.2.16|[Building Console](buildingconsole.html)|1c7977a6720e77ccc26440c54672b729f9a8820d|
