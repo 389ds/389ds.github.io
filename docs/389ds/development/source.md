@@ -75,6 +75,12 @@ The source code was produced by first doing a git clone to get the repository, t
 |[389-ds-base-1.4.0.0.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.0.0.tar.bz2)|389-ds-base.git|389-ds-base-1.4.0.0|[Building](building.html)|d557e44959ec9e11f08350c4d2a5753b05a2b1582c399a640f3359bca539ca79|
 
 
+### 389 Directory Server 1.3.9 (rebased from 389-ds-base-1.3.8.10)
+
+|Source tarball|git module|git tag|More Info|SHA512SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-1.3.9.0.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.3.9.0.tar.bz2)|389-ds-base.git|389-ds-base-1.3.9.0|[Building](building.html)|9804efc6991575771394ce63b4f177ba8bcb89f45ff60216b39cabee63b2234b8502a4d1587830ad6422ea68d58a4b26a55e2124f4777eeaa20beef92f9e7ee1|
+
 ### 389 Directory Server 1.3.8 (rebased from 389-ds-base-1.3.7.10)
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
