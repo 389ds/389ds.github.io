@@ -85,6 +85,7 @@ Here are some other processes we use for our various responsibilities
 This is an area that needs some refinement/structure.  But basically you should be writing up a design doc on the wiki before you write code. See these links
 
 [The Design Doc Homepage](https://www.port389.org/docs/389ds/design/design.html)
+
 [The Design Doc Template](https://www.port389.org/docs/389ds/design/design-template.html)
 
 Then it can be discussed before any major work is done.  We haven't followed this model strictly in the past, but we should try and follow it moving forward.
