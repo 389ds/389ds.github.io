@@ -11,11 +11,15 @@ title: "Directory Server Development Team Process"
 
 This doc is an attempt to describe the work-flow for the DS development team. It does not cover everything, but it describes the basics of the day to day tasks and prioritizations developers should be following.  This process is really a *work in progress* and can/will change in the future, but for now this is what we got...
 
+<br>
+
 ## The Team Goal
 
 *Release updated versions of Directory Server containing customer fixes/RFE's in RHEL*
 
 What does this mean?  It means that customer bugs/RFE's should be the first priority over all other development tasks.   We need to focus on the bugzillas that have been triaged (dev acked) for various RHEL releases and batch updates.
+
+<br>
 
 ## Prioritizing Work
 
@@ -23,9 +27,13 @@ Of course hot customer bugs need to be addressed first, and should always be the
 
 So how do we prioritize all of this?  As previously stated customer escalations come first.  After that we still need to focus on customer RFE's and bugs that have been triaged into various RHEL releases.  You should use the "ack viewer" found on the DS/QE Sync-Up Etherpad to keep track of what we should be working on for the next RHEL releases.  So how does community/upstream fit into this?  If we feel like a upstream ticket is worthy of being in RHEL release, then we need to clone that ticket to Bugzilla where it can be triaged into an appropriate RHEL release.  All tickets eventually need to have a Bugzilla if they are to be released in RHEL/downstream (there are a few exceptions but don't worry about that right now).
 
+<br>
+
 ## Balancing Work
 
 In an ideal world we could sit down and work on a new feature without any distractions until it is complete, but we do not live in that world.  If you are working on a big RFE/feature, you still need to help out with other bugs and customers issues at the same time, and visa versa, you shouldn't be completely stuck on customer issues either, as there are other bugs that need fixing at the same time.  You must multi-task, and share the workload among the team.
+
+<br>
 
 ## The Team Process
 
@@ -35,6 +43,8 @@ Here is the basic process you should follow:
 - Keep an eye out for customer bugs as they come in.  You should be acked on all DS bugs.  If not, let me know.  Assign one of these bugs to yourself if you are not already working on a HOT customer bug.  It is common to have many customer bugs assigned to yourself.  You're not expected to update them every day, but they must be divided up.  Right now we use the honor system to self assign bugs, but you might also be assigned bugs by the team lead.  Hopefully we keep using the honor system, but if it doesn't we'll have to do a more formal triage.
 - RHEL deadlines - as a deadline approaches you need to focus on bugs for that upcoming release (they are usually customers bugs anyway)
 - Post RHEL releases - this is when we have free time to work on upstream tickets and other RFE work (design, triage, etc).
+
+<br>
 
 ## Other processes
 
@@ -48,6 +58,7 @@ Here are some other processes we use for our various responsibilities
 4. MODIFIED - the bug is now fixed in a RHEL/brew build (this is done by the person who does the RHEL build)
 5. ON_QA - The QE team is in the process of verifying the bug fix (this is typically done automatically by the errata tool).
 
+<br>
 
 ### The Downstream Process
 
@@ -56,6 +67,7 @@ Here are some other processes we use for our various responsibilities
 3. All technical work should be recorded in the ticket, and only customer/QE/GSS interaction should be in the Bugzilla.
 4. Follow the *Upstream Process* below to complete the work on the ticket
 
+<br>
 
 ### The Upstream Process
 
@@ -66,6 +78,7 @@ Here are some other processes we use for our various responsibilities
 5. Change the Bugzilla state to POST - this means the fix has been checked into the source code
 6. Close the ticket.
 
+<br>
 
 ### RFE Development Process
 
@@ -76,6 +89,7 @@ This is an area that needs some refinement/structure.  But basically you should 
 
 Then it can be discussed before any major work is done.  We haven't followed this model strictly in the past, but we should try and follow it moving forward.
 
+<br>
 
 ## Keep in mind..
 
