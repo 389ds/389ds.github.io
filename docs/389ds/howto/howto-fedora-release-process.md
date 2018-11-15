@@ -54,9 +54,9 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   All commits must be done before **git tag**! Otherwise you might need to use **git tag -f \$TAG**
 
--   **TAG=389-ds-base-1.4.0.12** ; **git tag \$TAG** ; **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$TAG.tar.bz2**
+-   **TAG=389-ds-base-1.3.9.1** ; **git tag \$TAG** ; **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$TAG.tar.bz2 ; git log -\\\-oneline 389-ds-base-1.3.9.0.. \> /tmp/cl-info**
 
--   **git log -\\\-oneline 389-ds-base-1.4.0.12.. \> /tmp/cl-info** - The version should be the current version. This gathers all the changes since the last release.
+-   **TAG=389-ds-base-1.4.0.20** ; **git tag \$TAG** ; export TAG ; make-f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-1.4.0.19.. \> /tmp/cl-info**
 
 -   Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and trac bugs. Leave the hash for coverity/misc updates.
 

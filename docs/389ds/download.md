@@ -93,8 +93,8 @@ Tested with Windows 2008 and 2012 Server 32-bit and 64-bit.
 |--------|----|-------|-----|---------|
 |Windows 2003/2008 32-bit|[389-PassSync-1.1.5-i386.msi]({{ site.binaries_url }}/binaries/389-PassSync-1.1.5-i386.msi)|4b79578e3d4bf9cdaada70e5c1212290a4e5ce3c|yes|no [*]|
 |Windows 2003/2008 64-bit|[389-PassSync-1.1.5-x86\_64.msi]({{ site.binaries_url }}/binaries/389-PassSync-1.1.5-x86_64.msi)|ddac9705d305b14fa217af2f264d3529d3f3edb8|yes|no [*]|
-|Windows 2003/2008/2012 32-bit|[389-PassSync-1.1.7-i386.msi]({{ site.binaries_url }}/binaries/389-PassSync-1.1.7-i386.msi)|780e403335a74ea58dc097fb60fd481c8457e105|no [**]|yes|
-|Windows 2003/2008/2012 64-bit|[389-PassSync-1.1.7-x86\_64.msi]({{ site.binaries_url }}/binaries/389-PassSync-1.1.7-x86_64.msi)|0d598943ecdd17eeca2d66174de18d9885951699|no [**]|yes|
+|Windows 2003/2008/2012/2016 32-bit|[389-PassSync-1.1.7-i386.msi]({{ site.binaries_url }}/binaries/389-PassSync-1.1.7-i386.msi)|780e403335a74ea58dc097fb60fd481c8457e105|no [**]|yes|
+|Windows 2003/2008/2012/2016 64-bit|[389-PassSync-1.1.7-x86\_64.msi]({{ site.binaries_url }}/binaries/389-PassSync-1.1.7-x86_64.msi)|0d598943ecdd17eeca2d66174de18d9885951699|no [**]|yes|
 
 [*] 389-PassSync-1.1.5 has no support TLSv1.1 and newer.
 
