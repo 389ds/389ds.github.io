@@ -122,6 +122,101 @@ Not used, should be removed
 
 ### Internal representation and setup
 
+The following graph shows the references of the relevant data structures
+
+![data structure relation](../../../images/backend-structs.png "data structure relation")
+
+The numbered references in the graph are detailled below:
+
+
+1] initialize ldbminfo and set it to the plugin
+     
+     ldbm_back_init()
+     {
+         /* allocate backend-specific stuff */
+         li = (struct ldbminfo *)slapi_ch_calloc(1, sizeof(struct ldbminfo));
+     ....
+         /* set plugin private pointer and initialize locks, etc. */
+         rc = slapi_pblock_set(pb, SLAPI_PLUGIN_PRIVATE, (void *)li);
+     ....
+     }
+     
+2] set the plugin reference into the ldbminfo
+     
+     ldbm_back_init()
+     {
+         slapi_pblock_get(pb, SLAPI_PLUGIN, &p);
+         /* keep a pointer back to the plugin */
+         li->li_plugin = p;
+     ....
+     }
+     
+3] initialize the backend instance set
+     
+     ldbm_back_init()
+     {
+     ....
+         /* Initialize the set of instances */
+         li->li_instance_set = objset_new(&ldbm_back_instance_set_destructor);
+     ....
+     }
+     
+4] create a single backend
+     
+     ldbm_instance_generate()
+     {
+     ....
+         Slapi_Backend *new_be = NULL;
+         new_be = slapi_be_new(LDBM_DATABASE_TYPE_NAME, instance_name, ..);
+     ....            
+         rc = ldbm_instance_create(new_be, instance_name);
+     ....
+     }
+     
+5+6] create instance and set references
+     
+     ldbm_instance_create()
+     {
+     ....
+          inst = (ldbm_instance *)slapi_ch_calloc(1, sizeof(ldbm_instance));
+     ....
+         /* backend reference to instance */
+         be->be_instance_info = inst;
+     ....
+        /* instance reference to backend */
+         inst->inst_be = be;
+     ....
+     }   
+     
+7] add instance to set in ldbm info
+     
+     ldbm_instance_create()
+     {
+     ....
+         instance_obj = object_new((void *)inst, &ldbm_instance_destructor);
+         objset_add_obj(li->li_instance_set, instance_obj);
+     ....
+     }
+     
+8] set reference to ldbm in instance
+     
+     ldbm_instance_create()
+     {
+     ....
+         inst->inst_li = li;
+     ....
+     }
+     
+     
+9] set a reference from the backend to the database plugin
+     
+     ldbm_instance_generate()
+     {
+     ....
+          new_be->be_database = li->li_plugin;
+     ....
+     }
+
 Required Changes
 ================
 
@@ -129,7 +224,41 @@ Required Changes
 
 ### database subtype
 
+The specific backend implementation will be defined in a new ldbm database parameter
+
+     dn: cn=config,cn=ldbm database,cn=plugins,cn=config
+     ...
+     nsslapd-backend-implement: <specific implementation>
+
+The default value is bdb
+
+The configuration of the specific implementation is in a new config entry: 
+
+     cn=<specific implementation>,cn=config,cn=ldbm database,cn=plugins,cn=config
+
+
+Example: 
+
+     dn: cn=bdb,cn=config,cn=ldbm database,cn=plugins,cn=config
+     objectClass: extensibleobject
+     objectClass: top
+     cn: bdb
+     creatorsName: cn=ldbm database,cn=plugins,cn=config
+     modifiersName: cn=ldbm database,cn=plugins,cn=config
+     ...
+     nsslapd-dbcachesize: 328593980
+     nsslapd-db-durable-transaction: on
+     nsslapd-db-transaction-wait: off
+     nsslapd-db-checkpoint-interval: 60
+     nsslapd-db-compactdb-interval: 2592000
+     ...
+
 ### move existing ldbm config to subtypes
+
+### ldbm config params
+
+This chapter will list which of the existing ldbm config  parameters will
+remain a generic config parameter
 
 ## implement database subtypes
 
