@@ -7,6 +7,8 @@ title: "Download"
 
 Below you will find links to download the binary packages and source files. Please see the [FAQ section on Open Source](FAQ/faq.html#open-source) for more information.
 
+{% include toc.md %}
+
 <div style="text-align: left;">
 <span style="display:inline-block;padding:1px;border:1px solid #000;font-size:80%;">
 EXPORT CONTROL. As required by U.S. law, you (Licensee) represents and warrants that it: (a) understands that the Software is subject to export controls under the U.S. Commerce Department's Export Administration Regulations ("EAR"); (b) is not located in a prohibited destination country under the EAR or U.S. sanctions regulations (currently Cuba, Iran, Iraq, North Korea, Sudan and Syria); (c) will not export, re-export, or transfer the Software to any prohibited destination, entity, or individual without the necessary export license(s) or authorizations(s) from the U.S. Government; (d) will not use or transfer the Software for use in any sensitive nuclear, chemical or biological weapons, or missile technology end-uses unless authorized by the U.S. Government by regulation or specific license; (e) understands and agrees that if it is in the United States and exports or transfers the Software to eligible end users, it will, as required by EAR Section 740.17(e), submit semi-annual reports to the Commerce Department's Bureau of Industry & Security (BIS), which include the name and address (including country) of each transferee; and (f) understands that countries other than the United States may restrict the import, use, or export of encryption products and that it shall be solely responsible for compliance with any such import, use, or export restrictions.
@@ -14,78 +16,52 @@ EXPORT CONTROL. As required by U.S. law, you (Licensee) represents and warrants 
 </div>
 <br>
 
-{% include toc.md %}
-
 ## Binary Packages
 ------------------
 
-### RHEL/CentOS/EPEL (RHEL 6, RHEL 7, CentOS 6, CentOS 7)
+After you have installed packages for your system as below, see our [install guide](/docs/389ds/howto/howto-install-389.html) for what's next.
+
+### OpenSUSE LEAP (ds 1.4.x)
+
+    zypper install 389-ds
+
+### Fedora (ds 1.4.x)
+
+    dnf install 389-ds-base
+
+If you want to use the cockpit web ui:
+
+    dnf install cockpit-389-ds
+
+### (RHEL 6, RHEL 7, CentOS 6, CentOS 7 (ds 1.3.x)
 
 **NOTE**: Use the 389-ds-base package from your base distribution.  389-ds-base is part of RHEL and CentOS now.  The copr repositories are discontinued.
 
-**NOTE**: The EL7 admin server and console bits will not be available until after RHEL 7.1 has been released.  These bits will then be available from EPEL7.
-
-For the admin server and console bits, you must first install EPEL from <https://fedoraproject.org/wiki/EPEL>.
+For the admin server and console parts, you must first install EPEL from <https://fedoraproject.org/wiki/EPEL>.
 
 Then you can install 389-ds-base and get all of the core directory server, admin server, and console components as per the directions below.
 
-### 389 Directory Server 1.3.x or older
+- Install just DS (recommended)
 
--   yum is used to install on platforms that use yum for package installation and management.
--   Enterprise Linux packages are available from EPEL
-    -   How to use - <https://fedoraproject.org/wiki/EPEL/FAQ#howtouse>
-    -   More info on EPEL - <https://fedoraproject.org/wiki/EPEL>
-
-#### New Install:
+    yum install 389-ds-base
+    setup-ds.pl
 
 - Install the server and the admin server/java console
 
     yum install 389-ds-base 389-admin 389-ds-console 389-admin-console
     setup-ds-admin.pl
 
-- Install just DS
-
-    yum install 389-ds-base
-    setup-ds.pl
-
 #### Upgrade an existing system:
 
-    yum [--enablerepo=updates-testing|--enablerepo=epel-testing] upgrade [389-ds-base ...other packages...]
-    setup-ds-admin.pl -u    --> Use "setup-ds.pl" instead if you are not using the Admin Server/Console
-
-If you specify package names on the command line, only those packages will be updated - useful for testing, if you just want to test certain packages without upgrading every package on your system to the testing version. You can use *yum downgrade pkgname ... pkgname* to downgrade the package from the testing version to the stable version.
-
--   Testing - installing packages from the testing repos
-    -   On Fedora - yum install 389-ds-base --enablerepo=updates-testing
-    -   On EPEL - yum install 389-ds-base --enablerepo=epel-testing
-    -   On Fedora - yum upgrade <testing packages> --enablerepo=updates-testing
-    -   On EPEL - yum upgrade <testing packages> --enablerepo=epel-testing
-    -   See the [Release Notes](releases/release-notes.html) for the current list of testing packages
--   Upgrade - **yum upgrade**
-    -   The 389 packages are designed to obsolete and replace the fedora-ds packages - you must use yum **upgrade** *not update* in order for yum and rpm to process the obsolete directives
-    -   You **must** run **setup-ds-admin.pl -u** after the upgrade to refresh your admin server and console configuration.  If not using the Admin Server/Console run **setup-ds.pl -u**.
--   New Install - **yum install 389-ds-base**
-    -   Run **setup-ds-admin.pl** to set up your directory server.  If not using Admin Server/Console then run **setup-ds.pl**.
-
-Upgrading and installing will install many dependencies too, including Java if your platform supports it. If not, see [Install Guide](legacy/install-guide.html) for more information about Java.
-
-See [Install Guide](legacy/install-guide.html) for more information.
-
-### 389 Directory Server 1.4.x
-
-Directory Server 1.4.x now uses a new python installer called **dscreate**.  There are no upgrade options needed in 1.4.x.  After installing the latest 389-ds-base-1.4.x package you just need to restart the server.
-
-The new Web UI (Cockpit plugin) requires **cockpit-389-ds** to be installed (which is a subpackage of 389-ds-base)
-
-See the new [Install Guide](http://www.port389.org/docs/389ds/howto/howto-install-389.html) for more information.
+Do a system upgrade as advised by your vendor. That's it!
 
 ### Windows Password Synchronization
 
-NOTE: If you are upgrading from version **1.1.0**, the upgrade will create a new 389 Password Sync folder and copy your files from the old Fedora Password Sync folder. It will not remove the old Fedora Password Sync folder. You can do that manually once you have verified that the new 389 version is working correctly.
-
-NOTE: If you are upgrading from a version older than **1.1.0**, install the new version first, then remove the old version from the Add/Remove Programs list in the Control Panel. The new version is **1.1.7**.
-
-This is an Active Directory "plug-in" that intercepts password changes made to AD Domain Controllers and sends the clear text password over an encrypted connection (SSL/TLS) to 389 DS to keep the passwords in sync. It works in conjunction with the Windows Sync feature of 389. You must install this on every Domain Controller.
+This is an Active Directory "plug-in" that intercepts password changes made to AD Domain Controllers
+and sends the clear text password over an encrypted connection (SSL/TLS) to 389 DS to keep the passwords
+in sync. It works in conjunction with the Windows Sync feature of 389. You must install this on every
+Writable Domain Controller. RODCs do not function the same way, so you should not install
+this plugin on them.
 
 Tested with Windows 2008 and 2012 Server 32-bit and 64-bit.
 
@@ -102,9 +78,7 @@ Tested with Windows 2008 and 2012 Server 32-bit and 64-bit.
 
 ### Windows Console
 
-NOTE: Windows Console now (as of September 11, 2015) requires Java 7 to work.
-
-NOTE: You must use 64-bit Java with the 64-bit version.
+NOTE: You must use 64-bit Java 7 with the 64-bit version.
 
 Tested with Java 7 on Windows 2008/2012 Server.
 
@@ -114,8 +88,6 @@ Tested with Java 7 on Windows 2008/2012 Server.
 |Windows 2008/2012 64-bit|[389-Console-1.1.15-x86\_64.msi]({{ site.binaries_url }}/binaries/389-Console-1.1.15-x86_64.msi)|35ec5bad0d309c334ba8c5e8ac0ab183f004d7fd|
 
 NOTE: You must have Java in your PATH in order for this to work. Or you can just edit the batch file to tell it where to find Java.
-
-<br>
 
 
 ## Source Code Packages

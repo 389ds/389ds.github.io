@@ -9,7 +9,12 @@ no_date: true
 
 ---
 
-The enterprise-class [Open Source](docs/389ds/FAQ/licensing.html) LDAP server for Linux. It is hardened by real-world use, is full-featured, supports multi-master replication, and already handles many of the largest LDAP deployments in the world.  The **389 Directory Server** can be downloaded for free, and set up in less than an hour.
+The enterprise-class [Open Source](docs/389ds/FAQ/licensing.html) LDAP server for Linux. LDAP is a
+protocol for representing objects in a network database. Commonly LDAP servers are used to store
+identities, groups and organisation data, however LDAP can be used as a structured NoSQL server.
+389 Directory Server is hardened by real-world use, is full-featured, supports multi-master
+replication, and already handles many of the largest LDAP deployments in the world.
+The **389 Directory Server** can be downloaded for free, and set up in less than an hour. [Get started with a new install!](docs/389ds/howto/howto-install-389.md)
 
 
 <div id="front-page-columns" class="container-fluid">
@@ -41,7 +46,7 @@ The enterprise-class [Open Source](docs/389ds/FAQ/licensing.html) LDAP server fo
   </div>
 </div>
 
-If you're [new to the project](docs/389ds/users.html) you should start with our [getting started](docs/389ds/FAQ/getting-started.html) page. It contains links to builds, source code and documentation. Our [mission](docs/389ds/FAQ/mission.html) page also contains information about our goals and vision.
+If you're new to the project you should start with our [getting started](docs/389ds/FAQ/getting-started.html) page. It contains information about what LDAP is, how to install an instance, and what to do next. Our [mission](docs/389ds/FAQ/mission.html) page also contains information about our goals and vision.
 
 ## Key Features
 

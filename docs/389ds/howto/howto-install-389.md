@@ -3,41 +3,33 @@ title: "Howto: Install 389 Directory Server"
 ---
 
 # Install Guide For 389 Directory Server
----------------
+----------------------------------------
 
 {% include toc.md %}
 
 ## Install the packages
 
-- 389-ds-base                         
-- 389-ds-base-libs
-- 389-ds-base-snmp
-- 389-ds-base-legacy-tools (deprecated perl scripts replaced by new python CLI tools)
-- python3-lib389
-- python3-389-ds-base-tests
-- cockpit-389-ds (Cockpit UI plugin)
-
-    dnf install 389-ds-base* cockpit-389-ds
-
-## Upgrading
-
-If you are upgrading to **389-ds-base-1.4.x** from **389-ds-base-1.3.x** or **389-ds-base-1.2.11**, you must first upgrade to **389-ds-base-1.3.7**.  Then you simply install the packages and restart the servers.  **389-ds-base-1.4.x** handles any upgrade steps needed during server startup, so there is no need to run an "upgrade" script.
-
-For help upgrading to the latest version of **389-ds-base-1.3.x** see the old [Install\_Guide](../legacy/install-guide.html)
+Follow the steps in our [download guide](/docs/389ds/download.md) to install the correct packages for your system.
 
 ## Create an instance of Directory Server
 
-The new python installer **dscreate** takes a configuration file (INF file) to load the instance configuration settings, or it can be run in an interactive mode using 
+The new python installer **dscreate** takes a configuration file (INF file) to load the instance
+configuration settings, or it can be run in an interactive mode using
 
-    dscreate interactive
+    # dscreate interactive
 
-The interactive mode only asks for basic configuration settings.  If you need to script the install, or you want to have fine-grained control over installation options then use the INF file installation mode.  Our INF file is very similiar to the silent install file used in previous versions of Directory Server, but the format has slightly changed.
+The interactive mode only asks for basic configuration settings.  If you need to script the install
+(you should script the install),
+or you want to have fine-grained control over installation options then use the INF file
+installation mode.  Our INF file is very similiar to the silent install file used in previous
+versions of Directory Server, but the format has improved.
 
-The installation script can also create a template INF file for you.  Then you set the options for your particular set up.
+The installation script can also create a template INF file for you.  Then you set the options for
+your particular set up.
 
-    dscreate create-template   --> Write the template to STDOUT
+    # dscreate create-template   --> Write the template to STDOUT
 
-    dscreate create-template /tmp/instance.inf   --> The script creates the actual file
+    # dscreate create-template /tmp/instance.inf   --> The script creates the actual file
 
 Here is a snip of the template file
 
@@ -57,31 +49,49 @@ Here is a snip of the template file
     ...
     ...
 
-Every setting has a default value.  To customize any of the settings remove the preceding semi-colon from the directive, and set the desired value.  Then you are ready to create your instance:
+Every setting has a default value.  To customize any of the settings remove the preceding semi-colon
+from the directive, and set the desired value.
 
-    dscreate fromfile /tmp/instance.inf
+A really good example if you just want trial instance to learn and play from is the following inf:
+
+    [general]
+    config_version = 2
+
+    [slapd]
+    root_password = YOUR_ADMIN_PASSWORD_HERE
+    [backend-userroot]
+    sample_entries = yes
+    suffix = dc=example,dc=com
+
+Then you are ready to create your instance:
+
+    # dscreate from-file /tmp/instance.inf
+
+That's it! You now have a working LDAP server. You can see this with:
+
+    # dsctl localhost status
+    Instance "localhost" is running
 
 ### INF File Examples
 
-Here is an example of the bare minimum you need in the install file to create an instance.  If you you just want the defaults then this is all you need:
+Here is an example of the bare minimum you need in the install file to create an instance.  If you
+just want the defaults then this is all you need:
 
     [general]
     config_version = 2
-    full_machine_name = SYSTEMS_FQDN
 
     [slapd]
-    instance_name = localhost
     root_password = YOUR_PASSWORD_FOR_CN=DIRECTORY_MANAGER
 
 
-Here's another example with other customizations as well as creating two backends (see \[backend-*YOUR_BACKEND_NAME*\]).  You also have the option to create a self signed certificate database as part of the installation (the default is True).
+Here's another example with other customizations as well as creating two backends
+(see \[backend-*YOUR_BACKEND_NAME*\]).  You also have the option to create a self signed certificate
+database as part of the installation (the default is True).
 
     [general]
     config_version = 2
-    full_machine_name = localhost.localdomain
 
     [slapd]
-    instance_name = localhost
     root_dn = cn=manager
     root_password = YOUR_PASSWORD_FOR_CN=MANAGER
     port = 3890
@@ -96,15 +106,28 @@ Here's another example with other customizations as well as creating two backend
     [backend-ipaca]
     suffix = o=ipaca
 
+## Setting up Directory Manager credentials
 
-## Removing an instance
+Instead of typing your username and connection details with every command, we allow a config
+that stores these called dsrc. The file is in your home directory. For remote administration a
+configuration is:
 
-For completeness here is how you remove an instance:
+    # cat ~/.dsrc
+    [localhost]
+    uri = ldaps://localhost
+    basedn = dc=example,dc=com
+    binddn = cn=Directory Manager
+    # You need to copy /etc/dirsrv/slapd-localhost/ca.crt to your host for this to work.
+    tls_cacertdir = /etc/dirsrv/slapd-localhost/
 
-    dsctl <YOUR INSTANCE NAME> remove --doit
+For local instance administration (on the server), you want to use settings like:
 
-    dsctl localhost remove --doit
-
+    # cat ~/.dsrc
+    [localhost]
+    # Note that '/' is replaced to '%%2f'.
+    uri = ldapi://%%2fvar%%2frun%%2fslapd-localhost.socket
+    basedn = dc=example,dc=com
+    binddn = cn=Directory Manager
 
 ## Installing Cockpit UI Plugin
 
@@ -120,11 +143,33 @@ Enable Cockpit
     # systemctl enable cockpit.socket
     # systemctl start cockpit.socket
 
-The UI is using LDAPI for authentication to the Directory Server.  So logging into Cockpit as root is the same as logging in as "cn=Directory Manager".  This also means that if you are upgrading to 389-ds-base-1.4.0, you must enable the LDAPI socket in the Directory Server before you can start using the UI.  For more information please see:
+The UI is using LDAPI for authentication to the Directory Server.  So logging into Cockpit as root
+is the same as logging in as "cn=Directory Manager".
+
+## Removing an instance
+
+For completeness here is how you remove an instance:
+
+    dsctl <YOUR INSTANCE NAME> remove --doit
+
+    dsctl localhost remove --doit
+
+The default instance name is "localhost".
+
+# Upgrading
+-----------
+
+If you are upgrading to **389-ds-base-1.4.x** from **389-ds-base-1.3.x** or **389-ds-base-1.2.11**, you must first upgrade to **389-ds-base-1.3.7**.  Then you simply install the packages and restart the servers.  **389-ds-base-1.4.x** handles any upgrade steps needed during server startup, so there is no need to run an "upgrade" script.
+
+For help upgrading to the latest version of **389-ds-base-1.3.x** see the old [Install\_Guide](../legacy/install-guide.html)
+
+This also means that if you are upgrading to
+389-ds-base-1.4.0, you must enable the LDAPI socket in the Directory Server before you can start
+using the cockpit plugin UI.  For more information please see:
 
 <https://access.redhat.com/documentation/en-us/red_hat_directory_server/10/html/administration_guide/ldapi-enabling>
 
-Here is an example
+Here is an example:
 
     # ldapmodify -D "cn=directory manager" -W
     dn: cn=config
@@ -140,10 +185,8 @@ Here is an example
     -
     replace: nsslapd-ldapimaprootdn
     nsslapd-ldapimaprootdn: cn=Directory Manager
-    
+
     <press enter twice to send this modification operation>
 
-    # restart-dirsrv
-
-**The Cockpit UI is not fully functional yet and it just in a DEMO mode for now.  We are actively working on finishing it asap as it will be replacing the old Java Console (389-console) in Fedora 28 and up.**
+    # dsctl <instance> restart
 
