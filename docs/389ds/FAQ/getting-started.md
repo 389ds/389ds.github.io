@@ -4,8 +4,8 @@ title: "Getting started"
 
 {% include toc.md %}
 
-# What is 389 Directory Server?
--------------------------------
+# Starting with 389 Directory Server
+------------------------------------
 
 A Directory Server is a type of database often used to centrally store data about people. It is best
 used for data that does not change often but is read frequently such as email addresses and other
@@ -47,7 +47,7 @@ on our [building](../development/building.html) page.
 ---------------------
 
 Installing an instance is designed to be fast and easy. You can follow our instructions on our
-[install page.](../howto-install-389.html)
+[install page.](../howto/howto-install-389.html)
 
 
 ### What next?
@@ -56,17 +56,17 @@ Installing an instance is designed to be fast and easy. You can follow our instr
 #### Managing users and groups
 
 An LDAP instance is classically used to store users and groups. We supply many tools to help
-make this process easier, and you can [learn more about them](../howto-users-and-groups.html)
+make this process easier, and you can [learn more about them](../howto/howto-users-and-groups.html)
 
 #### Deploy TLS
 
 Transport encryption protects your passwords and identities on the wire, so you should setup
-TLS by following our [TLS guide](../howto-ssl.html)
+TLS by following our [TLS guide](../howto/howto-ssl.html)
 
 #### Configure clients to use 389DS
 
 A large use case of LDAP is to allow your linux servers and workstations to authenticate. You can
-follow our [SSSD guide](../howto-sssd.html)
+follow our [SSSD guide](../howto/howto-sssd.html)
 
 #### What the Directory Server Can Do
 
@@ -75,7 +75,7 @@ a lot of information to help you.
 
 #### Documentation
 
-There's a huge amount of reference material available for the Directory Server. You might want to look at our [documentation](../documentation.html) page for information if you know exactly what you're looking for.
+There's a huge amount of reference material available for the Directory Server. You might want to look at our [documentation](/documentation.html) page for information if you know exactly what you're looking for.
 
 #### Integrating the Directory Server with your Software
 
@@ -94,7 +94,7 @@ contributors.
 
 ### The Future
 
-To see the direction the project is going in, check out our [roadmap](FAQ/roadmap.html).
+To see the direction the project is going in, check out our [roadmap](/docs/FAQ/roadmap.html).
 
-Our current [wishlist](FAQ/wishlist.html) is also available.
+Our current [wishlist](/docs/FAQ/wishlist.html) is also available.
 

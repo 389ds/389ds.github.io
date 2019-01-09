@@ -14,7 +14,8 @@ protocol for representing objects in a network database. Commonly LDAP servers a
 identities, groups and organisation data, however LDAP can be used as a structured NoSQL server.
 389 Directory Server is hardened by real-world use, is full-featured, supports multi-master
 replication, and already handles many of the largest LDAP deployments in the world.
-The **389 Directory Server** can be downloaded for free, and set up in less than an hour. [Get started with a new install!](docs/389ds/howto/howto-install-389.md)
+The **389 Directory Server** can be downloaded for free, and set up in less than an hour.
+[Get started with a new install!](docs/389ds/howto/howto-install-389.html)
 
 
 <div id="front-page-columns" class="container-fluid">
