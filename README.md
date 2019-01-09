@@ -1,4 +1,16 @@
-# Getting Started
+# 389 Directory Server Wiki
+
+## Getting Started
+
+You can test our your changes locally with:
+
+`docker build -t 389wiki:latest .`
+`docker run -p 4000:4000 389wiki:latest`
+
+This will then listen and server http://localhost:4000
+
+If you want to setup a more permanent editing environment:
+
 1. `yum install python-pygments gcc ruby-devel libxml2 libxml2-devel libxslt libxslt-devel`
 
 1. Install [RVM](http://rvm.io). I know RVM can be a pain when you first start
@@ -35,7 +47,7 @@
    EDITOR.  You can use a different editor with the `--editor` option.
 1. Jekyll will automatically render your changes.
 
-# Advanced Workflow
+## Advanced Workflow
 1. *Optional*: Open port 4000 in your firewall so others can see your local site
 
     ```
@@ -63,7 +75,7 @@
    experimental option `--incremental`/`-I` that attempts to only regenerate the
    pages that actually changed.  In my experience, it works well, so use it!
 
-# Syntax Highlighting
+## Syntax Highlighting
 Syntax highlighting is provided by [Pygments](http://pygments.org) (more
 specifically by Pygments.rb -- a Ruby binding to Pygments).  Set the
 highlighting on a code block by providing a lexer name after the three backticks
@@ -98,7 +110,7 @@ $ ./subscription-manager
 ./subscription-manager
 ```
 
-# Gotchas
+## Gotchas
 * In Markdown, whitespace matters!  Specifically, when you're in a block (like a
   list element in a bulleted list) you need to make sure all sub-blocks have the
   same initial indentation.
@@ -138,7 +150,7 @@ print "Hello World"
   autocmd BufNewFile,BufReadPost *.md set filetype=markdown
   ```
 
-# Openshift Setup
+## Openshift Setup
 To interact with Openshift, you will need to install the command line client
 `oc`.  It is not available as an RPM since it's just a massive statically-linked
 binary.  The [documenation](https://docs.openshift.com/enterprise/3.0/cli_reference/get_started_cli.html)
@@ -149,12 +161,12 @@ place for me.
 
 Next you will need to authenticate.  Run `oc login` and follow the prompts.
 
-# Environment Variables and Build and Run Processes
+## Environment Variables and Build and Run Processes
 Any environment variables that we need to define (such as the BUNDLE_WITHOUT
 variable to exclude gems from a group in the Gemfile) are defined in
 `.s2i/environment`.
 
-# References
+## References
 * We use RVM to manage Ruby versions and gemsets.  See
   <https://rvm.io/#docindex>
 * Jekyll is the engine used to create the site.  There is very good

@@ -75,11 +75,20 @@ a lot of information to help you.
 
 #### Documentation
 
-There's a huge amount of reference material available for the Directory Server. You might want to look at our [documentation](/documentation.html) page for information if you know exactly what you're looking for.
+There's a huge amount of reference material available for the Directory Server. You might want to
+look at our [documentation](/documentation.html) page for information if you know exactly what you're
+looking for.
 
 #### Integrating the Directory Server with your Software
 
-A Directory Server is not a valuable piece of software in and of itself. It's importance is only revealed in how other pieces of software use it. Whether it's a mail client or a multi-thousand machine data center, you have to know how to make the best use of the Directory Server with your software. You might want to visit our page on using the Directory Server. It contains information on how to use DS from the perspective of a [client](client- software.html), or if you're interested in writing plugins for the Directory Server, you might want to see our page on building Directory Server [plugins](../design/plugins.html). Our [documentation](../documentation.html) page contains a more complete list of software-related materials available.
+A Directory Server is not a valuable piece of software in and of itself. It's importance is only revealed
+in how other pieces of software use it. Whether it's a mail client or a multi-thousand machine data
+center, you have to know how to make the best use of the Directory Server with your software. You
+might want to visit our page on using the Directory Server. It contains information on how to use
+DS from the perspective of a [client](client- software.html), or if you're interested in writing
+plugins for the Directory Server, you might want to see our page on building Directory Server
+[plugins](../design/plugins.html). Our [documentation](../documentation.html) page contains a more
+complete list of software-related materials available.
 
 ### Contributing to the project
 -------------------------------
