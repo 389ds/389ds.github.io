@@ -19,6 +19,10 @@ If you are adding a new design document, use the [template](design-template.html
 -   [New Python CLI Tools](dsadm-dsconf.html)
 -   New Web UI (Cockpit plugin)  --> Design doc in the works...
 
+## 389 Directory Server 1.3.9 (RHEL 7.7)
+
+-   [Automembership Plugin Postop Modify](automember-postop-modify-design.html)  (backported from 1.4.0)
+
 ## 389 Directory Server 1.3.8 (RHEL 7.6)
 
 -   Just bug fixes
