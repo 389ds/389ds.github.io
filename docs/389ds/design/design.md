@@ -14,6 +14,7 @@ If you are adding a new design document, use the [template](design-template.html
 
 ## 389 Directory Server 1.4.0
 
+-   [Automembership Plugin Postop Modify](automember-postop-modify-design.html)
 -   [New Password Poliy Syntax Checks](pwpolicy-syntax-design.html)
 -   [New Python CLI Tools](dsadm-dsconf.html)
 -   New Web UI (Cockpit plugin)  --> Design doc in the works...
