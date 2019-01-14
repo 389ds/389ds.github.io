@@ -97,9 +97,6 @@ We maintain a number of how to guides for 389 Directory Server
 
 -   [How to BIND](howto/howto-bind.html)
 
-#### Database
-
--   [How to Oracle](howto/howto-oracle.html)
 
 #### Web/Console
 
@@ -127,11 +124,8 @@ These are potentially outdated or incorrect for the current DS version.
 -   [How to build 389 on Debian Gnu/Linux 4.0 (Etch) ](howto/howto-gentoodsbuildinstallation.html)
 -   [How to Use LDAP monitoring tools](howto/howto-cn-equals-monitor-ldap-monitoring.html)
 -   [How to Configure MMC](howto/howto-configure-mmc.html) - Configure Microsoft Management Console
--   [How to Daemon Tools](howto/howto-daemontools.html)
 -   [How to Debian Ubuntu](howto/howto-debianubuntu.html)
--   [How to Java on FedoraCore](howto/howto-javaonfedoracore.html)
 -   [How to Use LdapAdmin tool ](howto/howto-ldapadmin.html)
--   [How to OpenWebmail](howto/howto-openwebmail.html)
 -   [How to Postfix with IMAP](howto/howto-postfix-imap.html)
 -   [How to Samba](howto/howto-samba.html)
 -   [How to Fixup-UID-Script](howto/howto-uidfixup.html)

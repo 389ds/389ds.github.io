@@ -88,26 +88,6 @@ Feature History
 
 -   No new features, just a couple of bug fixes
 
-### Features added in Fedora DS 1.1 (January 8, 2008)
-
--   Auto UID and GID number generation with the libdna plugin - Distributed Numeric Assignment - that works even with multi-master replication environments - see <http://cvs.fedora.redhat.com/viewcvs/ldapserver/ldap/servers/plugins/dna/?root=dirsec> for more information
--   Separate packages - each main component is in its own package - see [discrete packaging](legacy/discrete-packaging.html)
--   Filesystem Hierarchy Standard file/path layout (e.g. log files are under /var/log/dirsrv) - see [FHS Directory Server Packaging](development/fhs-packaging.html)
--   Many of the components are now built into Fedora - see [FDS Directory Server Into Directory ServerFedoraCore](legacy/fds-into-fedoracore.html)
--   The setup command is now /usr/sbin/setup-ds-admin.pl - see [FDS Setup](legacy/fds-setup.html) for more information
--   startconsole is gone - use /usr/bin/fedora-idm-console instead
--   Migration from version 1.0 and earlier is fully supported by the /usr/sbin/migrate-ds-admin.pl script provided with the package - see [FDS\_Setup](legacy/fds-setup.html) and [Migration From 10](legacy/migration-from-10.html) for more information - see note above about migration to Fedora DS 1.1 on Fedora 8 and later.
--   Binary packages are provided only for Fedora 6, 7, 8 and 9 - The Fedora 6 packages should run on Red Hat EL5.1 (not 5.0)
-    -   See [Enterprise Linux 5 Instructions](download.html#Enterprise_Linux_5)
--   Version 1.1 does not include the phonebook, gateway, or org chart web apps - those will be provided in a following release
--   Init scripts!
-
-`service dirsrv {start|stop|restart} [instance name]`
-`service dirsrv-admin {start|stop|restart}`
-`edit /etc/sysconfig/dirsrv or /etc/sysconfig/dirsrv-admin to set environment`
-
--   Bug Fixes - [This link](https://bugzilla.redhat.com/showdependencytree.cgi?id=427409) lists all of the Fedora Directory Server bugs fixed since 1.0.4
-
 ### Features added in Fedora DS 1.2.0 - April 3, 2009
 
 -   [Automatically maintained memberOf attribute](design/memberof-plugin.html)
