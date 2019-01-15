@@ -20,14 +20,14 @@ to offer the choice of an implementation which uses copy on write and where read
 High level summary
 ==================
 
-It is not possible to immediately replace the BDB backend compeltely by an other database lib (eg LMDB), we need to support BDB as is and in parallel can provide an other option.
+It is not possible to immediately replace the BDB backend completely by an other database lib (eg LMDB), we need to support BDB as is and in parallel can provide an other option.
 But allowing the coexistence of different database implementation requires several changes which affect configuration and upgrade - even if the functionality is not changed.
 
 The main changes are:
 
 - The configuration of the ldbm database is split into a generic database configuration and an implpementation specific subdatabase
-- The MMR replication chnagelog has to be integrated into the main database
-- The usage of exec modee of ns-slapd and database related tasks can be affected
+- The MMR replication changelog has to be integrated into the main database
+- The usage of exec modes of ns-slapd and database related tasks can be affected
 - The install and upgrade has to handle the new configuration
 
 Current solution
@@ -58,7 +58,7 @@ There are several types of backends:
 This document will only deal with database backends
 
 
-### Database Configuration
+### Database Configuration Entries
 
 A database backend is implemented as a plugin and the configuration is at two levels:
 
@@ -73,13 +73,36 @@ Each backend implemented by this plugin is listed as a child of the plugin defin
     cn=<backend_1>,cn=ldbm database,cn=plugins,cn=config
 
 
+### Database Configuration Parameters
+
+The database paramter are maintained in a config array, where each paramter has a default value, a function to set and get its value.
+It is setup at startup in two phases:
+
+1. The array is initialized with the default values
+
+2. The "cn=config,cn=ldbm database" entry from the dse.ldif is read and for each paramter present the default value is overwritten,
+
+The Config Array, excerpt:
+
+
+     static config_info ldbm_config[] = {
+        {CONFIG_LOOKTHROUGHLIMIT, INT, "5000", &, &, ALWAYS_SHOW | ALLOW_RUNNING_CHANGE},
+        {CONFIG_MODE, INT_OCTAL, "0600", &, &, ALWAYS_SHOW | ALLOW_RUNNING_CHANGE},
+        {CONFIG_IDLISTSCANLIMIT, INT, "4000", &, &, ALWAYS_SHOW | ALLOW_RUNNING_CHANGE},
+        ....
+
+        {CONFIG_RANGELOOKTHROUGHLIMIT, INT, "5000", &, &, ALWAYS_SHOW | ALLOW_RUNNING_CHANGE},
+        {CONFIG_BACKEND_OPT_LEVEL, INT, "1", &, &, ALWAYS_SHOW},
+        {CONFIG_DB_DEADLOCK_POLICY, INT, STRINGIFYDEFINE(DB_LOCK_YOUNGEST), &, &, ALWAYS_SHOW | ALLOW_RUNNING_CHANGE},
+        {NULL, 0, NULL, NULL, NULL, 0}};
+
 ## Database Plugin
 
 All functionality to access and manage the database are implemented as pluging functions, this includes import/export, backup/restore, search and modify access for data in the database and some more
  
 ### Defined plugin entrypoints
 
-The plugin functionality is exposed by registerd functions which are published to the plugin substructutre of the pblock, more precisely the daatabase sub struct.
+The plugin functionality is exposed by registerd functions which are published to the plugin substructutre of the pblock, more precisely the database sub struct.
 
 These plugin entry points can be classified into several groups and will be discussed next.
 
@@ -91,7 +114,7 @@ These functions will be callesd when the plugin subsystem starts or closes
     SLAPI_PLUGIN_CLOSE_FN, (void *)ldbm_back_close);
     SLAPI_PLUGIN_CLEANUP_FN, (void *)ldbm_back_cleanup);
 
-#### Functions called by ldap operation.
+#### Functions called by ldap operations.
 
 The processing of any ldap operation will at some point need access to the database and call a backend function, for each
 LDAP operation there is one or more backend entry point:
@@ -113,14 +136,190 @@ Specific for paged result searches:
     SLAPI_PLUGIN_DB_SEARCH_RESULTS_RELEASE_FN, (void *)ldbm_back_search_results_release);
     SLAPI_PLUGIN_DB_PREV_SEARCH_RESULTS_FN, (void *)ldbm_back_prev_search_results);
 
+Specific functions for offline exec modes
+
+    SLAPI_PLUGIN_DB_LDIF2DB_FN, (void *)ldbm_back_ldif2ldbm);
+    SLAPI_PLUGIN_DB_DB2LDIF_FN, (void *)ldbm_back_ldbm2ldif);
+    SLAPI_PLUGIN_DB_DB2INDEX_FN, (void *)ldbm_back_ldbm2index);
+    SLAPI_PLUGIN_DB_ARCHIVE2DB_FN, (void *)ldbm_back_archive2ldbm);
+    SLAPI_PLUGIN_DB_DB2ARCHIVE_FN, (void *)ldbm_back_ldbm2archive);
+    SLAPI_PLUGIN_DB_UPGRADEDB_FN, (void *)ldbm_back_upgradedb);
+    SLAPI_PLUGIN_DB_UPGRADEDNFORMAT_FN, (void *)ldbm_back_upgradednformat);
+    SLAPI_PLUGIN_DB_DBVERIFY_FN, (void *)ldbm_back_dbverify);
+    SLAPI_PLUGIN_DB_WIRE_IMPORT_FN, (void *)ldbm_back_wire_import);
+
+Specific functions for transaction handling
+
+    SLAPI_PLUGIN_DB_BEGIN_FN, (void *)dblayer_plugin_begin);
+    SLAPI_PLUGIN_DB_COMMIT_FN, (void *)dblayer_plugin_commit);
+    SLAPI_PLUGIN_DB_ABORT_FN, (void *)dblayer_plugin_abort);
+
+Specific functions for more direct db control
+
+    SLAPI_PLUGIN_DB_SEQ_FN, (void *)ldbm_back_seq);
+    SLAPI_PLUGIN_DB_SIZE_FN, (void *)ldbm_db_size);
+    SLAPI_PLUGIN_DB_GET_INFO_FN, (void *)ldbm_back_get_info);
+    SLAPI_PLUGIN_DB_SET_INFO_FN, (void *)ldbm_back_set_info);
+    SLAPI_PLUGIN_DB_CTRL_INFO_FN, (void *)ldbm_back_ctrl_info);
+
 Not used, should be removed
 
+    SLAPI_PLUGIN_DB_INIT_INSTANCE_FN, (void *)ldbm_back_init);
+    registering the init function for second instance ????
+
     SLAPI_PLUGIN_DB_ENTRY_RELEASE_FN, (void *)ldbm_back_entry_release);
+
+    SLAPI_PLUGIN_DB_RMDB_FN, (void *)ldbm_back_rmdb);
+    was only used by V4 changelog
+
+Used, but only called directly in init
+
+    SLAPI_PLUGIN_DB_ADD_SCHEMA_FN, (void *)ldbm_back_add_schema);
+    
 
 
 ### Plugin usage
 
 ### Internal representation and setup
+
+#### Data structures
+
+Slapi plugin data structure, ldbm instance:
+
+
+    struct slapdplugin
+    {
+        void *plg_private;                      /* data private to plugin */
+        char *plg_initfunc;                     /* init symbol */
+        ....
+
+        union
+        { /* backend database plugin structure */
+            struct plg_un_database_backend
+            {
+                IFP plg_un_db_bind;              /* bind */
+                IFP plg_un_db_unbind;            /* unbind */
+                ....
+                IFP plg_un_db_ldif2db;              /* ldif 2 database */
+                IFP plg_un_db_db2ldif;              /* database 2 ldif */
+                IFP plg_un_db_db2index;             /* database 2 index */
+                IFP plg_un_db_archive2db;           /* ldif 2 database */
+                IFP plg_un_db_db2archive;           /* database 2 ldif */
+                ....
+                IFP plg_un_db_ctrl_info;            /* ctrl info */
+                } plg_un_db;
+        ....
+        } plg_un;
+    };
+
+
+
+Generic ldbm config
+
+
+    struct ldbminfo
+    {
+        /* ldbm config params li_* */
+        int li_mode;
+        int li_lookthroughlimit;
+        int li_allidsthreshold;
+        ....
+        dblayer_private *li_dblayer_private; /* session ptr for databases */
+
+        Objset *li_instance_set;    /* A set containing the ldbm instances. */
+
+        struct slapdplugin *li_plugin;
+
+    };
+
+Backend config
+
+
+    typedef struct backend
+    {
+        struct suffixlist *be_suffixlist; /* linked list of DN suffixes in this backend */
+
+        struct slapdplugin *be_database; /* single plugin */
+        void *be_instance_info; /* If the database plugin pointed to by multiple instances. */
+
+        char *be_name; /* The mapping tree and command line utils refer to backends by name. */
+        /* backend params, eg: */
+        int be_readonly;                         /* 1 => db is in "read only" mode       */
+        int be_sizelimit;                        /* size limit for this backend          */
+        int be_timelimit;                        /* time limit for this backend              */
+        ...
+
+    } backend;
+
+Instance config
+
+
+
+    typedef struct ldbm_instance
+    {
+        char *inst_name;          /* Name given for this instance. */
+        backend *inst_be;         /* pointer back to the backend */
+        struct ldbminfo *inst_li; /* pointer back to global info */
+
+
+        struct cache inst_cache; /* The entry cache for this instance. */
+
+        dblayer_private_env *import_env; /* use a different DB_ENV for imports */
+    } ldbm_instance;
+
+
+#### Init functions
+
+At server startup plugins are loaded and the provided init function is called. When later the plugin is started the 
+registered plugin start function is called. Here is what they do:
+
+ldbm_back_init
+
+    1. allocate ldbminfo struct, set some init vals and reference to the plugin
+
+    2. call dblayer_init
+        2.1 allocate dblayer private data
+        2.2 setup some db locks
+        2.3 log db version
+
+    3. load default config array
+
+    4. extend schema
+
+    5. initialize locks
+
+    6. set plugin functions to PBlock
+
+
+
+ldbm_back_start
+
+    1. read config from dse.ldif
+
+    2. register resource limits
+
+    3. autotune caches
+
+    4. check DBVERSION
+
+    5. call dblayer_start
+        5.1 check access to db/files
+        5.2 check cache and memory
+        5.3 create dbenv
+        5.4 init txn struct
+        5.5 open dbenv and start db threads
+
+    6. start instances
+
+    7. write version
+
+    8. init ldbm compute functions
+
+    9. init USN (why here ?)
+
+ 
+
+#### Data structure and init build up
 
 The following graph shows the references of the relevant data structures
 
