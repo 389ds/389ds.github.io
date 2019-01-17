@@ -180,6 +180,95 @@ Used, but only called directly in init
 
 ### Plugin usage
 
+Usually a plugin registers functions for specific entry points and then an application 
+can retrieve the function for that entry point or plugin_call_plugins calls all plugin functions
+for an entry point.
+
+For the ldbm plugin this is not the normal case, the pblock is mainly used to set the functions and to get
+references from backend to plugin or vice versa. Functions are the directly called with the function pointers in the backend structure.
+I think the only reason to use the plugin mechanism is that different plugins can register their backend functions without 
+knowing the backend structure, but then rely on the calls directly from the backend.
+
+Here are a few examples of usage of the backend functions
+
+transaction related functions
+
+These are the only functions using the "classic" call method
+
+
+    slapi_back_transaction_begin(Slapi_PBlock *pb)
+    {
+        IFP txn_begin;
+        if (slapi_pblock_get(pb, SLAPI_PLUGIN_DB_BEGIN_FN, (void *)&txn_begin) ||
+            !txn_begin) {
+            return SLAPI_BACK_TRANSACTION_NOT_SUPPORTED;
+        } else {
+            return txn_begin(pb);
+        }
+
+
+functions implementing a task
+
+
+    in task.c
+
+    /* lookup the backend */
+    be = slapi_be_select_by_instance_name((const char *)*inp);
+
+    rv = (be->be_database->plg_db2ldif)(pb);
+
+
+functions implementing ldap operations
+
+
+    op_shared_add(Slapi_PBlock *pb)
+    {
+    ...
+
+    if ((err = slapi_mapping_tree_select(pb, &be, &referral, errorbuf, sizeof(errorbuf))) != LDAP_SUCCESS) {
+        send_ldap_result(pb, err, NULL, errorbuf, 0, NULL);
+        be = NULL;
+        goto done;
+    }
+    ...
+    slapi_pblock_set(pb, SLAPI_BACKEND, be);
+    ...
+        if (be->be_add != NULL) {
+            rc = (*be->be_add)(pb);
+
+
+functions implementing specific database access (1)
+
+
+    static int
+    seq_internal_callback_pb(Slapi_PBlock *pb, void *callback_data, plugin_result_callback prc, plugin_search_entry_callback psec, plugin_referral_entry_callback prec)
+    {
+        ...
+        be = slapi_be_select(sdn);
+        ...
+        slapi_pblock_set(pb, SLAPI_BACKEND, be);
+        slapi_pblock_set(pb, SLAPI_PLUGIN, be->be_database);
+        ...
+        if (be->be_seq != NULL) {
+            rc = (*be->be_seq)(pb);
+
+
+functions implementing specific database access (2)
+
+
+    SLAPI_PLUGIN_DB_CTRL_INFO_FN
+
+    int
+    slapi_back_ctrl_info(Slapi_Backend *be, int cmd, void *info)
+    {
+        int rc = -1;
+        if (!be || !be->be_ctrl_info || !info) {
+            return rc;
+        }
+        rc = (*be->be_ctrl_info)(be, cmd, info);
+        return rc;
+
+
 ### Internal representation and setup
 
 #### Data structures
