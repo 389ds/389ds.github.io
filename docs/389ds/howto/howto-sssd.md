@@ -57,8 +57,19 @@ Enable SSSD to start with systemctl
 
     systemctl enable sssd
 
-# Configure NSS
----------------
+# Configure NSS (SUSE)
+----------------------
+
+Ensure the following lines are present in /etc/nsswitch.conf
+
+    passwd: compat sss
+    group:  compat sss
+    shadow: compat sss
+
+You should now be able to resolve a user with "getent password <name>" from ldap.
+
+# Configure NSS (Fedora/RH)
+---------------------------
 
 Ensure the following lines are present in /etc/nsswitch.conf
 
@@ -70,8 +81,56 @@ Ensure the following lines are present in /etc/nsswitch.conf
 
 You should now be able to resolve a user with "getent password <name>" from ldap.
 
-# Configure PAM
----------------
+# Configure PAM (SUSE)
+----------------------
+
+Suse uses 4 "common" files that are included by all other services for authentication and authorisation.
+These files are:
+
+    common-account-pc
+    common-auth-pc
+    common-password-pc
+    common-session-pc
+
+Their content should appear as:
+
+    # common-account-pc
+    account    requisite   pam_unix.so
+    account    sufficient  pam_localuser.so
+    account    required    pam_sss.so use_first_pass
+
+    # common-auth-pc
+    auth        required      pam_env.so
+    auth        [default=1 ignore=ignore success=ok] pam_localuser.so
+    auth        sufficient    pam_unix.so nullok try_first_pass
+    auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success
+    auth        sufficient    pam_sss.so prompt_always ignore_unknown_user
+    auth        optional      pam_gnome_keyring.so
+    auth        required      pam_deny.so
+
+    # common-password-pc
+    password    requisite   pam_cracklib.so
+    password    [default=1 ignore=ignore success=ok] pam_localuser.so
+    password    required    pam_unix.so use_authtok nullok shadow try_first_pass
+    password    sufficient  pam_sss.so use_authtok
+    password    optional    pam_gnome_keyring.so    use_authtok
+
+    # common-session-pc
+    session optional    pam_systemd.so
+    session required    pam_limits.so
+    session required    pam_mkhomedir.so skel=/etc/skel/ umask=0022
+    session required    pam_unix.so try_first_pass
+    session optional    pam_sss.so
+    session optional    pam_umask.so
+    session optional    pam_gnome_keyring.so    auto_start only_if=gdm,gdm-password,lxdm,lightdm,mdm
+    session optional    pam_env.so
+
+You should be able to login as local *and* sssd users who match your ldap_access_filter now. It's a good
+idea to test that invalid passwords, empty passwords, and users who do not match the access filter
+are all correctly rejected.
+
+# Configure PAM (Fedora/RH)
+---------------------------
 
 **WARNING: Altering pam may lock you out of your system. Always maintain a second sudo/root shell while altering these files, and keep backups**
 

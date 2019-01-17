@@ -59,6 +59,7 @@ A really good example if you just want trial instance to learn and play from is 
 
     [slapd]
     root_password = YOUR_ADMIN_PASSWORD_HERE
+
     [backend-userroot]
     sample_entries = yes
     suffix = dc=example,dc=com

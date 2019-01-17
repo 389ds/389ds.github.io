@@ -15,7 +15,7 @@ identities, groups and organisation data, however LDAP can be used as a structur
 389 Directory Server is hardened by real-world use, is full-featured, supports multi-master
 replication, and already handles many of the largest LDAP deployments in the world.
 The **389 Directory Server** can be downloaded for free, and set up in less than an hour.
-[Get started with a new install!](/docs/389ds/FAQ/getting-started.html)
+[Get started with a new install!](/docs/389ds/howto/quickstart.html)
 
 
 <div id="front-page-columns" class="container-fluid">
@@ -47,7 +47,7 @@ The **389 Directory Server** can be downloaded for free, and set up in less than
   </div>
 </div>
 
-If you're new to the project you should start with our [getting started](docs/389ds/FAQ/getting-started.html) page. It contains information about what LDAP is, how to install an instance, and what to do next. Our [mission](docs/389ds/FAQ/mission.html) page also contains information about our goals and vision.
+If you're new to the project you should start with our [getting started](docs/389ds/howto/quickstart.html) page. It contains information about what LDAP is, how to install an instance, and what to do next. Our [mission](docs/389ds/FAQ/mission.html) page also contains information about our goals and vision.
 
 ## Key Features
 
