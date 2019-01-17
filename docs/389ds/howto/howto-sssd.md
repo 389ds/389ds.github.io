@@ -44,8 +44,14 @@ SSSD has a concept of domains and provides. Here is an example configuration tha
     # This is really important as it allows SSSD to respect nsAccountLock
     ldap_account_expire_policy = rhds
     ldap_access_order = filter, expire
+
     # Setup for ssh keys
-    ldap_user_ssh_public_key = sshPublicKey
+    # Inside /etc/ssh/sshd_config add the lines:
+    #   AuthorizedKeysCommand /usr/bin/sss_ssh_authorizedkeys
+    #   AuthorizedKeysCommandUser nobody
+    # You can test with the command: sss_ssh_authorizedkeys <username>
+    # The objectClass: nsAccount holds this attribute.
+    ldap_user_ssh_public_key = nsSshPublicKey
 
 Enable SSSD to start with systemctl
 
