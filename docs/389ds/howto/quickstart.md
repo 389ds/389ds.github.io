@@ -99,6 +99,13 @@ For local instance administration (on the server), you want to use settings like
 
 For now, we recommend you use the local version with ldapi
 
+Question: "When I use ldapi on the server that has the DS instance, why don't I need to provide my
+password?"
+
+With LDAP, we are able to detect your client-processes UID/GID, and if that's 0/0 (ie root), we map
+you to the cn=Directory Manager user of the instance. With this, you could actually set the hash
+to garbage on the instance, and use local-root as the only admin of the instance. Nice and secure!
+
 reference: [install guide](/docs/389ds/howto/howto-install-389.html)
 
 # Add users and groups
