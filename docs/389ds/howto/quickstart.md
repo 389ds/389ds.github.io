@@ -65,7 +65,9 @@ That's it! You have a working LDAP server. You can show this with:
 
     dsctl localhost status
 
-If you have any issues the install log is located: XXXX?
+If you have any issues, re-run the installer with verbose to help identify the cause:
+
+    dscreate -v from-file /root/instance.inf
 
 reference: [install guide](/docs/389ds/howto/howto-install-389.html)
 
