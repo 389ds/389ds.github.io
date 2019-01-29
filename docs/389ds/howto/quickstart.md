@@ -350,7 +350,7 @@ reference: [Backup and Restore Strategies](/docs/389ds/howto/howto-backup-restor
 
 * TLS: [Setup TLS](/docs/389ds/howto/howto-ssl.html)
 * Replication: [Setup Replication]()
-* Cockpit Web Console: [Setup Cockpit]()
+* Cockpit Web Console: [Setup Cockpit](/docs/389ds/howto/howto-install-389.html)
 * Access Controls: [Setup ACI](/docs/389ds/howto/howto-accesscontrol.html)
 * Distributed Numeric Assignment: [Setup DNA](/docs/389ds/howto/howto-dna.html)
 * RADIUS: [Setup RADIUS]()
