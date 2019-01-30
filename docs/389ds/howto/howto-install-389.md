@@ -94,7 +94,7 @@ database as part of the installation (the default is True).
 
     [slapd]
     root_dn = cn=manager
-    root_password = YOUR_PASSWORD_FOR_CN=MANAGER
+    root_password = YOUR_PASSWORD_FOR_CN=DIRECTORY_MANAGER
     port = 3890
     secure_port = 636
     self_sign_cert = True
@@ -151,9 +151,9 @@ is the same as logging in as "cn=Directory Manager".
 
 For completeness here is how you remove an instance:
 
-    dsctl <YOUR INSTANCE NAME> remove --doit
+    dsctl <YOUR INSTANCE NAME> remove --do-it
 
-    dsctl localhost remove --doit
+    dsctl localhost remove --do-it
 
 The default instance name is "localhost".
 
