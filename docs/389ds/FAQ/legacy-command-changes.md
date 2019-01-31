@@ -2,14 +2,8 @@
 title: "Legacy Command Changes"
 ---
 
-{% include toc.md %}
-
 As of version 1.4.x, we have fully deprecated the perl and shell wrappers
 that were provided by the project. This is a list of commands and their new mappings.
-
-Note that values with '!' are still in development, but will be ready soon. See this ticket for
-more details: https://pagure.io/389-ds-base/issue/50184
-
 
     bak2db -> dsctl <instance> bak2db
     bak2db.pl -> dsctl <instance> bak2db
@@ -21,15 +15,15 @@ more details: https://pagure.io/389-ds-base/issue/50184
     db2ldif -> dsctl <instance> db2ldif
     db2ldif.pl -> dsctl <instance> db2ldif
     dbmon.sh -> dsconf <instance> backend monitor
-    dbverify -> dsctl <instance> dbverify !
+    dbverify -> dsctl <instance> dbverify
     dn2rdn -> REMOVED
-    fixup-linkedattrs.pl -> dsconf <instance> plugin linkedattr fixup !
+    fixup-linkedattrs.pl -> dsconf <instance> plugin linkedattr fixup <basedn>
     fixup-memberof.pl -> dsconf <instance> plugin memberof fixup
     ldif2db -> dsctl <instance> ldif2db
     ldif2db.pl -> dsctl <instance> ldif2db
     ldif2ldap -> REMOVED
     migrate-ds.pl -> REMOVED
-    monitor -> dsconf <instance> monitor !
+    monitor -> dsconf <instance> monitor server
     ns-accountstatus.pl -> dsidm <instance> account status
     ns-activate.pl -> dsidm <instance> account unlock
     ns-inactivate.pl -> dsidm <instance> account lock
@@ -48,5 +42,7 @@ more details: https://pagure.io/389-ds-base/issue/50184
     upgradedb -> REMOVED
     upgradednformat -> REMOVED
     usn-tombstone-cleanup.pl -> dsconf <instance> plugin usn cleanup
-    verify-db.pl -> dsctl <instance> dbverify !
+    verify-db.pl -> dsctl <instance> dbverify
     vlvindex -> dsconf <instance> backend vlv-index reindex
+
+William Brown, SUSE Labs <wbrown at suse.de>
