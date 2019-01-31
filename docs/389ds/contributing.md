@@ -97,6 +97,13 @@ You can build rpms and rpms by using these commands:
 
 These packages are then located in dist/rpms or dist/srpms
 
+In 389-ds-base-1.4.0 you can package the source code and latest UI (cockpit plugin/node_modules).  You do have to create a git tag, but you can just delete it after making the tarball
+
+    export TAG=389-ds-base-1.4.0.25 ; git tag $TAG ; make -f rpm.mk dist-bz2
+
+    git tag -d 389-ds-base-1.4.0.25
+
+
 Testing the server
 ------------------
 
