@@ -190,6 +190,10 @@ For example we can now add a description to our users.
 
     # dsidm localhost user modify alice "add:description:Alice Test User"
 
+Now you can check your changes on the object with:
+
+    # dsidm localhost user get alice
+
 This would add "description: Alice Test User" to uid=alice. If we wanted to replace this with a new
 value, we would run:
 
@@ -238,8 +242,7 @@ expected - so this is a once off task:
 
     # dsidm localhost user modify alice add:objectclass:nsmemberof
 
-Finally, we can run a "fixup" which will regenerate memberof for everyone in the directory. Note the
-`-f '(objectClass=nsPerson)'`, which says "apply memberOf to all nsPerson" in the directory.
+Finally, we can run a "fixup" which will regenerate memberof for everyone in the directory.
 
     # dsconf localhost plugin memberof fixup -b dc=example,dc=com
     Enter password for cn=Directory Manager on ldaps://localhost:
