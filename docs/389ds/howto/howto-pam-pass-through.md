@@ -100,10 +100,9 @@ Configuration Example
 This feature depends on a PAM configuration file. This assumes you already have a file in /etc/pam.d that controls your authentication, and that's what you want to use for the PAM passthru feature as well. You can either use that file directly (and make sure pamService below points to that file), or create your own /etc/pam.d/ldapserver. You probably don't need to do the latter unless you need to customize authentication for directory server for some reason.
 
 1.  Shutdown the server
-2.  Make sure /etc/dirsrv/slapd-instance/schema contains the 60pam-config.ldif file
-3.  Make sure plugindir/libpam-passthru-plugin.so exists
-4.  Make sure your PAM file exists and is configured correctly
-5.  If the configuration is not already in dse.ldif, append the following to /etc/dirsrv/slapd-instance/dse.ldif
+2.  Make sure plugindir/libpam-passthru-plugin.so exists
+3.  Make sure your PAM file exists and is configured correctly
+4.  If the configuration is not already in dse.ldif, append the following to /etc/dirsrv/slapd-instance/dse.ldif
 
         dn: cn=PAM Pass Through Auth,cn=plugins,cn=config
         objectclass: top

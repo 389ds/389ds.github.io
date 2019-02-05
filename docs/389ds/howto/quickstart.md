@@ -275,7 +275,8 @@ On OpenSUSE and SUSE LEAP you need to stop nscd which conflicts with sssd.
 
     systemctl disable nscd && systemctl stop nscd
 
-Now generate the config:
+Now generate the config. See how we specific "server_admins"? That means only members of this
+group can login to this system:
 
     dsidm localhost client_config sssd.conf server_admins
 
