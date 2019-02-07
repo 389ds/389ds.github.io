@@ -169,7 +169,7 @@ That's it! We have users and groups that can authenticate and have information a
 We can show the authentication works with the "ldapwhoami" command.
 
     # ldapwhoami -H ldaps://localhost -D uid=alice,ou=people,dc=example,dc=com -W -x
-    Enter LDAP Password:
+    Enter LDAP Password: <Password of alice, not the Directory Manager admin>
     dn: uid=alice,ou=people,dc=example,dc=com
 
 NOTE: If you get an error like:
