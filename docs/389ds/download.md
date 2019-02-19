@@ -21,10 +21,6 @@ EXPORT CONTROL. As required by U.S. law, you (Licensee) represents and warrants 
 
 After you have installed packages for your system as below, see our [install guide](/docs/389ds/howto/howto-install-389.html) for what's next.
 
-### OpenSUSE LEAP (ds 1.4.x)
-
-    zypper install 389-ds
-
 ### Fedora (ds 1.4.x)
 
     dnf install 389-ds-base
@@ -32,6 +28,10 @@ After you have installed packages for your system as below, see our [install gui
 If you want to use the cockpit web ui:
 
     dnf install cockpit-389-ds
+
+### OpenSUSE LEAP (ds 1.4.x)
+
+    zypper install 389-ds
 
 ### (RHEL 6, RHEL 7, CentOS 6, CentOS 7 (ds 1.3.x)
 
@@ -84,8 +84,8 @@ Tested with Java 7 on Windows 2008/2012 Server.
 
 |Platform|File|SHA1SUM|
 |--------|----|-------|
-|Windows 2008/2012 32-bit|[389-Console-1.1.15-i386.msi]({{ site.binaries_url }}/binaries/389-Console-1.1.15-i386.msi)|772e4691daea66dcdef97cb220d9ae77ab9fbe78|
-|Windows 2008/2012 64-bit|[389-Console-1.1.15-x86\_64.msi]({{ site.binaries_url }}/binaries/389-Console-1.1.15-x86_64.msi)|35ec5bad0d309c334ba8c5e8ac0ab183f004d7fd|
+|Windows 2008/2012 32-bit|[389-Console-1.1.18-i386.msi]({{ site.binaries_url }}/binaries/389-Console-1.1.18-i386.msi)|eff6e9c34300fa9bd2141944655925aaf5c0b431|
+|Windows 2008/2012 64-bit|[389-Console-1.1.18-x86\_64.msi]({{ site.binaries_url }}/binaries/389-Console-1.1.18-x86_64.msi)|39357d69fd45df28657f1f2c73e23dbc552ecd31|
 
 NOTE: You must have Java in your PATH in order for this to work. Or you can just edit the batch file to tell it where to find Java.
 

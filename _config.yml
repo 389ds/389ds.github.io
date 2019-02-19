@@ -7,7 +7,7 @@ encoding: utf-8
 # Change this if we ever need the site to reside in a sub-directory
 baseurl: ''
 
-binaries_url: https://fedorapeople.org/groups/389ds/
+binaries_url: https://fedorapeople.org/groups/389ds
 
 exclude:
   - 'bin'
