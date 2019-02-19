@@ -93,3 +93,14 @@ In the future, the dscontainer tool should proxy environment variables into the 
 startup. This way DS can be configured with docker native behaviours. Some examples are
 the directory manager password, replication password, indexing on startup.
 
+## Other integrations
+
+Many other pieces have been put into place in the last 2 years before this. Examples are:
+
+* defaults.inf to allow discovery of resources for cli tools
+* allowing to run with zero suffixes in the server (it used to crash)
+* python installer is an api framework, not a tool-only so easier to integrate
+* python tools allow decoupling from systemd/selinux, and configuring a lot in setup
+* cn=config removes most options and transparent upgrades from libglobs.c
+* probably many more that I have forgotten ...
+
