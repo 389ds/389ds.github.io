@@ -1,6 +1,5 @@
-
 ---
-title: "Contain Integration"
+title: "Container Integration"
 ---
 
 ## Overview of Container Administration
