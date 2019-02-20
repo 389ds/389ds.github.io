@@ -4,8 +4,8 @@ MAINTAINER william@blackhats.net.au
 
 EXPOSE 4000
 
-RUN zypper in -y python2-Pygments gcc gcc-c++ ruby ruby-devel libxml2-devel libxslt-devel \
-    ruby2.5-rubygem-bundler git make tar gzip && \
+RUN zypper in -y python2-Pygments gcc gcc-c++ libxml2-devel libxslt-devel \
+    ruby2.6-rubygem-bundler git make tar gzip && \
     zypper clean
 
 RUN mkdir -p /root/389wiki

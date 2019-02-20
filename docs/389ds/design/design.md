@@ -128,7 +128,6 @@ If you are adding a new design document, use the [template](design-template.html
 -   [NEW Web-based Console](389-web-ui-design.html)
 -   [LDAP REST API](ldap-rest-api.html)
 -   ["o=dmc" Design Page](dmc-design.html)
--   [Feature Roadmap](rest-roadmap.html)
 
 -------------------------------------------------
 
@@ -142,7 +141,6 @@ If you are adding a new design document, use the [template](design-template.html
 -   [CLEANALLRUV Design](cleanallruv-design.html)
 -   [Creation of Explicit Role Scoping](creation-of-an-explicit-scoping-for-the-roles-ticket-208.html)
 -   [Database Architecture](database-architecture.html)
--   [Design Themes for DS](design-themes-for-ds.html)
 -   [Disable Virtual Attribute Lookups](disable-virtual-attrs.html)
 -   [Diskspace Monitoring](disk-monitoring.html)
 -   [DNA Plugin Remote Server Settings](dna-remote-server-settings.html)
