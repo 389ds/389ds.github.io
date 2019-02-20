@@ -14,6 +14,7 @@ If you are adding a new design document, use the [template](design-template.html
 ## 389 Directory Server 1.4.1
 
 -	[Container Integration](container.html)
+-   [CLI Tool and Lib389 Design Guide](cli-guide.html)
 
 ## 389 Directory Server 1.4.0
 
