@@ -20,10 +20,6 @@ to rethink our approach to design and programming.
 
 ## User experience and human interaction
 
-Human interaction is a field rooted in psychology, with one of the most famous and notable
-advocates being Don Norman. Norman's text "The Design of Everyday Things" is one of his most
-famous works and has been well referenced and reviewed.
-
 Let's take a thought experiment about the importance of human centred design. Aviation has a long
 track record as an industry that examines all possible causes and influences on accidents.
 
@@ -38,14 +34,16 @@ as real alerts. That we must account for humans who will ignore suprious error m
 time they become important, they will continue to be ignored. This is an inconsistent behaviour.
 
 One would easily blame the pilot, but infact it's not their fault - the design of the cockpit
-gave them misleading signals, that cause a series of futher interactions that led to the incident.
+gave them misleading signals, that caused a series of futher interactions that led to the incident.
 
 An interesting example of this was the Three Mile Island nuclear plant disaster. Many causes were
-provided, and people blamed the operators - however, a psychologist named Don Norman realised that
+provided, and people blamed the operators - however, Don Norman realised that
 the disaster would always have occured as the control system *was misleading operators*, and it was
 not possible for the human to interact with it correctly.
 
-Don Norman has since written many texts and works discussing design principles and human interaction.
+Human interaction is a field rooted in psychology, and Norman's text "The Design of Everyday Things" is one of his most
+famous works and has been well referenced and reviewed.
+
 
 His principles are:
 
@@ -69,7 +67,7 @@ there is a consistency in the behaviour.
 
 ### Visibility
 
-By inspecting the interface, the controls that can be used should be obvious If a task requires a series
+By inspecting the interface, the controls that can be used should be obvious. If a task requires a series
 of steps, then they should flow in the interface so that each step visibly leads to the next.
 Controls should be easy to find and inspect.
 
@@ -87,8 +85,8 @@ of the control and what ways it can be validly operated are immediately obvious.
 
 For example, a keyboard, the only possible interaction of the control is to press the key.
 
-An anti-pattern here is doors. A door with a vertical bar handle indicates "pull" as an affordance
-- however the door may be hinged to "push". This isn't you being silly - the door afforded
+An anti-pattern here is doors. A door with a vertical bar handle indicates "pull" as an affordance.
+However the door may be hinged to "push". This isn't you being silly - the door afforded
 you the wrong action! This is where doors-with-documentation (signs that say pull/push) came to
 be.
 
@@ -106,7 +104,8 @@ to the lights. This is a good mapping, it requires no indications of function, a
 what the control relates too.
 
 Kitchen stoves are generally a good example of bad mapping - you have multiple knobs arranged
-left to right, but the burners are in a grid. Once again, the knobs are "documented" to account
+left to right, but the burners are in a grid. There is no clear mapping between the row of controls
+and the grid of burners. Once again, the knobs are "documented" to account
 for their bad design.
 
 ### Feedback
@@ -132,8 +131,8 @@ constaints, but is still wildly dangerous.
 A good example of constraints is a microwave. When the door is open, the magnetron is disabled.
 This constraint exists as a safety tool to prevent injury to a human.
 
-If you haven't now is a great time to research and study Finite State Machine. They are an excellent
-way to model constraints.
+If you haven't now is a great time to research and study Finite State Machines. They are an excellent
+way to model constraints and programs in general.
 
 
 ### Using these in computers.
@@ -149,9 +148,13 @@ bad. Some great examples to try:
 * your phones camera
 * Gnomes top-bar and interactions
 
-Which design principles do these adhere to? Which do they violate? If you forget all your knowledge
-about these tools today, could you still use them? Could you learn to re-use them? Think about
-your experience to learn these tools in the first place. What was that experience like? Were you
+So now for each of these consider:
+
+* Which design principles do these adhere to?
+* Which do they violate?
+* If you forget all your knowledge about these tools today, could you still use them?
+* Could you learn to re-use them?
+* Think about your experience to learn these tools in the first place. What was that experience like? Were you
 learning new concepts, or were you learning "the tool"?
 
 ## Lib389 Data Model
@@ -307,7 +310,17 @@ This relates to clear, and accessible naming of the commands and what they do. F
 
     dsconf <instance> backend create
 
-There is only one possible relationship and action this could be.
+There is only one possible relationship and action this could be. A more interesting example is
+to compare:
+
+    dsconf <instance> backend modify --backend=<backend name> --attr=<attrname>
+
+This is a bit more subtle, but here, because --backend is "optional" it's hard to see how it relates
+to the attribute, especially when you change it to:
+
+    dsconf <instance> backend modify --attr=<attrname> --backend=<backend name>
+
+Are we now modifying the attribute to have a backend? The relationship here is no longer clear.
 
 ### Feedback
 
@@ -326,6 +339,9 @@ offering a more focused and easier experience.
 For example, during an ldif export, there shouldn't be 10 options, and you need to provide 3 of them
 to get what you want. The *defaults should be correct* and the remaining options should be considered
 if they provide value at all.
+
+Another good example is password schemes - we should not even offer plaintext/md5/sha1 as a CLI option, even
+though the server can support it. This constraint makes the users choices limited, but safer.
 
 ### CLI Examples (good and bad)
 
@@ -376,7 +392,8 @@ This is a bad command. The confusion is in poor mapping, that a "singular" term 
 now suddenly applies to many things (Should be backendS delete). We shouldn't do looping in our
 commands because that's the shell's job, and it's hard for us to properly represent a looping
 structure in a single command line. For example here, what order are the backends deleted in? Is
-the operation atomic? Can the system be left in partial states?
+the operation atomic? Can the system be left in partial states? Just because *you* know the answer
+doesn't mean our users do - and that is important to keep in mind.
 
 * Example 6
 
