@@ -161,22 +161,22 @@ Make sure that your work is a single commit with no extraneous files. You can tu
 
 Now you will see a list of commits like:
 
-    pick 2431753 Ticket 48864 - Cleanup memory detection before we add cgroup support
-    pick 9b5a69f Ticket 49206 - Add missing make dependency
-    pick 62e033d Ticket 48864 - Add cgroup memory limit detection to 389-ds
+    pick 2431753 Issue 48864 - Cleanup memory detection before we add cgroup support
+    pick 9b5a69f Issue 49206 - Add missing make dependency
+    pick 62e033d Issue 48864 - Add cgroup memory limit detection to 389-ds
 
 These are in order of "oldest to newest".
 
 You want to squash the "newest" commits to your first commit. So you change the lines to the following:
 
-    pick 2431753 Ticket 48864 - Cleanup memory detection before we add cgroup support
-    squash 9b5a69f Ticket 49206 - Add missing make dependency
-    squash 62e033d Ticket 48864 - Add cgroup memory limit detection to 389-ds
+    pick 2431753 Issue 48864 - Cleanup memory detection before we add cgroup support
+    squash 9b5a69f Issue 49206 - Add missing make dependency
+    squash 62e033d Issue 48864 - Add cgroup memory limit detection to 389-ds
 
 Now save and exit your text editor. You'll be presented with a chance to review the commit message. We like to use the
 following format.
 
-    Ticket ##### - <SUMMARY>
+    Issue ##### - <SUMMARY>
 
     Bug Description:
 
@@ -186,7 +186,7 @@ following format.
 
     <DESC>
 
-    <The Ticket URL>
+    Fixes <The Issue URL>
 
     Author: <your name here>
 
@@ -257,7 +257,7 @@ Now, write the code just like you would a patch!
 Contribute to the Wiki
 ----------------------
 
-Simply write up your new page in MarkDown, see [How to write a wiki page](howto/howto-write-wiki-page.html), then file a [ticket](https://apgure.io/389-ds-base/new_issue), select "**wiki**" as the component, and attach the file.  Then we will post your content asap.
+Simply write up your new page in MarkDown, see [How to write a wiki page](howto/howto-write-wiki-page.html), then file a [issue](https://pagure.io/389-ds-base/new_issue), select "**wiki**" as the component, and attach the file.  Then we will post your content asap.
 
 Detailed project processes
 --------------------------
