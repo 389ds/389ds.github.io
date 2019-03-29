@@ -20,9 +20,9 @@ Fedora 28
 
 Bodhi
 
-F29 <>
+F29 <https://bodhi.fedoraproject.org/updates/FEDORA-2019-35ca2e35b3>
 
-F28 <>
+F28 <https://bodhi.fedoraproject.org/updates/FEDORA-2019-351b02e21e>
 
 
 The new packages and versions are:
@@ -67,54 +67,32 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 
 If you find a bug, or would like to see a new feature, file it in our Pagure project: <https://pagure.io/389-ds-base>
 
-- Bump version to 1.4.0.21
-- Ticket 50041 - CLI and WebUI - Add memberOf plugin functionality
-- Ticket 50079 - Fix for ticket 50059: If an object is nsds5replica, it must be cn=replica
-- Ticket 50125 - perl fix ups for tmpfiles
-- Ticket 50164 - Add test for dscreate
-- Ticket 50059 - If an object is nsds5replica, it must be cn=replica
-- Ticket 50169 - lib389 changed hardcoded systemctl path
-- Ticket 50165 - Fix dscreate issues
-- Ticket 50152 - Replace os.getenv('HOME') with os.path.expanduser
-- Fix compiler warning in snmp main()
-- Fix compiler warning in init.c
-- Ticket 49540 - FIx compiler warning in ldif2ldbm
-- Ticket 50077 - Fix compiler warnings in automember rebuild task
-- Ticket 49972 - use-after-free in case of several parallel krb authentication
-- Ticket 50161 - Fixed some descriptions in "dsconf backend --help"
-- Ticket 50153 - Increase default max logs
-- Ticket 50123 - with_tmpfiles_d is associated to systemd
-- Ticket 49984 - python installer add option to create suffix entry
-- Ticket 50077 - RFE - improve automember plugin to work with modify ops
-- Ticket 50136 - Allow resetting passwords on the CLI
-- Ticket 49994 - Adjust dsconf backend usage
-- Ticket 50138 - db2bak.pl -P LDAPS does not work when nsslapd-securePort is missing
-- Ticket 50122 - Fix incorrect path spec
-- Ticket 50145 - Add a verbose option to the backup tools
-- Ticket 50056 - dsctl db2ldif throws an exception
-- Ticket 50078 - cannot add cenotaph in read only consumer
-- Ticket 50126 - Incorrect usage of sudo in test
-- Ticket 50130 - Building RPMs on RHEL8 fails
-- Ticket 50134 - fixup-memberof.pl does not respect protocol requested
-- Ticket 50122 - Selinux test for presence
-- Ticket 50101 - Port fourwaymmr Test TET suit to python3
-- Ticket 50091 - shadowWarning is not generated if passwordWarning is lower than 86400 seconds (1 day).
-- Ticket 50128 - NS Stress fails without ipv6
-- Ticket 49618 - Set nsslapd-cachememsize to custom value
-- Ticket 50117 - after certain failed import operation, impossible to replay an import operation
-- Ticket 49999 - rpm.mk dist-bz2 should clean cockpit_dist first
-- Ticket 48064 - Fix various issues in disk monitoring test suite
-- Ticket 49938 - lib389 - Clean up CLI logging
-- Ticket 49761 - Fix CI test suite issues
-- Ticket 50056 - Fix UI bugs (part 2)
-- Ticket 48064 - CI test - disk_monitoring
-- Ticket 50099 - extend error messages
-- Ticket 50099 - In FIPS mode, the server can select an unsupported password storage scheme
-- Ticket 50041 - Add basic plugin UI/CLI wrappers
-- Ticket 50082 - Port state test suite
-- Ticket 49574 - remove index subsystem
-- Ticket 49588 - Add py3 support for tickets : part-5
-- Ticket 50095 - cleanup deprecated key.h includes
-
-
+- Bump version to 1.4.0.22
+- Ticket 50308 - Revise memory leak fix
+- Ticket 50308 - Fix memory leaks for repeat binds and replication
+- Ticket 49873 - (cont 3rd) cleanup debug log
+- Ticket 49873 - (cont 2nd) Contention on virtual attribute lookup
+- Ticket 50292 - Fix Plugin CLI and UI issues
+- Ticket 50289 - Fix various database UI issues
+- Ticket 50300 - Fix memory leak in automember plugin
+- Ticket 50265 - the warning about skew time could last forever
+- Ticket 50260 - Invalid cache flushing improvements
+- Ticket 49561 - MEP plugin, upon direct op failure, will delete twice the same managed entry
+- Ticket 50077 - Do not automatically turn automember postop modifies on
+- Ticket 50282 - OPERATIONS ERROR when trying to delete a group with automember members
+- Ticket 49873 - (cont) Contention on virtual attribute lookup
+- Ticket 50260 - backend txn plugins can corrupt entry cache
+- Ticket 50041 - Add CLI functionality for special plugins
+- Ticket 50273 - reduce default replicaton agmt timeout
+- Ticket 50234 - one level search returns not matching entry
+- Ticket 50232 - export creates not importable ldif file
+- Ticket 50215 - UI - implement Database Tab in reachJS
+- Ticket 50238 - Failed modrdn can corrupt entry cache
+- Ticket 50236 - memberOf should be more robust
+- Ticket 50151 - lib389 support cli add/replace/delete on objects
+- Ticket 50155 - password history check has no way to just check the current password
+- Ticket 49873 - Contention on virtual attribute lookup
+- Ticket 49658 - In replicated topology a single-valued attribute can diverge
+- Ticket 50177 - import task should not be deleted too rapidely after import finishes to be able to query the status
+- Ticket 50165 - Fix issues with dscreate
 
