@@ -9,18 +9,18 @@ The 389 Directory Server team is proud to announce 389-ds-base version 1.4.1.2
 
 Fedora packages are available on Fedora 30 and rawhide.
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=33820830> - Rawhide
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=33821480> - Rawhide
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=33820510> - Fedora 30
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=33821323> - Fedora 30
 
 Bodhi
 
-<https://bodhi.fedoraproject.org/updates/FEDORA-2019-caf75e133e>
+<https://bodhi.fedoraproject.org/updates/FEDORA-2019-d2572d74ef>
 
 
 The new packages and versions are:
 
--   389-ds-base-1.4.1.2-1
+-   389-ds-base-1.4.1.2-2
 
 Source tarballs are available for download at [Download 389-ds-base Source](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.1.2.tar.bz2)
 
@@ -65,7 +65,7 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 
 If you find a bug, or would like to see a new feature, file it in our Pagure project: <https://pagure.io/389-ds-base>
 
-- Bump version to 1.4.1.2-1
+- Bump version to 1.4.1.2
 - Ticket 50308 - Revise memory leak fix
 - Ticket 50308 - Fix memory leaks for repeat binds and replication
 - Ticket 40067 - Use PKG_CHECK_MODULES to detect libraries
