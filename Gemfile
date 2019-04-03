@@ -8,13 +8,10 @@ gem 'jekyll-plantuml'
 gem 'jekyll-sitemap'
 gem 'kramdown'
 gem 'rack-jekyll', :git => 'https://github.com/awood/rack-jekyll'
-gem 'nokogiri'
+gem 'nokogiri', '~>1.8.2'
 gem 'pygments.rb'
 gem 'stringex'
-gem 'rack', "~> 2.0"
+gem 'rack', "~>2.0.6"
 gem 'rack-rewrite'
 gem 'puma'
 
-group :jekyll_plugins do
-  gem 'hawkins', "~> 2.0"
-end

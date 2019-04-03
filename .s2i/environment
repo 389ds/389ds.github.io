@@ -1,1 +1,1 @@
-BUNDLE_WITHOUT=development:jekyll_plugins
+BUNDLE_WITHOUT=development

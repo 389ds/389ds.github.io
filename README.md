@@ -27,11 +27,12 @@ If you want to setup a more permanent editing environment:
    [instructions](https://rvm.io/rvm/security) and then run
 
    ```
-   $ rvm install ruby-2.3.4
+   $ rvm install ruby-2.5
    ```
 
    The documentation for RVM is extensive so don't be afraid to read it.
-1. Go into your checkout directory and run `bundle install`
+1. Go into your checkout directory and run `gem install bundler && bundle
+   install`
 1. (Optional) Install and configure Travis.  This will allow you to interact
    with the continuous integration environment from the command line.
 
@@ -55,19 +56,7 @@ If you want to setup a more permanent editing environment:
     ```
 2. If you wish to see real time previews of your updates (i.e. if you don't
    want to hit the refresh button all the time), then you can use
-   `jekyll liveserve`.  This command calls out to a plugin I wrote named
-   [Hawkins](https://github.com/awood/hawkins) that integrates the
-   [LiveReload protocol](http://feedback.livereload.com/knowledgebase/articles/86174-livereload-protocol)
-   with some hooks that Jekyll provides.
-
-   You should see a notice that Jekyll is serving on port 4000 and that
-   LiveReload is listening on port 35729.  Go to http://localhost:4000 and visit
-   a page.  When you edit that page's source Markdown file and save, Jekyll will
-   see the file modification and trigger a site build.  LiveReload will then
-   refresh your browser for you if your browser is connected.  Sometimes it is a
-   bit tricky to get the browser to make the initial WebSockets connection.  You
-   may have to refresh or shift-refresh a few times.  You're connected when you
-   see the "Browser connected" message in the Jekyll output.
+   `jekyll serve --livereload`.
 
 3. **Extreme ProTip**: Unfortunately, Jekyll is a bit simplistic in how it
    regenerates sites.  It regenerates everything instead of just what it needs
