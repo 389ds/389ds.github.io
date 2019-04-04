@@ -9,7 +9,7 @@ title: "Howto: Install 389 Directory Server"
 
 ## Install the packages
 
-Follow the steps in our [download guide](/docs/389ds/download.md) to install the correct packages for your system.
+Follow the steps in our [download guide](/docs/389ds/download.html) to install the correct packages for your system.
 
 ## Create an instance of Directory Server
 

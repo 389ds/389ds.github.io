@@ -59,7 +59,6 @@ We recommend Fedora or CentOS as build platforms: this is what our team uses, so
 |Component|GIT Repository|Clone the Repository|
 |---------|------|
 |**Directory Server** | <https://pagure.io/389-ds-base.git>| git clone https://pagure.io/389-ds-base.git<br>git clone ssh://git@pagure.io/389-ds-base.git|
-|**Svrcore** (NOTE: This is optional)|<https://pagure.io/svrcore.git>| git clone https://pagure.io/svrcore.git|
 
 #### Source tarballs
 
@@ -200,9 +199,9 @@ Push the commit to your remote forked repo
 
     git push myfork
 
-Go to https://pagure.io/389-ds-base/pull-requests
-Press “File Pull Request” button and choose your branch.
-Check that all fields have a right information and press ‘Create’ button.
+Go to [https://pagure.io/389-ds-base/pull-requests](389-ds-base Pull Requests),
+press *Open PR* button and choose your branch.
+Check that all fields have a right information and press *Create Pull Request* button.
 
 Alternatively you can create and upload a patch file (it was an old way before the pull-requests) You can run the next command to generate a patch file from the last commit:
 

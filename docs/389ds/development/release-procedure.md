@@ -175,10 +175,10 @@ Note: If you are doing a package release [Package Release Procedure](package-rel
 
 You can usually just copy/paste/edit a previous release notes, updating the date, version, new features, bugs, any notes, etc.
 
-Update the [Main Page](../index.html)
+Update the [Main Page](/)
 ---------------------------------------------
 
-Add a note about the release to the [Main Page](../index.html) - can usually just copy/paste the previous one, and edit the date/version/text.
+Add a note about the release to the [Main Page](/) - can usually just copy/paste the previous one, and edit the date/version/text.
 
 Update the [History](../FAQ/history.html) and/or [Roadmap](../FAQ/roadmap.html)
 -----------------------------------------------------------------------------
