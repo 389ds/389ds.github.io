@@ -152,11 +152,17 @@ If you are working on existing issue in pagure, take note of it's issue number a
 
 If you are working on a new feature, make a new RFE issue, and take note of it's issue number and URL.
 
-Make sure that your work is a single commit with no extraneous files. You can turn multiple commits into one through a rebase-squash process.
+While you are working on the issue, continue to commit onto HEAD your fixes during the review. Do not force-push.
+
+    git commit
+    git push myfork
+
+After the review is done, make sure that your work is a single commit with no extraneous files. You can turn multiple commits into one through a rebase-squash process.
 
     git log
     # identify the top 3 commits as the work you want to submit
     git rebase -i HEAD~3
+    git push myfork --force-with-lease
 
 Now you will see a list of commits like:
 
