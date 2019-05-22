@@ -55,7 +55,7 @@ So to complete this, the logging code follows the following path:
 Critical to note:
 
 * We are locking and unlocking a single contention point, the access log buffer.
-* If we need to flush the buffer we do it in the CURRENT thread.
+* If we need to flush the buffer we do it in the CURRENT thread - this delays the operation.
 
 What does this mean?
 
@@ -88,57 +88,101 @@ This log was using the same search repeatedly. You can see that during some RESU
 
 In summary, the current logging design in Directory Server is a bottleneck that limits our servers performance. To improve the performance of Directory Server we must change this.
 
+In a worse situation, the error log does not even have a buffer so as a result, we are generally unable to activate the error log on customer sites to get important debugging information,
+and during our own development builds, we can't enable it for fear of causing other interactions and effects.
+
 Future Logging Design
 =====================
 
-We should extract our logging from the core of the server, and how it works and design it to be able to function seperately (so it can be used in ns/sds).
+An important question, is what do we *want* from logs? To detail the information we would like:
 
-We would have a logging system that accepts various live reconfiguration options. By default, the logging system would be:
+* Statistics about operations (IE timing, entry counts, memory usage, number of connections, status akin to cn=monitor).
+* Auditing of operations performed by clients (searchs, binds, modifications etc)
+* Debugging of operations (ACL decisions, plugin states, why and what happened)
+* Reporting of errors within the server framework outside of normal operations context (IE disk full).
+* Debugging of server framework (Connections, Replication, Disk Usage)
+* Detailing of the current server operation state (business as usual, highlevel information, notification when resource limits hit thresholds like 80% max conns).
 
-* synchronous
-* write to stdout/stderr
+To contrast, what we have today, is a small amount of auditing (access, audit), and minimal server
+framework debugging (error, hindered by performance so we can't enable higher levels).
 
-Then when directed, the server could reconfigure this to use files and buffered logginging in queues. The writing thread would be self managed by the logging
-system, as to prevent ns-workers getting filled up, and to allow async events.
+To accomodate the larger amount of data we wish to handle,
+the logging system should be fully async, and should accepted structured log data, which is built
+into a whole log-message unit. These log-units are sent to a queue for processing. As the log-unit
+is a structured element, we can then extract each of the types of information out into relevant
+logs. For example, imagine a (fake, hypothetical) log-unit containing:
 
-### Message processing
+    [
+       { timestamp, operation start },
+       { timestamp, modify },
+       { timestamp, bind dn },
+       { timestamp, ACL decision is .... },
+       { timestamp, nentries = 5 },
+       { timestamp, dn=x modify cn },
+       { timestamp, dn=y modify uid },
+       { timestamp, plugin memberOf err=??? },
+    ]
 
-This is the same *regardless* of sync/async
+This would be sent as a block to the log thread, and we could then process it out such that:
 
-First, we take a clone of the config. This is the config for the "duration" of the logging event. IE we dont want someone to change log file, or something else from under us.
+    [
+       { timestamp, operation start },  -> access
+       { timestamp, modify }, -> access
+       { timestamp, bind dn }, -> access
+       { timestamp, ACL decision is .... },
+       { timestamp, nentries = 5 }, -> access
+       { timestamp, dn=x modify cn }, -> audit
+       { timestamp, dn=y modify uid }, -> audit
+       { timestamp, plugin memberOf err=??? }, -> error
+    ]
 
-We make a logevent structure that would contain:
+The entire structure itself, with all timing data would then be submitted to an operation log. This
+way the operation log would support statistics and debbugging of operations. This begins to fill
+in many of the logging gaps we have today.
 
-* timestamp
-* the message
-* the level
-* the service we came from (access,err, audit).
+At start up we would create a log thread, which is written in Rust and would handle
+all incoming log-units to be written. It would also handle log rotation and renaming.
+The log thread would also be able to write to other output types like syslog, stdout/stderr.
 
-Now we look at the config to determine if this was sync or async.
+The log configuration would be "sent" to the log thread, to allow dynamic (live) configuration
+of the logging system.
 
-### Sync processing
+At the start of an operation, we would request a new log-unit, and add it to the operation
+structure. We would then have slapi\_log\_op calls, which are Rust functions, externed for C compatability.
+These would write to the operation log-unit, along with timing and file-line data.
 
-If this was a sync message, we would take the output lock, and write to our various outputs, perform filerotation. Basically, we bypass the queue step. This step would also perform formatting of the timestamp.
+And the end of the operation, we would submit the log-unit to the log-thread where it will be
+processed and formatted for writing.
 
-### Async processing
+In the future, we could modify slapi_log_err/access/audit, to also create messages that are able
+to be sent to the log-unit structure, and they could be written as required to their respective log
+files on processing by the log-thread.
 
-We take the logevent structure (and before we do string processing etc), we push it to the logevent queue. we then send a condvar notify to the logging thread to wake up and write the message. The caller now returns.
+In initial development, If we want to disable the operation log, we would have a libglobs config item that would disable this.
+It's likely we would achieve this by having the new log-unit request return an empty/NULL
+pointer, which slapi\_log\_op calls would then NOOP on.
 
-The logging thread when it recievs the condvar message is either already awake, or it woke because of the condvar notify.
+However, once we commit further, it's more likely that disabling of the operation log would simply
+cause the data in the log-unit to just be filtered out and not written at all.
 
-When we wake, we take a clone of the config, and until we sleep again, we keep using it.
+### Why Rust
 
-We would loop over the queue, dequeuing log events, and then running the sync write on the events.
+See the main [Rust Integration](rust.html) document for more detail. The tl;dr is safe, fast
+and modern development language which will help to make features easier and safer to write.
 
-As we are about to sleep, we would release our config.
+### Possible idea
 
-If a reconfiguration happened from async->sync, because we hold the output lock, we would finish flushing all our queued messages before we gave up to the sync logger.
+If total duration > x, log
 
-### Reconfiguration
+### What happens in a crash?
 
-Because the configuration is cloned by the caller, this means we can reconfigure at anytime, and inflight messages are still logged by the old config, but new ones get the new config.
+This is a valid concern - in a crash case we'll be missing the data of the events that led to that failure. However this is already true because:
 
+* We have no ability to enable error logging.
+* The access log is buffered by default.
 
+To accomodate this situation, we can develop a GDB python extension capable of dumping the in-memory log queues from the async logging system. This should
+be developed as part of the feature.
 
 Initial Benchmarks
 ==================
@@ -181,7 +225,8 @@ In summary, the first test was able to complete 191837 operations, while the sec
 
 This is a *very* artifical test, with a small dataset, and a complete removal of the access log lock. On a larger dataset, and a system with more cores (especially numa region traversal), with higher utilisation, it may improve more. Remember, more cores == more contention on locks == higher cost to take the lock.
 
-It should be taken as a preliminary, and not considered as the final result of what this change could bring.
+It should be taken as a preliminary, and not considered as the final result of what this change could bring. Importantly, we have to consider that the individual operation performance
+will improve due to no buffer-flush stalls, and we will have the confidence to enable and get debugging information from the system without penalty.
 
 Author
 ======
