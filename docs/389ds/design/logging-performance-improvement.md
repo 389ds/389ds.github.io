@@ -7,6 +7,8 @@ title: "Logging Performance Improvement"
 
 {% include toc.md %}
 
+NOTE: This document is a WIP as of 20190522 - wbrown at suse.de for more.
+
 Overview
 ========
 
