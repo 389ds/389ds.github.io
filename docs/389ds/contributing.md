@@ -205,7 +205,7 @@ Push the commit to your remote forked repo
 
     git push myfork
 
-Go to [https://pagure.io/389-ds-base/pull-requests](389-ds-base Pull Requests),
+Go to [389-ds-base Pull Requests](https://pagure.io/389-ds-base/pull-requests),
 press *Open PR* button and choose your branch.
 Check that all fields have a right information and press *Create Pull Request* button.
 
