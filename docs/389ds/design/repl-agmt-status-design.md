@@ -27,18 +27,18 @@ To address these issues the status messages should use different identifiers for
 
 To address the parsing issue a new attribute **replicaLastUpdateStatusJSON** will contain a JSON string version of the friendly status message
 
-    {"state": "Success/Warning/Error", "repl_error": "0", "conn_error" : "0", "message": "status message"}
+    {"state": "success/warning/error", "date": "20190593934939439Z", "repl_error": "0", "conn_error" : "0", "message": "status message"}
 
 When combined the results are as follows
 
     replicaLastUpdateStatus: Success (0) Replica acquired successfully: Incremental update succeeded
-    replicaLastUpdateStatusJSON: {"state": "Success", "repl_error": "0", "conn_error" : "0", "message": "Replica acquired successfully: Incremental update succeeded"
+    replicaLastUpdateStatusJSON: {"state": "success", "date": "20190593934939439Z", "repl_error": "0", "conn_error" : "0", "message": "Replica acquired successfully: Incremental update succeeded"
 
     replicaLastUpdateStatus: Warning (1) Can't acquire busy replica, will retry
-    replicaLastUpdateStatusJSON: {"state": "Warning", "repl_error": "1", "conn_error" : "0", "message": "Can't acquire busy replica, will retry"
+    replicaLastUpdateStatusJSON: {"state": "warning", "date": "20190593934939439Z", "repl_error": "1", "conn_error" : "0", "message": "Can't acquire busy replica, will retry"
 
     replicaLastUpdateStatus: Error (19) Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)
-    replicaLastUpdateStatusJSON: {"state": "Error", "repl_error": "19", "conn_error" : "0", "message": "Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)"
+    replicaLastUpdateStatusJSON: {"state": "error", "date": "20190593934939439Z", "repl_error": "19", "conn_error" : "0", "message": "Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)"
 
 
 We also need to do the same thing with the *Total Init Status* messages:
