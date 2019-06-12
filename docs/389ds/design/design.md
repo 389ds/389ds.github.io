@@ -11,12 +11,13 @@ If you are adding a new design document, use the [template](design-template.html
 
 {% include toc.md %}
 
-## 389 Directory Server 1.4.1
+## 389 Directory Server 1.4.1 (RHEL 8.1)
 
 -   [Container Integration](docker.html)
+-   [Replication Agreement Status Message Improvements](repl-agmt-status-design.html))
 -   [CLI Tool and Lib389 Design Guide](cli-guide.html)
 
-## 389 Directory Server 1.4.0
+## 389 Directory Server 1.4.0 (RHEL 8)
 
 -   [Automembership Plugin Postop Modify](automember-postop-modify-design.html)
 -   [New Password Poliy Syntax Checks](pwpolicy-syntax-design.html)
