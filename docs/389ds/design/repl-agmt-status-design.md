@@ -19,20 +19,20 @@ There are a few issues with this.  The first one is that we use the text "Error"
 Design
 ------
 
-To address these issues the status messages should use different identifiers for the state: "Error", "Warning", and "Info".  "Info" messages imply that the state is *good*, "warning" messages imply that replication is currently not in progress, but it will retry to acquire the replica and continue without issue.  "Error" messages implies that replication is broken/halted, and needs some type of intervention (reinit, etc)
+To address these issues the status messages should use different identifiers for the state: "Error", "Warning", and "Success".  "Success" messages imply that the state is *good*, "warning" messages imply that replication is currently not in progress, but it will retry to acquire the replica and continue without issue.  "Error" messages implies that replication is broken/halted, and needs some type of intervention (reinit, etc)
 
-    Info (0) Replica acquired successfully: Incremental update succeeded
+    Success (0) Replica acquired successfully: Incremental update succeeded
     Warning (1) Can't acquire busy replica, will retry
     Error (19) Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)
 
 To address the parsing issue a new attribute **replicaLastUpdateStatusJSON** will contain a JSON string version of the friendly status message
 
-    {"state": "Good/Warning/Error", "repl_error": "0", "conn_error" : "0", "message": "status message"}
+    {"state": "Success/Warning/Error", "repl_error": "0", "conn_error" : "0", "message": "status message"}
 
 When combined the results are as follows
 
-    replicaLastUpdateStatus: Info (0) Replica acquired successfully: Incremental update succeeded
-    replicaLastUpdateStatusJSON: {"state": "Good", "repl_error": "0", "conn_error" : "0", "message": "Replica acquired successfully: Incremental update succeeded"
+    replicaLastUpdateStatus: Success (0) Replica acquired successfully: Incremental update succeeded
+    replicaLastUpdateStatusJSON: {"state": "Success", "repl_error": "0", "conn_error" : "0", "message": "Replica acquired successfully: Incremental update succeeded"
 
     replicaLastUpdateStatus: Warning (1) Can't acquire busy replica, will retry
     replicaLastUpdateStatusJSON: {"state": "Warning", "repl_error": "1", "conn_error" : "0", "message": "Can't acquire busy replica, will retry"
@@ -55,7 +55,7 @@ Impact FreeIPA status parsing.
 Origin
 -------------
 
-https://pagure.io/389-ds-base/issue/49602
+<https://pagure.io/389-ds-base/issue/49602>
 
 Author
 ------
