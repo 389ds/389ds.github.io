@@ -86,13 +86,57 @@ like sigterm etc to the running process for shutdowns and waiting until the proc
 
 In environments like kubernetes, users and groups are dynamically assigned to the storage and running
 user, so the dscontainer tool also handles this correctly by setting the running user/group in
-the setup process.
+the setup process. This requires testing to be sure it works.
 
 In the future, the dscontainer tool should proxy environment variables into the dse.ldif before
 startup. This way DS can be configured with docker native behaviours. Some examples are
 the directory manager password, replication password, indexing on startup.
 
-## Other integrations
+## Future integration goals
+
+* Support kubernetes autoscaling for replicas (should be read-only replicas here)
+* Support "replication" configuration on startup
+* Support adding a suffix on startup
+* Pass through environment variables for root user password
+* Add a proper way to determine container health
+* Add a method to show the container is ready to process requests (similar to a status page in HTTP)
+* Potentially change dsctl to block all local actions if container flag found
+* Start container with -D instead of assuming hard-set /etc path
+* Configure the TLS path different in container
+
+## Frequent questions about design choices
+
+### Can I change the instance name?
+
+No - the instance name is to allow multiple LDAP servers on a single host. Because docker isolates
+all our instances, the isolation is provided by docker. So changing the instance name "does nothing"
+and in fact would make building the image potentially more complex. As a result, we leave it as
+localhost and be done.
+
+### How can I add name the suffix?
+
+Well, naming the suffix would mean we *have* one in a container - by default because we don't know
+what you want to do, we don't supply a suffix in the container, you need to add one with dsconf.
+However, in the future we could automate a suffix creation as part of environment configuration
+to allow automated setup of replication and suffix as part of the containers.
+
+### How can I administer the instance?
+
+You should use dsconf and dsidm via the remote ldap port. If that fails, you may need to use
+docker exec -i -t [name of container instance] dsconf .... instead.
+
+### Can I use cockpit with the container?
+
+This is not possible due to how cockpit works - cockpit expects a systemd instance and a running
+server with command line. We don't ship an init system so we have no way to launch cockpit inside
+of the container with the ldap server. As a result, we recommend you use the cli tools.
+
+### How can I tune my directory for ...
+
+You don't have to! 389 fully supports auto-tuning inside of docker, even if you provide docker
+memory and cpu limits, we respect and scale to them.
+
+## Other integrations that made this possible
 
 Many other pieces have been put into place in the last 2 years before this. Examples are:
 
