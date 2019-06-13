@@ -19,32 +19,49 @@ There are a few issues with this.  The first one is that we use the text "Error"
 Design
 ------
 
-To address these issues the status messages should use different identifiers for the state: "Error", "Warning", and "Success".  "Success" messages imply that the state is *good*, "warning" messages imply that replication is currently not in progress, but it will retry to acquire the replica and continue without issue.  "Error" messages implies that replication is broken/halted, and needs some type of intervention (reinit, etc)
+To address these issues the status messages should use different identifiers for the state: "Bad", "Warning", and "Good".  "Good" messages imply that the state is *good* and working properly, "warning" messages imply that replication is currently not in progress, but it will retry to acquire the replica and continue without any needed intervention.  "Bad" messages implies that replication is broken/halted, and needs some type of intervention (reinit, etc)
 
-    Success (0) Replica acquired successfully: Incremental update succeeded
+    Good (0) Replica acquired successfully: Incremental update succeeded
     Warning (1) Can't acquire busy replica, will retry
-    Error (19) Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)
+    Bad (19) Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)
 
-To address the parsing issue a new attribute **replicaLastUpdateStatusJSON** will contain a JSON string version of the friendly status message
+To address the parsing issue a new attribute **replicaLastUpdateStatusJSON** will contain a JSON string version of the friendly status message.  It will contain the replication error (and error description text), the ldap error (and description text), the date in ISO 8601 format, and the complete status message:
 
-    {"state": "success/warning/error", "date": "20190593934939439Z", "repl_error": "0", "conn_error" : "0", "message": "status message"}
+    {
+        "state": "good/warning/bad",
+        "date": "2019-06-13T15:40:23Z",
+        "repl_rc": "0",
+        "repl_rc_text": "replica acquired",
+        "ldap_rc" : "0",
+        "ldap_rc_text": "success",
+        "message": "status message"
+    }
 
 When combined the results are as follows
 
     replicaLastUpdateStatus: Success (0) Replica acquired successfully: Incremental update succeeded
-    replicaLastUpdateStatusJSON: {"state": "success", "date": "20190593934939439Z", "repl_error": "0", "conn_error" : "0", "message": "Replica acquired successfully: Incremental update succeeded"
+    replicaLastUpdateStatusJSON: {"state": "good", "date": "2019-06-13T15:40:23Z", "repl_rc": "0", "repl_rc_text": "replica acquired", "ldap_rc" : "0", "ldap_rc_text": "success", "message": "Replica acquired successfully: Incremental update succeeded"
 
     replicaLastUpdateStatus: Warning (1) Can't acquire busy replica, will retry
-    replicaLastUpdateStatusJSON: {"state": "warning", "date": "20190593934939439Z", "repl_error": "1", "conn_error" : "0", "message": "Can't acquire busy replica, will retry"
+    replicaLastUpdateStatusJSON: {"state": "warning", "date": "2019-06-13T15:40:23Z", "repl_rc": "1", "repl_rc_text": "replica busy", "ldap_rc" : "0", "ldap_rc_text": "success", "message": "Can't acquire busy replica, will retry"
 
     replicaLastUpdateStatus: Error (19) Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)
-    replicaLastUpdateStatusJSON: {"state": "error", "date": "20190593934939439Z", "repl_error": "19", "conn_error" : "0", "message": "Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)"
+    replicaLastUpdateStatusJSON: {"state": "bad", "date": "2019-06-13T15:40:23Z", "repl_rc": "19", "repl_rc_text": "RUV error", "ldap_rc" : "0", "ldap_rc_text": "success", "message": "Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)"
 
 
-We also need to do the same thing with the *Total Init Status* messages:
+For "Total Init" status there is a new attribute **replicaLastInitStatusJSON** that will contain a JSON string version of the friendly status message.  It will contain the replication return code (and description text), the connection result code (and description text), the ldap return code (and description text), the date in ISO 8601 format, and the complete status message:
 
-    replicaLastInitStatus
-    replicaLastInitStatusJSON
+    {
+        "state": "good/warning/bad",
+        "date": "2019-06-13T15:40:23Z",
+        "repl_rc": "0",
+        "repl_rc_text": "replica acquired",
+        "conn_rc": "0",
+        "conn_rc_text": "operation success",
+        "ldap_rc" : "0",
+        "ldap_rc_text" : "success",
+        "message": "status message"
+    }
 
 Dependencies
 ------------
