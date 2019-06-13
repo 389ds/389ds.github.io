@@ -70,7 +70,7 @@ you would all know, to defend this:
         x->field; // all good!
     }
 
-It's important to draw attention to this example - the onus is on YOU the programmer to make
+It's important to draw attention to this example - the responsibility is on YOU the programmer to make
 this check correct - this is because C has two concepts together. The value AND the possibility of
 no value are the same thing. Rust shifts this check to the compiler by representing the possibility
 of abscence as a native type.
