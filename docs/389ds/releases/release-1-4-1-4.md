@@ -50,7 +50,7 @@ See [Source](../development/source.html) for information about source tarballs a
 
 The new UI is broken up into a series of configuration tabs.  Here is a table showing the current progress
 
-|Configuration Tab|Finished|Written in ReachJS |
+|Configuration Tab|Finished|Written in ReactJS |
 |-----------------|--------|-------------------|
 |Server Tab|Yes|No|
 |Security Tab|No|No|
