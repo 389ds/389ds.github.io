@@ -1,13 +1,13 @@
 ---
-title: "Releases/1.4.0.23"
+title: "Releases/1.4.0.24"
 ---
 
-389 Directory Server 1.4.0.23
+389 Directory Server 1.4.0.24
 -----------------------------
 
-The 389 Directory Server team is proud to announce 389-ds-base version 1.4.0.23
+The 389 Directory Server team is proud to announce 389-ds-base version 1.4.0.24
 
-Fedora packages are available on Fedora 28, and 29
+Fedora packages are available on Fedora 29
 
 
 Fedora 29
