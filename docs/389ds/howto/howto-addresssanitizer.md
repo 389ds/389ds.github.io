@@ -2,6 +2,8 @@
 title: Address Sanitization
 ---
 
+{% include toc.md %}
+
 # Introduction
 --------------
 
@@ -20,8 +22,8 @@ Install the required libraries
 
 LLVM is used to print the trace in a more readable format. It's not used for compilation.
 
-# Configuration
----------------
+# Configuration DS
+------------------
 
 You should configure ds with the following:
 
@@ -41,8 +43,23 @@ If you wish to build and test with rpms:
 
 This will work correctly with both start-dirsrv and systemctl start dirsrv@.service
 
-# Testing
----------
+# Configuration NSS NSPR
+------------------------
+
+install gyp and ninja-build
+
+get the sources
+
+     hg clone https://hg.mozilla.org/projects/nspr
+     hg clone https://hg.mozilla.org/projects/nss
+
+build it 
+
+     nss/build.sh -c --asan --disable-tests
+
+
+# Testing DS
+------------
 
 You can now test ns-slapd. You may find that setup-ds.pl hangs. You should try running with --debug in this case.
 
@@ -117,6 +134,22 @@ The contents of such an error will be as such:
     ==30761== ABORTING
 
 From here you can then determine the fault in ns-slapd. This fault has already been isolated in [ticket 48351](https://pagure.io/389-ds-base/issue/48351)
+
+# Testing NSS & NSPR
+--------------------
+
+check for the libs they are in **dist/Debug/lib**
+
+preload asan and nss/nspr libs
+
+     LD_PRELOAD="/usr/lib64/libasan.so.5"
+     for so in `ls <comp build dir>/nss/dist/Debug/lib/*.so
+     do
+     LD_PRELOAD=$LD_PRELOAD" "$so
+     done
+     export LD_PRELOAD
+
+Then run the command (ldif2db, ns-slapd,..)
 
 # Extra
 -------
