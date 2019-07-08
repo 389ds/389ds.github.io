@@ -69,35 +69,23 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 
 If you find a bug, or would like to see a new feature, file it in our Pagure project: <https://pagure.io/389-ds-base>
 
-- Bump version to 1.4.1.4
-- Issue 49361 - Use IPv6 friendly network functions
-- Issue 48851 - Investigate and port TET matching rules filter tests(bug772777)
-- Issue 50446 - NameError: name 'ds_is_older' is not defined
-- Issue 49602 - Revise replication status messages
-- Issue 50439 - Update docker integration to work out of source directory
-- Issue 50037 - revert path changes as it breaks prefix/rpm builds
-- Issue 50431 - Fix regression from coverity fix
-- Issue 50370 - CleanAllRUV task crashing during server shutdown
-- Issue 48851 - investigate and port TET matching rules filter tests(match)
-- Issue 50417 - Fix missing quote in some legacy tools
-- Issue 50431 - Fix covscan warnings
-- Revert "Issue 49960 - Core schema contains strings instead of numer oids"
-- Issue 50426 - nsSSL3Ciphers is limited to 1024 characters
-- Issue 50052 - Fix rpm.mk according to audit-ci change
-- Issue 50365 - PIDFile= references path below legacy directory /var/run/
-- Issue 50428 - Log the actual base DN when the search fails with "invalid attribute request"
-- Issue 50329 - (2nd) Possible Security Issue: DOS due to ioblocktimeout not applying to TLS
-- Issue 50417 - Revise legacy tool scripts to work with new systemd changes
-- Issue 48851 - Add more search filters to vfilter_simple test suite
+- Bump version to 1.4.1.5
+- Issue 50431 - Fix regression from coverity fix (crash in memberOf plugin)
+- Issue 49239 - Add a new CI test case
+- Issue 49997 - Add a new CI test case
+- Issue 50177 - Add a new CI test case, also added fixes in lib389
 - Issue 49761 - Fix CI test suite issues
-- Issue 49875 - Move SystemD service config to a drop-in file
-- Issue 50413 - ds-replcheck - Always display the Result Summary
-- Issue 50052 - Add package-lock.json and use "npm ci"
-- Issue 48851 - investigate and port TET matching rules filter tests(vfilter simple)
-- Issue 50355 - NSS can change the requested SSL min and max versions
-- Issue 48851 - investigate and port TET matching rules filter tests(vfilter_ld)
-- Issue 50390 - Add Managed Entries Plug-in Config Entry schema
-- Issue 49730 - Remove unused Mozilla ldapsdk variables
+- Issue 50474 - Unify result codes for add and modify of repl5 config
+- Issue 50472 - memory leak with encryption
+- Issue 50462 - Fix Root DN access control plugin CI tests
+- Issue 50462 - Fix CI tests
+- Issue 50217 - Implement dsconf security section
+- Issue 48851 - Add more test cases to the match test suite.
+- Issue 50378 - ACI's with IPv4 and IPv6 bind rules do not work for IPv6 clients
+- Issue 50439 - fix waitpid issue when pid does not exist
+- Issue 50454 - Fix Cockpit UI branding
+- Issue 48851 - investigate and port TET matching rules filter tests(index)
+- Issue 49232 - Truncate the message when buffer capacity is exceeded
 
 
 
