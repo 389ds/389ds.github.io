@@ -56,7 +56,7 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   **TAG=389-ds-base-1.3.9.1** ; **git tag \$TAG** ; **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$TAG.tar.bz2 ; git log -\\\-oneline 389-ds-base-1.3.9.0.. \> /tmp/cl-info**
 
--   **TAG=389-ds-base-1.4.0.21 ; git tag \$TAG ; export TAG ; make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-1.4.0.20.. \> /tmp/cl-info**
+-   **TAG=389-ds-base-1.4.1.6 ; git tag \$TAG ; export TAG ; make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-1.4.1.5.. \> /tmp/cl-info**
 
 -   Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and trac bugs. Leave the hash for coverity/misc updates.
 
@@ -80,13 +80,13 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   Add the header line:
 
-       * Tue Jul 17 2018 Mark Reynolds \<mreynolds@redhat.com\> - 1.4.0.12-1
+       * Tue Jul 17 2018 Mark Reynolds \<mreynolds@redhat.com\> - 1.4.1.6-1
 
 -   Then copy in the contents of **cl-info** underneath the header
 
 -   **fedpkg verrel** - Verify changes to spec file is producing the correct version.
 
--   **fedpkg new-sources /home/source/ds389/389-ds-base-1.4.0.12.tar.bz2**  - tar ball created by git archive cmd from above
+-   **fedpkg new-sources /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2 /home/source/ds389/jemalloc-5.1.0.tar.bz2**  - tar ball created by git archive cmd from above, and always include **jemalloc**
 
 -   **git status** - Should show the "sources" and ".gitignore" are staged
 
@@ -103,10 +103,10 @@ git push access - you will need to be a member of the git389 group in FAS
 -   If you need to update sub branches of master
     -    **fedpkg switch-branch \<branch\>**
     -    **git cherry-pick -x master**
-    -    You may to run *new-sources* if the sources file was not updated:  **fedpkg new-sources /home/source/ds389/389-ds-base-1.4.0.12.tar.bz2**  Followed by a "git commit -a" after the scratch build completes.
+    -    You may to run *new-sources* if the sources file was not updated:  **fedpkg new-sources /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2**  Followed by a "git commit -a" after the scratch build completes.
     -    **fedpkg verrel**
     -    **fedpkg srpm**
-    -    **fedpkg scratch-build -\\\-srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm**
+    -    **fedpkg scratch-build -\\\-srpm=389-ds-base-1.4.1.6-1.xxxxx.src.rpm**
     -    **git push**
 
 
@@ -150,19 +150,19 @@ Update The Wiki (internal use only)
 
 -   Create a release note under the following directory (follow the previous release note as a template) 
 
-        /SOURCE/website/releases/
+        /SOURCE/docs/389ds/releases/
 
 -   Update the main page under the **News** Section.  Keep the number of releases under 10 - we do not want to crowd the homepage.
 
-        /SOURCE/website/index.md
+        /SOURCE/index.md
 
 -   Update the "release notes" page with the new release note
 
-        /SOURCE/website/docs/389ds/releases/release-notes.md
+        /SOURCE/docs/389ds/releases/release-notes.md
 
 -   Update the sources page
 
-        /SOURCE/website/docs/389ds/development/source.md
+        /SOURCE/docs/389ds/development/source.md
 
 -   Push your updates
 
