@@ -63,9 +63,10 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 
 If you find a bug, or would like to see a new feature, file it in our Pagure project: <https://pagure.io/389-ds-base>
 
-- Bump version to 1.4.0.26
-- Issue 50499 - Fix audit issues and remove jquery from the whitelist
-- Issue 50355 - SSL version min and max not correctly applied
-- Issue 50325 - Add Security tab to UI
-- Issue 50177 - Add a new CI test case, also added fixes in lib389
+- Bump version to 1.4.0.27
+- Issue 50208 - make instances mark off based on dse.ldif not sysconfig
+- Issue 50530 - Directory Server not RFC 4511 compliant with requested attr "1.1"
+- Issue 50529 - LDAP server returning PWP controls in different sequence
+- Issue 50508 - UI - fix local password policy form
+
 
