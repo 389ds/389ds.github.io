@@ -14,18 +14,25 @@ guide.
 For this quickstart you'll need two virtual machines, and they should be able to contact each other
 by their hostnames. I'll be using "ldap.example.com" and "client.example.com".
 
+This document is for Directory Server 1.4.x - for 1.3.x (IE CentOS 7) you should follow the corresponding [Red Hat documentation](https://access.redhat.com/documentation/en-us/red_hat_directory_server/10/html/installation_guide/index) instead of this page.
+
 # Installing the software
 -------------------------
 
-You'll need to install a copy of the server. On OpenSUSE this is:
+You'll need to install a copy of the server. On OpenSUSE leap 15 or tumbleweed this is:
 
     zypper install 389-ds
 
-On fedora:
+On fedora or CentOS 8:
 
     dnf install 389-ds-base
 
-If your platform isn't listed, check our download page for more.
+If your platform isn't listed, check our download page for more details on how to install - on contact us!
+
+Finally check you have the correct package version installed - it should be in the 1.4.x series.
+
+    # rpm -qa | grep 389-ds
+    389-ds-1.4.x.x.x86_64
 
 reference: [downloads](/docs/389ds/download.html)
 
