@@ -19,16 +19,12 @@ There are a few issues with this.  The first one is that we use the text "Error"
 Design
 ------
 
-To address these issues the status messages should use different identifiers for the state: "Bad", "Warning", and "Good".  "Good" messages imply that the state is *good* and working properly, "warning" messages imply that replication is currently not in progress, but it will retry to acquire the replica and continue without any needed intervention.  "Bad" messages implies that replication is broken/halted, and needs some type of intervention (reinit, etc)
+To address these issues the status messages should use different identifiers for the state: "Red", "Amber", and "Green".  "*Green*" messages imply that the state is *good* and working properly, "*Amber*" messages imply that replication is currently not in progress, but it will retry to acquire the replica and continue without any needed intervention.  "*Red*" messages implies that replication is broken/halted, and needs some type of intervention (reinit, etc)
 
-    Good (0) Replica acquired successfully: Incremental update succeeded
-    Warning (1) Can't acquire busy replica, will retry
-    Bad (19) Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)
-
-To address the parsing issue a new attribute **replicaLastUpdateStatusJSON** will contain a JSON string version of the friendly status message.  It will contain the replication error (and error description text), the ldap error (and description text), the date in ISO 8601 format, and the complete status message:
+Due to backwards compatibilty isusue, a new attribute was created that will store the new revised replication status called  **replicaLastUpdateStatusJSON**.  It will contain a JSON string version of the status message.  It will contain the replication error (and error description text), the ldap error (and description text), the date in ISO 8601 format, and the complete status message:
 
     {
-        "state": "good/warning/bad",
+        "state": "green/amber/red",
         "date": "2019-06-13T15:40:23Z",
         "repl_rc": "0",
         "repl_rc_text": "replica acquired",
@@ -39,20 +35,20 @@ To address the parsing issue a new attribute **replicaLastUpdateStatusJSON** wil
 
 When combined the results are as follows
 
-    replicaLastUpdateStatus: Success (0) Replica acquired successfully: Incremental update succeeded
-    replicaLastUpdateStatusJSON: {"state": "good", "date": "2019-06-13T15:40:23Z", "repl_rc": "0", "repl_rc_text": "replica acquired", "ldap_rc" : "0", "ldap_rc_text": "success", "message": "Replica acquired successfully: Incremental update succeeded"
+    replicaLastUpdateStatus: Error (0) Replica acquired successfully: Incremental update succeeded
+    replicaLastUpdateStatusJSON: {"state": "green", "date": "2019-06-13T15:40:23Z", "repl_rc": "0", "repl_rc_text": "replica acquired", "ldap_rc" : "0", "ldap_rc_text": "success", "message": "Replica acquired successfully: Incremental update succeeded"
 
-    replicaLastUpdateStatus: Warning (1) Can't acquire busy replica, will retry
-    replicaLastUpdateStatusJSON: {"state": "warning", "date": "2019-06-13T15:40:23Z", "repl_rc": "1", "repl_rc_text": "replica busy", "ldap_rc" : "0", "ldap_rc_text": "success", "message": "Can't acquire busy replica, will retry"
+    replicaLastUpdateStatus: Error (1) Can't acquire busy replica, will retry
+    replicaLastUpdateStatusJSON: {"state": "amber", "date": "2019-06-13T15:40:23Z", "repl_rc": "1", "repl_rc_text": "replica busy", "ldap_rc" : "0", "ldap_rc_text": "success", "message": "Can't acquire busy replica, will retry"
 
     replicaLastUpdateStatus: Error (19) Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)
-    replicaLastUpdateStatusJSON: {"state": "bad", "date": "2019-06-13T15:40:23Z", "repl_rc": "19", "repl_rc_text": "RUV error", "ldap_rc" : "0", "ldap_rc_text": "success", "message": "Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)"
+    replicaLastUpdateStatusJSON: {"state": "red", "date": "2019-06-13T15:40:23Z", "repl_rc": "19", "repl_rc_text": "RUV error", "ldap_rc" : "0", "ldap_rc_text": "success", "message": "Replication error acquiring replica: Replica has different database generation ID, remote replica may need to be initialized (RUV error)"
 
 
 For "Total Init" status there is a new attribute **replicaLastInitStatusJSON** that will contain a JSON string version of the friendly status message.  It will contain the replication return code (and description text), the connection result code (and description text), the ldap return code (and description text), the date in ISO 8601 format, and the complete status message:
 
     {
-        "state": "good/warning/bad",
+        "state": "green/amber/red",
         "date": "2019-06-13T15:40:23Z",
         "repl_rc": "0",
         "repl_rc_text": "replica acquired",
@@ -66,7 +62,7 @@ For "Total Init" status there is a new attribute **replicaLastInitStatusJSON** t
 Dependencies
 ------------
 
-Impact FreeIPA status parsing.
+Impacts FreeIPA status parsing.
 
 
 Origin
