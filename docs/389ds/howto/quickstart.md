@@ -187,7 +187,7 @@ This can occur because the openldap client tools don't trust our certificate (th
 
     LDAPTLS_CACERT=/etc/dirsrv/slapd-localhost/ca.crt ldapwhoami -H ldaps://localhost -D uid=alice,ou=people,dc=example,dc=com -W -x
 
-To make this permanent, put TLS_CACERT=... into /etc/openldap/ldap.conf.
+To make this permanent, put 'TLS_CACERT /etc/dirsrv/slapd-localhost/ca.crt' into /etc/openldap/ldap.conf.
 
 We can also make some simple changes to our users if we want with the "modify" command. Add will
 append an attribute into the current set, replace will remove the existing attributes values, and
@@ -239,7 +239,7 @@ So it's currently disabled! Let's turn it on, and restart our server to enable i
 
 Now, lets configure the plugin to be useful. We want memberof to search for all entries,
 
-    # dsconf localhost plugin memberof scope add dc=example,dc=com
+    # dsconf localhost plugin memberof scope --scope dc=example,dc=com
     Enter password for cn=Directory Manager on ldaps://localhost:
     successfully added memberOfEntryScope value "dc=example,dc=com"
 
@@ -251,7 +251,7 @@ expected - so this is a once off task:
 
 Finally, we can run a "fixup" which will regenerate memberof for everyone in the directory.
 
-    # dsconf localhost plugin memberof fixup -b dc=example,dc=com
+    # dsconf localhost plugin memberof fixup dc=example,dc=com
     Enter password for cn=Directory Manager on ldaps://localhost:
     Attempting to add task entry... This will fail if MemberOf plug-in is not enabled.
     Successfully added task entry cn=memberOf_fixup_2019-01-14T13:05:04.011865,cn=memberOf task,cn=tasks,cn=config
