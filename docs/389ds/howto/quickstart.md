@@ -239,7 +239,7 @@ So it's currently disabled! Let's turn it on, and restart our server to enable i
 
 Now, lets configure the plugin to be useful. We want memberof to search for all entries,
 
-    # dsconf localhost plugin memberof scope --scope dc=example,dc=com
+    # dsconf localhost plugin memberof set --scope dc=example,dc=com
     Enter password for cn=Directory Manager on ldaps://localhost:
     successfully added memberOfEntryScope value "dc=example,dc=com"
 
