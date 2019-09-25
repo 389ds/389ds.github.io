@@ -36,6 +36,7 @@ We maintain a number of how to guides for 389 Directory Server
 -   [How to Chain on Update](howto/howto-chainonupdate.html) - Allow read-only replicas to "follow" referrals on behalf of clients, and enabled global password policy.
 -   [How to MMR](howto/howto-multimasterreplication.html) - How to configure multi-master replication without using the administration console.
 -   [How to Monitor Replication](howto/howto-replicationmonitoring.html) - How to check replication without using administration console or website
+-   [How to Monitor Replication Using CLI](howto/howto-monitor-replication.html) - How to check replication using dsconf CLI
 -   [How to SystemD](howto/howto-systemd.html) - How to use 389 with systemd (systemd is the SysV Init replacement in Fedora 15 and later)
 -   [How to COS](howto/howto-classofservice.html) - Class of Service (CoS) examples
 -   [How to Use Access Control](howto/howto-accesscontrol.html) - How to use access control
@@ -67,6 +68,7 @@ We maintain a number of how to guides for 389 Directory Server
 -   [How to Change UID](howto/howto-changeuid.html)
 -   [How to Upgrade DN Format](howto/howto-upgrade-to-new-dn-format.html)
 -   [How to Use SSF Restrictions](howto/howto-use-ssf-restrictions.html)
+-   [How to Inactivate Accounts using nsAccountLock](howto/howto-account-inactivation.html)
 
 #### Operating System
 
