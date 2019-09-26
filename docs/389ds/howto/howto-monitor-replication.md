@@ -2,13 +2,14 @@
 title: "Howto: Monitor Replication"
 ---
 
+
 # How to Monitor Replication Using CLI
 ----------------------
 
 ### Basic Usage
 
-CLI tool dsconf has the option for monitoring replication in the topology of the specified instance. It walks though the initial instance agreements and generates the in-progress status of replication.
-The main command for the creating a report is:
+CLI tool dsconf has the option for monitoring replication in the topology of the specified instance. It walks through the initial instance agreements and generates the in-progress status of replication.
+The main command for creating a report is:
 
     dsconf ldap://server1.example.com:38901 -D "cn=Directory Manager" -w password replication monitor
 
@@ -25,14 +26,17 @@ The main command for the creating a report is:
             instead of host:port will be displayed in the output.
             The format: alias=host:port
 
+
 ### Dealing With Credentials
 
 While walking through the topology, we can encounter other instances and the tool needs the binding credentials.
-The replication monitor will look into diferent sources while trying to get them. It is done in this order:
 
-1. First we look at the CLI arguments (--conections and --aliases). Use this if specified.
+The replication monitor will look into different sources while trying to get them. It is done in this order:
+
+1. First, we look at the CLI arguments (--connections and --aliases). We prioritize this if specified.
 2. We check `~/.dsrc` file.
 3. And only if moth previous sources didn't give the result - we ask the user for the input interactively.
+
 
 ### Config file format
 
@@ -51,9 +55,10 @@ For the `[repl-monitor-connections]` section, only the values matter. You can na
 
 The * password will request the caller to type it manually.
 
-The password file should have one line with a clear text password and it should be accesible by the `dsconf` caller.
+The password file should have one line with a clear-text password and it should be accessible by the `dsconf` caller.
 
 The aliases are used in the report and they name the specified instances.
+
 
 ### Report Example
 
