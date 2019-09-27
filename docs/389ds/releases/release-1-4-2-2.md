@@ -9,12 +9,12 @@ The 389 Directory Server team is proud to announce 389-ds-base version 1.4.2.2
 
 Fedora packages are available on Fedora (rawhide).
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=37878624> - Rawhide
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=37898643> - Rawhide
 
 
 The new packages and versions are:
 
-- 389-ds-base-1.4.2.2-2
+- 389-ds-base-1.4.2.2-3
 
 Source tarballs are available for download at [Download 389-ds-base Source](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.2.2.tar.bz2)
 

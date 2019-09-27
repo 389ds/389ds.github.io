@@ -9,15 +9,15 @@ The 389 Directory Server team is proud to announce 389-ds-base version 1.4.1.8
 
 Fedora packages are available on Fedora 30 and rawhide.
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=37878631> - Fedora 31
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=37896488> - Fedora 31
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=37878647> - Fedora 30
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=37898073> - Fedora 30
 
 Bodhi
 
-<https://bodhi.fedoraproject.org/updates/FEDORA-2019-e28480dc6e> - Fedora 31
+<https://bodhi.fedoraproject.org/updates/FEDORA-2019-27733d7112> - Fedora 31
 
-<https://bodhi.fedoraproject.org/updates/FEDORA-2019-d1edc3a2b8> - Fedora 30
+<https://bodhi.fedoraproject.org/updates/FEDORA-2019-511a7e401d> - Fedora 30
 
 The new packages and versions are:
 
