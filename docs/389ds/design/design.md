@@ -199,6 +199,7 @@ If you are adding a new design document, use the [template](design-template.html
 -----------------------------------------------
 
 ## Design Discussions
+-   [Token Auth](token-auth.html)
 -   [Entry State Resolution](entry-state-resolution.html)
 -   [High Contention with Entry Cache](high-contention-on-entry-cache-lock.html)
 -   [Separate Suffix for Tombstones/Conflicts](separate-conflict-and-tombstone-entry.html)
