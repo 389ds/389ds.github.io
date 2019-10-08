@@ -27,7 +27,7 @@ We added the following new syntax checks:
 
 - **Monotonic Sequence Checks** - You can define the maximum number of monotonic sequence characters that are allowed to be in a password. A monotonic sequence is a series of characters (numbers or letters) that are in order (forwards or backwards): **abed, dcba, 1234, 4321**
 
-- **monotonic Sequence Set Checks** - You can define the maximum number monotonic sequence characters that are allowed to appear more than once: abc9284abc
+- **Monotonic Sequence Set Checks** - You can define the maximum number monotonic sequence characters that are allowed to appear more than once: abc9284abc
 
 - **Consecutive Character Classes** - Maximum number of consecutive characters from the same class of characters (digits, alphas, specials, etc). If this is set to 4 then the following password would be rejected because it has 5 consecutive numbers (the digits class): **ajd83955_#**
 
