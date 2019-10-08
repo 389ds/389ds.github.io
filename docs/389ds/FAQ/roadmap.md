@@ -25,7 +25,7 @@ We added the following new syntax checks:
 
 - **Dictionary Checks** - The server uses the CrackLib dictionary for this check
 
-- **Monotonic Sequence Checks** - You can define the maximum number of monotonic sequence characters that are allowed to be in a password. A monotonic sequence is a series of characters (numbers or letters) that are in order (forwards or backwards): **abed, dcba, 1234, 4321**
+- **Monotonic Sequence Checks** - You can define the maximum number of monotonic sequence characters that are allowed to be in a password. A monotonic sequence is a series of characters (numbers or letters) that are in order (forwards or backwards): **abcd, dcba, 1234, 4321**
 
 - **Monotonic Sequence Set Checks** - You can define the maximum number monotonic sequence characters that are allowed to appear more than once: abc9284abc
 
