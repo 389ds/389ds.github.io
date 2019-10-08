@@ -16,7 +16,7 @@ The best documentation for use and deployment can be found in the [Red Hat Direc
 - [Red Hat Directory Server 10, 1.3.x series](https://access.redhat.com/documentation/en/red-hat-directory-server/?version=10)
 - [Red Hat Directory Server 9, 1.2.x series](https://access.redhat.com/documentation/en/red-hat-directory-server/?version=9)
 
-### Design Documents
+### Design Documents & Roadmap
 
 All our features are initially planned and developed from these documents:
 

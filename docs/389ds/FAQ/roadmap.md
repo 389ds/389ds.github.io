@@ -9,10 +9,12 @@ The following describes what we would like to get done in various releases of Di
 
 {% include toc.md %}
 
+
 ## Red Hat Directory Server 11
 ------------------------------
 
-REDS 11 refers to the 389-ds-base-1.4.x series in RHEL 8/CentOS 8. For example the 389-ds-base-1.3.x releases were used in Red Hat Directory Server 10 on RHEL 7.  So eventually REDS 12 (RHEL 9) will be the 1.5.x series.  This document will describe the roadmap based on the upstream release numbers.
+RHDS 11 refers to the 389-ds-base-1.4.x series in RHEL 8/CentOS 8. For example the 389-ds-base-1.3.x releases were used in Red Hat Directory Server 10 on RHEL 7.  So eventually REDS 12 (RHEL 9) will be the 1.5.x series.
+
 
 ## What is new in 389-ds-base-1.4.1 (RHDS 11)
 ---------------------------------------------
@@ -34,6 +36,8 @@ We added the following new syntax checks:
 - **Bad word list** - A custom case-insensitive list of words separated by a space that can not appear in a password.
 
 - **User attribute list** - A custom list of attributes to compare the password to in the user's entry.  These are typically **uid, mail, cn**, etc...
+
+<br>
 
 ### New CLI tools
 
@@ -70,13 +74,15 @@ This tool handles all the online configuration of the server.  Many of the major
 
 This is the identity/database content tool.  This is used to manage a variety of database users and groups
 
+<br>
+
 ### New Web UI (Cockpit plugin)
 
 We have a new web UI Cockpit plugin.  Now you can manage the server in Cockpit via a new plugin for the Directory Server.  Setting up things like Replication, databases, and monitoring have been greatly improved since the old Java console.
 
 WARNING - Currently there is no LDAP browser/editor in the UI.  For now, you need to use CLI tools, or other browsers like Apache Directory Studio, ldapvi, etc.  That being said, we do plan to add a generic browser/editor (more on this later).
 
-
+<br>
 
 ## What is coming in 389-ds-base-1.4.next (REDS 11.x)
 ---------------------------------------------
@@ -91,6 +97,9 @@ WARNING - Currently there is no LDAP browser/editor in the UI.  For now, you nee
 
 - **Concurrent Connection Improvements** - A new connection framework is in the works that will allow much improved management of concurrent connections.
 
+- **LDAP Editor for Web UI** - A simple, but versatile, LDAP browser/editor that will also include an improved ACI editor.
+
+<br>
 
 ## What is the future
 ---------------------------------------------
