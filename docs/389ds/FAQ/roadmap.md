@@ -13,7 +13,7 @@ The following describes what we would like to get done in various releases of Di
 ## Red Hat Directory Server 11
 ------------------------------
 
-RHDS 11 refers to the 389-ds-base-1.4.x series in RHEL 8/CentOS 8. For example the 389-ds-base-1.3.x releases were used in Red Hat Directory Server 10 on RHEL 7.  So eventually REDS 12 (RHEL 9) will be the 1.5.x series.
+RHDS 11 refers to the 389-ds-base-1.4.x series in RHEL 8/CentOS 8. For example the 389-ds-base-1.3.x releases were used in Red Hat Directory Server 10 on RHEL 7.  So eventually RHDS 12 (RHEL 9) will be the 1.5.x series.
 
 
 ## What is new in 389-ds-base-1.4.1 (RHDS 11)
@@ -84,7 +84,7 @@ WARNING - Currently there is no LDAP browser/editor in the UI.  For now, you nee
 
 <br>
 
-## What is coming in 389-ds-base-1.4.next (REDS 11.x)
+## What is coming in 389-ds-base-1.4.next (RHDS 11.x)
 ---------------------------------------------
 
 - **Container support**(both openshift and docker).  In 389-d-base-1.4.2 (upstream) we do offer a docker file, and have many people successfully using it already.
