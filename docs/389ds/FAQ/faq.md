@@ -464,6 +464,28 @@ If the directory server crashes, the core file will be written to the log direct
 
 -   **EDIT the stacktrace.DATE.txt file TO REMOVE/OBSCURE ANY SENSITIVE DATA** before you submit to the mail list or attach to a bug
 
+
+#### Debug Startup Crashes
+
+If there is no core file, you can start the process under gdb, and get a stack trace that way.  You still need the debuginfo packages installed for this to work.
+
+    # gdb /usr/sbin/ns-slapd
+
+    (gdb) set args  -D /etc/dirsrv/slapd-XXXX -i /var/run/dirsrv/slapd-XXXX.pid -w /var/run/dirsrv/slapd-XXXX.startpid -d 0
+
+    ----> Replace XXXX with your instance name
+
+    {gdb) run
+
+    ----> Crash will occur
+
+    (gdb) where
+
+    ----> This will print the crashing thread stack, but best to get all the threads...
+
+    (gdb) thread apply all bt full
+
+
 #### Printing Access Log Buffer
 
 The access log is buffered. When the server crashes, the last many lines of the access log may still be in memory. This is how to print the buffered access log.
