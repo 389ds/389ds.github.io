@@ -10,7 +10,7 @@ This document describes how Directory Server will protect NSS database access. U
 Overview
 --------
 
-Directory servers installation contains some sensitive files. Relying on the rights of the files looks as a weak protection in case of an attack. The idea is either to remove those files or to make the content of those files useless if compromised. This document details two different approaches '<b>Keyring</b> and <b>Clevis/Tang</b>.
+Directory servers installation contains some sensitive files. Relying on the rights of the files looks as a weak protection in case of an attack. The idea is either to remove those files or to make the content of those files useless if compromised. This document details two different approaches <b>Keyring</b> and <b>Clevis/Tang</b>.
 
 Use Cases
 ---------
@@ -19,8 +19,30 @@ DS is configured with secure port. The administrator wants DS to be start withou
 To do So he creates a pin file (pin.txt) that is used to initialize the NSS database and extract key/certs.
 Someone connected on the Directory server host, with the appropriate rights, can use the pin.txt file to read/write NSS database.
 
-Design
+# Design
 ------
+
+Directory server is a service of systemd, so if it terminates abrutly (a crash) systemd may restart it automatically. In such case the administrator does not want to be prompted for a NSS password and so registers the NSS password in <b>pin.txt</b> file. In order to protect the file we have two options:
+
+- moving its contented into a in memory repository where it can be retrieved, this is the purpose of <b>Keyring</b>.
+- encrypting its content into a <b>encrypted_pin.txt</b> so that its content is useless, this is the purpose of <b>Clevis/Tang</b>
+
+## Keyring
+
+
+
+After a <i>reboot</i> of a box hosting the directory server, the <u>keyring does not contain any data</u>. To be provisioned, the first time the directory instance is started (via <i>systemd</i>), the system administrator is prompted (<b>systemd-ask-password</b>) for the NSS password. Then the password is stored (in <u>clear text</u>) in <i>keyring</i>.
+
+At this time the administrator is logged as <i>root</i> and stores the password in <b>'@u'</b> <i>keyring</i> with <b>'user'</b> <i>keytype</i>.
+
+### key name
+Keyring is a shared repository, so it will contains <u>all</u> the NSS passwords of all instances running on the box.
+The <i>keyname</i> must differentiate each individual instance. So the <i>keyname</i> has the format: &lt;<i>fixed name</i>&gt;&lt;<i>instance_serverid</i>&gt;&lt;<i>info_type</i>&gt;, where 
+
+- <i>fixed name</i> is <u>Internal (Software) Token</u> 
+- <i>instance_serverid</i> is <u>serverID</u>  (e.g. 'master1')
+- <i>info_type</i> is <u>password</u> meaning this key retrieves a password related to instance_serverid
+
 
     The proposed solution. This may include but is not limited to:
 
