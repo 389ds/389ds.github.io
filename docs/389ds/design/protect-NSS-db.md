@@ -24,8 +24,17 @@ Someone connected on the Directory server host, with the appropriate rights, can
 
 Directory server is a service of systemd, so if it terminates abrutly (a crash) systemd may restart it automatically. In such case the administrator does not want to be prompted for a NSS password and so registers the NSS password in <b>pin.txt</b> file. In order to protect the file we have two options:
 
-- moving its contented into a in memory repository where it can be retrieved, this is the purpose of <b>Keyring</b>.
+- moving its content into a in memory repository where it can be retrieved, this is the purpose of <b>Keyring</b>.
 - encrypting its content into a <b>encrypted_pin.txt</b> so that its content is useless, this is the purpose of <b>Clevis/Tang</b>
+
+Directory servers retrieves NSS password using <i>svrcore</i> framework. This framework call a retrieving method and if the method fails then it calls a fallback. The fallback also registers a method/fallback. Each method fallback is registered in a so called <i>plugin</i>. Each DS instance has its own <i>svrcore list method/fallback</i>
+
+- retrieval from <b>svcore cache</b> using the NNS default slot token (see below) as a key for cache lookup.
+- retrieval from <b>pin.txt</b>
+- retrieval from systemd <b>'/run/systemd/ask-password'</b> framework
+- retrieval from terminal
+
+## Svrcore
 
 ## Keyring
 
@@ -39,7 +48,7 @@ At this time the administrator is logged as <i>root</i> and stores the password 
 Keyring is a shared repository, so it will contains <u>all</u> the NSS passwords of all instances running on the box.
 The <i>keyname</i> must differentiate each individual instance. So the <i>keyname</i> has the format: &lt;<i>fixed name</i>&gt;&lt;<i>instance_serverid</i>&gt;&lt;<i>info_type</i>&gt;, where 
 
-- <i>fixed name</i> is <u>Internal (Software) Token</u> 
+- <i>fixed name</i> is <u>Internal (Software) Token</u> that is the <b>token_name</b> of the NSS default slot. The <b>token_name</b>(dbTokenDescription) used during <b>slapd_nss_init/slapd_pk11_configurePKCS11</b>.
 - <i>instance_serverid</i> is <u>serverID</u>  (e.g. 'master1')
 - <i>info_type</i> is <u>password</u> meaning this key retrieves a password related to instance_serverid
 
