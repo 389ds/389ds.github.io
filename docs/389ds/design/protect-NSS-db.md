@@ -27,7 +27,7 @@ Directory server is a service of systemd, so if it terminates abrutly (a crash) 
 - moving its content into a in memory repository where it can be retrieved, this is the purpose of <b>Keyring</b>.
 - encrypting its content into a <b>encrypted_pin.txt</b> so that its content is useless, this is the purpose of <b>Clevis/Tang</b>
 
-Directory servers retrieves NSS password using <i>svrcore</i> framework. This framework call a retrieving method and if the method fails then it calls a fallback. The fallback also registers a method/fallback. Each method fallback is registered in a so called <i>plugin</i>. Each DS instance has its own <i>svrcore list method/fallback</i>
+Directory servers retrieves NSS password using <i>svrcore</i> framework. This framework call a retrieving method and if the method fails then it calls a fallback. The fallback also registers a method/fallback etc.. Svrcore basically contains a <u>ordered list of retrieval method and fallback</u>. Each method/fallback is registered in a so called <i>plugin</i>. Each DS instance has its own <i>svrcore list method/fallback</i>
 
 - retrieval from <b>svcore cache</b> using the NNS default slot token (see below) as a key for cache lookup.
 - retrieval from <b>pin.txt</b>
@@ -35,6 +35,18 @@ Directory servers retrieves NSS password using <i>svrcore</i> framework. This fr
 - retrieval from terminal
 
 ## Svrcore
+
+DS retrieves NSS password using <i>svrcore</i>. In order to take into account a new retrieval method (<b>keyring</b> or <b>Clevis/Tang</b>) we need to create a new svrcore plugin (keyring or clevisTang). The plugin defines the method (using standard callback <b>getPin</b>) and insert it at the appropriate place in the method/fallback ordered list.
+With <b>keyring</b> the plugin method is in <b>keyring-ask-password.c</b> and the insertion in <b>std-keyring.c</b>.
+With <b>ClevisTang</b> the plugin method is in <b>clevistang-ask-password.c</b> and the insertion in <b>std-clevistang.c</b>.
+
+Using <b>keyring</b> or alternatively <b>ClevisTang</b> the resulting ordered list is
+
+- retrieval from <b>svcore cache</b> using the NNS default slot token (see below) as a key for cache lookup.
+- retrieval from <b>keyring</b> or alternatively <b>ClevisTang</b>
+- retrieval from <b>pin.txt</b>
+- retrieval from systemd <b>'/run/systemd/ask-password'</b> framework
+- retrieval from terminal
 
 ## Keyring
 
@@ -44,6 +56,10 @@ After a <i>reboot</i> of a box hosting the directory server, the <u>keyring does
 
 At this time the administrator is logged as <i>root</i> and stores the password in <b>'@u'</b> <i>keyring</i> with <b>'user'</b> <i>keytype</i>.
 
+Later the password is retrieved by directory server (using svrcore and <b>keyring</b> plugin). 
+
+An important point is that <b>keyring provisioning</b> is done by <b>systemd</b> so by <b>root</b> user. The retrieval is done by <b>directory server</b>, that is launched as <b>root</b> but later setuid to <b>&lt;nsslapd-localuser&gt;</b> (aka as <b>dirsrv</b>).
+
 ### key name
 Keyring is a shared repository, so it will contains <u>all</u> the NSS passwords of all instances running on the box.
 The <i>keyname</i> must differentiate each individual instance. So the <i>keyname</i> has the format: &lt;<i>fixed name</i>&gt;&lt;<i>instance_serverid</i>&gt;&lt;<i>info_type</i>&gt;, where 
@@ -52,6 +68,11 @@ The <i>keyname</i> must differentiate each individual instance. So the <i>keynam
 - <i>instance_serverid</i> is <u>serverID</u>  (e.g. 'master1')
 - <i>info_type</i> is <u>password</u> meaning this key retrieves a password related to instance_serverid
 
+### provisioning - retrieval
+
+Because the password is stored while being <b>root</b> and needed while being <b>&lt;nsslapd-localuser&gt;</b> (aka as <b>dirsrv</b>) it requires an intermediate step.
+The password is stored once prompted by <b>systemd</b>. Before the DS deamon calls setuid (<b>detach</b>), DS running as root retrieves the password using <b>keyctl_search/keyctl_read</b> and stores it in a <i>local variable</i>. Then DS starts running as <b>dirsrv</b> and copy the password from the <b>local variable</b> to <b>svrcore keyring plugin</b> during <b>svrcore_setup</b>.
+Finally when DS needs the password, for NSS/SSL initialization, it calls <b>svrcore getPin</b> (during <b>slapd_ssl_init/slapd_pk11_authenticate</b>.
 
     The proposed solution. This may include but is not limited to:
 
