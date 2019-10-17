@@ -5,6 +5,8 @@ title: "Directory Server protection of NSS DB content"
 # protection of NSS DB content
 ----------------
 
+{% include toc.md %}
+
 This document describes how Directory Server will protect NSS database access. Using Keyring or Clevis/Tang we can prevent NSS sensitive files (passwords, extracted keys and certificates) to be compromised.
 
 Overview
@@ -78,13 +80,28 @@ The <i>keyname</i> must differentiate each individual instance. So the <i>keynam
 
 ## Core server
 
-If the core server (<b>main.c</b>) for <b>keyring</b> then it requires the link option <b>-lkeyutils</b> and define build option <b>-DWITH_KEYRING</b>.
+### keyring
+
+It exists <u>two</u> phases that register and later retrieve the password:
+
+- <i>systemd</i>: <i>systemd</i> prompts the password and registers it into <i>keyring</i>, later <i>core server</i> retrieve the password from <i>keyring</i> to be used for NSS/SSL initialization. Note, before prompting the password <i>systemd</i> check if it is already registered and if it is it does nothing.
+- <i>svrcore</i>: <i>core server</i> registers the password in the <b>svrcore keyring plugin</b> (<b>svrcore_setup</b>), later <i>core server</i> retrieves the password from <b>svrcore keyring plugin</b> (<b>getPin</b>) and use it for NSS/SSL initialization.
+
+If the core server (<b>main.c</b>) uses <b>keyring</b> then it requires the link option <b>-lkeyutils</b> and define build option <b>-DWITH_KEYRING</b>. Indeed core server calls <b>keyctl_search/keyctl_read</b> to retrieve the password from <b>keyring</b>. It does this while the DS deamon is running as root (before <b>detach</b>).
+When retrieved, it provides the password to NSS/SSL setup rountine (<b>slapd_do_all_nss_ssl_init</b>). This routine first registers (<b>svrcore_setup</b>) the password into the svrcore plugin that handle <i>keyring</i> (<b>std-keyring.c</b>) then later retrieved from <i>svrcore</i> (<b>getPin</b>) during <b>slapd_ssl_init/slapd_pk11_authenticate</b>.
+
+In the first phase (retrieval of the password from <i>keyring</i>) keyctl_read triggers a <i>Selinux AVC</i>. A new policy is required TBD.
 
 ## systemd
 
 With keyring a script must fetch (<b>keyctl search @u user &lt;key_name&gt;</b>) the NSS instance password. If it does not exist, it must prompt (<b>systemd-ask-password</b>) the administrator and store it (<b>keyctl padd user &lt;key_name&gt; @u</b>).
 
 To allow DS to read the keyring password (<b>keyctl_read</b>), the systemd template must define <b>KeyringMode=shared</b> 
+
+
+## Selinux
+
+When the core server, running as root, reads keyring (<b>keyctl_read</b>) it triggers an <i>Selinux AVC</i>. Need to define a policy to allow that TBD
 
     The proposed solution. This may include but is not limited to:
 
