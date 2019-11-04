@@ -16,16 +16,16 @@ Fedora 29
 
 Bodhi
 
-F29 <https://bodhi.fedoraproject.org/updates/FEDORA-2019-01a5328b48>
+F29 <>
 
 
 The new packages and versions are:
 
-- 389-ds-base-1.4.0.30-1
+- 389-ds-base-1.4.0.29-1
 
-Source tarballs are available for download at [Download 389-ds-base Source](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.0.30.tar.bz2)
+Source tarballs are available for download at [Download 389-ds-base Source](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.0.29.tar.bz2)
 
-### Highlights in 1.4.0.30
+### Highlights in 1.4.0.29
 
 Bug fixes
 
@@ -45,7 +45,7 @@ See [Source](../development/source.html) for information about source tarballs a
 
 The new UI is fully functional!  There are still parts that need to be converted to ReactJS, but everything works.
 
-|Configuration Tab| Functional | Written in ReactJS |
+|Configuration Tab| Functional | Written in ReachJS |
 |-----------------|------------|--------------------|
 |Server Tab       |Yes         |No                  |
 |Security Tab     |Yes         |Yes                 |
