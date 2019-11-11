@@ -25,7 +25,6 @@ Here is a list of possible checks the tool could do...
 - Replication:  Check sync status of agreements, and that changelog trimming is configured
 - Security:  Check certs are not expired, or close to expiring
 - Disk Space:  Check the available diskspace for each disk mount used by the server (might require a new monmitor entry - something a client can querying)
-- Memory Usage: Check the servers memory size verses available memory
 - DB Usage:  Sanity check that the server accepts all the operations andis not hung:  BIND, SRCH, MOD, MODRDN, and DEL
 - Performamce:  Sanity check that a search on each backend root node is returned within 5 seconds.
 
