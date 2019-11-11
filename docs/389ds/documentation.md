@@ -88,12 +88,6 @@ We maintain a number of how to guides for 389 Directory Server
 -   [How to Migrate from Trac to Pagure](howto/howto-migrate-to-pagure.html)
 -   [How to Do Pull-Requests in Pagure](howto/howto-do-pull-requests.html)
 
-#### Mail
-
--   [How to QMail](howto/howto-qmail.html)
--   [How to Sendmail](howto/howto-sendmail.html)
--   [How to Postfix](howto/howto-postfix.html)
--   [How to Dovecot](howto/howto-dovecot.html)
 
 #### DNS
 
