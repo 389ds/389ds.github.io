@@ -7,15 +7,11 @@ title: "Releases/1.4.1.10"
 
 The 389 Directory Server team is proud to announce 389-ds-base version 1.4.1.10
 
-Fedora packages are available on Fedora 30 and 31.
-
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=38976441> - Fedora 31
+Fedora packages are available on Fedora 30.
 
 <https://koji.fedoraproject.org/koji/taskinfo?taskID=38978324> - Fedora 30
 
 Bodhi
-
-<https://bodhi.fedoraproject.org/updates/FEDORA-2019-f5c518d477> - Fedora 31
 
 <https://bodhi.fedoraproject.org/updates/FEDORA-2019-1bc68862f0> - Fedora 30
 
