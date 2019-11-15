@@ -9,9 +9,9 @@ The 389 Directory Server team is proud to announce 389-ds-base version 1.4.2.4
 
 Fedora packages are available on Fedora 31 and rawhide.
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=38997267> - Rawhide
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=39012835> - Rawhide
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=38999035> - Fedora 31
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=39012772> - Fedora 31
 
 Bodhi
 
