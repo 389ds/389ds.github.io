@@ -43,17 +43,65 @@ In such case 65 is not optimal but acceptable. For a long lasting operation, a v
 # Design
 ------
 
-The principle is to collect metrics, during the processing of an operation, and to log them along with the operation result. The collect of metrics is done during specific <b>probes</b> of the operation processing, so collect could impact operation performance. The logging of the operation result is done <b>after</b> the operation result is sent back (for direct operation) or stored in the pblock (internal operations). So the <b>logging has no performance impact</b> for direct operations. For the logging for internal operations <b>impacts the performance</b> of the parent operation but considering logging is buffered, this impact is <b>limited</b>.
+The principle is to collect metrics, during the processing of an operation, and to log them along with the operation result. The collect of metrics is done during specific <b>probes</b> of the operation processing, so collect could impact operation performance. The logging of the operation result is done <b>after</b> the operation result is sent back (for direct operation) or stored in the pblock (internal operations). So the <b>logging has no performance impact</b> for the operation itself. For operations that trigger internal operations <b>collect and logging of internal operations</b> impact the parent operation.
 
 In order to limit the performance impact of the <b>probes</b>, we can turn <b>on/off</b> the collect in probes with a set of new config parameters <b>nsslapd-stat-&lt;operation&gt;-level</b>
 
 ## Configuration
 
-Each probe belong to a given operation and level
+<b>nsslapd-stat-bind-level</b>: default value is 0 (no stat collect)
+<b>nsslapd-stat-search-level</b>: default value is 0 (no stat collect)
+|Value|Name|Description|
+|-----|----|-----------|
+|1| OP_STAT_KEY_LOOKUP | For each key of a filter, it collect statistics for candidate IDs |
+<b>nsslapd-stat-modify-level</b>: default value is 0 (no stat collect)
+<b>nsslapd-stat-add-level</b>: default value is 0 (no stat collect)
+<b>nsslapd-stat-delete-level</b>: default value is 0 (no stat collect)
+<b>nsslapd-stat-modrdn-level</b>: default value is 0 (no stat collect)
+
+## Data structure
+
+The function <b>op_stat_init</b> called from <b>main</b> registers an <b>operation extension</b>.  The operation extension is retrieved by <b>Op_stat *op_stat_get_operation_extension(Slapi_PBlock *pb)</b>.
+
+The structure of <b> Op_stat</b>
+    typedef struct op_search_stat {
+        /* Probe OP_STAT_KEY_LOOKUP */
+        struct component_keys_lookup *keys_lookup;
+
+        /* Probe OP_STAT_FILTER_COMP_IDL */
+        ....
+    } Op_search_stat;
+    typedef struct op_bind_stat {
+        ....
+    }
+    ...
+    typedef struct op_stat {
+        Op_bind_stat *bind_stat;
+        Op_search_stat *search_stat;
+        Op_modify_stat *modify_stat;
+        ....
+    } Op_stat;
 
 
+## operation extension
 
-## collect/logging selection
+During startup (main) <b>op_stat_init</b> is called to register (<i>slapi_register_object_extension</i>), an operation extension for module SLAPI_OP_STAT_MODULE ("Module to collect operation stat"). This extension is retrieved by <b>Op_stat *op_stat_get_operation_extension(Slapi_PBlock *pb)</b>
+
+## logging
+
+Before the operation result is logged (<i>log_result</i>), <b>log_op_stat(Slapi_PBlock *pb)</b> is called. It logs each collected metrics of the operation.
+
+The timestamp of the log is at the time of the log of the result. So the collected metrics should contain their own timestamp. This will allow to select all operations that were running at the same period.
+
+## collected metrics
+
+### Search
+
+#### OP_STAT_KEY_LOOKUP
+
+It collects the metrics related to index database lookup. For a given database key it can exist several entries (duplicate). To grab all the duplicates it call db->get for each of them.
+
+If for example 1M entries <i>uid</i> starts with <i>user_</i> and the filter component is <i>(uid=user_1*)<i>
 
 It introduces two ne
 ## Probes
