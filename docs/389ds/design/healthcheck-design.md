@@ -17,7 +17,7 @@ Gather and analyze a server for potential issues, and describe how to resolve th
 # The Checks
 ---------------------
 
-Here is a list of checks the tool could do...
+Here is a list of checks the tool does:
 
 - Configuration:  Check for old outdated values, or values that are not appropriate (too high/too low).  This really applies to cn=config, and cn=encryption,cn=config (SSL version range)
 - Backends:  Check that a mapping tree entry has a backend entry, and visa versa.  This is already present as a "lint" function in lib389.
@@ -31,7 +31,8 @@ Here is a list of checks the tool could do...
 
 Here is an example running the the output you might see
 
-    # dsctl [\-\-json] INSTANCE_NAME healthcheck
+    dsctl [--json] INSTANCE_NAME healthcheck
+
 
     # dsctl slapd-localhost healthcheck
     Beginning lint report, this could take a while ...
@@ -82,9 +83,28 @@ Here is an example running the the output you might see
     ===== End Of Report (1 Issue found) =====
 
 
-Here is the JSON output from the same exmaple
+<br>
+This is the JSON output format
 
+    [
+        {
+             "dsle": "RESULT CODE", 
+             "severity": "HIGH/MEDIUM/LOW", 
+             "items": [
+                 ITEM,
+                 ITEM,
+             ], 
+             "detail": "PROBLEM DESCRIPTION", 
+             "fix": "RESOLUTION"
+        }
+    ]
+
+<br>
+From the example above it would look like this:
+
+    #  dsctl --json slapd-localhost healthcheck 
     [{"dsle": "DSELE0001", "severity": "MEDIUM", "items": ["cn=encryption,cn=config"], "detail": "This Directory Server may not be using strong TLS protocol versions. TLS1.0 is known to\nhave a number of issues with the protocol. Please see:\n\nhttps://tools.ietf.org/html/rfc7457\n\nIt is advised you set this value to the maximum possible.", "fix": "There are two options for setting the TLS minimum version allowed.  You,\ncan set \"sslVersionMin\" in \"cn=encryption,cn=config\" to a version greater than \"TLS1.0\"\nYou can also use 'dsconf' to set this value.  Here is an example:\n\n    # dsconf slapd-localhost security set --tls-protocol-min=TLS1.2\n\nYou must restart the Directory Server for this change to take effect.\n\nOr, you can set the system wide crypto policy to FUTURE which will use a higher TLS\nminimum version, but doing this affects the entire system:\n\n    # update-crypto-policies --set FUTURE"}]
+
 
 
 # The Report Results
