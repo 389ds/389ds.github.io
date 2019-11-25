@@ -117,17 +117,17 @@ Here is a table of the types of things the tool checks.  These list will probabl
 |DSBLE0001      |Backend      |Medium         |Backend missing mapping tree|
 |DSBLE0002      |Server       |High           |Unable to query backend|
 |DSBLE0003      |Backend      |Low            |Database not initialized|
-|DSVIRTLE0001   |Config       |High           |Virtual is incorrectly indexed|
+|DSVIRTLE0001   |Config       |High           |Virtual attribute is incorrectly indexed|
 |DSCLE0001      |Config       |Low            |Logging format should be revised|
 |DSCLE0002      |Security     |High           |Insecure password hash configured|
 |DSELE0001      |Security     |Medium         |Minimum allows TLS version too low|
 |DSRILE0001     |Plugins      |Low            |RI plugin is misconfigured|
 |DSRILE0002     |Plugins      |High           |RI plugin missing indexes|
-|DSREPLLE0001   |Replication  |High           |Out of synchronization|
+|DSREPLLE0001   |Replication  |High           |Out of synchronization - broken|
 |DSREPLLE0002   |Replication  |Low            |Presence of conflict entries|
 |DSREPLLE0003   |Replication  |Medium         |Out of synchronization, but not broken|
-|DSREPLLE0004   |Replication  |medium         |Failed to get status|
-|DSREPLLE0005   |Replication  |medium         |Replica not reachable|
+|DSREPLLE0004   |Replication  |Medium         |Failed to get status - state unknown|
+|DSREPLLE0005   |Replication  |Medium         |Replica not reachable|
 |DSCLLE0001     |Replication  |Medium         |Changelog trimming is not configured|
 |DSCERTLE0001   |TLS Certificates |Medium     |Certificate expiring within 30 days|
 |DSCERTLE0002   |TLS Certificates |High       |Certificate expired|
