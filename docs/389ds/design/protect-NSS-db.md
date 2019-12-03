@@ -38,6 +38,8 @@ Several components are impacted with this change:
 - DS core server
 - Selinux
 
+<p><img src="../../../images/password_keyring_general.png" alt="" title="general architecture" /></p>
+
 ## Svrcore
 
 ### principle
