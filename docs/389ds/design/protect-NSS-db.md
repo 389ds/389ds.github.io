@@ -42,6 +42,8 @@ Several components are impacted with this change:
 
 ## Svrcore
 
+<p><img src="../../../images/password_keyring_svrcore.png" alt="" title="svrcore" /></p>
+
 ### principle
 
 Directory servers retrieves NSS password using <i>svrcore</i> framework. This framework call a retrieving method and if the method fails then it calls a fallback. The fallback also registers a method/fallback etc.. Svrcore basically contains a <u>ordered list of retrieval method and fallback</u>. Each method/fallback is registered in a so called <i>plugin</i>. Each DS instance has its own <i>svrcore list method/fallback</i>. The ordered list of retrieval method is:
