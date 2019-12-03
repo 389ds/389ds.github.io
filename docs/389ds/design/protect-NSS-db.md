@@ -125,6 +125,11 @@ It requires to
 
 The <i>Clevis</i> client is used to translate a clear text password file <b>pin.txt</b> into an encrypted one: <b>clevis encrypt tang '{"url", "http://&lt;tang_server_hostname&gt;[:&lt;tang_server_ListenStream&gt;]"}' &lt; pin.txt &gt; encrypted_pin.txt</b>.
 
+#### Clevis/Tang not used
+
+Once encrypted into <b>encrypted_pin.txt</b>, the clear text password can be retrieve using <b>clevis descripte</b> command. It requires the rights to access the <b>encrypted_pin.txt</b> file and the access to the <b>tang server</b>. So an attacker logged on the host and having the appropriate access, can decrypt the password and read the NSS database. It adds an additional step (vs <b>pin.txt</b>) but the original concern is the same: It exists a file that gives access to NSS database.
+
+For this reason, Clevis/Tang is not used.
 
 ## systemd
 
