@@ -62,7 +62,7 @@ Implementation Details
 ----------------------
 
 * An extra configuration item needs to be added to dse.ldif as the fernet key. It should be generated and saved if not present.
-* A configartion in dse.ldif for token lifetime in seconds.
+* A configuration in dse.ldif for token lifetime in seconds.
 * Fernet (from Rust :D) should be used to generate the token.
 * A flag is added to connection to indicate if the authentication was from token or pw? (Check if there is an existing enum for auth type)
 * An extended operation must be added, that takes no parameters (only an OID is required). If conn-auth != token && bind != anonymous we can issue the token.
