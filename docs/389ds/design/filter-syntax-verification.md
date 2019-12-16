@@ -72,21 +72,21 @@ This feature defines a single configartion value:
     dn: cn=config
     nsslapd-verify-filter-schema: [off,warn,warn-strict,strict]
 
-* strict: reject the filter with an error if any unknown elements exist.
-* warn-strict: replace unknown components with idl_alloc(0), and log a warning with notes=F
-* warn: log a warning with notes=F, and continue with full table scan (not recommended)
+* reject-invalid: reject the filter with an error if any unknown elements exist.
+* process-safe: replace unknown components with idl_alloc(0), and log a warning with notes=F
+* warn-invalid: log a warning with notes=F, and continue with full table scan (not recommended)
 * off: do not verify filters, proceed with full table scan (not recommended)
 
 ## Security Notes
 
-warn-strict, and strict are the "only" two secure settings. Setting this value to warn or off
+process-safe, and reject-invalid are the "only" two secure settings. Setting this value to warn-invalid or off
 may expose you to trivially exploitable denial of service attacks unless you have tuned your
-directory to reject full table scans for small searches.
+directory to reject full table scans for large searches.
 
 It may also expose you to scaling issues where queries that appear to work in test environments
 will fail once you have a number of entries greater than the lookthrough limit in the directory.
 
-If you set warn or off, it is recommended you also set:
+If you set warn-invalid or off, it is recommended you also set:
 
     dn: cn=config,cn=ldbm database,cn=plugins,cn=config
     nsslapd-lookthroughlimit: 16
@@ -100,5 +100,5 @@ In version 1.4.1 the configuration option shipped only as:
 
     nsslapd-verify-filter-schema: [off,warn,strict]
 
-Where "warn" behaved as "warn-strict".
+Where "warn" behaved as "process-safe".
 
