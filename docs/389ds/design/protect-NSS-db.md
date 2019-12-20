@@ -38,6 +38,8 @@ Several components are impacted with this change:
 - DS core server
 - Selinux
 
+The following figure shows the global architecture of systemd/DS using keyring. Clevis and Tang is not the [chosen option](#Clevis/Tang not used)
+
 <p><img src="../../../images/password_keyring_general.png" alt="" title="general architecture" /></p>
 
 ## Svrcore
@@ -72,6 +74,8 @@ Using <b>keyring</b> or alternatively <b>ClevisTang</b> the resulting ordered li
 Because the password is stored while being <b>root</b> and needed while being <b>&lt;nsslapd-localuser&gt;</b> (aka as <b>dirsrv</b>) it requires an intermediate step.
 The password is stored once prompted by <b>systemd</b>. Before the DS deamon calls setuid (<b>detach</b>), DS running as root retrieves the password using <b>keyctl_search/keyctl_read</b> and stores it in a <i>local variable</i>. Then DS starts running as <b>dirsrv</b> and copy the password from the <b>local variable</b> to <b>svrcore keyring plugin</b> during <b>svrcore_setup</b>.
 Finally when DS needs the password, for NSS/SSL initialization, it calls <b>svrcore getPin</b> (during <b>slapd_ssl_init/slapd_pk11_authenticate</b>.
+
+DS retrieves the password from keyring at the condition security is enabled (<i>nsslapd-security</i>). If <i>nsslapd-security: off</i> NSS password is NULL and during svrcore_setup the svrcore keyring plugin does <b>not</b> register the keyring getPin callback.
 
 ## Keyring
 
@@ -130,6 +134,7 @@ It requires to
 The <i>Clevis</i> client is used to translate a clear text password file <b>pin.txt</b> into an encrypted one: <b>clevis encrypt tang '{"url", "http://&lt;tang_server_hostname&gt;[:&lt;tang_server_ListenStream&gt;]"}' &lt; pin.txt &gt; encrypted_pin.txt</b>.
 
 #### Clevis/Tang not used
+<a name="Clevis/Tang not used">
 
 Once encrypted into <b>encrypted_pin.txt</b>, the clear text password can be retrieve using <b>clevis descripte</b> command. It requires the rights to access the <b>encrypted_pin.txt</b> file and the access to the <b>tang server</b>. So an attacker logged on the host and having the appropriate access, can decrypt the password and read the NSS database. It adds an additional step (vs <b>pin.txt</b>) but the original concern is the same: It exists a file that gives access to NSS database.
 
@@ -137,14 +142,28 @@ For this reason, Clevis/Tang is not used.
 
 ## systemd
 
-With keyring a script must fetch (<b>keyctl search @u user &lt;key_name&gt;</b>) the NSS instance password. If it does not exist, it must prompt (<b>systemd-ask-password</b>) the administrator and store it (<b>keyctl padd user &lt;key_name&gt; @u</b>).
+With keyring a <i>ExecStartPre</i> script must fetch (<b>keyctl search @u user &lt;key_name&gt;</b>) the NSS instance password. If it does not exist (and is required <i>nsslapd-security: on</i>), the script prompts (<b>systemd-ask-password</b>) the administrator and store the password in keyring (<b>keyctl padd user &lt;key_name&gt; @u</b>).
+
+The script (currently <i>ds-keyring.pl</i>) should be integrated into <b>dsctl</b> with new command (<b>dsctl &lt;instance&gt; keyring ...</b>)
 
 To allow DS to read the keyring password (<b>keyctl_read</b>), the systemd template must define <b>KeyringMode=shared</b> 
+
+Once stored into keyring the password is available until next reboot. That means that if the instance is restarted, it will fetch the password directly from keyring. If it is required to prompt the password at each restart, it is possible to add a <i>ExecStopPost</i> directive to <b>clear</b>/<b>unlink</b> the password.
 
 
 ## Selinux
 
-When the core server, running as root, reads keyring (<b>keyctl_read</b>) it triggers an <i>Selinux AVC</i>. Need to define a policy to allow that TBD
+When the core server, running as root, reads keyring (<b>keyctl_read</b>) it triggers an <i>Selinux AVC</i>. 
+The bugzilla [\#1782896](https://bugzilla.redhat.com/show_bug.cgi?id=1782896) track the required selinux policy.
+
+## container consideration
+
+Keyring is not namespaced and containers are sharing the kernel keyring of the same user.
+As a consequence the <i>description</i> of the stored key (<i> Internal (Software) Token:inst_name:password</i>) can be identical on several containers. 
+For containers the <i>description</i> should be enhanced to something like <i> Internal (Software) Token:inst_name:containerId:password</i>.
+
+A workaround, to run DS with security in containers, is that <b>all</b> instances on a box (in a container or not) are defining <b>pin.txt</b> file.
+
 
     The proposed solution. This may include but is not limited to:
 
