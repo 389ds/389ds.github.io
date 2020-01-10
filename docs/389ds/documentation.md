@@ -37,6 +37,7 @@ We maintain a number of how to guides for 389 Directory Server
 -   [How to MMR](howto/howto-multimasterreplication.html) - How to configure multi-master replication without using the administration console.
 -   [How to Monitor Replication](howto/howto-replicationmonitoring.html) - How to check replication without using administration console or website
 -   [How to Monitor Replication Using CLI](howto/howto-monitor-replication.html) - How to check replication using dsconf CLI
+-   [How to Dump and Restore Change Log Using CLI](howto/howto-dump-restore-changelog.html) - How to dump and restore change log using dsconf CLI
 -   [How to SystemD](howto/howto-systemd.html) - How to use 389 with systemd (systemd is the SysV Init replacement in Fedora 15 and later)
 -   [How to COS](howto/howto-classofservice.html) - Class of Service (CoS) examples
 -   [How to Use Access Control](howto/howto-accesscontrol.html) - How to use access control
