@@ -5,6 +5,9 @@ title: "Release Notes"
 # Release Notes
 ========================================================================
 
+- [389 Directory Server 1.4.3.1](release-1-4-3-1.html) *(Jan 13, 2020)*
+- [389 Directory Server 1.4.1.13](release-1-4-1-13.html) *(Jan 13, 2020)*
+- [389 Directory Server 1.4.2.6](release-1-4-2-6.html) *(Jan 13, 2020)*
 - [389 Directory Server 1.4.1.12](release-1-4-1-12.html) *(Dec 6, 2019)*
 - [389 Directory Server 1.4.2.5](release-1-4-2-5.html) *(Dec 6, 2019)*
 - [389 Directory Server 1.4.1.11](release-1-4-1-11.html) *(Dec 6, 2019)*

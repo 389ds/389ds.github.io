@@ -67,14 +67,14 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 ## News
 
 <!-- Try to keep this list under 10 releases  -->
+- 2020-01-13: Released **389-ds-base [1.4.3.1](docs/389ds/releases/release-1-4-3-1.html)**
+- 2020-01-13: Released **389-ds-base [1.4.2.6](docs/389ds/releases/release-1-4-2-6.html)**
+- 2020-01-13: Released **389-ds-base [1.4.1.13](docs/389ds/releases/release-1-4-1-13.html)**
 - 2019-12-06: Released **389-ds-base [1.4.1.12](docs/389ds/releases/release-1-4-1-12.html)**
 - 2019-12-06: Released **389-ds-base [1.4.2.5](docs/389ds/releases/release-1-4-2-5.html)**
 - 2019-12-06: Released **389-ds-base [1.4.1.11](docs/389ds/releases/release-1-4-1-11.html)**
 - 2019-11-14: Released **389-ds-base [1.4.2.4](docs/389ds/releases/release-1-4-2-4.html)**
 - 2019-11-13: Released **389-ds-base [1.4.1.10](docs/389ds/releases/release-1-4-1-10.html)**
-- 2019-11-13: Released **389-ds-base [1.4.0.31](docs/389ds/releases/release-1-4-0-31.html)**
-- 2019-11-04: Released **389-ds-base [1.4.2.3](docs/389ds/releases/release-1-4-2-3.html)**
-- 2018-10-18: Released **389-console [1.1.19](docs/389ds/releases/release-console-1-1-19.html)**
 
 - [All past release notes](docs/389ds/releases/release-notes.html)
 
