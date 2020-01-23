@@ -44,10 +44,19 @@ The source code was produced by first doing a git clone to get the repository, t
 |[idm-console-framework-1.1.15.tar.bz2]({{ site.binaries_url }}/binaries/idm-console-framework-1.1.15.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.15|[Building Console](buildingconsole.html)|86ca70b34bba1ceffb206cd945a5d077544a83f7|
 
 
+### 389 Directory Server 1.4.3
+
+|Source tarball|git module|git tag|More Info|SHA512SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-1.4.3.2.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.2.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.2|[Building](building.html)|e747c96428b0b79cbea6f01c07214b8ee3456b6f5d93fd27da905c56690e370925d70939765d68c43dd74ecd7121bfe61d84314b8127d83dded45186120caa5e|
+|[389-ds-base-1.4.3.1.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.1.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.1|[Building](building.html)|f210c46d19635d9251982e193ddea08912ece9f2ef60e1487fbfd37678a8ad660a25c5925ab6d4f29576335be195485822a3ca5b71a0d11a861eb598885b362b|
+
 ### 389 Directory Server 1.4.2
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.4.2.7.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.2.7.tar.bz2)|389-ds-base.git|389-ds-base-1.4.2.7|[Building](building.html)|7bbb5b8f3ca71c3bd3be8afb15a5923fb407fed920d3b6e8674232d825c500a7c9bba5d03dc281a9c54352688e7b2b82a0ff481fc84eea06f66ea760b96b2b2a|
+|[389-ds-base-1.4.2.6.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.2.6.tar.bz2)|389-ds-base.git|389-ds-base-1.4.2.6|[Building](building.html)|54ec37d421f99a4093c44d5a5c0a31a0c2e93e1c43aaeb63560204437c8c7b4c72b644dfa39164120f4a4b64a0d4368b7a2e6264e389b5b27615c08447faf013|
 |[389-ds-base-1.4.2.5.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.2.5.tar.bz2)|389-ds-base.git|389-ds-base-1.4.2.5|[Building](building.html)|46cdf18809466faa2104a3fd5aa16d2b0525bc73c7a517e167c85cb0d6d6078e78b20a865c2eafe4671e11a2f0c879b1f1292c10d8a3aeb20da769511d60542a|
 |[389-ds-base-1.4.2.4.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.2.4.tar.bz2)|389-ds-base.git|389-ds-base-1.4.2.4|[Building](building.html)|b341bd55ef01b328b08de9dc88dca7dad7036064bda04469ebd650008ac4646395accacc32780bc7eab161a7fa5a8fa19f5511b827ab8a68b9c08dfc660969f1|
 |[389-ds-base-1.4.2.3.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.2.3.tar.bz2)|389-ds-base.git|389-ds-base-1.4.2.3|[Building](building.html)|c717c10d171c12e74194c1a19e0de3f609f07858b3c73fc5545eb65953a69e2bed6bca910ea7b8a6f711dbb86139f419534515ea03e7ea908ef89684d4162974|
@@ -57,6 +66,8 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.4.1.14.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.1.14.tar.bz2)|389-ds-base.git|389-ds-base-1.4.1.14|[Building](building.html)|6022ca2cd5862a52ff8d4a0e57ddad7f1780270b7a37de2daccb9bd32bc7d0be9fdefa4cfca9b12f6a577addabf82c7e31b3bd557c27ac469beaa928e1df59ee|
+|[389-ds-base-1.4.1.13.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.1.13.tar.bz2)|389-ds-base.git|389-ds-base-1.4.1.13|[Building](building.html)161368289f13e8f6a448dc5e6aadd129724ef6b54efbb66c8a03b46a1aa424157d27c53c6b779dc47f81506ba834bec66a9bdef072fe5f50cf73e1b68d723511|
 |[389-ds-base-1.4.1.12.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.1.12.tar.bz2)|389-ds-base.git|389-ds-base-1.4.1.12|[Building](building.html)|ea238be1d19b1395e73842a529aa966bd35b93bb9f9bc3dd36f5df7fc3ec4c2dcce108ee25b4ce395fb11080027a2475939b0807c8691359dae05659836349a2|
 |[389-ds-base-1.4.1.11.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.1.11.tar.bz2)|389-ds-base.git|389-ds-base-1.4.1.11|[Building](building.html)|a7fc27de18a63438546f14581b43a9ee0ddb3049e2137b206963a692b15efce16025139b725b8cc2d58d8ddd7eec43b04b32e4720d8a862a7e4f2c94f96b186d|
 |[389-ds-base-1.4.1.10.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.1.10.tar.bz2)|389-ds-base.git|389-ds-base-1.4.1.10|[Building](building.html)|f04b99cdfc43d9e94ca43f098e17fe20df3ceb39d30b730506e0f24d7e645c7c6e78cb30870bf800288b204ff6ab51327ea200f1ea337cc19817938204b9480b|

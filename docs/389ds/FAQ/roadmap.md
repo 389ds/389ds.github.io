@@ -56,6 +56,7 @@ This tool is used to perform operations on the server whether it's running or no
 - Start/Restart/Stop the server instance
 - Perform backups and restores
 - Export/Import of LDIF files
+- Health check
 
 #### dsconf
 
@@ -67,7 +68,6 @@ This tool handles all the online configuration of the server.  Many of the major
 - Managing password policy
 - Schema
 - Monitoring (server, replication, database, SNMP, logs)
-- Health Check
 - Etc...
 
 #### dsidm
