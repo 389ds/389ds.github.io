@@ -33,7 +33,24 @@ If you want to use the cockpit web ui:
 
     zypper install 389-ds
 
-### (RHEL 6, RHEL 7, CentOS 6, CentOS 7 (ds 1.3.x)
+### CentOS 8.1+ (ds 1.4.x)
+
+In CentOS 8.1+ directory server is distributed as a module in EPEL 8 (see [Modularity](https://docs.fedoraproject.org/en-US/modularity/) documentation for more info).
+There are two streams available: `stable` and `testing`. Testing is a bleeding edge development version. As its name implies, it is NOT supposed to be used in production. After a period of testing and bug fixing it becomes the next stable version.
+
+Each stream has 3 profiles:
+* `default` - 389-ds-base and cockpit web ui
+* `minimal` - just 389-ds-base
+* `legacy` -  same as default plus legacy perl tools and scripts
+
+```
+yum install epel-release
+# make sure you have the latest epel-release that contains modular repositories
+yum update epel-release
+yum module install 389-directory-server:stable/default
+```
+
+### RHEL 6, RHEL 7, CentOS 6, CentOS 7 (ds 1.3.x)
 
 **NOTE**: Use the 389-ds-base package from your base distribution.  389-ds-base is part of RHEL and CentOS now.  The copr repositories are discontinued.
 
@@ -42,14 +59,16 @@ For the admin server and console parts, you must first install EPEL from <https:
 Then you can install 389-ds-base and get all of the core directory server, admin server, and console components as per the directions below.
 
 - Install just DS (recommended)
-
-    yum install 389-ds-base
-    setup-ds.pl
+```
+yum install 389-ds-base
+setup-ds.pl
+```
 
 - Install the server and the admin server/java console
-
-    yum install 389-ds-base 389-admin 389-ds-console 389-admin-console
-    setup-ds-admin.pl
+```
+yum install 389-ds-base 389-admin 389-ds-console 389-admin-console
+setup-ds-admin.pl
+```
 
 #### Upgrade an existing system:
 
