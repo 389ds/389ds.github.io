@@ -7,7 +7,9 @@ title: "Releases/1.4.3.3"
 
 The 389 Directory Server team is proud to announce 389-ds-base version 1.4.3.3
 
-Fedora packages are available on Fedora 32.
+Fedora packages are available on Fedora 32 adn Rawhide.
+
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=41485060> - Rawhide (Fedora 33)
 
 <https://koji.fedoraproject.org/koji/taskinfo?taskID=41484528> - Fedora 32
 
