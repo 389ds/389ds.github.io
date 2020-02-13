@@ -68,21 +68,20 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 If you find a bug, or would like to see a new feature, file it in our Pagure project: <https://pagure.io/389-ds-base>
 
 - Bump version to 1.4.2.7
-- Issue 49254 - Fix compiler failures and warnings
-- Issue 50741 - cont bdb_start - Detected Disorderly Shutdown
-- Issue 50836 - Port Schema UI tab to React
-- Issue 50842 - Decrease 389-console Cockpit component size
-- Issue 50790 - Add result text when filter is invalid
-- Issue 50834 - Incorrectly setting the NSS default SSL version max
-- Issue 50829 - Disk monitoring rotated log cleanup causes heap-use-after-free
-- Issue 50709 - (cont) Several memory leaks reported by Valgrind for 389-ds 1.3.9.1-10
-- Issue 50599 - Fix memory leak when removing db region files
-- Issue 49395 - Set the default TLS version min to TLS1.2
-- Issue 50818 - dsconf pwdpolicy get error
-- Issue 50824 - dsctl remove fails with "name 'ensure_str' is not defined"
-- Issue 50599 - Remove db region files prior to db recovery
-- Issue 50812 - dscontainer executable should be placed under /usr/libexec/dirsrv/
-- Issue 50816 - dsconf allows the root password to be set to nothing
+- Issue 50855 - remove unused file from UI
+- Issue 50855 - UI: Port Server Tab to React
+- Issue 49845 - README does not contain complete information on building
+- Issue 49623 - cont cenotaph errors on modrdn operations
+- Issue 50882 - Fix healthcheck errors for instances that do not have TLS enabled
+- Issue 50886 - Typo in the replication debug message
+- Issue 50873 - Fix healthcheck and virtual attr check
+- Issue 50873 - Fix issues with healthcheck tool
+- Issue 50857 - Memory leak in ACI using IP subject
+- Issue 50823 - dsctl doesn't work with 'slapd-' in the instance name
+- Issue 49624 cont - DB Deadlock on modrdn appears to corrupt database and entry cache
+- Issue 50850 - Fix dsctl healthcheck for python36
+- Issue 49990 - Need to enforce a hard maximum limit for file descriptors
+
 - Issue 50798 - incorrect bytes in format string(fix import issue)
 
 
