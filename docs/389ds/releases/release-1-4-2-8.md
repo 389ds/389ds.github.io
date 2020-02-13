@@ -67,7 +67,7 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 
 If you find a bug, or would like to see a new feature, file it in our Pagure project: <https://pagure.io/389-ds-base>
 
-- Bump version to 1.4.2.7
+- Bump version to 1.4.2.8
 - Issue 50855 - remove unused file from UI
 - Issue 50855 - UI: Port Server Tab to React
 - Issue 49845 - README does not contain complete information on building
