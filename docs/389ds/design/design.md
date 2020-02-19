@@ -15,6 +15,10 @@ If you are adding a new design document, use the [template](design-template.html
 
 -   [Directory Server Roadmap](../FAQ/roadmap.html)
 
+## Feature design advice
+
+-   [Configuration Migration and Upgrade](container-config-migrate.html)
+
 ## 389 DIrectory Server 1.4.2 (RHEL 8.2)
 
 -   [Healthcheck Tool](healthcheck-design.html)
