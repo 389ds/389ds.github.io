@@ -22,9 +22,9 @@ If you are adding a new design document, use the [template](design-template.html
 ## 389 DIrectory Server 1.4.2 (RHEL 8.2)
 
 -   [Healthcheck Tool](healthcheck-design.html)
--   [Protection of NSS DB password] (protect-NSS-db.html)
--   [Password Upgrade On Bind] (pwupgrade-on-bind.html)
--   [Filter Syntax Validation] (filter-syntax-validation.html)
+-   [Protection of NSS DB password](protect-NSS-db.html)
+-   [Password Upgrade On Bind](pwupgrade-on-bind.html)
+-   [Filter Syntax Validation](filter-syntax-validation.html)
 
 ## 389 Directory Server 1.4.1 (RHEL 8.1)
 
