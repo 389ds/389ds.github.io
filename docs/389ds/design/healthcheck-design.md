@@ -117,21 +117,21 @@ Here is a table of the types of things the tool checks.  These list will probabl
 |DSBLE0001      |Backend      |Medium         |Backend missing mapping tree entry.  This happens when a step is missed when manually creating a new backend|
 |DSBLE0002      |Server       |High           |Unable to query the backend|
 |DSBLE0003      |Backend      |Low            |Database not initialized.  A backend was created, but the database is completely empty|
-|DSVIRTLE0001   |Config       |High           |Virtual attribute is incorrectly indexed.  Attirbutes used by roles or COS should not be indexed and it can corrupt search results |
-|DSCLE0001      |Config       |Low            |Logging format should be revised.  High reslution timestamps are disabled|
+|DSVIRTLE0001   |Config       |High           |Virtual attribute is incorrectly indexed.  Attributes used by roles or COS should not be indexed and it can corrupt search results |
+|DSCLE0001      |Config       |Low            |Logging format should be revised.  High resolution timestamps are disabled|
 |DSCLE0002      |Security     |High           |Insecure password hash configured.  A weak password storage scheme is being used|
 |DSELE0001      |Security     |Medium         |Minimum allowed TLS version too low.  The min TLS version is set below 1.2|
 |DSRILE0001     |Plugins      |Low            |RI plugin is misconfigured.  The update delay is set, and this can cause issues with replication|
-|DSRILE0002     |Plugins      |High           |RI plugin missing indexes.  Thre4 are atitrubtes the RI plugin qill querying for every delete ioeration that are not indexed.  This will cause hard to detect unindexed searches and high CPU|
+|DSRILE0002     |Plugins      |High           |RI plugin missing indexes.  There are attributes the RI plugin will query for every delete operation that are not indexed.  This will cause hard-to-detect unindexed searches and high CPU|
 |DSREPLLE0001   |Replication  |High           |Out of synchronization - replication is broken|
 |DSREPLLE0002   |Replication  |Low            |Presence of conflict entries|
 |DSREPLLE0003   |Replication  |Medium         |Out of synchronization, but replication is not broken|
 |DSREPLLE0004   |Replication  |Medium         |Failed to get status - state unknown|
 |DSREPLLE0005   |Replication  |Medium         |Remote replica is not reachable|
-|DSCLLE0001     |Replication  |Medium         |Changelog trimming is not configured and this can cuase the change log to grow without any limits|
-|DSSKEWLE0001   |Replication  |Low            |The replication time skew is over 6 hours, and should conitnue to be monitored|
+|DSCLLE0001     |Replication  |Medium         |Changelog trimming is not configured and this can cause the change log to grow without any limits|
+|DSSKEWLE0001   |Replication  |Low            |The replication time skew is over 6 hours, and should continue to be monitored|
 |DSSKEWLE0002   |Replication  |Medium         |The replication time skew is over 12 hours, and all the replicas should have their system times checked for accuracy|
-|DSSKEWLE0003   |Replication  |High           |The replication time skew is over 24 hours, and all the replicas should have their system times checked for accuracy, but replication seesions will start breaking.|
+|DSSKEWLE0003   |Replication  |High           |The replication time skew is over 24 hours, and all the replicas should have their system times checked for accuracy, but replication sessions will start breaking.|
 |DSCERTLE0001   |TLS Certificates |Medium     |Certificate expiring within 30 days|
 |DSCERTLE0002   |TLS Certificates |High       |Certificate expired|
 |DSDSLE0001     |OS           |High           |Low disk space|
