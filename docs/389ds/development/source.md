@@ -22,40 +22,20 @@ The source code was produced by first doing a git clone to get the repository, t
     git archive --prefix=PKGNAME/ TAG | bzip2 > PKGNAME.tar.bz2
 
 
-### 389 Admin Server and Console packges 1.1.46
-
-|Source tarball|git module|git tag|More Info|SHA1SUM|
-|--------------|----------|-------|---------|-------|
-|[389-admin.1.1.46.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-1.1.46.tar.bz2)|admin.git|389-admin-1.1.46|[Admin](../administration/adminserver.html)|735c51c0f19e448fbe9f552893ee4f9297420831|
-|[389-adminutil.1.1.23.tar.bz2]({{ site.binaries_url }}/binaries/389-adminutil-1.1.23.tar.bz2)|adminutil.git|389-adminutil-1.1.23|[Adminutil](../administration/adminutil.html)|daf72628b97337ad2b48e8753f2bc7b01a4482c0|
-|[389-console.1.1.19.tar.bz2](https://releases.pagure.org/389-console/389-console-1.1.18.tar.bz2)|389-console.git|389-console-1.1.19|[Building Console](buildingconsole.html)|8713628b1d0042acd59ff09ec487d4dccf1b3e8acf6008e7d1499e7954835744d601039ee2b6232a9d5f4022a1d56e7258fd1745dd75279b459050262599b466|
-|[389-console.1.1.18.tar.bz2]({{ site.binaries_url }}/binaries/389-console-1.1.18.tar.bz2)|console.git|389-admin-1.1.45|[Building Console](buildingconsole.html)|ad6929bc9391d7b725aa8246fce5cc22225829b3|
-|[389-admin-console.1.1.12.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-console-1.1.12.tar.bz2)|admin-console.git|389-admin-console-1.1.12|[Building Console](buildingconsole.html)|ecfce08e40760f9b8ed4e3b0aa90d7e026d761f9|
-|[389-ds-console-1.2.16.tar.bz2]({{ site.binaries_url }}/binaries/389-ds-console-1.2.16.tar.bz2)|ds-console.git|389-ds-console-1.2.16|[Building Console](buildingconsole.html)|1c7977a6720e77ccc26440c54672b729f9a8820d|
-|[idm-console-framework-1.1.17.tar.bz2]({{ site.binaries_url }}/binaries/idm-console-framework-1.1.17.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.17|[Building Console](buildingconsole.html)|abaa10be90f51ed61e4d16348eee7706fda19df1|
-
-### EPEL6 packages
-
-|Source tarball|git module|git tag|More Info|SHA1SUM|
-|--------------|----------|-------|---------|-------|
-|[389-admin.1.1.43.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-1.1.43.tar.bz2)|admin.git|389-admin-1.1.43|[Admin](../administration/adminserver.html)|3d931830ce832b7e0f820689ca30e5996b873f75|
-|[389-console-1.1.17.tar.bz2]({{ site.binaries_url }}/binaries/389-console-1.1.17.tar.bz2)|console.git|389-console-1.1.17|[Building Console](buildingconsole.html)|b63c5c53936752e55ba205ba827af7cc96658cbb|
-|[389-admin-console-1.1.11.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-console-1.1.11.tar.bz2)|admin-console.git|389-admin-console-1.1.11|[Building Console](buildingconsole.html)|852a1c121923137b9048b7e498b7f03965cc0d3b|
-|[idm-console-framework-1.1.15.tar.bz2]({{ site.binaries_url }}/binaries/idm-console-framework-1.1.15.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.15|[Building Console](buildingconsole.html)|86ca70b34bba1ceffb206cd945a5d077544a83f7|
-
-
 ### 389 Directory Server 1.4.3
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.4.3.4.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.4.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.4|[Building](building.html)|013403f49000e80b42565191153fb0e535ff6b2cbd1fc9127fb917e2bd9379e57c5e7562259d47a72126761b642af87eb854058b842fc33077e98d6e123d556f|
 |[389-ds-base-1.4.3.3.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.3.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.3|[Building](building.html)|63e241337d55cafbe71173bdff90d8668ade5f223ccb24e57f243a0406c8505a0e1e5fab6b11c06a36231a8c0d740ac8b018d5530e9355be802e2810d36da715|
 |[389-ds-base-1.4.3.2.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.2.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.2|[Building](building.html)|e747c96428b0b79cbea6f01c07214b8ee3456b6f5d93fd27da905c56690e370925d70939765d68c43dd74ecd7121bfe61d84314b8127d83dded45186120caa5e|
-|[389-ds-base-1.4.3.1.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.1.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.1|[Building](building.html)|f210c46d19635d9251982e193ddea08912ece9f2ef60e1487fbfd37678a8ad660a25c5925ab6d4f29576335be195485822a3ca5b71a0d11a861eb598885b362b|
+|[389-ds-base-1.4.3.1.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.1.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.1|[Building](building.html)||
 
 ### 389 Directory Server 1.4.2
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.4.2.9.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.2.9.tar.bz2)|389-ds-base.git|389-ds-base-1.4.2.9|[Building](building.html)|b5294eeb9cc66cab5fc716242db38c834d5412f475100915a9a381b8b4e8e84670e39036e9ae0d63ae8f3d6ab213186015e2ac0e60a4bc36adae5aadb8ee1d96|
 |[389-ds-base-1.4.2.8.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.2.8.tar.bz2)|389-ds-base.git|389-ds-base-1.4.2.8|[Building](building.html)|7b9a3a678c6c01270cd5a543dba9e96d2d8e444a2de6e0b10b148d2b201716b3ad63cf8d6a6aa3ab330cb6ee1a69c1553aca8b78fa7977b9d8766c0b94df8de1|
 |[389-ds-base-1.4.2.7.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.2.7.tar.bz2)|389-ds-base.git|389-ds-base-1.4.2.7|[Building](building.html)|7bbb5b8f3ca71c3bd3be8afb15a5923fb407fed920d3b6e8674232d825c500a7c9bba5d03dc281a9c54352688e7b2b82a0ff481fc84eea06f66ea760b96b2b2a|
 |[389-ds-base-1.4.2.6.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.2.6.tar.bz2)|389-ds-base.git|389-ds-base-1.4.2.6|[Building](building.html)|54ec37d421f99a4093c44d5a5c0a31a0c2e93e1c43aaeb63560204437c8c7b4c72b644dfa39164120f4a4b64a0d4368b7a2e6264e389b5b27615c08447faf013|
@@ -68,6 +48,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.4.1.16.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.1.16.tar.bz2)|389-ds-base.git|389-ds-base-1.4.1.16|[Building](building.html)|91b3bc4796361e318db42a0776a5424f89b2c6b71b0b376a30fe589cd1fcf6474c7b1291ee78945a212bd564b4e126746c3f7806dbdd4f9462b4c86d75a35357|
 |[389-ds-base-1.4.1.15.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.1.15.tar.bz2)|389-ds-base.git|389-ds-base-1.4.1.15|[Building](building.html)|b7e05675f791776931d631a92810bf4b22760079fafeae405352fad5a7db1b3e8cb1857c8b319eeecf67cd527c7b374c1bae72b6b6b782c62224bc1e7e6b90d7|
 |[389-ds-base-1.4.1.14.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.1.14.tar.bz2)|389-ds-base.git|389-ds-base-1.4.1.14|[Building](building.html)|6022ca2cd5862a52ff8d4a0e57ddad7f1780270b7a37de2daccb9bd32bc7d0be9fdefa4cfca9b12f6a577addabf82c7e31b3bd557c27ac469beaa928e1df59ee|
 |[389-ds-base-1.4.1.13.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.1.13.tar.bz2)|389-ds-base.git|389-ds-base-1.4.1.13|[Building](building.html)161368289f13e8f6a448dc5e6aadd129724ef6b54efbb66c8a03b46a1aa424157d27c53c6b779dc47f81506ba834bec66a9bdef072fe5f50cf73e1b68d723511|
@@ -407,6 +388,27 @@ Modules are git modules and tags are git tags, except where noted as CVS.
 |[389-admin-console-1.1.4.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-console-1.1.4.tar.bz2)|admin-console.git|389-admin-console-1.1.4|[AdmservConsole](buildingconsole.html#admin-console)|29a4ba674b4f532c67ed1303162e5b232bcf9821|
 |[389-dsgw-1.1.4.tar.bz2]({{ site.binaries_url }}/binaries/389-dsgw-1.1.4.tar.bz2)|dsgw.git|389-dsgw-1.1.4|[DSGW\_Building](../administration/dsgw-building.html)|52e01146f9b35b46c5deb288806b10624ffff855|
 |[winsync-1.1.0.tar.bz2]({{ site.binaries_url }}/binaries/winsync-1.1.0.tar.bz2)|winsync.git|winsync\_1\_1\_0|[WindowsSync](../howto/howto-windowssync.html|bb661761138c0f67fe1e33ea870c826e2fdb78b8|
+
+### 389 Admin Server and Console packges 1.1.46
+
+|Source tarball|git module|git tag|More Info|SHA1SUM|
+|--------------|----------|-------|---------|-------|
+|[389-admin.1.1.46.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-1.1.46.tar.bz2)|admin.git|389-admin-1.1.46|[Admin](../administration/adminserver.html)|735c51c0f19e448fbe9f552893ee4f9297420831|
+|[389-adminutil.1.1.23.tar.bz2]({{ site.binaries_url }}/binaries/389-adminutil-1.1.23.tar.bz2)|adminutil.git|389-adminutil-1.1.23|[Adminutil](../administration/adminutil.html)|daf72628b97337ad2b48e8753f2bc7b01a4482c0|
+|[389-console.1.1.19.tar.bz2](https://releases.pagure.org/389-console/389-console-1.1.18.tar.bz2)|389-console.git|389-console-1.1.19|[Building Console](buildingconsole.html)|8713628b1d0042acd59ff09ec487d4dccf1b3e8acf6008e7d1499e7954835744d601039ee2b6232a9d5f4022a1d56e7258fd1745dd75279b459050262599b466|
+|[389-console.1.1.18.tar.bz2]({{ site.binaries_url }}/binaries/389-console-1.1.18.tar.bz2)|console.git|389-admin-1.1.45|[Building Console](buildingconsole.html)|ad6929bc9391d7b725aa8246fce5cc22225829b3|
+|[389-admin-console.1.1.12.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-console-1.1.12.tar.bz2)|admin-console.git|389-admin-console-1.1.12|[Building Console](buildingconsole.html)|ecfce08e40760f9b8ed4e3b0aa90d7e026d761f9|
+|[389-ds-console-1.2.16.tar.bz2]({{ site.binaries_url }}/binaries/389-ds-console-1.2.16.tar.bz2)|ds-console.git|389-ds-console-1.2.16|[Building Console](buildingconsole.html)|1c7977a6720e77ccc26440c54672b729f9a8820d|
+|[idm-console-framework-1.1.17.tar.bz2]({{ site.binaries_url }}/binaries/idm-console-framework-1.1.17.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.17|[Building Console](buildingconsole.html)|abaa10be90f51ed61e4d16348eee7706fda19df1|
+
+### EPEL6 packages
+
+|Source tarball|git module|git tag|More Info|SHA1SUM|
+|--------------|----------|-------|---------|-------|
+|[389-admin.1.1.43.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-1.1.43.tar.bz2)|admin.git|389-admin-1.1.43|[Admin](../administration/adminserver.html)|3d931830ce832b7e0f820689ca30e5996b873f75|
+|[389-console-1.1.17.tar.bz2]({{ site.binaries_url }}/binaries/389-console-1.1.17.tar.bz2)|console.git|389-console-1.1.17|[Building Console](buildingconsole.html)|b63c5c53936752e55ba205ba827af7cc96658cbb|
+|[389-admin-console-1.1.11.tar.bz2]({{ site.binaries_url }}/binaries/389-admin-console-1.1.11.tar.bz2)|admin-console.git|389-admin-console-1.1.11|[Building Console](buildingconsole.html)|852a1c121923137b9048b7e498b7f03965cc0d3b|
+|[idm-console-framework-1.1.15.tar.bz2]({{ site.binaries_url }}/binaries/idm-console-framework-1.1.15.tar.bz2)|idm-console-framework.git|idm-console-framework-1.1.15|[Building Console](buildingconsole.html)|86ca70b34bba1ceffb206cd945a5d077544a83f7|
 
 ### Fedora Directory Server 1.2.0
 

@@ -67,6 +67,9 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 ## News
 
 <!-- Try to keep this list under 10 releases  -->
+- 2020-03-16: Released **389-ds-base [1.4.3.4](docs/389ds/releases/release-1-4-3-4.html)**
+- 2020-03-16: Released **389-ds-base [1.4.2.9](docs/389ds/releases/release-1-4-2-9.html)**
+- 2020-03-16: Released **389-ds-base [1.4.1.16](docs/389ds/releases/release-1-4-1-16.html)**
 - 2020-02-13: Released **389-ds-base [1.4.3.3](docs/389ds/releases/release-1-4-3-3.html)**
 - 2020-02-13: Released **389-ds-base [1.4.2.8](docs/389ds/releases/release-1-4-2-8.html)**
 - 2020-02-13: Released **389-ds-base [1.4.1.15](docs/389ds/releases/release-1-4-1-15.html)**
@@ -74,9 +77,6 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 - 2020-01-23: Released **389-ds-base [1.4.1.14](docs/389ds/releases/release-1-4-1-14.html)**
 - 2020-01-23: Released **389-ds-base [1.4.3.2](docs/389ds/releases/release-1-4-3-2.html)**
 - 2020-01-13: Released **389-ds-base [1.4.2.6](docs/389ds/releases/release-1-4-2-6.html)**
-- 2020-01-13: Released **389-ds-base [1.4.1.13](docs/389ds/releases/release-1-4-1-13.html)**
-- 2019-12-06: Released **389-ds-base [1.4.1.12](docs/389ds/releases/release-1-4-1-12.html)**
-- 2019-12-06: Released **389-ds-base [1.4.2.5](docs/389ds/releases/release-1-4-2-5.html)**
 
 - [All past release notes](docs/389ds/releases/release-notes.html)
 
