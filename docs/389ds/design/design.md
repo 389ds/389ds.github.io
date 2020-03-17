@@ -19,7 +19,11 @@ If you are adding a new design document, use the [template](design-template.html
 
 -   [Configuration Migration and Upgrade](container-config-migrate.html)
 
-## 389 DIrectory Server 1.4.2 (RHEL 8.2)
+## 389 Directory Server 1.4.3 (RHEL 8.3)
+
+-   [Diskspace Monitoring](disk-monitoring.html)
+
+## 389 Directory Server 1.4.2 (RHEL 8.2)
 
 -   [Healthcheck Tool](healthcheck-design.html)
 -   [Protection of NSS DB password](protect-NSS-db.html)
