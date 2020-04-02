@@ -18,7 +18,7 @@ But it still maintains the changelog for all backends in a single directory and 
 changelog database files. This has an overhead in many respects, but it also prevents the move to a replacable backend database
 library, eg LMDB does not allow the use of dedicated database files.
 
-Therfore, as a first step, the changlog database files should be fulkly integrated to the backend database.
+Therfore, as a first step, the changlog database files should be fully integrated to the backend database.
 
 High level summary
 ==================
@@ -57,7 +57,7 @@ where the changelogdir is the only required attribute. Additional configuration 
 
      nsSymmetricKey: key used for encrypt/decrypt (encrypted by server cert)
 
-This changelog configuration is global, there is no way to enable trimming or encryption for only a specific backend. The maxentries value is a sum accross all chnagelogs.
+This changelog configuration is global, there is no way to enable trimming or encryption for only a specific backend. The maxentries value is a sum accross all changelogs.
 
  
 
@@ -113,7 +113,7 @@ If an existing instance is upgraded the following action will be done during sta
 Changelog Database Access
 =========================
 
-AS long as the changelog database was maintained independedently from the main database a complex mechanism was
+As long as the changelog database was maintained independedently from the main database a complex mechanism was
 implemented to ensure that the database environment does not go away while the changelog was used. With the new method
 the changelog db file is part of the main database and we can rely on the plugin dependency and the order of startup and shutdown:
 the multimaster replication plugin will start after the database plugin and close earlier.
@@ -162,11 +162,11 @@ Impacted areas
 
 ## Export and Import of Database
 
-In the current implemtation there are tasks for an ldif export of the changelog and for import of the changelog. But the reimport of an online export will inmost cases
+In the current implemtation there are tasks for an ldif export of the changelog and for import of the changelog. But the reimport of an online export will in most cases
 lead to an mismatch between changelog and database. The motivation for reimport was probably the case of encrypted changelog and certificate change or to comapct the chamgelog
 database by reimporting.
 
-The export/import of the changelogdatabase does only make sense if it is done together with an export/import of the main database. Only then database and changelog will
+The export/import of the changelog database does only make sense if it is done together with an export/import of the main database. Only then database and changelog will
 match after import. Therefor the export and import modes will be extended and have an optional changleog export/import.
 
 Also reimporting the changelog is only useful in connection with ldif exports including replication meta data. It requires the "-r" option. 
