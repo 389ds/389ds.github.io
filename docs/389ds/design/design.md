@@ -22,6 +22,7 @@ If you are adding a new design document, use the [template](design-template.html
 ## 389 Directory Server 1.4.3 (RHEL 8.3)
 
 -   [Diskspace Monitoring](disk-monitoring.html)
+-   [Database Monitoring in dsconf](dbmon-design.html)
 
 ## 389 Directory Server 1.4.2 (RHEL 8.2)
 
