@@ -7,15 +7,13 @@ title: "Database Monitor in dsconf"
 
 ### Overview
 
-We need to port all the old Perl and shell scripts to our new python CLI.  dbmon.sh was a legacy tool to gather all the database stats into a single report.  This is the new **dsconf** version of that tool.   It provide a human friendly report, as well as a JSON report for easy parsing.  The new tool provides similar functionality like **dbmon.sh** did, there is the option to set a time increment that allows for the tool to continuously refresh the report.  You can also specify which backends you want to check, the default is all the backends, and finally you can choose if you want to see the individual index statistics..
+We need to port all the old Perl and shell scripts to our new python CLI.  dbmon.sh was a legacy tool to gather all the database stats into a single report.  This is the new **dsconf** version of that tool.   It provide a human friendly report, as well as a JSON report for easy parsing.  The new tool provides similar functionality like **dbmon.sh** had where you can specify which backends you want to check, the default is all the backends, and finally you can choose if you want to see the individual index statistics.
 
 ### Usage
 
     dsconf INSTANCE_ID monitor dbmon [--backends="BACKEND BACKEND"] [--incr INCR_NUMBER] [--indexes]
 
 - "**\-\-backends**" - A space separated list of the backends or suffixes to get stats on
-
-- "**\-\-incr**" - The number of seconds to sleep before automatically running the report again
 
 - "**\-\-indexes**" - Report individual index statistics
 
