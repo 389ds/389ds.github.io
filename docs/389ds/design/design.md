@@ -37,6 +37,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Replication Agreement Status Message Improvements](repl-agmt-status-design.html)
 -   [CLI Tool and Lib389 Design Guide](cli-guide.html)
 -   [Monitor Replication with CLI and Web Console Design Guide](replication-monitor-design.html)
+-   [LDIF generation (dbgen) added to dsctl](dbgen-design.html)
 
 ## 389 Directory Server 1.4.0 (RHEL 8)
 
