@@ -58,7 +58,7 @@ Only the "**nested**" feature does not have a *interactive mode* because there a
 Example: Creating users
 -----------------------
 
-#### First, the usage:
+### First, the usage:
 
 ```
 # dsctl slapd-localhost dbgen users --help 
@@ -87,7 +87,9 @@ optional arguments:
                         The LDIF file name. Default is "/tmp/dbgen.ldif"
 ```
 
-#### Create a LDIF using Real Names
+<br>
+
+### Create a LDIF using Real Names
 
 This command will create an ldif file **/tmp/dbgen.ldif** containing 100000 entries.  Each entry is randomly added to one of these predefined Organizational Units:
 
@@ -145,8 +147,9 @@ title: Junior Visionary
 usercertificate;binary:: MIIBvjCCASegAwI ...
 ```
 
+<br>
 
-#### Create a LDIF using Generic Names
+### Create a LDIF using Generic Names
 
 There are cases where having a structured DN is beneficial.  The first one is that the generic entry are compatible with the **ldclt** load testing tool that ships with Directory Server.  Using a structured DN also makes it easier to perform other tasks, or create other LDIF's that can interact with those entries.  We'll discuss this more in the "Modify Load" LDIF section.
 
@@ -196,14 +199,15 @@ You can also set the starting index number for the entry's DN
 
 Then the DN of the entries start off at **dn: uid=user0051, ...**
 
+<br>
 
 Example: Create groups
 ----------------------
 
-#### Usage
+### Usage
 
 ```
-# ./dsctl slapd-localhost dbgen groups --help 
+# dsctl slapd-localhost dbgen groups --help
 usage: dsctl [instance] dbgen groups [-h] [--number NUMBER] [--suffix SUFFIX]
                                      [--parent PARENT]
                                      [--num-members NUM_MEMBERS]
@@ -237,7 +241,9 @@ optional arguments:
 
 ```
 
-#### Create a Static Group with Members
+<br>
+
+### Create a Static Group with Members
 
 ```
 # dsctl slapd-localhost dbgen groups myGroup --number 1 --suffix dc=example,dc=com --num-members 10000 --create-members
@@ -275,19 +281,20 @@ uniquemember: uid=group_entry1-00003,dc=example,dc=com
 ...
 ```
 
-You can also set where the group is created by setting the **\-\-parent** DN, and you can control where the user entries are created by specifying the **\-\-member-parent** DN.  You can also choose what membership attribute you want to use by set **--member-attr** to "*member*", etc.  By default it uses "*uniquemember*"
+You can also set where the group is created by setting the **\-\-parent** DN, and you can control where the user entries are created by specifying the **\-\-member-parent** DN.  You can also choose what membership attribute you want to use by set **\-\-member-attr** to "*member*", etc.  By default it uses "*uniquemember*"
 
-You can also create many group at once by increasing the value in **\-\-\number**  So it's easy to create a lot of large static groups.
+You can also create many group at once by increasing the value in **\-\-number**  So it's easy to create a lot of large static groups.
 
 Note - when creating really large groups you can exceed the Maximum Ber Size limit in DS if you try and add the group using ldapmodify.  Importing this LDIF should be fine, but if you need to do it online then keep in mind you might need to increase the servers "nsslapd-maxbersize" configuration attribute.
 
+<br>
 
 Creating COS Entries
 ---------------------
 
 Personally I find it easier to use the interactive mode for these entries, as it dynamically only asks you for the settings you need for that type of COS entry that you are trying to create
 
-#### Usage
+### Usage
 
 ```
 # dsctl slapd-localhost dbgen cos-def --help
@@ -321,10 +328,13 @@ optional arguments:
   --ldif-file LDIF_FILE
                         The LDIF file name. Default is "/tmp/dbgen.ldif"
 ```
+<br>
 
-#### Example: Create COS Definitions
+### Example: Create COS Definitions
 
-##### Example of **classic** definition
+<br>
+
+#### Example of **classic** definition
 
 ```
 # dsctl slapd-localhost dbgen cos-def My_Postal_Def --type classic --parent "ou=cos definitions,dc=example,dc=com" --cos-specifier businessCatagory --cos-template "cn=sales,cn=classicCoS,dc=example,dc=com" --cos-attr postalcode telephonenumber 
@@ -344,7 +354,9 @@ cosAttribute: postalcode
 cosAttribute: telephonenumber
 ```
 
-##### Example of **pointer** definition
+<br>
+
+#### Example of **pointer** definition
 
 
 ```
@@ -364,7 +376,9 @@ cosAttribute: postalcode
 cosAttribute: telephonenumber
 ```
 
-##### Example of **indirect** definition
+<br>
+
+#### Example of **indirect** definition
 
 ```
 # dsctl slapd-localhost dbgen cos-def My_Postal_Def --type indirect --parent "ou=cos definitions,dc=example,dc=com" --cos-specifier businessCatagory --cos-attr postalcode telephonenumber
@@ -383,10 +397,12 @@ cosAttribute: postalcode
 cosAttribute: telephonenumber
 ```
 
+<br>
+
 Creating Roles
 ---------------------
 
-#### Usage
+### Usage
 
 ```
 # dsctl slapd-localhost dbgen roles --help
@@ -414,9 +430,14 @@ optional arguments:
 
 ```
 
-#### Example: Create A Role
+<br>
 
-##### Example of **managed** role
+
+### Example: Create A Role
+
+<br>
+
+#### Example of **managed** role
 
 ```
 # dsctl slapd-localhost dbgen roles My_Managed_Role --type managed --parent ou=roles,dc=example,dc=com 
@@ -434,8 +455,9 @@ objectclass: nsSimpleRoleDefinition
 objectclass: nsManagedRoleDefinition
 cn: My_Managed_Role
 ```
+<br>
 
-##### Example of **filtered** role
+#### Example of **filtered** role
 
 ```
 # dsctl localhost dbgen roles My_Filtered_Role --type filtered --parent ou=roles,dc=example,dc=com --filter "objectclass=posixAccount"
@@ -455,8 +477,9 @@ cn: My_Filtered_Role
 nsRoleFilter: objectclass=posixAccount
 ```
 
+<br>
 
-##### Example of **nested** role
+#### Example of **nested** role
 
 ```
 # dsctl slapd-localhost dbgen roles My_Nested_Role --type filtered --parent ou=roles,dc=example,dc=com --role-dn cn=some_role,ou=roles,dc=example,dc=com
@@ -477,12 +500,14 @@ nsRoleDN: cn=some_role,ou=roles,dc=example,dc=com
 
 ```
 
+<br>
+
 Creating a Modification LDIF
 ---------------------
 
 Create an LDIF containing LDAP update operations that can be consumed by ldapmodify
 
-#### Usage
+### Usage
 
 
 ```
@@ -529,7 +554,9 @@ optional arguments:
                         The LDIF file name. Default is "/tmp/dbgen.ldif"
 ```
 
-#### Example: Create Users and Modify Them
+<br>
+
+### Example: Create Users and Modify Them
 
 ```
 # dsctl slapd-localhost dbgen mod-load --parent dc=example,dc=com --num-users 1000 --create-users --mod-users 1000 --mod-attrs cn uid sn --delete-users
@@ -538,7 +565,9 @@ optional arguments:
 This creates an LDIF with 1000 ADD operations to create the user entries, followed by modifying all 1000 entries by changing either **cn**, **uid**, or **sn**.  After the modifies all done then all the entries are deleted
 
 
-#### Example: Create Users and do mixed operations
+<br>
+
+### Example: Create Users and do mixed operations
 
 ```
 # dsctl slapd-localhost dbgen mod-load --parent dc=example,dc=com --num-users 1000 --create-users --mod-users 1000 --add-users 10 --del-users 100 --mod-users 1000 --modrdn-users 100 --mod-attrs cn uid sn --delete-users
@@ -546,7 +575,9 @@ This creates an LDIF with 1000 ADD operations to create the user entries, follow
 
 This creates an LDIF with 1000 ADD operations to create the user entries, followed by modifying all 1000 entries by changing either **cn**, **uid**, or **sn**, then it adds an additional 10 users, performs 100 modrdn operations, and deletes 100 entries.  After all that then all the entries are deleted.
 
-#### Example: Create Users and do mixed operations randomly
+<br>
+
+### Example: Create Users and do mixed operations randomly
 
 ```
 # dsctl slapd-localhost dbgen mod-load --parent dc=example,dc=com --num-users 1000 --create-users --mod-users 1000 --add-users 10 --del-users 100 --mod-users 1000 --modrdn-users 100 --mod-attrs cn uid sn --delete-users --randomize
@@ -554,13 +585,14 @@ This creates an LDIF with 1000 ADD operations to create the user entries, follow
 
 This creates an LDIF with 1000 ADD operations to create the user entries, then it randomly does the ADD, MODIFY, MODRDN, and DELETE operations.  After all that then all the entries are deleted.  Since the operations are randomized, and you can do deletes, it possible a delete might happen before a modify operation is performed.  So it is expected that some of these operations will fail simply due to the random timing.  So best to run ldapmodify with the **\-c** option to "continue on error".
 
+<br>
 
 Creating a Nest LDIF
 ---------------------
 
 This LDIF is a heavily nested cascading fractal structure.  There is no interactive mode for this LDIF because all you need need to do is set the suffix, the number of entries, and the number of entries to add to each node.
 
-#### Usage
+### Usage
 
 ```
 # dsctl slapd-localhost dbgen nested --help
@@ -582,7 +614,9 @@ optional arguments:
 
 ```
 
-#### Example
+<br>
+
+### Example
 
 So if you have 600 entries, and you add 100 entries per node, the LDIF file structure would look something like
 
@@ -604,6 +638,7 @@ So if you have 600 entries, and you add 100 entries per node, the LDIF file stru
 
 ```
 
+<br>
 
 Author
 ------
