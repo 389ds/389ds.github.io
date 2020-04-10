@@ -91,7 +91,7 @@ If you have more than one suffix/db, you will have to do this for each one that 
 -   Remove traces of stale CSN tracking in the Replica Agreements themselves
     -   File location: /etc/dirsrv/slapd-EXAMPLE-COM/dse.ldif
 
-            # cat dse.ldif | sed -n '1 {h; $ !d}; $ {x; s/\n //g; p}; /^ / {H; d}; /^ /! {x; s/\n //g; p}' | grep -v nsds50ruv > new.dse.ldif    
+            # sed -n '1 {h; $ !d}; $ {x; s/\n //g; p}; /^ / {H; d}; /^ /! {x; s/\n //g; p}' dse.ldif | egrep -v ^nsds50ruv: > new.dse.ldif   
 
 -   
     -   backup the old dse.ldif and replace it with the new one:
@@ -153,7 +153,7 @@ If you have more than one suffix/db, you will have to do this for each one that 
 -   Remove traces of stale CSN tracking in the Replica Agreements themselves
     -   File location: /etc/dirsrv/slapd-EXAMPLE-COM/dse.ldif
 
-            # cat dse.ldif | sed -n '1 {h; $ !d}; $ {x; s/\n //g; p}; /^ / {H; d}; /^ /! {x; s/\n //g; p}' | grep -v nsds50ruv > new.dse.ldif    
+            # sed -n '1 {h; $ !d}; $ {x; s/\n //g; p}; /^ / {H; d}; /^ /! {x; s/\n //g; p}' dse.ldif | egrep -v ^nsds50ruv: > new.dse.ldif   
 
 -   
     -   backup the old dse.ldif and replace it with the new one:
