@@ -287,6 +287,8 @@ group can login to this system:
 
     dsidm localhost client_config sssd.conf server_admins
 
+Please make sure you have enabled the `memberOf` plugin on the server, as explained in the last section.
+
 If you are happy, copy paste (or redirect) the content to /etc/sssd/sssd.conf
 
 On fedora, sssd is already part of pam and nsswitch, so you don't need to do anything!
