@@ -54,7 +54,7 @@ If you're new to the project you should start with our [getting started](docs/38
 -   Online, zero downtime, LDAP-based update of schema, configuration, and management including Access Control Information (ACIs)
 -   Asynchronous Multi-Master Replication, to provide fault tolerance and high write performance
 -   The codebase has been deployed continuously for more than a decade by sites around the world
--   Extensive [documentation](https://access.redhat.com/site/documentation/Red_Hat_Directory_Server/)
+-   Extensive [documentation](https://access.redhat.com/documentation/en-us/red_hat_directory_server/11/)
 -   Secure authentication and transport (TLS, and SASL)
 -   LDAPv3 compliant server
 
@@ -67,15 +67,13 @@ To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freeno
 ## News
 
 <!-- Try to keep this list under 10 releases  -->
+- 2020-04-17: Released **389-ds-base [1.4.4.0](docs/389ds/releases/release-1-4-4-0.html)**
+- 2020-04-17: Released **389-ds-base [1.4.3.6](docs/389ds/releases/release-1-4-3-6.html)**
+- 2020-04-17: Released **389-ds-base [1.4.2.12](docs/389ds/releases/release-1-4-2-12.html)**
+- 2020-04-17: Released **389-ds-base [1.4.1.18](docs/389ds/releases/release-1-4-1-18.html)**
 - 2020-04-01: Released **389-ds-base [1.4.3.5](docs/389ds/releases/release-1-4-3-5.html)**
 - 2020-04-01: Released **389-ds-base [1.4.2.11](docs/389ds/releases/release-1-4-2-11.html)**
 - 2020-04-01: Released **389-ds-base [1.4.1.17](docs/389ds/releases/release-1-4-1-17.html)**
-- 2020-03-16: Released **389-ds-base [1.4.3.4](docs/389ds/releases/release-1-4-3-4.html)**
-- 2020-03-16: Released **389-ds-base [1.4.2.9](docs/389ds/releases/release-1-4-2-9.html)**
-- 2020-03-16: Released **389-ds-base [1.4.1.16](docs/389ds/releases/release-1-4-1-16.html)**
-- 2020-02-13: Released **389-ds-base [1.4.3.3](docs/389ds/releases/release-1-4-3-3.html)**
-- 2020-02-13: Released **389-ds-base [1.4.2.8](docs/389ds/releases/release-1-4-2-8.html)**
-
 
 - [All past release notes](docs/389ds/releases/release-notes.html)
 
