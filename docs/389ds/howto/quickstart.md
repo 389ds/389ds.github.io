@@ -88,7 +88,7 @@ For remote administration a configuration is:
 
     # cat ~/.dsrc
     [localhost]
-    uri = ldaps://localhost
+    uri = ldaps://<name of remote server>
     basedn = dc=example,dc=com
     binddn = cn=Directory Manager
     # You need to copy /etc/dirsrv/slapd-localhost/ca.crt to your host for this to work.
