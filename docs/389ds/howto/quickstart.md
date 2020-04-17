@@ -268,8 +268,6 @@ Now anytime you add a member to a group it will update the reverse memberOf poin
 great as it allows a fast caching of "what groups someone is a member of" which helps make your
 server faster and simpler to administer.
 
-reference: [Setup MemberOf](/docs/389ds/howto/howto-memberof.html)
-
 # Setup SSSD
 ------------
 
