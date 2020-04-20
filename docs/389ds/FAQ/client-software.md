@@ -71,7 +71,7 @@ We don't advocate the use of any one of these tools over another. It is up to th
     -   [ldapdelete](http://www.redhat.com/docs/manuals/dir-server/cli/utilities.htm#pgfId-19549) Remove entries from an LDAP server
 -   Export & Import LDAP Databases
     -   [dsctl <instance> db2ldif](http://www.redhat.com/docs/manuals/dir-server/cli/scripts.htm#pgfId-23620) Export database contents to LDIF
-    -   [ldif2db](http://www.redhat.com/docs/manuals/dir-server/cli/scripts.htm#pgfId-23739) Import database contents from LDIF
+    -   [dsctl <instance> ldif2db](http://www.redhat.com/docs/manuals/dir-server/cli/scripts.htm#pgfId-23739) Import database contents from LDIF
 -   Backup & Restore
     -   [bak2db](http://www.redhat.com/docs/manuals/dir-server/cli/scripts.htm#pgfId-23510) Restore database from backup
     -   [db2bak](http://www.redhat.com/docs/manuals/dir-server/cli/scripts.htm#pgfId-23561) Create backup of database
