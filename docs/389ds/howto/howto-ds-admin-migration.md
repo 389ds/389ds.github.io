@@ -16,7 +16,7 @@ There are two types of migration - same platform and cross platform.
 
 Same means that the new software is installed on the same machine as the old one. For example, you already have a FC4 i386 machine with FDS 7.1 installed on it, and you want to install FDS 1.1 on it. In this case, the old and new software can both be run at the same time on the same machine. Database files and other binary data files can be copied and used directly by the new software. There is no need for any import/export process. This also means all of the replication changelog and other state information can be used directly, so no reinit of replicas is required.
 
-**NOTE about database format change** - Fedora 8 uses Berkeley DB 4.6. The binary database format is incompatible with earlier releases. If upgrading or migrating from an earlier release to Fedora 8, you must export (db2ldif) your databases to LDIF format as described below in the section about 'Remote Source to Local Target'.
+**NOTE about database format change** - Fedora 8 uses Berkeley DB 4.6. The binary database format is incompatible with earlier releases. If upgrading or migrating from an earlier release to Fedora 8, you must export (`dsctl <instance> db2ldif`) your databases to LDIF format as described below in the section about 'Remote Source to Local Target'.
 
 ### Cross platform
 
@@ -42,10 +42,10 @@ The old machine should still be networked in order for the different migration s
 
 #### Remote Source to Local Target
 
-In this case, the source data must already have been converted to LDIF, and must be available on the target machine. The user must first run db2ldif on the source machine e.g. something like this:
+In this case, the source data must already have been converted to LDIF, and must be available on the target machine. The user must first run `dsctl <instance> db2ldif` on the source machine e.g. something like this:
 
     foreach db /opt/fedora-ds/slapd-instance/db/*
-      db2ldif -n db -a /opt/fedora-ds/slapd-instance/db/db.ldif
+      dsctl <instance> db2ldif -n db -a /opt/fedora-ds/slapd-instance/db/db.ldif
     end
 
 Then, the configuration and data will be made available on the target in one of two ways:
@@ -100,7 +100,7 @@ User defined schema files can just be copied from /opt/fedora-ds/slapd-instance/
 
 For same platform migration, the database files can just be copied to their new location e.g. from /opt/fedora-ds/slapd-instance/db to /var/lib/fedora-ds/slapd-instance/db, unless the user has placed the index files and/or transaction logs in a non-default location (for performance, for example), in which case they will be left in place. Same with changelog db files, they will just be copied to their new location. The Berkeley DB code will automatically convert the db 4.2 index files to later versions if needed.
 
-For cross platform migration, the source databases will first have to be converted to LDIF using db2ldif, then copied to the target machine, and an ldif2db performed. There is no such procedure for changelog db data or other replication state information, so all of the replicas will have to be reinitialized once they are all migrated.
+For cross platform migration, the source databases will first have to be converted to LDIF using `dsctl <instance> db2ldif`, then copied to the target machine, and an ldif2db performed. There is no such procedure for changelog db data or other replication state information, so all of the replicas will have to be reinitialized once they are all migrated.
 
 Admin Server
 ------------
