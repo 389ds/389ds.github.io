@@ -92,7 +92,21 @@ These files are:
     common-password-pc
     common-session-pc
 
-Their content should appear as:
+Suse offers the `pam-config` utility that takes care of the necessary modifications:
+```
+# pam-config -a -sss
+```
+This command makes sure that sssd is correctly enabled within the pam stack. You can check if sssd is correctly enabled by issuing `pam-config -q -sss`, which should return a list of all four types:
+```
+# pam-config -q --sss
+auth:
+account:
+password:
+session:
+#
+```
+
+The complete content of the aforementioned four files should look similar to the following:
 
     # common-account-pc
     account    requisite   pam_unix.so
