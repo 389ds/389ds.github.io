@@ -26,12 +26,14 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.4.4.1.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.4.1.tar.bz2)|389-ds-base.git|389-ds-base-1.4.4.1|[Building](building.html)|ca56079c93be95ffacccd8f4f18f5aa3f1039cc61b661d14737f485937eddb6120313c3f50e38f6daba6caf76102d6e4c537fa0bffb941896dfff93f44fd597b|
 |[389-ds-base-1.4.4.0.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.4.0.tar.bz2)|389-ds-base.git|389-ds-base-1.4.4.0|[Building](building.html)|6c0e8ac5173c98da8c51cb6a7780376abceeb42fd4354d79bf7c1ed6627bb74433a983acca4ffa53ed6888dacaee6eaf4a92d907265a4e81c6efef7fe1f6d9be|
 
 ### 389 Directory Server 1.4.3
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.4.3.7.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.7.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.7|[Building](building.html)|0b86a303d428831a66da9b3a7198f548cac243970d65f4a67c32e82b16ac0a3d52d59ed881f19e9067922a100d709cdebedfffcd10aac5a326bf8b7c5cd6dcf6|
 |[389-ds-base-1.4.3.6.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.6.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.6|[Building](building.html)|0f3cadb87fd642ff5cc2541c76ae627beb9c8f720b1e7ec1187bde2ec56f5c18d429bf053ab82f11def9eae51a73c980ec7786285d994c33b69a6c4bdee0e611|
 |[389-ds-base-1.4.3.5.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.5.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.5|[Building](building.html)|b6af931a8aed7140220061b5d370880acce606901a0087ef8c22a51b16a111e0a13b4893ddd0166ec8a70ca4041f457b9890d137ae037cea2d3433dcc818a9cf|
 |[389-ds-base-1.4.3.4.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.4.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.4|[Building](building.html)|013403f49000e80b42565191153fb0e535ff6b2cbd1fc9127fb917e2bd9379e57c5e7562259d47a72126761b642af87eb854058b842fc33077e98d6e123d556f|
