@@ -16,7 +16,7 @@ Overview
 Design
 ------
 
-The tool can do everything via command line arguments, and there is also an interactive mode for most of the LDIF types.
+The tool can do everything via command line arguments, and there is also an interactive mode for most of the LDIF types.  Since the LDIF file created for "users" or "nested user" will typically be imported, these files are written to the servers LDIF directory by default, all other DLIFs default to /tmp/ldifgen.ldif
 
 ```
 # dsctl slapd-localhost dbgen --help 
@@ -84,7 +84,7 @@ optional arguments:
                         instead of "uid"
   --localize            Localize the LDIF data
   --ldif-file LDIF_FILE
-                        The LDIF file name. Default is "/tmp/dbgen.ldif"
+                        The LDIF file name.  Default location is the server's LDIF directory using the name 'users.ldif'
 ```
 
 <br>
@@ -237,7 +237,7 @@ optional arguments:
                         The membership attribute to use in the group. Default
                         is "uniquemember".
   --ldif-file LDIF_FILE
-                        The LDIF file name. Default is "/tmp/dbgen.ldif"
+                        The LDIF file name. Default is "/tmp/ldifgen.ldif"
 
 ```
 
@@ -326,7 +326,7 @@ optional arguments:
                         A list of attributes which defines which attribute the
                         COS generates values for.
   --ldif-file LDIF_FILE
-                        The LDIF file name. Default is "/tmp/dbgen.ldif"
+                        The LDIF file name. Default is "/tmp/ldifgen.ldif"
 ```
 <br>
 
@@ -426,7 +426,7 @@ optional arguments:
                         A DN of a role entry that should be included in this
                         role. Used for "nested" roles only.
   --ldif-file LDIF_FILE
-                        The LDIF file name. Default is "/tmp/dbgen.ldif"
+                        The LDIF file name. Default is "/tmp/ldifgen.ldif"
 
 ```
 
@@ -551,7 +551,7 @@ optional arguments:
   --randomize           Randomly perform the specified add, mod, delete, and
                         modrdn operations
   --ldif-file LDIF_FILE
-                        The LDIF file name. Default is "/tmp/dbgen.ldif"
+                        The LDIF file name. Default is "/tmp/ldifgen.ldif"
 ```
 
 <br>
@@ -610,7 +610,7 @@ optional arguments:
                         node/subtree
   --suffix SUFFIX       The suffix DN for the LDIF
   --ldif-file LDIF_FILE
-                        The LDIF file name. Default is "/tmp/dbgen.ldif"
+                        The LDIF file name.  Default location is the server's LDIF directory using the name 'users.ldif'
 
 ```
 
