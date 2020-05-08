@@ -2,6 +2,8 @@
 title: "Entry Cache Improvements"
 ---
 
+{% include toc.md %}
+
 Entry Cache Improvements
 -----------------------------
 
@@ -21,6 +23,7 @@ Add probes, find the true bottle necks
 
 ### Slapi_Entry
 
+```
 struct slapi_entry
 {
     struct slapi_dn e_sdn;        /* DN of this entry */
@@ -38,9 +41,11 @@ struct slapi_entry
     unsigned char e_flags;
     Slapi_Attr *e_aux_attrs;      /* Attr list used for upgrade */
 };
+```
 
 #### Child Structures
 
+```
 struct slapi_dn
 {
     unsigned char flag;
@@ -89,6 +94,7 @@ struct _entry_vattr
     Slapi_Attr *attr; /* attribute computed by a SP */
     struct _entry_vattr *next;
 };
+```
 
 #### slapi_entry_dup()
 
