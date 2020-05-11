@@ -14,9 +14,11 @@ Add probes, find the true bottle necks
 
 ## Possible Improvements:
 
-- Change entry cache algorithm (william's concurrent design)
+- Change entry cache algorithm ( https://github.com/Firstyear/concread/blob/master/CACHE.md )
 - Change Slapi_Entry structure to be more efficient
-- Change id2entry entry format (Cbor)
+- Change id2entry entry format (Ldif to Cbor)
+- Cache IDLs to avoid BDB hits.
+- IDL Compression Library ( https://github.com/Firstyear/idlset )
 - Would be great to reduce the entry cache entry's size so more entries can fit into the same amount of memory
 - Make duplicating an entry less expensive/reduce the number of duplications
 
