@@ -7,10 +7,42 @@ title: "Entry Cache Improvements"
 Entry Cache Improvements
 -----------------------------
 
+## Why Entry Cache?
+
+We have a different disk storage of entries compared to memory reperesentation. Effecient and reliable
+disk storage is different to our an effective in memory format. This also allows us to change the
+in memory format without affecting on disk content.
+
+The trade however is that we must perform CPU work to convert between the disk and memory formats
+on loads and writes. During writes, which is a smaller part of our work load, this is not a major
+concern, but with high concurrent read numbers, this can be very intensive.
+
+This is why we cache the deserialised entries into ram.
+
+More than than, by having an entry cache, we are able to control where and how our data is cached,
+where as relying on DB cache, we don't have control of this, and worse, relying on the VFS when a
+system comes under memory pressure, VFS pages will be evicted earlier than application memory.
+Additionally, the VFS is an LRU which has a number of issues with invalidation patterns. Systems
+like LMDB which rely on the VFS as a cache are design for effective disk to VFS transfer, but not
+effective CPU cache operations and alignments (which is more important in a concurrent system).
+
+To this end, having an entry cache allows us to control and improve this in our application.
+
+## Cache challenges
+
+As our system is concurrently readable (many parallel readers and a single seralised writer), there
+has been no previous work on caches for this kind of system, meaning that some consistency guarantees
+may not have been met by previous designs.
+
+Cache strategies like LRU/LFU have many weaknesses related to invalidation patterns that can occur.
+
+The current Entry cache is a custom HashMap with LRU and entries have watermarks to define if they
+have been invalidated due to a write. It is not transactional, and requires a single mutex to protect
+it.
+
 ## To Do
 
 Add probes, find the true bottle necks
-
 
 ## Possible Improvements:
 
@@ -21,7 +53,6 @@ Add probes, find the true bottle necks
 - IDL Compression Library ( https://github.com/Firstyear/idlset )
 - Would be great to reduce the entry cache entry's size so more entries can fit into the same amount of memory
 - Make duplicating an entry less expensive/reduce the number of duplications
-
 
 ### Slapi_Entry
 
