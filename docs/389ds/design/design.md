@@ -19,10 +19,15 @@ If you are adding a new design document, use the [template](design-template.html
 
 -   [Configuration Migration and Upgrade](container-config-migrate.html)
 
+## 389 Directory Server 1.4.4
+
+-   In progress...
+
 ## 389 Directory Server 1.4.3 (RHEL 8.3)
 
 -   [Diskspace Monitoring](disk-monitoring.html)
 -   [Database Monitoring in dsconf](dbmon-design.html)
+-   [dbgen replacement in dsctl](dbgen-design.html)
 
 ## 389 Directory Server 1.4.2 (RHEL 8.2)
 
