@@ -86,21 +86,21 @@ During server startup, children of <b>cn=rewriters,cn=config</b> will be loaded 
     
     cn=ADrewrite,cn=rewriters,cn=config
     objectClass: top
-    objectClass: extensibleObject
+    objectClass: rewriterEntry
     cn: ADrewrite
-    nsslapd-libPath: libadrewrite
-    nsslapd-filterRewriter: objectcategory_filter_rewrite
-    nsslapd-filterRewriter: objectSID_rewrite
-    nsslapd-returnedAttrRewriter: givenname_rewrite
-    nsslapd-returnedAttrRewriter: objectcategory_returnedAttr_rewrite
+    nsslapd-libPath: /lib/dirsrv/librewriters.so
+    nsslapd-filterRewriter: adfilter_rewrite_objectCategory
+    nsslapd-filterRewriter: adfilter_rewrite_objectsid
+    nsslapd-returnedAttrRewriter: adfilter_return_givenname
+    nsslapd-returnedAttrRewriter: adfilter_return_surname
     
     cn=vsphere,cn=rewriters,cn=config
     objectClass: top
-    objectClass: extensibleObject
+    objectClass: rewriterEntry
     cn: vsphere
-    nsslapd-libPath: libvsphere
-    nsslapd-filterRewriter: uniquememeber_filter_rewrite
-    nsslapd-returnedAttrRewriter: member_returnedAttr_rewrite
+    nsslapd-libPath: /lib/dirsrv/libvsphere
+    nsslapd-filterRewriter: libvsphere_rewrite_uniquememeber
+    nsslapd-returnedAttrRewriter: libvsphere_return_member
 
 ### callback registration
 
