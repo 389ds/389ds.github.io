@@ -569,6 +569,21 @@ Note that the Directory Server is not rigorous to release the basic memory struc
 Various caches and configurations are in the category.  
 Even if LEAK SUMMARY shows "definitely lost: 4,351 bytes in 125 blocks", it does not mean it is a real leak.
 
+#### How to check if the memory growth with systemd ####
+
+Override the systemd config file /etc/systemd/system/dirsrv@YOUR_SERVER_ID.service.d/override.conf
+
+    [Service]
+    # For valgrind
+    TimeoutStartSec=3600
+    TimeoutStopSec=3600
+    # Reset environment and exec command line
+    Environment=
+    ExecStart=
+    # Run ns-slapd under valgrind
+    ExecStart=/usr/bin/valgrind --tool=memcheck --leak-check=yes --num-callers=40 --log-file=/var/run/dirsrv/ns-slapd-%i.vg /usr/sbin/ns-slapd -D /etc/dirsrv/slapd-%i -i /var/run/dirsrv/slapd-%i.pid
+
+
 #### How to check if the memory growth is from fragmentation or not ####
 Malloc library has a known issue that repeated malloc and free causes the memory growth that is induced by the memory fragmentation.  The typical case is when a search requires larger entry cache size, and the search is repeated, it could grow the server size until it fails to allocate more memory.  If the physical memory size allows, increasing the entry cache size large enough to store the search results, the memory growth could be avoided.
 
