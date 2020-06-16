@@ -29,7 +29,7 @@ Once the available disk space on any of the disks gets below the threshold we st
 
 We will keep logging messages if the disk space continues to drop. If we get to the halfway point of the threshold, we go into shutdown mode.
 
-Once in shutdown mode, we log another message warning that we will shutdown the process if disk space is not freed up within the grace period. If disk is freed up above the threshold, then we abort the shutdown, and enable any logging that we disabled. If it is not, then we shut slapd down. If "nsslapd-disk-monitoring-shutdown-script" is set, then we execute the script it points to in the very end of the shutdown process.
+Once in shutdown mode, we log another message warning that we will shutdown the process if disk space is not freed up within the grace period. If disk is freed up above the threshold, then we abort the shutdown, and enable any logging that we disabled. If it is not, then we shut slapd down.
 
 And if we try to start up the server while the disk space is still below the halfway point of the threshold, it won't be allowed to start.
 
@@ -43,7 +43,6 @@ Config Details
 -   nsslapd-disk-monitoring-readonly-on-threshold - If this is set, put all of the main data backends to read-only mode once threshold is reached.
 -   nsslapd-disk-monitoring-grace-period - How many minutes to wait to allow an admin to clean up disk space before shutting slapd down. The default is 60 minutes.
 -   nsslapd-disk-monitoring-logging-critical - If this is set, we can go into shutdown mode if any of the log disks pass the halfway point of the threshold. We will also not disable logging or delete rotated logs when this is set.
--   nsslapd-disk-monitoring-shutdown-script - A path to an executable file which will be run at the moment when shutdown process has finished.
 
 Note: If you set the config using ldapmodify, you must restart the server for the changes to take effect.
 
