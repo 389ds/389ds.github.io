@@ -7,10 +7,11 @@ title: "OpenLDAP to 389 Directory Server migration"
 Overview
 --------
 
-As the major enterprise linux distributions have decided to remove OpenLDAP from their platforms,
+As the two major enterprise linux distributions (SUSE and Red Hat) have decided to remove OpenLDAP from their platforms,
 there has been and will continue to be interest from major deployments wanting to move from
-OpenLDAP to 389 Directory Server. We should not only provide supporting tooling to make this
-possible, but also document the possible migrations paths and strategies.
+OpenLDAP to 389 Directory Server on SLE and Red Hat Directory Server on RHEL. We should not only provide supporting tooling to make this
+possible, but also document the possible migrations paths and strategies to give customers a long
+term, supported, high quality LDAP install.
 
 Note this excludes FreeIPA/RHIDM which has it's own LDAP migration tooling, and that not all
 deployments can move to IPA due to their requirements.
@@ -39,12 +40,13 @@ so there will always be situations or configurations that can not be adapted ful
 | oldap 2 ds repl  | -                    | -                         | ❌ (No mechanism for openldap to replicate to 389 is possible) |
 | ds 2 oldap repl  | -                    | SyncREPL                  | 🔨 (Investigation on 389 able to emulate OpenLDAP syncrepl metadata is underway) |
 | TOTP             | TOTP Overlap         | -                         | ❌             |
-| EntryUUID        | Part of OpenLDAP     | Plugin                    | 🔨 (Under Review) |
+| EntryUUID        | Part of OpenLDAP     | Plugin                    | 🔨 (Accepted, pathway to rust-by-default underway) |
 
 From this snapshot we can hopefully see that it's not possible to mix and match openldap with
 389 ds, and that there will always be migration steps required. The only feasible mix and
 match will be *if* we develop support for 389-ds syncrepl to impersonate openldap's syncrepl
-provider (we will likely not consider delta syncrepl).
+provider (we will likely not consider delta syncrepl). Even in this scenario, as some plugins
+and configurations will have different attribute values, 
 
 Example Topologies
 ------------------
@@ -68,10 +70,15 @@ RO servers, it may not be feasible to buld this fully, so we could have the RO r
 from 389-ds instead via syncrepl with some live data manipulation. The scope of this is still
 under investigation.
 
+## OpenLDAP acting as proxy to AD
+
+In this scenario, 389-ds would be built in parallel to use winsync plugin. This would use a different
+configuration and set of integrations to provide the AD read sync services.
+
 Required Changes
 ----------------
 
-To support the inbuild openldap schema, 389-ds is should adopt the rfc2307compat schema, which resolves
+To support the inbuilt openldap schema, 389-ds is should adopt the rfc2307compat schema, which resolves
 a set of schema conflicts that may arise during a migration. There are no other known conflicts with
 openldap schema.
 
@@ -99,7 +106,8 @@ Administrator Actions needed
 We do not support saslauthd so any site using this will need to configure pam pass through auth
 with sssd or other modules.
 
-We do not support TOTP, so this can not be migrated at this time.
+We do not support TOTP, so this can not be migrated at this time. The versions of openldap on the
+enterprise distros do not support TOTP anyway, so this is likely not to be an issue.
 
 389-ds does not function as an LDAP proxy, we prefer to have extra read only servers created.
 
@@ -141,7 +149,174 @@ Rollback plans should always be developed and understood as in any migration. Ba
 be taken as needed (Such as system state backup on windows, ldifs and config on openldap, and
 db2ldif on 389-ds).
 
+Syncrepl
+--------
+
+A requested feature has been the ability to have 389-ds be able to provide changes to openldap
+read-only replicas. It is not feasible to have 389-ds consume from openldap, but to provide is
+a simpler matter.
+
+Focusing on syncrepl (not delta-sync repl) makes for a simpler, and easier implementation, as well
+as only focusing on the "refreshOnly" mode. This has largely been implemented already, but some
+deviations from the current implementation are observed. (See also https://tools.ietf.org/html/rfc4533)
+
+## Initial Repl
+
+The initial replication is initiated by a search request with the syncRequestOID, SyncRequestValue
+with a cookie containing the consumers rid and *no* CSN.
+
+     rid=123
+
+The provider then responds with all entries, with a syncStateOID control that has the state add (1)
+and the EntryUUID of the entry.
+
+The searchResDone message then provides a SyncDoneOID control with a cookie the rid of the
+consumer, and the CSN that was replicated up to. The cookie format
+
+     rid=123,csn=20200525045810.162381Z#000000#000#000000
+     rid=123,csn=20200525051329.534174Z#000000#000#000000
+
+The consumer *will* parse this CSN to order the events that have just been provided, however the consumer
+then assigns it's own internal CSN to the events. This CSN is based on the systems localtime and is
+not a lamport clock, which means that there may be occasions the generated CSN could be out of
+order relative to others.
+
+* Further Replications
+
+The subsequent requests are made with the cookie with the last rid and csn provided in the SyncRequestValue.
+This allows the provider to know where to start to "send updates" from. These updates are documented below
+based on the causing operation type.
+
+## Search request
+
+Openldap requests the following when in dsee changelog mode.
+
+	attrs="\* + aci"
+
+## 389 Already Supported Elements
+
+We can already provide sync repl with the following setup.
+
+	dsconf localhost plugin retro-changelog enable
+	dsconf localhost plugin retro-changelog set --attribute nsuniqueid:targetUniqueId
+	dsconf localhost plugin contentsync enable
+	dsconf localhost backend create --suffix dc=example,dc=com --be-name userRoot
+	dsidm localhost initialise
+
+create a sync capable user.
+
+	dn: cn=syncrepl,ou=services,dc=example,dc=com
+	objectClass: top
+	objectClass: organizationalRole
+	objectClass: nsAccount
+	cn: syncrepl
+	userPassword: password
+	nsSizeLimit: -1
+	nsLookThroughLimit: -1
+	nsTimeLimit: -1
+	nsidletimeout: -1
+	#
+	ldapadd -f 389_sync_acct.ldif -D 'cn=Directory Manager' -w password -x -H ldap://127.0.0.1:3389
+
+We want to limit what can be synced. We achieve this with access controls on the account.
+
+	dn: dc=example,dc=com
+	changetype: modify
+	add: aci
+	aci: (targetattr != "aci || creatorsName || modifiersName || createTimestamp || modifyTimestamp || parentId || entryId || nsAccountLock || numSubordinates || tombstoneNumSubordinates || nsSizeLimit || nsLookThroughLimit || nsTimeLimit || nsidletimeout")(targetfilter="(objectClass=*)")(version 3.0; acl "Enable sync repl full read"; allow (read, search)(userdn="ldap:///cn=syncrepl,ou=services,dc=example,dc=com");)
+	# 
+	ldapmodify -f 389_sync_aci.ldif -D 'cn=Directory Manager' -w password -x -H ldap://127.0.0.1:3389
+
+## OpenLDAP configuration.
+
+Add the dsee.ldif
+
+	include /etc/openldap/schema/dsee.schema
+
+Load MDB
+
+	moduleload back_mdb.la
+
+Configure the database
+
+	database     mdb
+	suffix       "dc=example,dc=com"
+	rootdn       "cn=Manager,dc=example,dc=com"
+	rootpw       password
+	directory    /var/lib/ldap
+	index        objectClass eq
+	index        entryUUID eq
+
+	syncrepl rid=123
+			provider=ldap://172.17.0.2:3389
+			binddn="cn=syncrepl,ou=services,dc=example,dc=com"
+			bindmethod=simple
+			credentials=password
+			searchbase="dc=example,dc=com"
+			# It is likely wise to limit this to objectClasses you are interested in (IE ou, group, account only)
+			filter="(objectClass=*)"
+			schemachecking=off
+			scope=sub
+			type=refreshOnly
+			retry="3 +" interval=00:00:00:03
+	updateref ldap://172.17.0.2:3389
+
+## Troubleshooting
+
+check the changelog:
+
+	ldapsearch -H ldap://172.17.0.2:3389 -b cn=changelog -D 'cn=Directory Manager' -x -w password
+
+Show the current openldap cookie:
+
+ 	ldapsearch -H ldap://127.0.0.1 -b 'dc=example,dc=com' -s base -x  contextCSN
+	# example.com
+	dn: dc=example,dc=com
+	contextCSN: 21000101110148.000000Z#000000#000#000000
+
+## 389 Proposed Changes to allow openldap compatible syncrepl
+
+Due to OpenLDAP's replication being "whole entry" based, and the details in the syncrepl being very
+simple, it would be easy to emulate with a small number of changes.
+
+If we detect the initial request with a rid= format, we know that we are in openldap provider
+mode (compared to other sync repl clients that will provide an empty sync cookie).
+
+We can generate an OpenLDAP compatible CSN by converting the changenumber into a timestamp via
+unix epoch. By adding an offset we can guarantee that the CSN's we generate will "always be
+higher" than anything OpenLDAP can generate, preventing conflicts.
+
+This would allow us to construct an openLDAP compatible synccookie, that has the correct timestamps
+and that when they come to query us next, we are able to provide "what changed since" and guarantee
+correct ordering of events.
+
+No other changes are needed.
+
+## EntryUUID
+
+The currently syncrepl plugin uses nsUniqueId to provide the ID's for operations. If the EntryUUID
+plugin is enabled, then we need to use that instead, else OpenLDAP can become confused about the
+difference between the sent entryuuid in the entry, and the different syncrepl uuid derived from
+nsuniqueid.
+
+## Risks
+
+Due to the time based nature, and not using a true lamport clock, it may be possible that entries
+become out of sync with the consumer in a chaining scenario. In this case, since we only support read-only consumers, we
+would advise that a full re-init of the consumer should occur. This can be triggered by simply
+deleting the OpenLDAP database mdb files which will trigger a refresh.
+
+That we may need more schema or other changes to make this possible, and that we may need schema
+added into openLDAP to make this work. Openldap has a schema check=off mode, but it appears to
+do nothing and schema continues to be enforced.
+
+## Investigation of the OpenLDAP DSEE Compatible Sync
+
+OpenLDAP 2.5 has a DSEE compatible sync mode that combines syncrepl searches with a cn=changelog search
+and interpretation. However, the major enterprise distros are using version 2.4 so this is unlikely
+to be an option.
+
 ## Author
 
-William Brown william at blackhats.net.au
+William Brown wbrown at suse.de
 
