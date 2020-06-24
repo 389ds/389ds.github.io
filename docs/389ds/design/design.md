@@ -29,6 +29,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Database Monitoring in dsconf](dbmon-design.html)
 -   [dbgen replacement in dsctl](dbgen-design.html)
 -   [Search rewriters](search_rewriters.html)
+-   [New Keywords in Access Log RESULT Message](access-log-new-time-stats-design.html)
 
 ## 389 Directory Server 1.4.2 (RHEL 8.2)
 
