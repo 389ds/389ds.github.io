@@ -63,7 +63,7 @@ GEM
     puma (3.12.6)
     pygments.rb (1.2.1)
       multi_json (>= 1.0.0)
-    rack (2.0.8)
+    rack (2.1.4)
     rack-rewrite (1.5.1)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
@@ -94,7 +94,7 @@ DEPENDENCIES
   nokogiri (~> 1.10.8)
   puma
   pygments.rb
-  rack (~> 2.0.8)
+  rack (~> 2.1.4)
   rack-jekyll!
   rack-rewrite
   stringex
