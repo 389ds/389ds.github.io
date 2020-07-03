@@ -199,13 +199,13 @@ following format.
 
     <DESC>
 
-    Fixes <The Issue URL>
+    relates: <The Issue URL>
 
     Author: <your name here>
 
-    Review by: ???
+    Reviewed by: ???
 
-Fill in the commit message and save. You now have a single well formed commit to send us.
+Fill in the commit message and save. You now have a single well formed commit to send us.  In Pagure, the "relates" keyword will update that Issue with the commit hash (a very convenient feature).
 
 ### Create a pull-request
 
