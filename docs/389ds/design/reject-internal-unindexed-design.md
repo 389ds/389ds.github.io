@@ -13,7 +13,12 @@ Previously there was no way to prevent internal unindexed searches.  There was a
 Design
 ------
 
-Added a new configuration setting **nsslapd-require-internalop-index** that be turned on and off (default is "off").  We also log in the errors log the search details that caused the unindexed search so it can be investigated and resolved.
+Added a new configuration setting **nsslapd-require-internalop-index** that be turned on and off (default is "off").  We also log in the errors log the search details that caused the unindexed search so it can be investigated and resolved.  Here is an example of the new option:
+
+    cn=userroot,cn=ldbm database,cn=plugins,cn=config
+    ...
+    nsslapd-require-internalop-index: on
+    
 
 Origin
 -------------
