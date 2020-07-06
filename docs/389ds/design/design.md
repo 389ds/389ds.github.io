@@ -23,13 +23,14 @@ If you are adding a new design document, use the [template](design-template.html
 
 -   In progress...
 
-## 389 Directory Server 1.4.3 (RHEL 8.3)
+## 389 Directory Server 1.4.3 (RHEL 8.x)
 
 -   [Diskspace Monitoring](disk-monitoring.html)
 -   [Database Monitoring in dsconf](dbmon-design.html)
 -   [dbgen replacement in dsctl](dbgen-design.html)
 -   [Search rewriters](search_rewriters.html)
 -   [New Keywords in Access Log RESULT Message](access-log-new-time-stats-design.html)
+-   [Reject Internal Unindexed Searches](reject-internal-unindexed-design.html)
 
 ## 389 Directory Server 1.4.2 (RHEL 8.2)
 
