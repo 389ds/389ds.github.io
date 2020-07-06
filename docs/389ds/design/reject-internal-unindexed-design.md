@@ -1,4 +1,3 @@
-
 ---
 title: "Reject Internal Unindexed Searches"
 ---
