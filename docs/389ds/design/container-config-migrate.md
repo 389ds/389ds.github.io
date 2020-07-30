@@ -66,4 +66,20 @@ more complex change, we should migrate these on start up using the mechanisms in
 `config.c slapd_bootstrap_config()`. An example of this is the creation of the PBKDF2 plugin on start
 up.
 
+However, these mechanisms have a flaw - they "set" an entry to look a specific way, and overwrite it
+each startup meaning that user defined changes are always lost. This has led to issues where people
+attempt to disable pbkdf and it re-enables on restarts.
+
+A new upgrade framework was proposed as part of a past patch series that allows for more informed
+upgrade decisions to be made during the server startup.
+
+This is called from main.c upgrade_server(), which then calls a series of stateful upgrade handlers.
+These are able to use logic such as "entry_exists_or_create" which will create an entry only if it
+does not exist meaning that administrator changes won't be removed on future restarts.
+
+In the future other handlers could be added such as "entry_assert_or_create" which would check that
+a specific set of attribute-values are defined, or that the entry is created. For example, this could
+be used to ensure a set of entries exist in a specific form, but that user defined extensions are still
+respected.
+
 
