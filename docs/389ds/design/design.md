@@ -115,6 +115,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Available NSS Ciphers](nss-cipher-design.html)
 -   [Windows Sync Enhancements](winsync-rfe.html)
 -   [Account Policy -- alwaysRecordLoginAttr](account-policy-design.html#new-attribute-alwaysrecordloginattr)
+-   [Content Synchronization Plugin](content-synchronization-plugin.html)
 
 -------------------------------------------------
 
