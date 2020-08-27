@@ -5,6 +5,11 @@ title: "Howto: TLS/SSL"
 **NOTE: SSL is considered insecure - do not use it - use only TLSv1 and later**
 In most places below where this document refers to the term "SSL", it usually means "TLSv1".  The term "SSL" is kept around for historical reasons, but SSLv3 should never be used.
 
+See newer documentation here:
+
+- [How to Setup TLS/SSL](howto-ssl.html)
+- [RHDS 11 Admin Guide](https://access.redhat.com/documentation/en-us/red_hat_directory_server/11/html/administration_guide/managing_the_nss_database_used_by_directory_server)
+
 # Configuring TLS/SSL Enabled 389 Directory Server
 -------------------------------------------------
 
