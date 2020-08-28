@@ -91,7 +91,7 @@ We maintain a number of how to guides for 389 Directory Server
 
 #### Performance
 
--   [Performance diagnostic](development/performance-diagnostic.md) - Diagnose how well the server behaves
+-   [Performance diagnostic](development/performance-diagnostic.html) - Diagnose how well the server behaves
 
 #### DNS
 
