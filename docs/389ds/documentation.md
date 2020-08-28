@@ -89,6 +89,9 @@ We maintain a number of how to guides for 389 Directory Server
 -   [How to Migrate from Trac to Pagure](howto/howto-migrate-to-pagure.html)
 -   [How to Do Pull-Requests in Pagure](howto/howto-do-pull-requests.html)
 
+#### Performance
+
+-   [Performance diagnostic](development/performance-diagnostic.md) - Diagnose how well the server behaves
 
 #### DNS
 
