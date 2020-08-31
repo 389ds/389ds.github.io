@@ -72,7 +72,7 @@ Now go back to the BUILD directory, and run the configure command
 
 #### Building into a Prefix location (non-standard/not root)
 
-You need to add the "**--prefix**" to the configure command, and remove some other options
+You need to add the "**\-\-prefix**" to the configure command, and remove some other options
 
     $ cd ~/source/BUILD
     $ CFLAGS='-g -pipe -Wall  -fexceptions -fstack-protector --param=ssp-buffer-size=4  -m64 -mtune=generic' CXXFLAGS='-g -pipe -Wall -O2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic' ../389-ds-base/configure --enable-debug --with-openldap --enable-gcc-security  --prefix=/export/389
