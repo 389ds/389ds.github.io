@@ -90,3 +90,24 @@ The tool shows how much time each tread is spending offcpu. Here the listener *3
           1024 -> 2047       : 198      |****************************************|
     
 
+### What the server is doing
+
+    perf top -t 65457 (for a worker)
+    
+    Samples: 486K of event 'cycles', 4000 Hz, Event count (approx.): 257233768218 lost: 0/0 drop: 0/0
+    Overhead  Shared Object               Symbol
+       2.84%  [kernel]                    [k] do_syscall_64
+       2.50%  libslapd.so.0.1.0           [.] slapi_pblock_get
+       2.09%  libpthread-2.28.so          [.] __pthread_mutex_lock
+       2.08%  libdb-5.3.so                [.] __db_tas_mutex_lock
+       1.43%  libdb-5.3.so                [.] __db_tas_mutex_unlock
+       1.32%  libpthread-2.28.so          [.] __pthread_mutex_unlock_usercnt
+       1.30%  libjemalloc.so.2            [.] free
+       1.30%  libslapd.so.0.1.0           [.] attrlist_find
+       1.25%  libslapd.so.0.1.0           [.] slapi_pblock_set
+       1.08%  libc-2.28.so                [.] vfprintf
+       1.06%  [kernel]                    [k] entry_SYSCALL_64
+       1.03%  libslapd.so.0.1.0           [.] slapi_log_error
+       0.99%  [kernel]                    [k] syscall_return_via_sysret
+       0.94%  [kernel]                    [k] __fget
+
