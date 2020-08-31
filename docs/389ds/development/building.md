@@ -67,24 +67,48 @@ Switch to your branch of choice, and make code changes.  Then before you build f
 Now go back to the BUILD directory, and run the configure command
 
     # cd ~/source/BUILD
-    # CFLAGS='-g -pipe -Wall  -fexceptions -fstack-protector --param=ssp-buffer-size=4  -m64 -mtune=generic' CXXFLAGS='-g -pipe -Wall -O2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic' ../389-ds-base/configure --enable-autobind --with-selinux --with-openldap --with-tmpfiles-d=/etc/tmpfiles.d --with-systemdsystemunitdir=/usr/lib/systemd/system --with-systemdsystemconfdir=/etc/systemd/system --enable-debug --with-systemdgroupname=dirsrv.target --with-fhs --libdir=/usr/lib64 --enable-tcmalloc --with-systemd
+    # CFLAGS='-g -pipe -Wall  -fexceptions -fstack-protector --param=ssp-buffer-size=4  -m64 -mtune=generic' CXXFLAGS='-g -pipe -Wall -O2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic' ../389-ds-base/configure --enable-autobind --with-selinux --with-openldap --with-tmpfiles-d=/etc/tmpfiles.d --with-systemdsystemunitdir=/usr/lib/systemd/system --with-systemdsystemconfdir=/etc/systemd/system --enable-debug --with-systemdgroupname=dirsrv.target --with-fhs --libdir=/usr/lib64 --with-systemd
     # make install
 
-#### Building into a Prefix location (non-standard)
+#### Building into a Prefix location (non-standard/not root)
 
-You need to add the "**--prefix**" to the configure command, and remove the fhs options
+You need to add the "**--prefix**" to the configure command, and remove some other options
 
-    # cd ~/source/BUILD
-    # CFLAGS='-g -pipe -Wall  -fexceptions -fstack-protector --param=ssp-buffer-size=4  -m64 -mtune=generic' CXXFLAGS='-g -pipe -Wall -O2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic' ../389-ds-base/configure --enable-autobind --with-selinux --with-openldap --with-tmpfiles-d=/etc/tmpfiles.d --with-systemdsystemunitdir=/usr/lib/systemd/system --with-systemdsystemconfdir=/etc/systemd/system --enable-debug --with-systemdgroupname=dirsrv.target --libdir=/usr/lib64 --enable-tcmalloc --with-systemd --prefix=/export/389/ds
-    # make install
+    $ cd ~/source/BUILD
+    $ CFLAGS='-g -pipe -Wall  -fexceptions -fstack-protector --param=ssp-buffer-size=4  -m64 -mtune=generic' CXXFLAGS='-g -pipe -Wall -O2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic' ../389-ds-base/configure --enable-debug --with-openldap --enable-gcc-security  --prefix=/export/389
+    $ make install
+
+Then to install the prefix build with **dscreate** you need to disable *selinux*, set the *prefix* location, and set the *user* and *group* to your user.  Here is a generic example of what the INF file should should look like:
+
+    [general]
+    config_version = 2
+    full_machine_name = localhost.localdomain
+    selinux = False
+    start = True
+
+    [slapd]
+    instance_name = test-instance
+    prefix = /export/389
+    port = 5555
+    secure_port = 5556
+    root_dn = cn=directory manager
+    root_password = secRet_passWord
+    user = mreynolds
+    group = mreynolds
+
+    [backend-userroot]
+    sample_entries = yes
+    suffix = dc=example,dc=com
+
+Then run **dscreate** like this:
+
+    $ PREFIX=/export/389 dscreate from-file ./dssetup.inf
+
 
 #### Optimized vs Debug Builds
 
 The examples on this page all build DEBUG versions of the server.  To build an optimized version just remove then "**-g**" option from the CFLAGS and CXXFLAG variables.
 
-### Building Directory Server 1.4.x
-
-Since we no longer use **tcmalloc**" in 1.4.0, the "**--enable-tcmalloc**" option is no longer needed in the *configure* command.
 
 ### Legacy build instructions
 
