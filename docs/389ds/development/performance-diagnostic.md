@@ -38,10 +38,66 @@ Run client on another host else the server take all CPU and wait for clients
 
 ### cache alignment of hot structure
 
-Shared structures are structures (locks, counters,...) that are accessed by many threads. A shared structure becomes more and more hot when a CPU that access the structure has to retrieve it more and more frequently from another CPU that holds it in its cache.
+Shared structures are structures (locks, counters,...) that are accessed by many threads. A shared structure becomes more and more hot when a CPU that access the structure has to retrieve it more and more frequently from another CPU that **modified** it in its cache.
 A lock is usually a hot structure accessed from all CPU, it can create contention and this is normal. A lock is located into a CPU cache line, so a CPU needs to acquire to cache line that is located in another CPU (**HITM**). A problem is if the cache line contains **several hot structures**. In such case there is a **useless** extra contention on structure **A** due to false cacheline sharing with **B** not related to **A**. To prevent this behavior we should monitor *cache line* heat and **align** hot structure so that each of them fit into a dedicated cache line.
 
 A tool to monitor cache line heat is **perf c2c**.
+
+    perf c2c record --call-graph dwarf -p `pidof ns-slapd` -o perf_call_c2c # after 4-5sec key ^C
+    perf c2c report -i perf_call_c2c --stdio > perf_call_c2c.rep
+    
+    vi perf_call_c2c.rep
+    
+    =================================================
+               Shared Data Cache Line Table
+    =================================================
+    #
+    #        ----------- Cacheline ----------    Total      Tot  ----- LLC Load Hitm -----  ---- Store Reference ----  --- Load Dram ----      LLC    Total  ----- Core Load Hit -----  -- LLC Load Hit --
+    # Index             Address  Node  PA cnt  records     Hitm    Total      Lcl      Rmt    Total    L1Hit   L1Miss       Lcl       Rmt  Ld Miss    Loads       FB       L1       L2       Llc       Rmt
+    # .....  ..................  ....  ......  .......  .......  .......  .......  .......  .......  .......  .......  ........  ........  .......  .......  .......  .......  .......  ........  ........
+    #
+          0      0x7fa6882e1f80     0    1624     4789    6.50%      648      648        0     1211      667      544         0         0        0     3578     2380      125        1       424         0
+                 #
+                 # database mutex: __db_tas_mutex_lock
+                 #
+          1      0x7fa69aa23340     0    1464     2331    4.33%      432      432        0      582      582        0         0         0        0     1749      695      503        1       118         0
+                 #
+                 # 389DS plugins global lock
+                 #
+          2      0x7fa69aaf5480     0    3237     4606    3.84%      383      383        0     1076     1053       23         0         0        0     3530     1828     1164        0       155         0
+                 #
+                 # 389DS entrycache lock
+                 #
+          3      0x7fa6882e1440     0     743     1682    1.85%      185      185        0      686      540      146         0         0        0      996      721       32        0        58         0
+                 #
+                 # database mutex: __db_tas_mutex_lock
+                 #
+          4      0x7fa69aaf5500     0     395     1042    1.81%      181      181        0      361      356        5         0         0        0      681       30      428        0        42         0
+                 #
+                 # 389DS entrycache lock
+                 #
+          5      0x7fa6882e1f40     0     586     2732    1.54%      154      154        0     1570     1553       17         0         0        0     1162        0      969        0        39         0
+                 #
+                 # database mutex: __db_tas_mutex_lock
+                 #
+          6      0x7fa65d462140     0      87      175    1.51%      151      151        0       10        5        5         0         0        0      165        1        0        0        13         0
+                 #
+                 # database cursor: __db_cursor_int
+                 #
+          7      0x7fa669c722c0     0       1      431    1.49%      149      149        0      275      128      147         0         0        0      156        1        2        0         4         0
+                 #
+                 # database memory pool: _memp_fput
+                 #
+          8      0x7fa669c72200     0     172      329    1.44%      144      144        0        8        8        0         0         0        0      321      163        7        0         7         0
+                 #
+                 # database memory pool: _memp_fget
+                 #
+          9      0x7fa695ad9c00     0     740     1243    1.34%      134      134        0      318      318        0         0         0        0      925      449      295        1        46         0
+                 #
+                 # 389 VLV index
+                 #
+    
+
 
 ## server activity
 
@@ -92,6 +148,8 @@ The tool shows how much time each tread is spending offcpu. Here the listener *3
 
 ### What the server is doing
 
+The following command shows a sorted list of routines (kernel and user) where the server spend the most of the time.
+
     perf top -t 65457 (for a worker)
     
     Samples: 486K of event 'cycles', 4000 Hz, Event count (approx.): 257233768218 lost: 0/0 drop: 0/0
@@ -111,3 +169,6 @@ The tool shows how much time each tread is spending offcpu. Here the listener *3
        0.99%  [kernel]                    [k] syscall_return_via_sysret
        0.94%  [kernel]                    [k] __fget
 
+## Bugs
+
+https://pagure.io/389-ds-base/issue/51255: performance search rate: checking if an entry is a referral is expensive
