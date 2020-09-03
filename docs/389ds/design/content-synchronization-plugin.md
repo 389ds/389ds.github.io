@@ -260,8 +260,23 @@ If the entries have been sent by performing an normal search this is the place w
 
 If it is in persist mode and the entries have been sent by the normal search process, this is the place where to send the sync info message, sending of the result message will be prevented in the pre\_result plugin
 
-### POST\_MODIFY | ADD |DELETE | MODRDN\_PLUGIN
+### BETXN PRE\_MODIFY | ADD |DELETE | MODRDN\_PLUGIN
 
+Because of the need to handle nested operations (see <a href="#queue and pending list">queue and pending list</a>) the callback <b>sync_update_persist_betxn_pre_op</b> adds nested operation at the end of the per thread pending list.
+
+### BETXN POST\_MODIFY | ADD |DELETE | MODRDN\_PLUGIN
+
+These callbacks use to be postop, that are move to <b>BETXN</b> callback to prevent the following scenario (seen in #51190): 
+<bl>
+<li>update A and update B at the same time.
+<li> update A acquire the backend lock and open a txn
+<li>update B is waiting
+<li>update A completes DB update and release backend lock/txn
+<li>update B acquire the backend lock, open the txn, complete DB update and release backend lock/txn
+<li>update B call postop
+<li>update A call postop
+</bl>
+WIth this scenario update A is applied before update B in the retroCL but update B is enqueue before A. So the presistent search will send B and possibly skip A. 
 For each change operation a change info node is created, containing the
 
 -   a copy pre/post entry
@@ -316,6 +331,16 @@ If an entry cannot be retrieved based on its dn or nsuniqueid, this means that i
     2.  for each modified entry still in scope, find the entry by its nsunique id, add ac'control and send it
 
 ### Persistent phase
+
+During that phase it exists a dedicated thread that sends the udpated entries to the client. To know which entries to send, the thread needs a piece of information that it reads from a queue. The post change plugins are responsible to write the information to the queue.
+
+#### queue and pending list
+
+For a simple update, the information identifying the entry is written to the queue and there is no difficulty. If the update is nested  it is more complex. For example U1: ADD userA, automember adds U2: userA in Grp1, then memberof update U3: userA to make it memberof Grp1, then automember adds U4: userA to Grp2,.... so we have an ordered list of updates U1, U2, U3, U4. RetroCL registers those updates in that order. But post change plugin will register them into the queue with U4, U3, U2, U1. There is a risk of sending updates in the invalid order, skipping updates, being unable to identify the next <i>changenumber</i> to set in the cookie.
+
+The solution is to implement a pending list of updates. The pending list is a per threads structure <b>thread_primary_op</b>. A thread running a nested operation register the operation at the end of the pending list. When all operations are completed and successful the updates are written on the queue, in the same order of the pending list.
+
+#### setup of presistent search handler
 
 If a SyncRequestControle is decoded and the mode is persistent, the following actions are performed:
 
