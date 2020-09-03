@@ -267,15 +267,15 @@ Because of the need to handle nested operations (see <a href="#queue and pending
 ### BETXN POST\_MODIFY | ADD |DELETE | MODRDN\_PLUGIN
 
 These callbacks use to be postop, that are move to <b>BETXN</b> callback to prevent the following scenario (seen in #51190): 
-<bl>
-<li>update A and update B at the same time.
-<li> update A acquire the backend lock and open a txn
-<li>update B is waiting
-<li>update A completes DB update and release backend lock/txn
-<li>update B acquire the backend lock, open the txn, complete DB update and release backend lock/txn
-<li>update B call postop
-<li>update A call postop
-</bl>
+
+- update A and update B at the same time.
+- update A acquire the backend lock and open a txn
+- update B is waiting
+- update A completes DB update and release backend lock/txn
+- update B acquire the backend lock, open the txn, complete DB update and release backend lock/txn
+- update B call postop
+- update A call postop
+
 WIth this scenario update A is applied before update B in the retroCL but update B is enqueue before A. So the presistent search will send B and possibly skip A. 
 For each change operation a change info node is created, containing the
 
