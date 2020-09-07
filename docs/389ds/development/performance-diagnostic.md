@@ -101,6 +101,47 @@ A tool to monitor cache line heat is **perf c2c**.
 
 ## server activity
 
+### perf top
+
+Under heavy SRCH load, the servers shows high syscalls rate (futex): <b>perf top -g -d 10</b>
+
+    Samples: 2M of event 'cycles', 4000 Hz, Event count (approx.): 496734082490 lost: 0/0 drop: 0/0
+      Children      Self  Shared Object               Symbol
+    -   22.15%     0.27%  [kernel]                    [k] entry_SYSCALL_64_after_hwframe                                                                                                        ◆
+       - 21.89% entry_SYSCALL_64_after_hwframe                                                                                                                                                  ▒
+          - do_syscall_64                                                                                                                                                                       ▒
+             + 4.15% __x64_sys_futex                                                                                                                                                            ▒
+             + 3.83% __x64_sys_setsockopt                                                                                                                                                       ▒
+             + 3.60% __x64_sys_poll                                                                                                                                                             ▒
+             + 2.77% __x64_sys_sendto                                                                                                                                                           ▒
+             + 1.88% ksys_write                                                                                                                                                                 ▒
+             + 1.24% __x64_sys_recvfrom                                                                                                                                                         ▒
+             + 0.70% syscall_slow_exit_work                                                                                                                                                     ▒
+    -   21.89%     2.93%  [kernel]                    [k] do_syscall_64                                                                                                                         ▒
+       - 18.96% do_syscall_64                                                                                                                                                                   ▒
+          + 4.15% __x64_sys_futex                                                                                                                                                               ▒
+          + 3.83% __x64_sys_setsockopt                                                                                                                                                          ▒
+          + 3.60% __x64_sys_poll                                                                                                                                                                ▒
+          + 2.77% __x64_sys_sendto                                                                                                                                                              ▒
+          + 1.88% ksys_write                                                                                                                                                                    ▒
+          + 1.24% __x64_sys_recvfrom                                                                                                                                                            ▒
+          + 0.69% syscall_slow_exit_work                                                                                                                                                        ▒
+       - 0.52% __poll
+    +    4.93%     0.08%  libc-2.28.so                       [.] __poll                                                                                                                         ▒
+    +    4.79%     0.06%  libc-2.28.so                       [.] __GI___setsockopt                                                                                                              ▒
+    +    4.75%     4.60%  libdb-5.3.so                       [.] __db_tas_mutex_lock                                                                                                            ▒
+    +    4.19%     0.02%  perf                               [.] hist_entry_iter__add                                                                                                           ▒
+    +    4.14%     0.13%  [kernel]                           [k] __x64_sys_futex                                                                                                                ▒
+    +    4.01%     0.14%  [kernel]                           [k] do_idle                                                                                                                        ▒
+    +    4.00%     0.14%  [kernel]                           [k] do_futex                                                                                                                       ▒
+    +    3.82%     0.00%  [unknown]                          [.] 0000000000000000                                                                                                               ▒
+    +    3.79%     0.03%  [kernel]                           [k] __x64_sys_setsockopt                                                                                                           ▒
+    +    3.76%     0.05%  [kernel]                           [k] __sys_setsockopt                                                                                                               ▒
+    +    3.64%     0.05%  libpthread-2.28.so                 [.] __libc_send                                                                                                                    ▒
+    +    3.57%     0.25%  libpthread-2.28.so                 [.] pthread_cond_signal@@GLIBC_2.3.2                                                                                               ▒
+    +    3.56%     0.08%  [kernel]                           [k] __x64_sys_poll
+
+
 ### workqueue size
 
 Monitoring the workqueue with 'cn=monitor' (-b "cn=monitor" -s base opsinitiated opscompleted readwaiters) is too impacting (locking the connections/conntable). Prefere
