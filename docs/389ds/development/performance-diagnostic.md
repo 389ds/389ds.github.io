@@ -99,7 +99,9 @@ A tool to monitor cache line heat is **perf c2c**.
     
 
 
-## server activity
+## host activity
+
+Those are examples of commands to monitor the activity at the host level
 
 ### perf top
 
@@ -140,6 +142,8 @@ Under heavy SRCH load, the servers shows high syscalls rate (futex): <b>perf top
     +    3.64%     0.05%  libpthread-2.28.so                 [.] __libc_send                                                                                                                    ▒
     +    3.57%     0.25%  libpthread-2.28.so                 [.] pthread_cond_signal@@GLIBC_2.3.2                                                                                               ▒
     +    3.56%     0.08%  [kernel]                           [k] __x64_sys_poll
+
+## server activity
 
 
 ### workqueue size
@@ -186,6 +190,26 @@ The tool shows how much time each tread is spending offcpu. Here the listener *3
            512 -> 1023       : 0        |                                        |
           1024 -> 2047       : 198      |****************************************|
     
+### Trace the DS worker syscalls
+
+After selecting a worker LWP (using pstack), you may trace (for 3-4 sec) the syscalls done by the thread
+
+     Summary of events:
+
+     ns-slapd (108026), 1784094 events, 100.0%
+
+       syscall            calls    total       min       avg       max      stddev
+                                   (msec)    (msec)    (msec)    (msec)        (%)
+       --------------- -------- --------- --------- --------- ---------     ------
+       futex             328704  3054.546     0.000     0.009   346.687     17.23%
+       setsockopt        124702   656.760     0.001     0.005     0.034      0.14%
+       poll              125437   655.709     0.002     0.005   100.141     15.28%
+       sendto            124501   464.307     0.001     0.004     0.039      0.14%
+       write             125026   462.438     0.001     0.004     0.031      0.10%
+       recvfrom           62799   248.383     0.002     0.004     0.030      0.11%
+       madvise                3     0.066     0.014     0.022     0.034     26.97%
+       sched_yield           10     0.043     0.004     0.004     0.004      1.69%
+
 
 ### What the server is doing
 
