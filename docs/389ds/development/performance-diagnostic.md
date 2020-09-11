@@ -10,6 +10,13 @@ title: "Performance diagnostic"
 ## Introduction
 ------------
 
+## General consideration
+------------
+
+The clients should run on a separated host than the server. Client host(s) should be close to server host (preferably same subnetwork).
+
+It can be good to collect metrics on some specific threads. For example, to see how a worker thread behaves, or listener, or database threads..
+
 ## Test considerations
 ------------
 
@@ -234,6 +241,16 @@ The following command shows a sorted list of routines (kernel and user) where th
        0.99%  [kernel]                    [k] syscall_return_via_sysret
        0.94%  [kernel]                    [k] __fget
 
+### Most frequent lock in contention
+
+futex is a syscall called when an action (lock/unlock) on a mutex needs to notify others threads. Way to find mutex the 10 hottest mutex in contention.
+
+    perf trace -t <tid> --call-graph dwarf -e futex -o /tmp/perf_trace_dwarf_futex
+    grep futex /tmp/perf_trace_dwarf_futex |sed -e 's/^.* futex/futex/' -e 's/op:.*$//' |sort |uniq -c |sort -n | tail -10
+
+
 ## Bugs
 
 https://pagure.io/389-ds-base/issue/51255: performance search rate: checking if an entry is a referral is expensive
+https://pagure.io/389-ds-base/issue/51262: performance search rate: nagle triggers high rate of setsocketopt
+https://pagure.io/389-ds-base/issue/51263: performance search rate: useless poll on network send callback
