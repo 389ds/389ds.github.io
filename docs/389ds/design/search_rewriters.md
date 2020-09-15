@@ -135,7 +135,7 @@ Final database result is larger DB files that can impact disk space and backup/r
 Implementation
 --------------
 
-A prototype (generic plugin) was discussed with [50931](https://pagure.io/389-ds-base/pull-request/50939)
+A prototype (generic plugin) was discussed with [50931](https://github.com/389ds/389-ds-base/pull/3992)
 
 Major configuration options and enablement
 ------------------------------------------

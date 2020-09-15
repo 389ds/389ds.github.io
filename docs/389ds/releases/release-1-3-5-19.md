@@ -39,7 +39,7 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 
 F25 <https://bodhi.fedoraproject.org/updates/FEDORA-2017-4333359de8>
 
-If you find a bug, or would like to see a new feature, file it in our Trac instance: <https://pagure.io/389-ds-base/new_issue>
+If you find a bug, or would like to see a new feature, file it in our Trac instance: <https://github.com/389ds/389-ds-base/new_issue>
 
 - Bump verison to 1.3.5.19
 - Ticket 49336 - SECURITY 1.3.5.x: Locked account provides different return code

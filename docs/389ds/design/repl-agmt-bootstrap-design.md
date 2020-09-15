@@ -49,7 +49,7 @@ Need to add **nsds5ReplicaBootstrapCredentials** as a reversible password
 Origin
 -------------
 
-<https://pagure.io/389-ds-base/issue/51156>
+<https://github.com/389ds/389-ds-base/issues/4209>
 
 Author
 ------

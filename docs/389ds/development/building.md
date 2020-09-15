@@ -14,7 +14,7 @@ This describes the steps needed to build the Directory Server from source.  You 
 
 ### Get the source and the download dependencies
 
-    # git clone https://git@pagure.io/389-ds-base.git 
+    # git clone https://github.com/389ds/389-ds-base.git
     # cd 389-ds-base
     # sudo dnf install `grep "^BuildRequires" rpm/389-ds-base.spec.in | awk '{print $2}' | sed -e "s/%{python3_pkgversion}/3/"`
 
@@ -51,7 +51,7 @@ Create the BUILD and source code directories
     # mkdir ~/source
     # cd ~/source
     # mkdir BUILD
-    # git clone https://git@pagure.io/389-ds-base.git   --> creates directory **389-ds-base**
+    # git clone https://github.com/389ds/389-ds-base.git   --> creates directory **389-ds-base**
 
 #### Make your changes
 
@@ -113,14 +113,3 @@ The examples on this page all build DEBUG versions of the server.  To build an o
 ### Legacy build instructions
 
 FOr older build information please visit the [Legacy Build Page](legacy-building.html)
-
-    
-
-
-
-
-    
-
-
-    
-

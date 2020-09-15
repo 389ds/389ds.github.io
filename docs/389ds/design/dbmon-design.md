@@ -155,7 +155,7 @@ The JSON output looks like:
 
 ### Origin
 
-<https://pagure.io/389-ds-base/issue/50545>
+<https://github.com/389ds/389-ds-base/issues/3601>
 
 ### Author
 

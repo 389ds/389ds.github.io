@@ -7,7 +7,7 @@ title: "WinSync Posix Plugin"
 
 The 389 team would like to thank *Carsten Grzemba* for contributing his POSIX Windows Sync plugin to the project.
 
-NOTE: as of now, the Posix Winsync plugin does not work for new entries added to 389. That is, if you add a new user or group entry to 389, the plugin will **not** sync the POSIX attributes. This was due to a limitation in the Winsync Plugin API v1. The API now supports it - see [Windows\_Sync\_Plugin\_API](windows-sync-plugin-api.html) for API functions. We are planning to fix this limitation in the next major release of 389 - see [\#428 posix winsync should support ADD user/group entries from DS to AD](https://pagure.io/389-ds-base/issue/428) for more information.
+NOTE: as of now, the Posix Winsync plugin does not work for new entries added to 389. That is, if you add a new user or group entry to 389, the plugin will **not** sync the POSIX attributes. This was due to a limitation in the Winsync Plugin API v1. The API now supports it - see [Windows\_Sync\_Plugin\_API](windows-sync-plugin-api.html) for API functions. We are planning to fix this limitation in the next major release of 389 - see [\#428 posix winsync should support ADD user/group entries from DS to AD](https://github.com/389ds/389-ds-base/issues/428) for more information.
 
 {% include toc.md %}
 

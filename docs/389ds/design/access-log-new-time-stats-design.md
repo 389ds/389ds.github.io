@@ -33,7 +33,7 @@ This difference is not important, what is important is that **wtime** and **opti
 
 ## Origin
 
-https://pagure.io/389-ds-base/issue/51165
+https://github.com/389ds/389-ds-base/issues/4218
 
 ## Author
 

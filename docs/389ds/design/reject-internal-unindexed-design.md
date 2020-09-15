@@ -23,7 +23,7 @@ Added a new configuration setting **nsslapd-require-internalop-index** that be t
 Origin
 -------------
 
-<https://pagure.io/389-ds-base/issue/51192>
+<https://github.com/389ds/389-ds-base/issues/4245>
 
 Author
 ------

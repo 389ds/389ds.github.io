@@ -83,7 +83,7 @@ Sample encryption entry:
     nsCertfile: alias/slapd-ID-cert8.db
     allowWeakCipher: off
 
--   If **nsSSL3Ciphers** does not exist or the value is "default", the default ciphers are enabled. Note: the keyword "default" is newly introduced to 389-ds-base-1.3.3 (https://pagure.io/389-ds-base/issue/47838).
+-   If **nsSSL3Ciphers** does not exist or the value is "default", the default ciphers are enabled. Note: the keyword "default" is newly introduced to 389-ds-base-1.3.3 (https://github.com/389ds/389-ds-base/issues/1169).
 
     The default cipher set is returned by **SSL_CipherPrefGetDefault** using the feature -- if the application has not previously set the default preference, **SSL_CipherPrefGetDefault** returns the factory setting. See "Enabled by default (with no nsSSL3Ciphers or nsSSL3Ciphers: default)"
 

@@ -86,8 +86,7 @@ We maintain a number of how to guides for 389 Directory Server
 -   [Address Sanitizer Testing](howto/howto-addresssanitizer.html) - Using Address Saniziter to find and correct issues.
 -   [How to Fedora Release](howto/howto-fedora-release-process.html) - The Fedora release process
 -   [How to Write a Wiki Page](howto/howto-write-wiki-page.html)
--   [How to Migrate from Trac to Pagure](howto/howto-migrate-to-pagure.html)
--   [How to Do Pull-Requests in Pagure](howto/howto-do-pull-requests.html)
+-   [How to Do Pull-Requests in GitHub](howto/howto-do-pull-requests.html)
 
 #### Performance
 
@@ -145,6 +144,7 @@ These are potentially outdated or incorrect for the current DS version.
 -   [How to Create Domain in New Forest](howto/howto-create-a-new-domain-tree-in-a-new-forest.html) - Create a New Domain Tree in a New Forest
 -   [How to PHP and Admin Server](howto/howto-phpldapadmin.html)
 -   [Building Directory Server](development/legacy-building.html)
+-   [How to Migrate from Trac to Pagure](howto/howto-migrate-to-pagure.html)
 
 ### FAQ and tech docs
 
@@ -155,4 +155,3 @@ We have some less maintained FAQ's and tech docs related to the server here:
 ## What's New on port389.org?
 
 Check out the latest additions and updates [here](../../whats_new.html)
-

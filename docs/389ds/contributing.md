@@ -29,10 +29,10 @@ Before you jump into the code, here are some things you can do to familarise you
 -   Join our [users mailing list](https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org/)
     -   Once you join, introduce yourself
     -   Ask questions, we are always happy to help
--   Do you have ideas of what could be better? Found something which might be an issue? Raise an issue on [pagure](https://pagure.io/389-ds-base)
+-   Do you have ideas of what could be better? Found something which might be an issue? Raise an issue on [github](https://github.com/389ds/389-ds-base)
     -   Raising a bug is just as important as the fix itself
-    -   To use [pagure](https://pagure.io/389-ds-base) you need to sign up for a [Fedora Account](https://admin.fedoraproject.org/accounts)
--   Take a look at the list of [easy fix](https://pagure.io/389-ds-base/issues?status=Open&tags=Easyfix) issues
+    -   To use [github](https://github.com/389ds/389-ds-base) you need to have a GitHub account
+-   Take a look at the list of [easy fix](https://github.com/389ds/389-ds-base/labels/easy%20fix) issues
     -   Join our [developers mailing list](https://lists.fedoraproject.org/admin/lists/389-devel.lists.fedoraproject.org/), and let us know you want to contribute code. We'll help you through the process.
 
 Many of us in the team started by asking questions and raising bugs.
@@ -44,7 +44,7 @@ We can be contacted via our mailing lists for [users](https://lists.fedoraprojec
 
 We are often in irc on irc.freenode.org - we use the #389 channel. We are distributed all around the world, so we may not answer. Email is your best communication option.
 
-Issues and requests for enhancement can be raised on our [pagure instance](https://pagure.io/389-ds-base/)
+Issues and requests for enhancement can be raised on our [github instance](https://github.com/389ds/389-ds-base/)
 
 
 Building the project
@@ -58,7 +58,7 @@ We recommend Fedora or CentOS as build platforms: this is what our team uses, so
 
 |Component|GIT Repository|Clone the Repository|
 |---------|------|
-|**Directory Server** | <https://pagure.io/389-ds-base.git>| git clone https://pagure.io/389-ds-base.git<br>git clone ssh://git@pagure.io/389-ds-base.git|
+|**Directory Server** | <https://github.com/389ds/389-ds-base.git>| git clone https://github.com/389ds/389-ds-base.git<br>git clone git@github.com:389ds/389-ds-base.git|
 
 #### Source tarballs
 
@@ -135,9 +135,9 @@ When you submit code to the 389 Directory Server project, you are required to co
 
 ### Fork the repository
 
-Go to <https://pagure.io/389-ds-base> and fork the repo. Add the forked repo link as a remote to your local git repo:
+Go to <https://github.com/389ds/389-ds-base> and fork the repo. Add the forked repo link as a remote to your local git repo:
 
-    git remote add myfork ssh://git@pagure.io/forks/USERNAME/389-ds-base.git
+    git remote add myfork git@github.com:droideck/389-ds-base.git
 
 Also see the [Pull-Request Cheatsheet](howto/howto-do-pull-requests.html)
 
@@ -156,7 +156,7 @@ When you first start, it's a good idea to ask for advice along the way. We are h
 
 When you have finished your code, you have had it pre-reviewed, it's time to get the patch ready.
 
-If you are working on existing issue in pagure, take note of it's issue number and URL.
+If you are working on existing issue in GitHub, take note of it's issue number and URL.
 
 If you are working on a new feature, make a new RFE issue, and take note of it's issue number and URL.
 
@@ -205,7 +205,7 @@ following format.
 
     Reviewed by: ???
 
-Fill in the commit message and save. You now have a single well formed commit to send us.  In Pagure, the "relates" keyword will update that Issue with the commit hash (a very convenient feature).
+Fill in the commit message and save. You now have a single well formed commit to send us.  In GitHub, the "relates" keyword will update that Issue with the commit hash (a very convenient feature).
 
 ### Create a pull-request
 
@@ -213,7 +213,7 @@ Push the commit to your remote forked repo
 
     git push myfork
 
-Go to [389-ds-base Pull Requests](https://pagure.io/389-ds-base/pull-requests),
+Go to [389-ds-base Pull Requests](https://github.com/389ds/389-ds-base/pulls),
 press *Open PR* button and choose your branch.
 Check that all fields have a right information and press *Create Pull Request* button.
 
@@ -221,29 +221,28 @@ Alternatively you can create and upload a patch file (it was an old way before t
 
     git format-patch -1
 
-Add the patch file as an attachment to your issue on pagure.
+Add the patch file as an attachment to your issue on GitHub.
 
 ### Final checks
 
 While we hope you were running tests as you developed your patch, we ask that you run the tests once more here with your single patch to make sure there are no issues here to surprise us!
 
-### Sending a review request 
+### Sending a review request
 
-Go to your pagure issue and set the metadata flag "reviewstatus" to "review".
+Go to your GitHub issue and set the metadata flag "reviewstatus" to "review".
 
 Finally, send an email to the 389-devel@lists.fedoraproject.org mailing list like the following:
 
-    Subject: Please review: Issue XXXXX - fix issue, add feature,... 
+    Subject: Please review: Issue XXXX - fix issue, add feature,...
 
-    https://pagure.io/389-ds-base/issue/XXXXX
+    https://github.com/389ds/389-ds-base/issues/XXXX
 
-    https://pagure.io/389-ds-base/pull-request/XXXXX
+    https://github.com/389ds/389-ds-base/pull/XXXX
     # or a link to the patch
-    https://pagure.io/389-ds-base/issue/raw/files/<link to your patch here!>
 
 ### Collaborate on the review process.
 
-We'll provide comments in the pagure issue about the code, offering suggestions or asking questions. Finally, once we are happy and have worked with you on the review, we'll set the reviewstatus to "ack", and will merge your code to the master branch.
+We'll provide comments in the GitHub issue about the code, offering suggestions or asking questions. Finally, once we are happy and have worked with you on the review, we'll set the reviewstatus to "ack", and will merge your code to the master branch.
 
 
 Creating a new feature
@@ -270,7 +269,7 @@ Now, write the code just like you would a patch!
 Contribute to the Wiki
 ----------------------
 
-Simply write up your new page in MarkDown, see [How to write a wiki page](howto/howto-write-wiki-page.html), then file a [issue](https://pagure.io/389-ds-base/new_issue), select "**wiki**" as the component, and attach the file.  Then we will post your content asap.
+Simply write up your new page in MarkDown, see [How to write a wiki page](howto/howto-write-wiki-page.html), then file a [issue](https://github.com/389ds/389-ds-base/issues/new), select "**wiki**" as the component, and attach the file.  Then we will post your content asap.
 
 Detailed project processes
 --------------------------
@@ -289,5 +288,3 @@ Acknowledgements
 ----------------
 
 Thanks to @charcol for contributing to this page, and advice on its content.
-
-

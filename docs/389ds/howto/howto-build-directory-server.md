@@ -14,7 +14,7 @@ This describes the steps needed to build the Directory Server from source.  You 
 
 ### Get the source and the download dependencies
 
-    # git clone https://git@pagure.io/389-ds-base.git 
+    # git clone git@github.com:389ds/389-ds-base.git
     # cd 389-ds-base
     # sudo dnf install `grep "^BuildRequires" rpm/389-ds-base.spec.in | awk '{print $2}' | sed -e "s/%{python3_pkgversion}/3/"`
 
@@ -51,7 +51,7 @@ Create the BUILD and source code directories
     # mkdir ~/source
     # cd ~/source
     # mkdir BUILD
-    # git clone https://git@pagure.io/389-ds-base.git   --> creates directory **389-ds-base**
+    # git clone git@github.com:389ds/389-ds-base.git   --> creates directory **389-ds-base**
 
 #### Make your changes
 
@@ -85,14 +85,3 @@ The examples on this page all build DEBUG versions of the server.  To build an o
 ### Building Directory Server 1.4.x
 
 Since we no longer use **tcmalloc**" in 1.4.0, the "**--enable-tcmalloc**" option is no longer needed in the *configure* command.
-
-    
-
-
-
-
-    
-
-
-    
-

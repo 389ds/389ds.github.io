@@ -32,7 +32,7 @@ Unfortunately, we cannot change DN/ipaTokenUniqueID in betxnpreop. For modify op
 the ACIs are currently evaluated before bepreop. One possible solution would be to move 
 the add operation behavior to be the same as the modify operation.
 
-See also <b>https://pagure.io/389-ds-base/issue/47925</b>
+See also <b>https://github.com/389ds/389-ds-base/issues/1256</b>
 
 ## Observation
 
@@ -109,7 +109,7 @@ The order change does not impact the acceptance test results.
 
 Update: 2017-02-13
 
-This has now been implemented in https://pagure.io/389-ds-base/issue/47925.
+This has now been implemented in https://github.com/389ds/389-ds-base/issues/1256.
 
 As per the notes, this does not change the acceptance test results.
 

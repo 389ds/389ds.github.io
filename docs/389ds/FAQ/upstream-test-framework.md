@@ -38,8 +38,8 @@ Prerequisites
 
 -   **Fedora 19** and up is highly recommended so that the version of python and py.test are correct.
 -   Python version should be **2.6.6** or later.
--   If you launch tests with **py.test**, the minimal version is **2.3** or later. 
-    
+-   If you launch tests with **py.test**, the minimal version is **2.3** or later.
+
         yum install pytest
 
 ### Environment
@@ -90,7 +90,7 @@ The following setup script allows you to checkout/compile and deploy the current
     DIR_SRC_PKG=$DIR_SRC/$DIR_SPEC_GIT
     TMP=/tmp/tempo$$
     SED_SCRIPT=/tmp/script$$
-    
+
     #
     # Checkout the source/spec
     #
@@ -102,7 +102,7 @@ The following setup script allows you to checkout/compile and deploy the current
            mkdir $DIR_SRC/$i
        done
        cd $DIR_SRC_DIR
-       git clone https://pagure.io/389-ds-base.git
+       git clone https://github.com/389ds/389-ds-base.git
        cd $DIR_SRC_PKG
        git clone git://pkgs.fedoraproject.org/389-ds-base
     }
@@ -185,8 +185,7 @@ Open the tests you want to run (e.g. ticketxyz\_test.py)
         mkdir $DIR    
         # checkout tests and lib389    
         cd $DIR    
-        git clone https://pagure.io/389-ds-base.git
-        git clone https://pagure.io/lib389.git
+        git clone https://github.com/389ds/389-ds-base.git
         # define PYTHONPATH    
         export PYTHONPATH=/usr/lib64/python2.7:/usr/lib64/python2.7/plat-linux2:/usr/lib64/python2.7/lib-dynload:/usr/lib64/python2.7/site-packages:/usr/lib/python2.7/site-packages:/usr/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info    
         LIB389=$DIR/lib389    
@@ -237,13 +236,11 @@ Both method are valid, but it has some interest to set it directly into the test
     mkdir 389-ds
     mkdir lib389
     cd $HOME/test/389-ds
-    git clone https://pagure.io/389-ds-base.git
-    cd $HOME/test/lib389
-    git clone https://pagure.io/lib389.git
-    launch eclipse... 
+    git clone https://github.com/389ds/389-ds-base.git
+    launch eclipse...
     -> in 'select workspace' entry $HOME/test
     -> File->New->Project selects PyDev Project
-    -> Project name 'lib389' (Directory will be $HOME/test/lib389/lib389)
+    -> Project name 'lib389' (Directory will be $HOME/test/389-ds/ds/src/lib389)
     -> File->New->Project selects PyDev Project
     -> Project name 'dirsrvtest' (Directory will be $HOME/test/389-ds/ds/dirsrvtests
       'Referenced projects' selects lib389
@@ -266,11 +263,10 @@ Run the following script. If you need more detail on tests processing, uncomment
     mkdir $DIR
     # checkout tests and lib389
     cd $DIR
-    git clone https://pagure.io/389-ds-base.git
-    git clone https://pagure.io/lib389.git
+    git clone https://github.com/389ds/389-ds-base.git
     # define PYTHONPATH
     export PYTHONPATH=/usr/lib64/python2.7:/usr/lib64/python2.7/plat-linux2:/usr/lib64/python2.7/lib-dynload:/usr/lib64/python2.7/site-packages:/usr/lib/python2.7/site-packages:/usr/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info
-    LIB389=$DIR/lib389
+    LIB389=$DIR/ds/src/lib389
     PROJECT=$DIR/ds/dirsrvtests
     DIR_PREFIX=/directory/where/389-ds/is/installed    --> DIR_INSTALL($HOME/install) from the setup script
     export PYTHONPATH=$PYTHONPATH:$PROJECT:$LIB389
@@ -292,7 +288,7 @@ This document describes the basics for writing a lib389 test
 
 <br><a name="lib389"></a>
 
-lib389 Library 
+lib389 Library
 ===================================
 
 ### Overview
@@ -308,7 +304,7 @@ lib389 Design
 
 ### Repos
 
-This library is opened source and is available under <https://pagure.io/lib389.git/>
+This library is opened source and is available under <https://github.com/389ds/389-ds-base/tree/master/src/lib389>
 
 ### Methodology
 
@@ -319,27 +315,27 @@ The development methodology for the lib389 will follow the same development meth
     lib389/
 
       __init__.py       # implements routines to do online administrative tasks      
-      _replication.py   # implements replication related class (CSN/RUV) 
-      _constants.py     # main definitions (Directory manager, replica type, DNs for config...) 
-      _entry.py         # implements LDAP 'Entry' and methods  
+      _replication.py   # implements replication related class (CSN/RUV)
+      _constants.py     # main definitions (Directory manager, replica type, DNs for config...)
+      _entry.py         # implements LDAP 'Entry' and methods 
       _ldif_conn.py     # subclass of LDIFParser. Used to translate a ldif entry (from dse.ldif for example) into an 'Entry'
       agent.py          # implements routines to do remote offline administrative tasks
       agreement.py      # implements replica agreement services
       backend.py        # implements backend services
       brooker.py        # Brooker classes to organize ldap methods
-      chaining.py       # implements chaining backend services 
+      chaining.py       # implements chaining backend services
       changelog.py      # implements the replication changelog
-      index.py          # implements index services 
-      logs.py           # implements logging services 
+      index.py          # implements index services
+      logs.py           # implements logging services
       mappingTree.py    # implements mapping tree services
       plugins.py        # implements plugin operations(enable/disable)
-      properties.py     # Various property helper short cut names 
+      properties.py     # Various property helper short cut names
       replica.py        # implements replica services
       schema.py         # implements schema operations
       suffix.py         # implements suffix services (a wrapper around mapping tree)
-      tasks.py          # implements task services 
-      tools.py          # implements routines to do local offline administrative tasks  
-      utils.py          # implements miscellaneous routines 
+      tasks.py          # implements task services
+      tools.py          # implements routines to do local offline administrative tasks 
+      utils.py          # implements miscellaneous routines
 
     test/
         config_test.py
@@ -1859,7 +1855,7 @@ Design
 
 ### Repos
 
-The 389 upstream tests will be pushed to the 389 Directory Server repository <https://pagure.io/389-ds-base.git>
+The 389 upstream tests will be pushed to the 389 Directory Server repository <https://github.com/389ds/389-ds-base.git>
 
 ### Layout
 
@@ -1883,7 +1879,7 @@ The tests layout is
            index.py
         tmp/
            # location used to exported ldif files, backups, etc
-         
+
 
 ### Ticket Test Suites
 
@@ -1951,13 +1947,11 @@ How to run a single test
     mkdir 389-ds
     mkdir lib389
     cd $HOME/test/389-ds
-    git clone https://pagure.io/389-ds-base.git
-    cd $HOME/test/lib389
-    git clone https://pagure.io/lib389.git
+    git clone https://github.com/389ds/389-ds-base.git
     launch eclipse
     -> in 'select workspace' entry $HOME/test
     -> File->New->Project selects PyDev Project
-    -> Project name 'lib389' (Directory will be $HOME/test/lib389/lib389)
+    -> Project name 'lib389' (Directory will be $HOME/test/389-ds/ds/src/lib389)
     -> File->New->Project selects PyDev Project
     -> Project name 'dirsrvtest' (Directory will be $HOME/test/389-ds/ds/dirsrvtests
       'Referenced projects' selects lib389
@@ -2032,5 +2026,3 @@ The algorithm is :
 By default *py.test* run silently returning **PASSED** or **FAILED** whether or not an *assert* fails in the test.
 
 It is possible to have more detail on the execution of the test with the following command: *PREFIX=/directory/where/389-ds/is/deployed py.test -v **-s***
-
-

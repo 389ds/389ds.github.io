@@ -52,7 +52,7 @@ We are very interested in your feedback!
 
 Please provide feedback and comments to the 389-users mailing list: <https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org>
 
-If you find a bug, or would like to see a new feature, file it in our Pagure project: <https://pagure.io/389-ds-base>
+If you find a bug, or would like to see a new feature, file it in our GitHub project: <https://github.com/389ds/389-ds-base>
 
 - Bump version to 1.4.3.10
 - Issue 49859 - A distinguished value can be missing in an entry

@@ -47,7 +47,7 @@ cracklib-devel.
 Origin
 -------------
 
-https://pagure.io/389-ds-base/pull-request/49836
+https://github.com/389ds/389-ds-base/pull/2895
 
 Author
 ------

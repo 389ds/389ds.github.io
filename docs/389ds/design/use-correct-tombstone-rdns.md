@@ -10,7 +10,7 @@ title: " Use Correct Tombstone RDNs "
 ## Current solution
 
 If an entry is deleted it is transformed into a tombstone entry and stored until it is
-removed by tombstone purging or an explicit delete operation. Tombstones are needed for 
+removed by tombstone purging or an explicit delete operation. Tombstones are needed for
 certain update resolution procedures.
 
 The transformation of an entry into a tombstone does:
@@ -29,7 +29,7 @@ the search filter.
 
 ## Problems with current solution
 
-The core problem of the current solution is that a tombstone entry now has two RDNs: 
+The core problem of the current solution is that a tombstone entry now has two RDNs:
 
        nsuniqueid=<UNIQID>,<OLD_RDN>
 
@@ -40,17 +40,17 @@ If we have two entries, one the child of the other and then delete first the chi
 which would give:
 
     nsuniqueid=<P_UNIQID>,<P_RDN>,<SUFFIX>
-    nsuniqueid=<C_UNIQID>,<C_RDN>,nsuniqueid=<P_UNIQID>,<P_RDN>,<SUFFIX> 
+    nsuniqueid=<C_UNIQID>,<C_RDN>,nsuniqueid=<P_UNIQID>,<P_RDN>,<SUFFIX>
 
-For the child tombstone we now have a DN consisting of multiple RDNs which need to be grouped and unfortunately a simple 
+For the child tombstone we now have a DN consisting of multiple RDNs which need to be grouped and unfortunately a simple
 parsing of the DN to determine the proper dns of the subtree levels is only possible with very specific handlig of the
 special tombstone cases.
 And it turns out that even the DNs for nested tombstones are not correctly constructed, see ticket #49615.
 
-Although the non compliance and problems with nesting do exist since the beginning there was not much complaint. But with the 
+Although the non compliance and problems with nesting do exist since the beginning there was not much complaint. But with the
 redesign of replication conflicts and update resolution, where tombstones are used in more resolution paths than before
 this limitation becomes a real burden.
- 
+
 
 ## New tombstone RDN
 
@@ -79,7 +79,7 @@ My proposal is therfor to introduce a new attribute to be used as identifier in 
 
     tombstoneID=<UNIQID>+<OLD_RDN>
 
-This clearly distinguishs tombstones from conflicts and identifies tombstones in their DN. The following sections 
+This clearly distinguishs tombstones from conflicts and identifies tombstones in their DN. The following sections
 describe what needs to be done to implement this and the backward compatibility-
 
 ## Required changes
@@ -103,11 +103,11 @@ becomes
 
     tombstone_rdn = slapi_create_dn_string("%s=%s+%s",SLAPI_ATTR_TOMBSTONEID, uniqueid, entryrdn);
 
-and the existing function: 
+and the existing function:
 
     compute_entry_tombstone_dn
 
-is only used for the tombston RUV element which is unchanged and is renamed to 
+is only used for the tombston RUV element which is unchanged and is renamed to
 
     compute_ruv_tombstone_dn
 
@@ -127,7 +127,7 @@ When a tombstone is resurrected this attribute nees to be removed along with the
 
 ### Manage nested tombstones
 
-The problem with nested tombstones is that if an entry which has tombstone children is deleted these 
+The problem with nested tombstones is that if an entry which has tombstone children is deleted these
 children need to be renamed like children in a MODRDN operation. We implement a variant of the existing
 
     entryrdn_rename_subtree()
@@ -141,7 +141,7 @@ and whenever an entry with tombstone children is deleted the entryrdn index is c
 ### Remove tombstone children from cache
 
 A further problem with nested tombstones is that the entryrdn_rename_subtombstones() function does update the
-entryrdn index it does not affect tombstone child entries which are in the entry cache and a search could return 
+entryrdn index it does not affect tombstone child entries which are in the entry cache and a search could return
 entries with the old, now incorrect, dn.
 
 Fortunately this problem exists in MODRDN and is solved there. It loads all child entries of a renamed entry in the
@@ -154,7 +154,7 @@ is made public and the code to remove the entries from the cache, which exists i
 
     void moddn_remove_children_from_cache(ldbm_instance *inst, struct backentry **child_entries, struct backdn **child_dns, int is_resurect_operation);
 
- 
+
 
 ## Backward compatibility
 
@@ -183,5 +183,5 @@ For offline initialization there is no schema update and import can fail because
 Related Ticket/Bug
 ------------------
 
-* Ticket [\#49507](https://pagure.io/389-ds-base/issue/49507) tombstone dn format is not technically correct
-* Ticket [\#49615](https://pagure.io/389-ds-base/issue/49615) dn of nested tombstones is incorrect
+* Ticket [\#2566](https://github.com/389ds/389-ds-base/issues/2566) tombstone dn format is not technically correct
+* Ticket [\#2674](https://github.com/389ds/389-ds-base/issues/2674) dn of nested tombstones is incorrect
