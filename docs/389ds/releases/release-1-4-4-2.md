@@ -21,7 +21,7 @@ Source tarballs are available for download at [Download 389-ds-base Source](http
 
 - Bug fixes
 
-### Installation and Upgrade 
+### Installation and Upgrade
 
 See [Download](../download.html) for information about setting up your yum repositories.
 
@@ -33,7 +33,7 @@ After rpm install completes, run **dscreate interactive**
 
 For upgrades, simply install the package.  There are no further steps required.
 
-There are no upgrade steps besides installing the new rpms 
+There are no upgrade steps besides installing the new rpms
 
 See [Install\_Guide](../howto/howto-install-389.html) for more information about the initial installation and setup
 
@@ -45,7 +45,7 @@ We are very interested in your feedback!
 
 Please provide feedback and comments to the 389-users mailing list: <https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org>
 
-If you find a bug, or would like to see a new feature, file it in our Pagure project: <https://pagure.io/389-ds-base>
+If you find a bug, or would like to see a new feature, file it in our GitHub project: <https://github.com/389ds/389-ds-base>
 
 - Bump version to 1.4.4.2
 - Issue 51078 - Add nsslapd-enable-upgrade-hash to the schema
@@ -65,4 +65,3 @@ If you find a bug, or would like to see a new feature, file it in our Pagure pro
 - Issue 50499 - fix npm audit issues
 - Issue 50545 - Port dbgen.pl to dsctl
 - Issue 51027 - Test passwordHistory is not rewritten on a fail attempt
-

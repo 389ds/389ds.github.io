@@ -16,7 +16,7 @@ At the beginning of a replication session, the supplier checks if its schema nee
 
 To check that the schema needed to be sent, the **nsSchemaCSN** (a csn) was tested.
 
-The ticket <https://pagure.io/389-ds-base/issue/47490> introduced an additional controls. As a supplier it checks that the consumer schema is a subset of the supplier schema before *sending* it. As a consumer it checks that the consumer schema is a subset of the supplier schema before *accepting* it.
+The ticket <https://github.com/389ds/389-ds-base/issues/827> introduced an additional controls. As a supplier it checks that the consumer schema is a subset of the supplier schema before *sending* it. As a consumer it checks that the consumer schema is a subset of the supplier schema before *accepting* it.
 
 This creates an issue, if a custom schema (*99user.ldif*) is defined on a *legacy* instance.
 
@@ -34,7 +34,7 @@ If we create/upgrade a F20 instance in the topology, this instance will not acce
 Design
 ======
 
-I think this issue would be fixed by ticket <https://pagure.io/389-ds-base/issue/496>, but it is a longer term solution.
+I think this issue would be fixed by ticket <https://github.com/389ds/389-ds-base/issues/496>, but it is a longer term solution.
 
 Here are two options to this issue
 
@@ -62,7 +62,7 @@ Learn unknown or extended definitions
 
 ### Acting as a consumer
 
-When a supplier starts a replication session, it checks if its schema is newer than the consumer schema. If it is the case, it will send its schema (there is a limitation due to <https://pagure.io/389-ds-base/issue/47490> see below 'Acting as a supplier').
+When a supplier starts a replication session, it checks if its schema is newer than the consumer schema. If it is the case, it will send its schema (there is a limitation due to <https://github.com/389ds/389-ds-base/issues/827> see below 'Acting as a supplier').
 
 Acting as a consumer, the replica will receive the supplier schema. Before accepting this schema, it will check that **ALL** definitions (attributetype and objectclasses) in received schema are a superset of its own schema definitions. This checking is important as entries on the replica conforms to the current schema and if some definitions in the received schema are subset of the current ones, some entries may violate the received schema.
 

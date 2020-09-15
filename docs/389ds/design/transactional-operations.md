@@ -373,13 +373,13 @@ Goals:
 #### 1.3.7
 ----------
 
-* begin breakout of slapi platform abstraction library  G1 G2 [ds 49115](https://pagure.io/389-ds-base/issue/49115)
+* begin breakout of slapi platform abstraction library  G1 G2 [ds 2174](https://github.com/389ds/389-ds-base/issues/2174)
 * Introduce private only slapi v4 api to begin work. No public access, no need to support. G3
-* Pblock clean up G1 [ds 49097](https://pagure.io/389-ds-base/issue/49097)
-* Nunc-Stans worker threads  G1 [ds 49099](https://pagure.io/389-ds-base/issue/49099)
-* Async logging improvements  G1 [ds 48365](https://pagure.io/389-ds-base/issue/48365)
+* Pblock clean up G1 [ds 2156](https://github.com/389ds/389-ds-base/issues/2156)
+* Nunc-Stans worker threads  G1 [ds 2158](https://github.com/389ds/389-ds-base/issues/2158)
+* Async logging improvements  G1 [ds 1696](https://github.com/389ds/389-ds-base/issues/1696)
 * Global server transaction manager (to allow items to register to, and coordinate transactions)  G4
-* COW B+Tree for connection management  G4 [ds 49098](https://pagure.io/389-ds-base/issue/49098)
+* COW B+Tree for connection management  G4 [ds 2157](https://github.com/389ds/389-ds-base/issues/2157)
 * COW B+Tree for plugin management  G4
 
 1.4.0
@@ -413,10 +413,10 @@ Goals:
                 └── nunc-stans
 
 * Fix code white space  G1
-* Clean up headers and visibility  G3 [ds 49124](https://pagure.io/389-ds-base/issue/49124)
+* Clean up headers and visibility  G3 [ds 2183](https://github.com/389ds/389-ds-base/issues/2183)
 * Symbol visibility  G1
 * v4 api for RH only use  G3
-* clean configure with pkg-config over hard paths  G1 [ds 49119](https://pagure.io/389-ds-base/issue/49119)
+* clean configure with pkg-config over hard paths  G1 [ds 2178](https://github.com/389ds/389-ds-base/issues/2178)
 * COW B+Tree for ACI internal storage  G4
 * COW B+Tree for fedse.c (cn=config, cn=schema)  G4
 * COW B+TRee for configuration variable storage  G4
@@ -431,9 +431,9 @@ Goals:
 #### 1.4.2
 ----------
 
-* COW B+Tree cache for LDBM before we have LMDB  G4 [ds 49096](https://pagure.io/389-ds-base/issue/49096)
+* COW B+Tree cache for LDBM before we have LMDB  G4 [ds 2155](https://github.com/389ds/389-ds-base/issues/2155)
 * LMDB  (4)
-* Per-operation transactions for related transactional elements  G4 [ds 573](https://pagure.io/389-ds-base/issue/573)
+* Per-operation transactions for related transactional elements  G4 [ds 573](https://github.com/389ds/389-ds-base/issues/573)
 
 #### 1.4.3
 ----------

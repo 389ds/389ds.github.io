@@ -251,6 +251,6 @@ futex is a syscall called when an action (lock/unlock) on a mutex needs to notif
 
 ## Bugs
 
-https://pagure.io/389-ds-base/issue/51255: performance search rate: checking if an entry is a referral is expensive
-https://pagure.io/389-ds-base/issue/51262: performance search rate: nagle triggers high rate of setsocketopt
-https://pagure.io/389-ds-base/issue/51263: performance search rate: useless poll on network send callback
+https://github.com/389ds/389-ds-base/issues/4308: performance search rate: checking if an entry is a referral is expensive
+https://github.com/389ds/389-ds-base/issues/4315: performance search rate: nagle triggers high rate of setsocketopt
+https://github.com/389ds/389-ds-base/issues/4316: performance search rate: useless poll on network send callback

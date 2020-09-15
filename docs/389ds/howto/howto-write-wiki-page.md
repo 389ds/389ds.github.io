@@ -98,7 +98,7 @@ There are two ways to insert links
 
 From the doc root dir, the link is:
 
-../../images/image.png 
+../../images/image.png
 
     ![Directory Tree for example.com](../../images/tree.gif "Directory Tree for example.com")
 
@@ -111,7 +111,7 @@ Use the following exact text to reach the "binaries" directory
 
 ### Community Contributions
 
-Please file a [ticket](https://pagure.io/389-ds-base/new_issue) and select "**wiki**" as the component and attach the new MarkDown file(file.md)
+Please file a [ticket](https://github.com/389ds/389-ds-base/issues/new) and select "**wiki**" as the component and attach the new MarkDown file(file.md)
 
 ### Advanced Wiki Configuration (internal only)
 
@@ -124,5 +124,3 @@ Be careful when modifying these files as mistakes can break the entire site
 - Modify the Table of Contents
 
         _includes/toc.md
-
-

@@ -46,7 +46,7 @@ The modifiersname attribute can be updated by the directory manager:
     modifiersname: cn=some-other-cn
 
 ### Tickets
-https://pagure.io/389-ds-base/issue/48363
+https://github.com/389ds/389-ds-base/issues/1694
 
 ### Notes
 This feature is available on 389-ds-base-1.3.5 and newer.

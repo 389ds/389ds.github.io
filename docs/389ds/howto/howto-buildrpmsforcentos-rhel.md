@@ -62,7 +62,7 @@ Fetch the revelant source tar that you wish to build from.
 
     wget http://www.port389.org/binaries/389-ds-base-<version>.tar.bz2
 
-    git clone https://pagure.io/389-ds-base.git
+    git clone https://github.com/389ds/389-ds-base.git
     git checkout tags/<version>
 
     export SRCDIR=`pwd`

@@ -62,7 +62,8 @@ This script install python p[ip environment, checks out a fresh copy of the Dire
     pip install pyopenssl ndg-httpsclient pyasn1
     pip install requests==2.5.3
     pip install --pre --upgrade -r $WORKSPACE/requirements.txt
-    pip --cert /etc/pki/tls/cert.pem install https://pagure.io/lib389.git
+    git clone https://github.com/389ds/389-ds-base.git
+    pip --cert /etc/pki/tls/cert.pem install 389-ds-base/src/lib389
     . venv/bin/activate
 
     #
@@ -80,7 +81,7 @@ This script install python p[ip environment, checks out a fresh copy of the Dire
     #
     echo Checking out the Directory Server source code...
 
-    git clone https://pagure.io/389-ds-base.git
+    git clone https://github.com/389ds/389-ds-base.git
     cd ds
     git checkout master
     cd ..
@@ -132,6 +133,3 @@ This script install python p[ip environment, checks out a fresh copy of the Dire
     /usr/bin/rm -rf $WORKSPACE/../../../.dirsrv
 
     exit $RC
-
-
-

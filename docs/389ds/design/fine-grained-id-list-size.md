@@ -12,7 +12,7 @@ Overview
 
 With very large databases, some queries go through a lot of work to build huge ID lists for filter components with many matching IDs. For example, a search for "*(&(objectclass=inetorgperson)(uid=foo))*" may build a huge idlist for "*objectclass=inetorgperson*" only to throw it away to intersect it with "*uid=foo*". In these cases, it would be useful to be able to tell the indexing code to use a different idlistscanlimit for certain indexes, or use no idlist at all. In the above case, it would be useful to tell the indexing code to skip building an idlist for objectclass=inetorgperson, but still use the default idlistscanlimit for other objectclass searches (e.g. objectclass=groupOfNames).
 
-Another example of this problem is <https://pagure.io/389-ds-base/issue/47474> - if there are several million IDs for each of the objectclass= filter components, being able to skip id list generation for the objectclass values would make that query very fast.
+Another example of this problem is <https://github.com/389ds/389-ds-base/issues/811> - if there are several million IDs for each of the objectclass= filter components, being able to skip id list generation for the objectclass values would make that query very fast.
 
 Unfortunately, nsslapd-idlistscanlimit is a blunt instrument - it applies to all indexes in the database. We currently have no way to specify a different idlistscanlimit for different types of search filters.
 

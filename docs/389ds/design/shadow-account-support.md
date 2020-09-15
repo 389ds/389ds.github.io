@@ -102,4 +102,4 @@ If it does, it retrieves password policy and fills the shadowAttributes as follo
 
 Tickets
 =======
-* Ticket [\#548](https://pagure.io/389-ds-base/issue/548) - RFE: Allow AD password sync to update shadowLastChange
+* Ticket [\#548](https://github.com/389ds/389-ds-base/issues/548) - RFE: Allow AD password sync to update shadowLastChange

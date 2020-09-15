@@ -10,11 +10,11 @@ title: "Integrate changelog and backen database"
 Motivation
 ==========
 
-On masters and hubs the multimaster replication plugin maintains a changelog database containing the changes to be 
+On masters and hubs the multimaster replication plugin maintains a changelog database containing the changes to be
 replayed to other servers. Historically this was a  separate databse environment, but with the need to write the changelog
 in the same transaction as the change operation it was changed to use the main database environment.
 
-But it still maintains the changelog for all backends in a single directory and manages th file names to open and close the 
+But it still maintains the changelog for all backends in a single directory and manages th file names to open and close the
 changelog database files. This has an overhead in many respects, but it also prevents the move to a replacable backend database
 library, eg LMDB does not allow the use of dedicated database files.
 
@@ -23,7 +23,7 @@ Therfore, as a first step, the changlog database files should be fully integrate
 High level summary
 ==================
 
-The changelog database file will be located in the database directory of the backend, it will be managed like an index file and naturally be 
+The changelog database file will be located in the database directory of the backend, it will be managed like an index file and naturally be
 included in backup and restore.
 For acces by the replication plugin a few access methods to get the database handle, to open or close the file will be exposed.
 
@@ -59,24 +59,24 @@ where the changelogdir is the only required attribute. Additional configuration 
 
 This changelog configuration is global, there is no way to enable trimming or encryption for only a specific backend. The maxentries value is a sum accross all changelogs.
 
- 
+
 
 ## New configuration
 
 
-With the new changelog management the configuration attributes are no longer needed or can be defined for each replica. If a changelog database 
+With the new changelog management the configuration attributes are no longer needed or can be defined for each replica. If a changelog database
 file is maintained for a a replica is define by the nsds5ReplicaFlags attribute, which determines if changes are logged.
 
 
-     nsslapd-changelogdir - no longer needed, the changelog file is part of the backend database 
+     nsslapd-changelogdir - no longer needed, the changelog file is part of the backend database
 
-     trimming configuration - defined by replica in the replica object. 
+     trimming configuration - defined by replica in the replica object.
 
      encryption - can be enabled per replica, the key probably no longer has to be stored, see ticket #xxxxx
 
-     compaction - BDB specific database compaction, its use is questionable as in a changelog the write will append records 
+     compaction - BDB specific database compaction, its use is questionable as in a changelog the write will append records
                   at the end and trimming will free pages and free pages will be reused.
-                  There is compaction in the main db, so a specific handling for the changelog can be removed 
+                  There is compaction in the main db, so a specific handling for the changelog can be removed
 
 
 Upgrade Mechanism
@@ -169,11 +169,11 @@ database by reimporting.
 The export/import of the changelog database does only make sense if it is done together with an export/import of the main database. Only then database and changelog will
 match after import. Therefor the export and import modes will be extended and have an optional changleog export/import.
 
-Also reimporting the changelog is only useful in connection with ldif exports including replication meta data. It requires the "-r" option. 
+Also reimporting the changelog is only useful in connection with ldif exports including replication meta data. It requires the "-r" option.
 
 The new option is:
 
-     -R    export the changelog database 
+     -R    export the changelog database
            this enforces -r for export of the main database
            if the ldif file for export is <ldif_file_name>.ldif the changelog will
            be exported to <ldif_file_name>_cl.ldif
@@ -185,9 +185,9 @@ All the extra code for handling the separate changelog directory cna be removed.
 As the writing of the changelog RUV in a backup is also unnecessary this extra handling can also be removed, see ticket ....
 
 =======
-* Ticket [\#49562](https://pagure.io/389-ds-base/issue/49562) integrate changelog database to main database
+* Ticket [\#2621](https://github.com/389ds/389-ds-base/issues/2621) integrate changelog database to main database
 
-Related tickets: 
-* Ticket [\#49476](https://pagure.io/389-ds-base/issue/49476) refactor ldbm backend to allow replacement of BDB
-* Ticket [\#49550](https://pagure.io/389-ds-base/issue/49550) do not write changelog RUV in online backup
-* Ticket [\#49525](https://pagure.io/389-ds-base/issue/49525) Improve attr encryption key rollover
+Related tickets:
+* Ticket [\#2535](https://github.com/389ds/389-ds-base/issues/2535) refactor ldbm backend to allow replacement of BDB
+* Ticket [\#2609](https://github.com/389ds/389-ds-base/issues/2609) do not write changelog RUV in online backup
+* Ticket [\#2584](https://github.com/389ds/389-ds-base/issues/2584) Improve attr encryption key rollover

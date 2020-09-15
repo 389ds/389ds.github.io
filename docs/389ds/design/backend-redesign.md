@@ -99,7 +99,7 @@ The Config Array, excerpt:
 ## Database Plugin
 
 All functionality to access and manage the database are implemented as pluging functions, this includes import/export, backup/restore, search and modify access for data in the database and some more
- 
+
 ### Defined plugin entrypoints
 
 The plugin functionality is exposed by registerd functions which are published to the plugin substructutre of the pblock, more precisely the database sub struct.
@@ -175,18 +175,18 @@ Not used, should be removed
 Used, but only called directly in init
 
     SLAPI_PLUGIN_DB_ADD_SCHEMA_FN, (void *)ldbm_back_add_schema);
-    
+
 
 
 ### Plugin usage
 
-Usually a plugin registers functions for specific entry points and then an application 
+Usually a plugin registers functions for specific entry points and then an application
 can retrieve the function for that entry point or plugin_call_plugins calls all plugin functions
 for an entry point.
 
 For the ldbm plugin this is not the normal case, the pblock is mainly used to set the functions and to get
 references from backend to plugin or vice versa. Functions are the directly called with the function pointers in the backend structure.
-I think the only reason to use the plugin mechanism is that different plugins can register their backend functions without 
+I think the only reason to use the plugin mechanism is that different plugins can register their backend functions without
 knowing the backend structure, but then rely on the calls directly from the backend.
 
 Here are a few examples of usage of the backend functions
@@ -359,7 +359,7 @@ Instance config
 
 #### Init functions
 
-At server startup plugins are loaded and the provided init function is called. When later the plugin is started the 
+At server startup plugins are loaded and the provided init function is called. When later the plugin is started the
 registered plugin start function is called. Here is what they do:
 
 ldbm_back_init
@@ -406,7 +406,7 @@ ldbm_back_start
 
     9. init USN (why here ?)
 
- 
+
 
 #### Data structure and init build up
 
@@ -418,7 +418,7 @@ The numbered references in the graph are detailled below:
 
 
 1] initialize ldbminfo and set it to the plugin
-     
+
      ldbm_back_init()
      {
          /* allocate backend-specific stuff */
@@ -428,9 +428,9 @@ The numbered references in the graph are detailled below:
          rc = slapi_pblock_set(pb, SLAPI_PLUGIN_PRIVATE, (void *)li);
      ....
      }
-     
+
 2] set the plugin reference into the ldbminfo
-     
+
      ldbm_back_init()
      {
          slapi_pblock_get(pb, SLAPI_PLUGIN, &p);
@@ -438,9 +438,9 @@ The numbered references in the graph are detailled below:
          li->li_plugin = p;
      ....
      }
-     
+
 3] initialize the backend instance set
-     
+
      ldbm_back_init()
      {
      ....
@@ -448,9 +448,9 @@ The numbered references in the graph are detailled below:
          li->li_instance_set = objset_new(&ldbm_back_instance_set_destructor);
      ....
      }
-     
+
 4] create a single backend
-     
+
      ldbm_instance_generate()
      {
      ....
@@ -460,9 +460,9 @@ The numbered references in the graph are detailled below:
          rc = ldbm_instance_create(new_be, instance_name);
      ....
      }
-     
+
 5+6] create instance and set references
-     
+
      ldbm_instance_create()
      {
      ....
@@ -475,9 +475,9 @@ The numbered references in the graph are detailled below:
          inst->inst_be = be;
      ....
      }   
-     
+
 7] add instance to set in ldbm info
-     
+
      ldbm_instance_create()
      {
      ....
@@ -485,19 +485,19 @@ The numbered references in the graph are detailled below:
          objset_add_obj(li->li_instance_set, instance_obj);
      ....
      }
-     
+
 8] set reference to ldbm in instance
-     
+
      ldbm_instance_create()
      {
      ....
          inst->inst_li = li;
      ....
      }
-     
-     
+
+
 9] set a reference from the backend to the database plugin
-     
+
      ldbm_instance_generate()
      {
      ....
@@ -520,12 +520,12 @@ The specific backend implementation will be defined in a new ldbm database param
 
 The default value is bdb
 
-The configuration of the specific implementation is in a new config entry: 
+The configuration of the specific implementation is in a new config entry:
 
      cn=<specific implementation>,cn=config,cn=ldbm database,cn=plugins,cn=config
 
 
-Example: 
+Example:
 
      dn: cn=bdb,cn=config,cn=ldbm database,cn=plugins,cn=config
      objectClass: extensibleobject
@@ -578,13 +578,13 @@ remain a generic config parameter
 
 
 =======
-* Ticket [\#49476](https://pagure.io/389-ds-base/issue/49476) refactor ldbm backend to allow replacement of BDB
+* Ticket [\#2535](https://github.com/389ds/389-ds-base/issues/2535) refactor ldbm backend to allow replacement of BDB
 
-Related tickets: 
-* Ticket [\#49469](https://pagure.io/389-ds-base/issue/49469)  cleanup backend code (1)
-* Ticket [\#49481](https://pagure.io/389-ds-base/issue/49481) remove unused or unnecessary database plugin functions
-* Ticket [\#49483](https://pagure.io/389-ds-base/issue/49483) investigate if backend get|set entrypoint is needed
-* Ticket [\#49487](https://pagure.io/389-ds-base/issue/49487)  remove ldbm_back_entry_release
-* Ticket [\#49488](https://pagure.io/389-ds-base/issue/49488)  remove old idl format
-* Ticket [\#49489](https://pagure.io/389-ds-base/issue/49489)  is upgrade dn format still needed ?
-* Ticket [\#49490](https://pagure.io/389-ds-base/issue/49490)  stop support for old entrydn index
+Related tickets:
+* Ticket [\#2528](https://github.com/389ds/389-ds-base/issues/2528)  cleanup backend code (1)
+* Ticket [\#2540](https://github.com/389ds/389-ds-base/issues/2540) remove unused or unnecessary database plugin functions
+* Ticket [\#2542](https://github.com/389ds/389-ds-base/issues/2542) investigate if backend get|set entrypoint is needed
+* Ticket [\#2546](https://github.com/389ds/389-ds-base/issues/2546)  remove ldbm_back_entry_release
+* Ticket [\#2547](https://github.com/389ds/389-ds-base/issues/2547)  remove old idl format
+* Ticket [\#2548](https://github.com/389ds/389-ds-base/issues/2548)  is upgrade dn format still needed ?
+* Ticket [\#2549](https://github.com/389ds/389-ds-base/issues/2549)  stop support for old entrydn index

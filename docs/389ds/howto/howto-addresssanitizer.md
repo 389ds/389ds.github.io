@@ -7,7 +7,7 @@ title: Address Sanitization
 # Introduction
 --------------
 
-Address Sanitization is a gcc extension which can be used to detect overflows and other memory errors in applications. It was introduced to 389 in [ticket 48350](https://pagure.io/389-ds-base/issue/48350)
+Address Sanitization is a gcc extension which can be used to detect overflows and other memory errors in applications. It was introduced to 389 in [ticket 1681](https://github.com/389ds/389-ds-base/issues/1681)
 
 # Dependencies
 --------------
@@ -53,7 +53,7 @@ get the sources
      hg clone https://hg.mozilla.org/projects/nspr
      hg clone https://hg.mozilla.org/projects/nss
 
-build it 
+build it
 
      nss/build.sh -c --asan --disable-tests
 
@@ -133,7 +133,7 @@ The contents of such an error will be as such:
       ASan internal:         fe
     ==30761== ABORTING
 
-From here you can then determine the fault in ns-slapd. This fault has already been isolated in [ticket 48351](https://pagure.io/389-ds-base/issue/48351)
+From here you can then determine the fault in ns-slapd. This fault has already been isolated in [ticket 1682](https://github.com/389ds/389-ds-base/issues/1682)
 
 # Testing NSS & NSPR
 --------------------
@@ -165,5 +165,3 @@ If you are running on Fedora 24 or rawhide, and NO address issues occur, you may
 --------
 
 William Brown (wibrown at redhat.com)
-
-

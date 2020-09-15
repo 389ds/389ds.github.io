@@ -98,11 +98,11 @@ The Sync Report tab is dony with ReactJS. It copies CLI tool functionality with 
 Origin
 ======
 
-- https://pagure.io/389-ds-base/issue/50545
+- https://github.com/389ds/389-ds-base/issues/3601
 
-- https://pagure.io/389-ds-base/pull-request/50614
+- https://github.com/389ds/389-ds-base/pull/3669
 
-- https://pagure.io/389-ds-base/pull-request/50733
+- https://github.com/389ds/389-ds-base/pull/3788
 
 Author
 =====

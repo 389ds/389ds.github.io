@@ -160,7 +160,7 @@ closing, the function `connection_release_nolock_ext` will call
 
 ### Known Problems
 
-[Ticket #48184](https://pagure.io/389-ds-base/issue/48184 "Ticket #48184")
+[Ticket #1515](https://github.com/389ds/389-ds-base/issues/1515")
 
 The server relies on the idletimeout to add the I/O timeout job.  If there is
 no idletimeout, or the user (e.g. directory manager) has no idletimeout, the
@@ -210,4 +210,3 @@ Author
 ------
 
 Rich Megginson rmeggins@redhat.com
-

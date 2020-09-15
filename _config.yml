@@ -1,5 +1,5 @@
 # Do not use tabs in this file!
-repository: https://pagure.io/389-ds-base/
+repository: https://github.com/389ds/389-ds-base/
 
 # Required for running on Ruby 1.9
 encoding: utf-8

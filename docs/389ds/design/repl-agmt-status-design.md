@@ -68,7 +68,7 @@ Impacts FreeIPA status parsing.
 Origin
 -------------
 
-<https://pagure.io/389-ds-base/issue/49602>
+<https://github.com/389ds/389-ds-base/issues/2661>
 
 Author
 ------

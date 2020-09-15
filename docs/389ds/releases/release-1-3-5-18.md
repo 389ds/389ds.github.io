@@ -41,7 +41,7 @@ F24 <https://bodhi.fedoraproject.org/updates/FEDORA-2017-f0ace457f7>
 F25 <https://bodhi.fedoraproject.org/updates/FEDORA-2017-a4824a5fb4>
 
 
-If you find a bug, or would like to see a new feature, file it in our Trac instance: <https://pagure.io/389-ds-base/new_issue>
+If you find a bug, or would like to see a new feature, file it in our Trac instance: <https://github.com/389ds/389-ds-base/new_issue>
 
 - Bump version to 1.3.5.18
 - Ticket 49273 - Fix logging from previous patch

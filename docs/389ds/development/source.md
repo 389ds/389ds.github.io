@@ -11,13 +11,13 @@ These are the sources used by the directory server which are provided by the pro
 
 [All the source tarballs]({{ site.binaries_url }}/binaries/)
 
-All of the source is now in git. The git module given below is a sub-directory of the base git URL **git@pagure.io/389-ds-base.git** - so for the base directory server, the full git URL is **https://pagure.io/389-ds-base.git**
+All of the source is now in git. The git module given below is a sub-directory of the base git URL **git@github.com:389ds/389-ds-base.git** - so for the base directory server, the full git URL is **https://github.com/389ds/389-ds-base.git**
 
 The idm-console-framework is not under 389/ it is at **git://git@pagure.io/idm-console-framework.git**
 
 The source code was produced by first doing a git clone to get the repository, then a git archive to produce the source tarball
 
-    git clone https://git@pagure.io/389-ds-base.git
+    git clone git@github.com:389ds/389-ds-base.git
 
     git archive --prefix=PKGNAME/ TAG | bzip2 > PKGNAME.tar.bz2
 
@@ -157,7 +157,7 @@ The source code was produced by first doing a git clone to get the repository, t
 |[389-ds-base-1.3.8.2.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.3.8.2.tar.bz2)|389-ds-base.git|389-ds-base-1.3.8.2|[Building](building.html)|91e417c9ec097c63e0af12f70702bdeb37df3b5d9503da4041c873caefc20a33a9ef841a7f8ace7ab29dbae4e2b8f47f959f1933b2ff565a22feffc5cfe519e2|
 |[389-ds-base-1.3.8.1.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.3.8.1.tar.bz2)|389-ds-base.git|389-ds-base-1.3.8.1|[Building](building.html)|c4a5dd631a2096c8021498124a9f9a5e0af8676e26620dfb0d64bc9ff3d0fb16e5e305e137d58e842249f402a42e920251500eee6b08e555fa16d6b92ca87c04|
 
- 
+
 ### 389 Directory Server 1.3.7
 
 |Source tarball|git module|git tag|More Info|SHA256SUM|
@@ -211,7 +211,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 ### 389 Directory Server 1.3.4
 
-389-ds-base uses git repo https://pagure.io/389-ds-base.git branch 389-ds-base-1.3.4 (branched 19-Jun-2015)
+389-ds-base uses git repo https://github.com/389ds/389-ds-base.git branch 389-ds-base-1.3.4 (branched 19-Jun-2015)
 
 |Source tarball|git module|git tag|More Info|SHA1SUM|
 |--------------|----------|-------|---------|-------|
@@ -508,5 +508,3 @@ This is the source which were used to build the 389 Directory Password Synchroni
 |Source tarball|git module|git tag|MD5SUM|
 |--------------|----------|-------|------|
 |[389-passsync-1.1.6.tar.bz2]({{ site.binaries_url }}/binaries/389-passsync-1.1.6.tar.bz2)|winsync|winsync-1.1.6|13493549a90182e064ce7987f869c56f64e48ac0|
-
-

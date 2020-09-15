@@ -22,7 +22,7 @@ git push access - you will need to be a member of the git389 group in FAS
 -   <https://admin.fedoraproject.org/accounts/group/view/git389>
 -   Request access, then bug a 389 developer to add you
 
-**DS** = the 389 source code SCM - git clone ssh://git@pagure.io/389-ds-base.git
+**DS** = the 389 source code SCM - git clone git@github.com:389ds/389-ds-base.git
 
 **Fedora** = the DS clone location which contains the spec files - (use **fedpkg clone 389-ds-base**)
 
@@ -34,7 +34,7 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   **mkdir /home/source/ds389; cd /home/source/ds389**
 
--   **git clone ssh://git@pagure.io/389-ds-base.git**
+-   **git clone git@github.com:389ds/389-ds-base.git**
 
 -   **cd 389-ds-base**
 
@@ -146,9 +146,9 @@ NOTE: Do not git push -\\\-tags - you may inadvertently push tags you did not in
 Update The Wiki (internal use only)
 ------------------------------------
 
--   Upload the source tarball to pagure <https://pagure.io/389-ds-base/upload>
+-   Upload the source tarball to GitHub <https://github.com/389ds/389-ds-base/releases/new>
 
--   Create a release note under the following directory (follow the previous release note as a template) 
+-   Create a release note under the following directory (follow the previous release note as a template)
 
         /SOURCE/docs/389ds/releases/
 
@@ -167,5 +167,3 @@ Update The Wiki (internal use only)
 -   Push your updates
 
 -   Done!
-
-

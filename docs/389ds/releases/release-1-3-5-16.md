@@ -36,7 +36,7 @@ We are very interested in your feedback!
 
 Please provide feedback and comments to the 389-users mailing list: <https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org> as well as <https://admin.fedoraproject.org/updates/389-ds-base-1.3.5.15-1.fc24>.
 
-If you find a bug, or would like to see a new feature, file it in our Trac instance: <https://pagure.io/389-ds-base/new_issue>
+If you find a bug, or would like to see a new feature, file it in our Trac instance: <https://github.com/389ds/389-ds-base/new_issue>
 
 - Bump version to 1.3.5.16-1
 - Issue 49188 - retrocl can crash server at shutdown

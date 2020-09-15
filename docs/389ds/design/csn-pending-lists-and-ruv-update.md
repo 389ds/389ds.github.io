@@ -7,7 +7,7 @@ title: "CSN Pending Lists and RUV update"
 
 # Introduction
 The RUV (replication update vector) maintains for every master replica (identified by the replicaID) in the replication topology the largest CSN (change sequence number) it has seen that originated at that replica. In a replication session the supplier compares its own RUV with the RUV of the consumer and decides if there are changes to be sent. At the end the RUV of the consumer is updated and is used as staribg point in a new replication session.
-   
+
 # Problem:
 Therefor it is crucial that the menchanism of applying updates to the local database, updating the local RUV and sendin changes (and so updating the consumer RUV) are synchronized and no changes will be lost. Zhis is managed by maintaining a CSN pending list:
 A csn pending list is a list of CSNs which have not yet been used to update the maxcsn of the RUV. There are two scenarios where it is necessary to keep a pending list and only update the RUV with a specific CSN of this list after all CSN in the list which are smaller are committed. It is also required to ensure that the RUV is not updated if an operation is aborted.
@@ -92,7 +92,7 @@ Primary csn context (prim_ctx): the context of the primary csn identified by the
 
 ## Proposal:
 
-Define a primary csn context, consisting of a prim_csn and an array of replicas having csns generated in that context. 
+Define a primary csn context, consisting of a prim_csn and an array of replicas having csns generated in that context.
 
     #define CSNPL_CTX_REPLCNT 4
     typedef struct CSNPL_CTX
@@ -144,7 +144,7 @@ When inserting a csn to the pending list:
            add_replica_to_primcsn(prim_csn, (Replica *)repl);
         }
 
-When cancelling a csn, 
+When cancelling a csn,
 
 - if it is the prim_csn also cancel all secondary csns in all replicas in the prim_ctx
 
@@ -161,7 +161,7 @@ When cancelling a csn,
 
 - else just remove the csn from the local pending list
 
-        else 
+        else
             csnplRemove(.)
 
 
@@ -177,7 +177,7 @@ When committing a csn,
 
     - in the primary replica, if the RID of the prim_csn is not the local RID also rollup the pending list for the local RID.
 
-            if local rid != prim rid 
+            if local rid != prim rid
                 ruv_update_ruv_elememt (ruv element for prim rid)
             for all replicas[i] != 0
                 ruv_update_ruv_elememt (ruv element for local rid of replicas[i])
@@ -187,11 +187,10 @@ When committing a csn,
 # Origin
 -------------
 
-* Ticket [\#49008](https://pagure.io/389-ds-base/issue/49008) aborted operation can leave RUV in incorrect state
-* Ticket [\#49287](https://pagure.io/389-ds-base/issue/49287) replication halt - pending list first CSN not committed, pending list increasing
+* Ticket [\#2067](https://github.com/389ds/389-ds-base/issues/2067) aborted operation can leave RUV in incorrect state
+* Ticket [\#2346](https://github.com/389ds/389-ds-base/issues/2346) replication halt - pending list first CSN not committed, pending list increasing
 
 Author
 ------
 
 <lkrispen@redhat.com>
-

@@ -66,7 +66,7 @@ If the import succeeds, the file is updated. So an attempted import could be dis
 A restore affects all backends, at startup the existence of the "restore" file is checked and if it exists the flag in all backends has to be set.
 It is checked before the backends are started and the state is stored in a private variable:
 
-    is_restart_after_restore 
+    is_restart_after_restore
 
 when the backends are started, the state can be determined via a function
 
@@ -103,4 +103,4 @@ after an online initialization, either an import task or an online replica initi
 
 Tickets
 =======
-* Ticket [\#48402](https://pagure.io/389-ds-base/issue/48402) allow plugins to detect a restore or import
+* Ticket [\#1733](https://github.com/389ds/389-ds-base/issues/1733) allow plugins to detect a restore or import

@@ -19,7 +19,7 @@ After you checkout the source code, you can find the testing framework as follow
 
     mkdir /home/<USER>/ds-source
     cd /home/<USER>/ds-source
-    git clone https://pagure.io/389-ds-base.git
+    git clone https://github.com/389ds/389-ds-base.git
     cd ds/dirsrvtests
 
 Under *ds/dirsrvtests/* we see the following directories
@@ -40,15 +40,15 @@ Under *ds/dirsrvtests/* we see the following directories
 
 To start working with lib389, we need to get the lib389 framework:
 
-    mkdir /home/<USER>/lib389
-    cd /home/<USER>/lib389
-    git clone https://pagure.io/lib389.git
+    mkdir /home/<USER>/src
+    cd /home/<USER>/src
+    git clone https://github.com/389ds/389-ds-base.git
 
-External users will use "**git clone git://**" instead of "**git clone ssh://**"
+External users will use "**git clone https://github.com/389ds/389-ds-base.git**" instead of "**git clone git@github.com:389ds/389-ds-base.git**"
 
-Next, we add the location of the framework to our PYTHONPATH environment variable (**/home/mreynolds/lib389**):
+Next, we add the location of the framework to our PYTHONPATH environment variable (**/home/mreynolds/src/389-ds-base/src/lib389**):
 
-    PYTHONPATH=/usr/lib64/python2.7:/usr/lib64/python2.7/plat-linux2:/usr/lib64/python2.7/lib-dynload:/usr/lib64/python2.7/site-packages:/usr/lib/python2.7/site-packages:/usr/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info:/home/mreynolds/lib389/
+    PYTHONPATH=/usr/lib64/python2.7:/usr/lib64/python2.7/plat-linux2:/usr/lib64/python2.7/lib-dynload:/usr/lib64/python2.7/site-packages:/usr/lib/python2.7/site-packages:/usr/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info:/home/mreynolds/src/389-ds-base/src/lib389/
 
 <br>
 
@@ -107,7 +107,7 @@ Example using a single standalone instance:
     def topology(request):
         #
         # Topology function
-        # 
+        #
         # Create our instances, configure replication
         #
         standalone.allocate(args)
@@ -182,18 +182,18 @@ Currently the script will create a "replication" setup, or a standalone setup (n
 
     ./create_test.py --suite memberOf_plugin
         --> Creates a "suite" test named:  memberOf_plugin_test.py
-    
+
 **Note** - "suite" tests are for testing functional areas or features, while "ticket" tests are for testing individual bugs.
 
 
 If setting up a complex replication test, the script structures the deployment in a cascading fashion:
 
                  master1  <=>  master2
-                    
+
                        hub1  hub2
 
          consumer  consumer  consumer consumer
-    
+
 
 ### The Defaults
 
@@ -232,7 +232,7 @@ Creating instances takes a few steps listed below
       args_instance[SER_CREATION_SUFFIX] = DEFAULT_SUFFIX
       args_standalone = args_instance.copy()
 
-- Allocate the instance - initialize the "**DirSrv**" object with our arguments 
+- Allocate the instance - initialize the "**DirSrv**" object with our arguments
 
       standalone.allocate(args_standalone)
 
@@ -241,7 +241,7 @@ Creating instances takes a few steps listed below
       standalone.create()
 
 - Open the instance - create a connection to the instance, and authenticates as the Root DN (cn=directory manager)
-    
+
       standalone.open()
 
 - Done, you can start using the new instance
@@ -258,7 +258,7 @@ Creating instances takes a few steps listed below
 
 ### Add, Modify, and Delete Operations
 
-    # 
+    #
     # Add an entry
     #
     USER_DN = 'cn=mreynolds,%s' % DEFAULT_SUFFIX
@@ -272,7 +272,7 @@ Creating instances takes a few steps listed below
     except ldap.LDAPError, e:
         log.error('Failed to add user (%s): error (%s)' % (USER_DN, e.message['desc']))
         assert False
-    
+
     #
     # Modify an entry
     #
@@ -282,7 +282,7 @@ Creating instances takes a few steps listed below
         log.error('Failed to modify user (%s): error (%s)' % (USER_DN, e.message['desc']))
         assert False
 
-    # 
+    #
     # Delete an entry
     #
     try:
@@ -307,7 +307,7 @@ By default when an instance is create and opened(standalone.open()), it is alrea
         log.fatal('Search failed, error: ' + e.message['desc'])
         assert False
 
-    # 
+    #
     # Bind - bind as our test entry
     #
     try:
@@ -385,7 +385,7 @@ After the instance is created, you can enable it for replication and set up a re
       if not standalone.testReplication(DEFAULT_SUFFIX, master2):
           # Error
           assert False
-    
+
 ### Memory Leak Testing (valgrind)
 
 These are the core module functions that make valgrind testing very simple.
@@ -438,7 +438,7 @@ There are two ways to runs the test, run a single test, or test with "**py.test*
 ### Running a Single Test
 
 If running the test on an RPM, you need to be root. It will deploy the instance under '/' and run them as user/group 'dirsrv'.
-If testing against a specific installation(non-RPM) you need to set the PREFIX to its location: 
+If testing against a specific installation(non-RPM) you need to set the PREFIX to its location:
 
 Running as a local user against a specific installation location
 
@@ -484,4 +484,3 @@ Run "**pydoc lib389**" to see the entire modules documentation
 Also checkout the *Upstream Testing Framework* page:
 
 <http://www.port389.org/docs/389ds/FAQ/upstream-test-framework.html
-

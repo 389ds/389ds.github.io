@@ -52,7 +52,7 @@ Source Code and Build Instructions
 
 |Component|GIT Repository|Clone the Repository|
 |---------|------|
-|**Directory Server** ([build & debug instructions](development/building.html))| <https://git@pagure.io/389-ds-base.git>| git clone https://git@pagure.io/389-ds-base.git<br>git clone ssh://git@pagure.io/389-ds-base.git|
+|**Directory Server** ([build & debug instructions](development/building.html))| <https://github.com/389ds/389-ds-base.git>| git clone https://github.com/389ds/389-ds-base.git<br>git clone git@github.com:389ds/389-ds-base.git|
 |**Nunc-Stans** ([build & debug instructions](development/building-nunc-stans.html))| <https://git.fedorahosted.org/git/nunc-stans.git>| git clone git://git.fedorahosted.org/git/nunc-stans.git<br>git clone ssh://git.fedorahosted.org/git/nunc-stans.git|
 |**AdminUtil** ([build instructions](administration/adminutil.html)) | <https://git.fedorahosted.org/git/389/adminutil.git>| git clone git://git.fedorahosted.org/git/389/adminutil.git<br>git clone ssh://git.fedorahosted.org/git/389/adminutil.git|
 |**Admin Server** ([build & debug instructions](administration/adminserver.html#build)) | <https://git.fedorahosted.org/git/389/admin.git>| git clone git://git.fedorahosted.org/git/389/admin.git<br>git clone ssh://git.fedorahosted.org/git/389/admin.git|
@@ -66,7 +66,6 @@ Source Code and Build Instructions
 |**Continuous Integration Testing** ([documentation](FAQ/upstream-test-framework.html))| <https://git.fedorahosted.org/git/389/lib389.git>| git clone git://git.fedorahosted.org/git/389/lib389.git<br>git clone ssh://git.fedorahosted.org/git/389/lib389.git|
 |**Rest Server** ([documentation](design/ldap-rest-api.html))| <https://git.fedorahosted.org/git/389/rest389.git>| git clone git://git.fedorahosted.org/git/389/rest389.git<br>git clone ssh://git.fedorahosted.org/git/389/rest389.git|
 |**OpenLDAP** ([build instructions](development/building-openldap.html))|Not Available| git clone git://git.openldap.org/openldap.git|
-|**Svrcore** ([build instructions](development/building-svrcore.html))|<https://pagure.io/svrcore.git>| git clone https://pagure.io/svrcore.git|
 
 <br>
 
@@ -142,6 +141,3 @@ This is easy to do. Just follow these steps:
 -   Go to <https://admin.fedoraproject.org/accounts/user/new> and create a new account - or Login if you already have an account
 -   Go to <https://admin.fedoraproject.org/accounts/cla/> and submit the on-line form
     -   Some older versions of this text say that you have to print out, sign, and mail/fax/email the form. This is no longer a requirement for the ICLA - the click through is sufficient for the ICLA.
-
-
-
