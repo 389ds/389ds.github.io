@@ -58,7 +58,7 @@ If you're new to the project you should start with our [getting started](docs/38
 -   Secure authentication and transport (TLS, and SASL)
 -   LDAPv3 compliant server
 
-    For more see our [Features](docs/389ds/FAQ/features.html) page.
+    For more see our [Features](docs/389ds/FAQ/features.html) and [third party plugin](docs/389ds/third-party.html) pages.
 
 ## Community
 

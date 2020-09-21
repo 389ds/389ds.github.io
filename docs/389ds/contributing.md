@@ -34,6 +34,7 @@ Before you jump into the code, here are some things you can do to familarise you
     -   To use [github](https://github.com/389ds/389-ds-base) you need to have a GitHub account
 -   Take a look at the list of [easy fix](https://github.com/389ds/389-ds-base/labels/easy%20fix) issues
     -   Join our [developers mailing list](https://lists.fedoraproject.org/admin/lists/389-devel.lists.fedoraproject.org/), and let us know you want to contribute code. We'll help you through the process.
+    -   Create a [third party plugin](third-party.html) to add or extend features
 
 Many of us in the team started by asking questions and raising bugs.
 
