@@ -360,13 +360,12 @@ reference: [Backup and Restore Strategies](/docs/389ds/howto/howto-backup-restor
 389 Directory Server ships with many other features and plugins. Some you may want to explore:
 
 * TLS: [Setup TLS](/docs/389ds/howto/howto-ssl.html)
-* Replication: [Setup Replication]()
+* Replication: [Setup Replication (RedHat Docs)](https://access.redhat.com/documentation/en-us/red_hat_directory_server/11/html/administration_guide/managing_replication)
 * Cockpit Web Console: [Setup Cockpit](/docs/389ds/howto/howto-install-389.html)
 * Access Controls: [Setup ACI](/docs/389ds/howto/howto-accesscontrol.html)
 * Distributed Numeric Assignment: [Setup DNA](/docs/389ds/howto/howto-dna.html)
-* RADIUS: [Setup RADIUS]()
-* Monitoring: [Setup Monitoring]()
-* Attribute Uniquness: [Setup Attribute Uniqueness]()
+* Monitoring: [Setup Monitoring](/docs/389ds/howto/howto-monitor-replication.html)
+* Attribute Uniquness: [Setup Attribute Uniqueness](/docs/389ds/howto/howto-uid-uniqueness.html)
 
 We want to hear from you to about your setup and configurations, so please contact the team to extend
 this section!
