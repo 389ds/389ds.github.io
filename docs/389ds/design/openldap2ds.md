@@ -33,12 +33,12 @@ so there will always be situations or configurations that can not be adapted ful
 | External Auth    | SASL Authd           | PTA Plugin                | 🔨 (Config and Data Changes needed) |
 | LDAP Proxy       | Proxy                | -                         | ❌           |
 | AD Synchronisation | -                  | Winsync Plugin            | ❌           |
-| Inbuilt Schema   | OLDAP Schemas        | 389 Schemas               | 🔨 (Upstream work underway) |
-| Custom Schema    | OLDAP Schemas        | 389 Schemas               | ✅ (Migration Required) |
-| Database Import  | LDIF                 | LDIF                      | ✅ (Some data manipulation may be needed) |
+| Inbuilt Schema   | OLDAP Schemas        | 389 Schemas               | ✅ (Complete, some esoteric types not supported) |
+| Custom Schema    | OLDAP Schemas        | 389 Schemas               | ✅ (Complete as part of openldap2ds) |
+| Database Import  | LDIF                 | LDIF                      | ✅ (Data manipulation automated in openldap2ds) |
 | Password Hashes  | Varies               | Varies                    | 🔨 (Some types may work, some may need development or migration) |
 | oldap 2 ds repl  | -                    | -                         | ❌ (No mechanism for openldap to replicate to 389 is possible) |
-| ds 2 oldap repl  | -                    | SyncREPL                  | 🔨 (Investigation on 389 able to emulate OpenLDAP syncrepl metadata is underway) |
+| ds 2 oldap repl  | -                    | SyncREPL                  | 🔨 (Mostly complete, tests in place, some more QA required.) |
 | TOTP             | TOTP Overlap         | -                         | ❌             |
 | EntryUUID        | Part of OpenLDAP     | Plugin                    | 🔨 (Accepted, pathway to rust-by-default underway) |
 
@@ -176,10 +176,13 @@ consumer, and the CSN that was replicated up to. The cookie format
      rid=123,csn=20200525045810.162381Z#000000#000#000000
      rid=123,csn=20200525051329.534174Z#000000#000#000000
 
-The consumer *will* parse this CSN to order the events that have just been provided, however the consumer
+The OpenLDAP consumer *will* parse this CSN to order the events that have just been provided, however the consumer
 then assigns it's own internal CSN to the events. This CSN is based on the systems localtime and is
 not a lamport clock, which means that there may be occasions the generated CSN could be out of
 order relative to others.
+
+The OpenLDAP consumer *will* assert that the Ldap Message SyncUUID is equivalent to the EntryUUID
+*if* EntryUUID is present (if EntryUUID is not present, it is generated from the SyncUUID).
 
 * Further Replications
 
@@ -187,21 +190,17 @@ The subsequent requests are made with the cookie with the last rid and csn provi
 This allows the provider to know where to start to "send updates" from. These updates are documented below
 based on the causing operation type.
 
-## Search request
-
-Openldap requests the following when in dsee changelog mode.
-
-	attrs="\* + aci"
-
 ## 389 Already Supported Elements
 
 We can already provide sync repl with the following setup.
 
-	dsconf localhost plugin retro-changelog enable
-	dsconf localhost plugin retro-changelog set --attribute nsuniqueid:targetUniqueId
-	dsconf localhost plugin contentsync enable
-	dsconf localhost backend create --suffix dc=example,dc=com --be-name userRoot
-	dsidm localhost initialise
+    dsconf localhost plugin retro-changelog enable
+    dsconf localhost plugin retro-changelog set --attribute nsuniqueid:targetUniqueId
+    dsconf localhost plugin retro-changelog add --attribute entryuuid:targetEntryUUID
+    dsconf localhost plugin contentsync enable
+    dsconf localhost plugin contentsync set --attribute syncrepl-allow-openldap:on
+    dsconf localhost backend create --suffix dc=example,dc=com --be-name userRoot
+    dsidm localhost initialise
 
 create a sync capable user.
 
@@ -269,18 +268,21 @@ check the changelog:
 
 Show the current openldap cookie:
 
- 	ldapsearch -H ldap://127.0.0.1 -b 'dc=example,dc=com' -s base -x  contextCSN
+	ldapsearch -H ldap://127.0.0.1 -b 'dc=example,dc=com' -s base -x  contextCSN
 	# example.com
 	dn: dc=example,dc=com
 	contextCSN: 21000101110148.000000Z#000000#000#000000
 
-## 389 Proposed Changes to allow openldap compatible syncrepl
+## 389 Changes Required to Allow OpenLDAP Compatible Syncrepl
 
 Due to OpenLDAP's replication being "whole entry" based, and the details in the syncrepl being very
-simple, it would be easy to emulate with a small number of changes.
+simple, it is easy to emulate with a small number of changes. This allows a "readonly" OpenLDAP
+server to exist, however, access control and bind may not work as "expected". It may be the case that
+admins do not wish for this functionality to exist, so OpenLDAP sync is enabled per server.
 
-If we detect the initial request with a rid= format, we know that we are in openldap provider
-mode (compared to other sync repl clients that will provide an empty sync cookie).
+If we detect the initial request with a rid= format, and the value syncrepl-allow-openldap=on is set,
+we know that we are in openldap provider mode (compared to other sync repl clients that will provide
+an empty sync cookie).
 
 We can generate an OpenLDAP compatible CSN by converting the changenumber into a timestamp via
 unix epoch. By adding an offset we can guarantee that the CSN's we generate will "always be
@@ -292,23 +294,45 @@ correct ordering of events.
 
 No other changes are needed.
 
+## Plugin Configuration
+
+To enable OpenLDAP sync, the following parameter exists:
+
+    cn=Content Synchronization,cn=plugins,cn=config
+    syncrepl-allow-openldap: off|on
+
+With dsconf:
+
+    dsconf localhost plugin contentsync enable
+    dsconf localhost plugin contentsync set --attribute syncrepl-allow-openldap:on
+
 ## EntryUUID
 
-The currently syncrepl plugin uses nsUniqueId to provide the ID's for operations. If the EntryUUID
-plugin is enabled, then we need to use that instead, else OpenLDAP can become confused about the
-difference between the sent entryuuid in the entry, and the different syncrepl uuid derived from
-nsuniqueid.
+The currently syncrepl plugin uses nsUniqueId to provide the SyncUUID for operations. As OpenLDAP
+enforces that SyncUUID must be equal to EntryUUID, when providing to an OpenLDAP client, then
+we enforce that EntryUUID must be present. This is ensure the UUID's are stable between
+OpenLDAP and 389-ds for consuming applications and to prevent data inconsistency between 389-ds and
+OpenLDAP. Consider if we had an entry with NO entryUUID. When sent to OpenLDAP, the SyncUUID would
+be from the NsUniqueId, which would cause OpenLDAP to create the EntryUUID as the derivative of the
+SyncUUID (nsUniqueId). If the entry then had the EntryUUID attribute added, we would *not* send a
+delete of the nsUniqueId, and we would send a present of the EntryUUID as the SyncUUID. This would
+cause the OpenLDAP server to reject the SyncRepl due to conflicting DN and mismatching UUID's. As
+can be imagined, this is "not fun". Rather than attempt to track these changes to make it "consistent"
+it is much simpler to enforce that EntryUUID is required for OpenLDAP syncrepl.
 
-## Risks
+When in OpenLDAP mode, only entries with "EntryUUID=\*" are sent to the requesting client. This
+is added internally to the filter.
 
-Due to the time based nature, and not using a true lamport clock, it may be possible that entries
-become out of sync with the consumer in a chaining scenario. In this case, since we only support read-only consumers, we
-would advise that a full re-init of the consumer should occur. This can be triggered by simply
-deleting the OpenLDAP database mdb files which will trigger a refresh.
+To support consistent deletes, we must then track the EntryUUID in the retro changelog so that we
+can correctly send entry deletes. This is configured in the retro changelog with:
 
-That we may need more schema or other changes to make this possible, and that we may need schema
-added into openLDAP to make this work. Openldap has a schema check=off mode, but it appears to
-do nothing and schema continues to be enforced.
+    dsconf localhost plugin retro-changelog enable
+    dsconf localhost plugin retro-changelog set --attribute nsuniqueid:targetUniqueId
+    dsconf localhost plugin retro-changelog add --attribute entryuuid:targetEntryUUID
+
+Since we only send entries that have "EntryUUID=\*", we can assert that targetEntryUUID must also
+then be present in the Retro Changelog. This allows on delete events, for the targetEntryUUID
+to be sent and the SyncUUID to be consistent.
 
 ## Investigation of the OpenLDAP DSEE Compatible Sync
 
