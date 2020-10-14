@@ -23,6 +23,8 @@ If you are adding a new design document, use the [template](design-template.html
 
 -   [Replication Agreement Bootstrap Credentials](repl-agmt-bootstrap-design.html)
 -   [Replication Changelog moved into main database](integrate-changelog-database-and-backend-database.html)
+-   [Openldap to 389 Migration](openldap2ds.html)
+-   [Mapping Tree Assembly Rework](mapping_tree_assembly.html)
 
 ## 389 Directory Server 1.4.3 (RHEL 8.x)
 
@@ -220,7 +222,6 @@ If you are adding a new design document, use the [template](design-template.html
 -----------------------------------------------
 
 ## Design Discussions
--   [Openldap to 389 Migration](openldap2ds.html)
 -   [Token Auth](token-auth.html)
 -   [Entry State Resolution](entry-state-resolution.html)
 -   [High Contention with Entry Cache](high-contention-on-entry-cache-lock.html)
