@@ -56,7 +56,7 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   **TAG=389-ds-base-1.3.9.1** ; **git tag \$TAG** ; **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$TAG.tar.bz2 ; git log -\\\-oneline 389-ds-base-1.3.9.0.. \> /tmp/cl-info**
 
--   **TAG=389-ds-base-1.4.1.6 ; git tag \$TAG ; export TAG ; make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-1.4.1.5.. \> /tmp/cl-info**
+-   **TAG=389-ds-base-1.4.4.6 ; git tag \$TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-1.4.4.5.. \> /tmp/cl-info**
 
 -   Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and trac bugs. Leave the hash for coverity/misc updates.
 

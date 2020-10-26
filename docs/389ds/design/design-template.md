@@ -66,7 +66,7 @@ Here is a "MarkDown" template for writing design docs
     Origin
     -------------
 
-    A link to the trac ticket or bugzilla
+    A link to the Issue or Bugzilla
 
     Author
     ------
