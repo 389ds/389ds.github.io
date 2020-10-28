@@ -20,7 +20,7 @@ The new packages and versions are:
 
 - 389-ds-base-1.4.5.0-1
 
-Source tarballs are available for download at [Download 389-ds-base Source](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.5.0.tar.bz2)
+Source tarballs are available for download at [Download 389-ds-base Source](https://github.com/389ds/389-ds-base/archive/389-ds-base-1.4.5.0.tar.gz)
 
 ### Highlights in 1.4.5.0
 
