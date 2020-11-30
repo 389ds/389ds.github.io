@@ -10,7 +10,9 @@ title: "Database Backend Redesign - Phase 3"
 Status
 ==========
 Date: 2020 Nov, 26th
-Staus: Draft 
+
+Staus: Draft
+
 Tickets: [https://issues.redhat.com/browse/IDMDS-302](https://issues.redhat.com/browse/IDMDS-302)
 
 Motivation
@@ -21,12 +23,11 @@ See [backend redesign (initial phases)](https://www.port389.org/docs/389ds/desig
 High level summary
 ==================
 
-See [https://www.port389.org/docs/389ds/design/backend-redesign.html backend redesign (initial phases)]
+This document is the continuation of ludwig's work about Berkeley database removal.
+[backend redesign (initial phases)](https://www.port389.org/docs/389ds/design/backend-redesign.html)
 
-This document is describing next phases of the 389 Directory Server changes needed to:
-* remove hard dependency to the underlying database.
-* offer an API that allow to use database implementation plugin
-This document focus on:
+It focus on:
+
 * the removal of <libdb/db.h> dependency within the backend and replication plugins
 * the dbimpl API: that interface the database implementation plugins (and is used by the dblayer interface)
 
@@ -42,78 +43,49 @@ The dependency that remains are:
 * References to the Berkeley Database include (i.e &lt;libdb/db.h&gt;) types and data and macros.<br />
 They are spread among the backend and replication changelog code while only bdb plugin should use it.
 * Some of the code specific to bdb implementation needs to be moved inside the bdb plugin
-
 (typically the part of the database monitoring code that gather the statistics and reset them)
+      * Error code handling and logging. Should find a way to get it independent of the database implementation while still be able to provide relevant data in case of unexpected trouble
+      * removal of bdb specific features that are not available on the other databases:
+         * Dblayer_in_import checks the presence of a db region to detect that an import is running. An implementation agnostic method should be used instead.
+         * VLV uses record number -   
+          The only numer that we have is the one of the last record.
+          the bad thing is that they are propagated up to the VLV ldap request. (it relates to the index and contentCount within the VLV control)
+not sure we can handle that as efficiently than with BDB (so far the only methods i am able to think about are:
+              * skip to next cursor n times
+              * build the complete idl and use the idl index counter
+         * Have a database implementation plugin API instead of direct reference to berkeley db components. Note: part of this is already implemented: 
 
-<ul>
-<li>Error code handling and logging. Should find a way to get it independent of the database implementation while still be able to provide relevant data in case of unexpected trouble</li>
-<li><p>Some of the code use bdb feature that are not available on the other databases:</p>
-<ul>
-<li><blockquote><p>Dblayer_in_import checks the presence of a db region to detect that an import is running. An implementation agnostic method should be used instead.</p></blockquote></li>
-<li><blockquote><p>VLV uses record number - the bad thing is that they are propagated up to the VLV ldap request<br />
-(it relates to the index and contentCount within the VLV control)<br />
-⇒ not sure we can handle that as efficiently than with BDB (so far the only method i am able to think about is to set the cursor on first record then “move it to next” n times )<br />
-The only data that is available is the total number of records. (which is also needed for vlv)</p></blockquote></li></ul>
-</li></ul>
+When initializing the dblayer API, the value of nsslapd-backend-implement configuration parameter is used to load *value* plugin then to call *value*_init function that fills a set of callbacks in li-\>priv.
 
+### Work to be done
 
-<ul>
-<li><blockquote><p>Have a database implementation plugin API instead of direct reference to berkeley db components</p></blockquote></li></ul>
-
-<blockquote>Note: part of this is already implemented: 
-</blockquote>
-When initializing the dblayer API, the value of nsslapd-backend-implement configuration parameter is used to load *value* plugin then to call *value*_init function that fills a set of callbacks in li-&gt;priv.
-
-<ul>
-<li><blockquote><p>Implements bdb plugin (over Berkeley Database) to allow a smooth transition</p></blockquote></li>
-<li><blockquote><p>Implements lmdb plugin (over LMDB Database) </p></blockquote></li>
-<li><blockquote><p>Remove bdb plugin after a transition period.</p></blockquote></li></ul>
-
-<span id="anchor-10"></span>This document scope
-
-This document scope is about finishing the work about point 1) and 2) already started by ludwig:
 
 * rename the BDB types and definitions that are used widely in the backend and replication code.<br />
 (Although we could keep current names, that would be quite confusing for code readers)
+This should be done in a separate commit (using temporary #define wrapper to remap the new back to libdb) to simplify the reviewer job (it is plain sed substitution that impacts most backend and replication changelog source files. So it is better to keep it separate from the real changes)
+* move the monitoring statistics in bdb plugin and add wrapper at dblayer level
+      * perfctrs_update should be moved in bdb and wrapper added
+      * perfctrs_terminate: should be split: memory cleanup should stay at backend level but statistics should be clear at bdb plugin level. This will also allow to get rid of the dblayer_db_uses_* functions that checks for existing feature
+      * remove old macros in dblayer that are already useless:
+         * DB_OPEN
+         * TXN_BEGIN
+         * TXN_COMMIT
+         * TXN_ABORT
+         * TXN_CHECKPOINT
+         * MEMP_STAT
+         * MEMP_TRICKLE
+         * LOG_ARCHIVE
+         * LOG_FLUSH
 
-This should be done in a separate commit (using temporary #define wrapper to remap the new back to libdb) to simplify the reviewer job (it is plain sed substitution that impacts most backend and replication changelog source files. So it is better to keep it separate from the real changes) 
-
-<ul>
-<li><p>move the monitoring statistics in bdb plugin and add wrapper at dblayer level</p>
-<ul>
-<li><blockquote><p>perfctrs_update should be moved in bdb and wrapper added</p></blockquote></li>
-<li><blockquote><p>perfctrs_terminate: should be split: memory cleanup should stay at backend level but statistics should be clear at bdb plugin level</p></blockquote></li></ul>
-</li></ul>
-
-this will also allow to get rid of the dblayer_db_uses_* functions that checks for existing feature
-
-<ul>
-<li><p>remove old macros in dblayer that are already useless:</p>
-<ul>
-<li><blockquote><p>DB_OPEN</p></blockquote></li>
-<li><blockquote><p>TXN_BEGIN</p></blockquote></li>
-<li><blockquote><p>TXN_COMMIT</p></blockquote></li>
-<li><blockquote><p>TXN_ABORT</p></blockquote></li>
-<li><blockquote><p>TXN_CHECKPOINT</p></blockquote></li>
-<li><blockquote><p>MEMP_STAT</p></blockquote></li>
-<li><blockquote><p>MEMP_TRICKLE</p></blockquote></li>
-<li><blockquote><p>LOG_ARCHIVE</p></blockquote></li>
-<li><blockquote><p>LOG_FLUSH</p></blockquote></li></ul>
-</li></ul>
-
-* Dblayer_in_import: replace the check about db region by something else<br />
-(I am thinking about using a file lock in the backend directory instead. No real reason to rely on the db architecture to know whether an import process is running) 
-* 
+* Dblayer_in_import: replace the check about db region by something else
+(I am thinking about using a file lock in the backend directory instead. No real reason to rely on the db architecture to know whether an import process is running)
 
 
-
-<span id="anchor-11"></span>API
+###API
 
 Include file: dbimpl.h
 
-<span id="anchor-12"></span>Struct typedef
-
-
+####struct typedef
 
 {|
 | 'Name'
