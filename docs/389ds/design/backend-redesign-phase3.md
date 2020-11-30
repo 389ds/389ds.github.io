@@ -37,6 +37,8 @@ Current state
 Part of the changes are already pushed in the upstream branch. 
 
 ( The plugin implementation and most dblayer wrapper are already coded)
+When initializing the dblayer API, the value of nsslapd-backend-implement configuration parameter is used to load *value* plugin then to call *value*_init function that fills a set of callbacks in li-\>priv.
+
 
 The dependency that remains are:
 
@@ -44,23 +46,20 @@ The dependency that remains are:
 They are spread among the backend and replication changelog code while only bdb plugin should use it.
 * Some of the code specific to bdb implementation needs to be moved inside the bdb plugin
 (typically the part of the database monitoring code that gather the statistics and reset them)
-      * Error code handling and logging. Should find a way to get it independent of the database implementation while still be able to provide relevant data in case of unexpected trouble
-      * removal of bdb specific features that are not available on the other databases:
-         * Dblayer_in_import checks the presence of a db region to detect that an import is running. An implementation agnostic method should be used instead.
-         * VLV uses record number -   
-          The only numer that we have is the one of the last record.
-          the bad thing is that they are propagated up to the VLV ldap request. (it relates to the index and contentCount within the VLV control)
+	* Error code handling and logging. Should find a way to get it independent of the database implementation while still be able to provide relevant data in case of unexpected trouble
+	* removal of bdb specific features that are not available on the other databases:
+	* Dblayer\_in\_import checks the presence of a db region to detect that an import is running. An implementation agnostic method should be used instead.
+	* VLV uses record number.
+	  The only numer that we have is the one of the last record.
+	  The bad thing is that they are propagated up to the VLV ldap request. (it relates to the index and contentCount within the VLV control)
 not sure we can handle that as efficiently than with BDB (so far the only methods i am able to think about are:
-              * skip to next cursor n times
-              * build the complete idl and use the idl index counter
-         * Have a database implementation plugin API instead of direct reference to berkeley db components. Note: part of this is already implemented: 
-
-When initializing the dblayer API, the value of nsslapd-backend-implement configuration parameter is used to load *value* plugin then to call *value*_init function that fills a set of callbacks in li-\>priv.
+		* skip to next cursor n times
+		* build the complete idl and use the idl index counter
+	* Have a database implementation plugin API instead of direct reference to berkeley db components. Note: part of this is already implemented: 
 
 ### Work to be done
 
-
-* rename the BDB types and definitions that are used widely in the backend and replication code.<br />
+* rename the BDB types and definitions that are used widely in the backend and replication code.
 (Although we could keep current names, that would be quite confusing for code readers)
 This should be done in a separate commit (using temporary #define wrapper to remap the new back to libdb) to simplify the reviewer job (it is plain sed substitution that impacts most backend and replication changelog source files. So it is better to keep it separate from the real changes)
 * move the monitoring statistics in bdb plugin and add wrapper at dblayer level
@@ -87,50 +86,33 @@ Include file: dbimpl.h
 
 ####struct typedef
 
-{|
-| 'Name'
-| 'Role'
-| 'Opaque'
-| 'Old bdb name'
-|-
-| DBI_ENV
-| The global environment
-| PseudoOpaque<sup>(1)</sup>
-| DB_ENV
-|-
-| DBI_DB
-| A database instance
-| PseudoOpaque<sup>(1)</sup>
-| DB
-|-
-| DBI_TXN
-| A transaction
-| Yes<sup>(3)</sup>
-| DB_TXN
-|-
-| DBI_CURSOR
-| A cursor (i.e: iterator on DB data)
-| PseudoOpaque<sup>(1)</sup>
-| DBC
-|-
-| DBI_DATA
-| A key or a value
-| No
-| DBT
-|-
-| DBI_BULK_DATA
-| A set of keys or values
-| No
-| DBT
-|-
-| DBI_CB
-| Contains all DB implementation callbacks
-| No
-| N/A
-|}
+| Default aligned | Left aligned | Center aligned | Right aligned
+|-|:-|:-:|-:
+| First body part | Second cell | Third cell | fourth cell
+| Second line |foo | **strong** | baz
+| Third line |quux | baz | bar
+|---
+| Second body
+| 2 line
+|===
+| Footer row
 
 
-
+| Name | Role | Opaque | Old bdb name
+|-|-|-|-
+| DBI_ENV | The global environment | PseudoOpaque<sup>(1)</sup> | DB_ENV
+|---
+| DBI_DB | A database instance | PseudoOpaque<sup>(1)</sup> | DB
+|---
+| DBI_TXN | A transaction | Yes<sup>(3)</sup> | DB_TXN
+|---
+| DBI_CURSOR | A cursor (i.e: iterator on DB data) | PseudoOpaque<sup>(1)</sup> | DBC
+|---
+| DBI_DATA | A key or a value | No | DBT
+|---
+| DBI_BULK_DATA | A set of keys or values | No | DBT
+|---
+| DBI_CB | Contains all DB implementation callbacks | No | N/A
 
 
 <sup>(1) </sup>DB_ENV is used as opaque struct except dbenv-&gt;get_open_flags that is used in db_uses_feature that should be moved in bdb plugin anyway
