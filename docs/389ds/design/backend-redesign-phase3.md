@@ -79,8 +79,7 @@ This should be done in a separate commit (using temporary #define wrapper to rem
 * dblayer\_in\_import: replace the check about db region by something else
 (I am thinking about using a file lock in the backend directory instead. No real reason to rely on the db architecture to know whether an import process is running)
 
-
-##API ##
+## API ##
 
 Include file: dbimpl.h
 
@@ -124,14 +123,14 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 		void *data;
 		size\_t size;
 		void *ctx;						/* Context handled by db implementation plugin */
-	} DBI\_DATA;
+	} DBI_DATA;
 
 	typedef struct {
 		struct DBI\_CB *cb;
 		void *cursor;
-	} DBI\_CURSOR;
+	} DBI_CURSOR;
 
-###Enum values###
+### Enum values ###
 
 *DBI\_OPERATION* /* Represents a cursor operation */
 
@@ -203,46 +202,109 @@ Note: the implementation plugin should log an error with error code and error te
 
 
 
-###Callbacks###
+### Callbacks ###
 
   (TODO: get the callback name and prototype from dblayer.h and put them in this document to have the full API
 
-     Which will be useful when writing the ldbm plugin for example)
+| Name | Role | Old bdb value
+-
+| dblayer\_start\_fn\_t *dblayer\_start\_fn ||
+-
+| dblayer\_close\_fn\_t *dblayer\_close\_fn ||
+-
+| dblayer\_instance\_start\_fn\_t *dblayer\_instance\_start\_fn ||
+-
+| dblayer\_backup\_fn\_t *dblayer\_backup\_fn ||
+-
+| dblayer\_verify\_fn\_t *dblayer\_verify\_fn ||
+-
+| dblayer\_db\_size\_fn\_t *dblayer\_db\_size\_fn ||
+-
+| dblayer\_ldif2db\_fn\_t *dblayer\_ldif2db\_fn ||
+-
+| dblayer\_db2ldif\_fn\_t *dblayer\_db2ldif\_fn ||
+-
+| dblayer\_db2index\_fn\_t *dblayer\_db2index\_fn ||
+-
+| dblayer\_cleanup\_fn\_t *dblayer\_cleanup\_fn ||
+-
+| dblayer\_upgradedn\_fn\_t *dblayer\_upgradedn\_fn ||
+-
+| dblayer\_upgradedb\_fn\_t *dblayer\_upgradedb\_fn ||
+-
+| dblayer\_restore\_fn\_t *dblayer\_restore\_fn ||
+-
+| dblayer\_txn\_begin\_fn\_t *dblayer\_txn\_begin\_fn ||
+-
+| dblayer\_txn\_commit\_fn\_t *dblayer\_txn\_commit\_fn ||
+-
+| dblayer\_txn\_abort\_fn\_t *dblayer\_txn\_abort\_fn ||
+-
+| dblayer\_get\_info\_fn\_t *dblayer\_get\_info\_fn ||
+-
+| dblayer\_set\_info\_fn\_t *dblayer\_set\_info\_fn ||
+-
+| dblayer\_back\_ctrl\_fn\_t *dblayer\_back\_ctrl\_fn ||
+-
+| dblayer\_get\_db\_fn\_t *dblayer\_get\_db\_fn ||
+-
+| dblayer\_delete\_db\_fn\_t *dblayer\_delete\_db\_fn ||
+-
+| dblayer\_rm\_db\_file\_fn\_t *dblayer\_rm\_db\_file\_fn ||
+-
+| dblayer\_import\_fn\_t *dblayer\_import\_fn ||
+-
+| dblayer\_load\_dse\_fn\_t *dblayer\_load\_dse\_fn ||
+-
+| dblayer\_config\_get\_fn\_t *dblayer\_config\_get\_fn ||
+-
+| dblayer\_config\_set\_fn\_t *dblayer\_config\_set\_fn ||
+-
+| instance\_config\_set\_fn\_t *instance\_config\_set\_fn ||
+-
+| instance\_config\_entry\_callback\_fn\_t *instance\_add\_config\_fn ||
+-
+| instance\_config\_entry\_callback\_fn\_t *instance\_postadd\_config\_fn ||
+-
+| instance\_config\_entry\_callback\_fn\_t *instance\_del\_config\_fn ||
+-
+| instance\_config\_entry\_callback\_fn\_t *instance\_postdel\_config\_fn ||
+-
+| instance\_cleanup\_fn\_t *instance\_cleanup\_fn ||
+-
+| instance\_create\_fn\_t *instance\_create\_fn ||
+-
+| instance\_create\_fn\_t *instance\_register\_monitor\_fn ||
+-
+| instance\_search\_callback\_fn\_t *instance\_search\_callback\_fn ||
+-
+| dblayer\_auto\_tune\_fn\_t *dblayer\_auto\_tune\_fn ||
+|-
 
 
-
-Special macro must be implemented as call back 
-
-
-| 'Name' | 'Role' | 'Old bdb value'
+| Name | Role | Old bdb value
+-
+| dblayer\_cursor\_op(DBI\_CUR *cur, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Move cursor and get record | cursor-&gt;c\_get
 |-
-| | | cursor-&gt;c\_get
+| dblayer\_cursor\_op(DBI\_CUR *cur, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Add/replace a record | cursor-&gt;c\_put
 |-
-| | | cursor-&gt;c\_put
+| dblayer\_cursor\_op(DBI\_CUR *cur, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Remove a record | cursor-&gt;c\_del
 |-
-| | | cursor-&gt;c\_del
-|-
-| dblayer\_ | | cursor-&gt;c\_close
-|-
-| bulk\_data-&gt;init() | |
-|-
-| bulk\_data-&gt;next(bulk\_data,key,value) | |
+| dblayer\_cursor\_op(DBI\_CUR *cur, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Close a record | cursor-&gt;c\_close
 |-
 | dblayer\_new\_cursor(be,db,txn, cursor) | Should store the backend in cldb\_Handle to retrieve it.  | db-&gt;cursor(db, db\_txn, &amp;cursor, 0);
 |-
-| dblayer\_cursor\_perform\_action | | 
+| dblayer\_db\_op(DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Move cursor and get record | db-\>get
 |-
-| dblayer\_cursor\_perform\_bulk\_action\_eq | | 
+| dblayer\_db\_op(DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Add/replace a record | db-\>put
 |-
-| dblayer\_cursor\_perform\_bulk\_action | | 
-|-
-| dblayer\_perform\_action | | db-&gt;put , db-&gt;get,db-&gt;del
+| dblayer\_db\_op(DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Delete a record | db-\>del
 |-
 | dblayer\_get\_db\_id | | db-&gt;fname
 |-
-| dblayer\_init\_bulk\_op | Initialize iterator for bulk operation | DB\_MULTIPLE\_INIT |
+| dblayer\_init\_bulk\_op(DBI\_DATA *bulk) | Initialize iterator for bulk operation | DB\_MULTIPLE\_INIT |
 |-
-| dblayer\_next\_bulk\_op | Get next operation from bulk operation | DB\_MULTIPLE\_NEXT |
+| dblayer\_next\_bulk\_op(DBI\_DATA *bulk, DBI\_DATA *key, DBI\_DATA *data) | Get next operation from bulk operation | DB\_MULTIPLE\_NEXT |
 | 
 
 
