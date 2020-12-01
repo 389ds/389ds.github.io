@@ -19,6 +19,17 @@ If you are adding a new design document, use the [template](design-template.html
 
 -   [Configuration Migration and Upgrade](container-config-migrate.html)
 
+## Backend Replacement
+
+-   [Phase 1 & 2 - separate BDB code & confguration](backend-redesign.html)
+-   [Phase 3 - Generic DB layer](backend-redesign-phase3.html)
+-   Phase 4 - Implement LMDB
+
+## 389 Directory Server 2.0.0
+
+-   Rust...
+-   Pluggable Backend --> move to LMDB
+
 ## 389 Directory Server 1.4.4
 
 -   [Replication Agreement Bootstrap Credentials](repl-agmt-bootstrap-design.html)
