@@ -83,7 +83,7 @@ This should be done in a separate commit (using temporary #define wrapper to rem
 
 Include file: dbimpl.h
 
-###struct typedef ###
+### struct typedef ###
 
 | Name | Role | Opaque | Old bdb name
 |-|-|-|-
@@ -132,7 +132,7 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 
 ### Enum values ###
 
-*DBI\_OPERATION* /* Represents a cursor operation */
+*DBI\_OP* /* Represents a cursor operation */
 
 | 'Name' | 'Role' | 'Old bdb function' | 'Old bdb value'
 |-
@@ -207,83 +207,82 @@ Note: the implementation plugin should log an error with error code and error te
   (TODO: get the callback name and prototype from dblayer.h and put them in this document to have the full API
 
 | Name | Role | Old bdb value
--
-| dblayer\_start\_fn\_t *dblayer\_start\_fn ||
--
-| dblayer\_close\_fn\_t *dblayer\_close\_fn ||
--
-| dblayer\_instance\_start\_fn\_t *dblayer\_instance\_start\_fn ||
--
-| dblayer\_backup\_fn\_t *dblayer\_backup\_fn ||
--
-| dblayer\_verify\_fn\_t *dblayer\_verify\_fn ||
--
-| dblayer\_db\_size\_fn\_t *dblayer\_db\_size\_fn ||
--
-| dblayer\_ldif2db\_fn\_t *dblayer\_ldif2db\_fn ||
--
-| dblayer\_db2ldif\_fn\_t *dblayer\_db2ldif\_fn ||
--
-| dblayer\_db2index\_fn\_t *dblayer\_db2index\_fn ||
--
-| dblayer\_cleanup\_fn\_t *dblayer\_cleanup\_fn ||
--
-| dblayer\_upgradedn\_fn\_t *dblayer\_upgradedn\_fn ||
--
-| dblayer\_upgradedb\_fn\_t *dblayer\_upgradedb\_fn ||
--
-| dblayer\_restore\_fn\_t *dblayer\_restore\_fn ||
--
-| dblayer\_txn\_begin\_fn\_t *dblayer\_txn\_begin\_fn ||
--
-| dblayer\_txn\_commit\_fn\_t *dblayer\_txn\_commit\_fn ||
--
-| dblayer\_txn\_abort\_fn\_t *dblayer\_txn\_abort\_fn ||
--
-| dblayer\_get\_info\_fn\_t *dblayer\_get\_info\_fn ||
--
-| dblayer\_set\_info\_fn\_t *dblayer\_set\_info\_fn ||
--
-| dblayer\_back\_ctrl\_fn\_t *dblayer\_back\_ctrl\_fn ||
--
-| dblayer\_get\_db\_fn\_t *dblayer\_get\_db\_fn ||
--
-| dblayer\_delete\_db\_fn\_t *dblayer\_delete\_db\_fn ||
--
-| dblayer\_rm\_db\_file\_fn\_t *dblayer\_rm\_db\_file\_fn ||
--
-| dblayer\_import\_fn\_t *dblayer\_import\_fn ||
--
-| dblayer\_load\_dse\_fn\_t *dblayer\_load\_dse\_fn ||
--
-| dblayer\_config\_get\_fn\_t *dblayer\_config\_get\_fn ||
--
-| dblayer\_config\_set\_fn\_t *dblayer\_config\_set\_fn ||
--
-| instance\_config\_set\_fn\_t *instance\_config\_set\_fn ||
--
-| instance\_config\_entry\_callback\_fn\_t *instance\_add\_config\_fn ||
--
-| instance\_config\_entry\_callback\_fn\_t *instance\_postadd\_config\_fn ||
--
-| instance\_config\_entry\_callback\_fn\_t *instance\_del\_config\_fn ||
--
-| instance\_config\_entry\_callback\_fn\_t *instance\_postdel\_config\_fn ||
--
-| instance\_cleanup\_fn\_t *instance\_cleanup\_fn ||
--
-| instance\_create\_fn\_t *instance\_create\_fn ||
--
-| instance\_create\_fn\_t *instance\_register\_monitor\_fn ||
--
-| instance\_search\_callback\_fn\_t *instance\_search\_callback\_fn ||
--
-| dblayer\_auto\_tune\_fn\_t *dblayer\_auto\_tune\_fn ||
 |-
+| dblayer\_start\_fn\_t *dblayer\_start\_fn ||
+|-
+| dblayer\_close\_fn\_t *dblayer\_close\_fn ||
+|-
+| dblayer\_instance\_start\_fn\_t *dblayer\_instance\_start\_fn ||
+|-
+| dblayer\_backup\_fn\_t *dblayer\_backup\_fn ||
+|-
+| dblayer\_verify\_fn\_t *dblayer\_verify\_fn ||
+|-
+| dblayer\_db\_size\_fn\_t *dblayer\_db\_size\_fn ||
+|-
+| dblayer\_ldif2db\_fn\_t *dblayer\_ldif2db\_fn ||
+|-
+| dblayer\_db2ldif\_fn\_t *dblayer\_db2ldif\_fn ||
+|-
+| dblayer\_db2index\_fn\_t *dblayer\_db2index\_fn ||
+|-
+| dblayer\_cleanup\_fn\_t *dblayer\_cleanup\_fn ||
+|-
+| dblayer\_upgradedn\_fn\_t *dblayer\_upgradedn\_fn ||
+|-
+| dblayer\_upgradedb\_fn\_t *dblayer\_upgradedb\_fn ||
+|-
+| dblayer\_restore\_fn\_t *dblayer\_restore\_fn ||
+|-
+| dblayer\_txn\_begin\_fn\_t *dblayer\_txn\_begin\_fn ||
+|-
+| dblayer\_txn\_commit\_fn\_t *dblayer\_txn\_commit\_fn ||
+|-
+| dblayer\_txn\_abort\_fn\_t *dblayer\_txn\_abort\_fn ||
+|-
+| dblayer\_get\_info\_fn\_t *dblayer\_get\_info\_fn ||
+|-
+| dblayer\_set\_info\_fn\_t *dblayer\_set\_info\_fn ||
+|-
+| dblayer\_back\_ctrl\_fn\_t *dblayer\_back\_ctrl\_fn ||
+|-
+| dblayer\_get\_db\_fn\_t *dblayer\_get\_db\_fn ||
+|-
+| dblayer\_delete\_db\_fn\_t *dblayer\_delete\_db\_fn ||
+|-
+| dblayer\_rm\_db\_file\_fn\_t *dblayer\_rm\_db\_file\_fn ||
+|-
+| dblayer\_import\_fn\_t *dblayer\_import\_fn ||
+|-
+| dblayer\_load\_dse\_fn\_t *dblayer\_load\_dse\_fn ||
+|-
+| dblayer\_config\_get\_fn\_t *dblayer\_config\_get\_fn ||
+|-
+| dblayer\_config\_set\_fn\_t *dblayer\_config\_set\_fn ||
+|-
+| instance\_config\_set\_fn\_t *instance\_config\_set\_fn ||
+|-
+| instance\_config\_entry\_callback\_fn\_t *instance\_add\_config\_fn ||
+|-
+| instance\_config\_entry\_callback\_fn\_t *instance\_postadd\_config\_fn ||
+|-
+| instance\_config\_entry\_callback\_fn\_t *instance\_del\_config\_fn ||
+|-
+| instance\_config\_entry\_callback\_fn\_t *instance\_postdel\_config\_fn ||
+|-
+| instance\_cleanup\_fn\_t *instance\_cleanup\_fn ||
+|-
+| instance\_create\_fn\_t *instance\_create\_fn ||
+|-
+| instance\_create\_fn\_t *instance\_register\_monitor\_fn ||
+|-
+| instance\_search\_callback\_fn\_t *instance\_search\_callback\_fn ||
+|-
+| dblayer\_auto\_tune\_fn\_t *dblayer\_auto\_tune\_fn ||
 
 
 | Name | Role | Old bdb value
--
+|-
 | dblayer\_cursor\_op(DBI\_CUR *cur, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Move cursor and get record | cursor-&gt;c\_get
 |-
 | dblayer\_cursor\_op(DBI\_CUR *cur, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Add/replace a record | cursor-&gt;c\_put
@@ -305,7 +304,6 @@ Note: the implementation plugin should log an error with error code and error te
 | dblayer\_init\_bulk\_op(DBI\_DATA *bulk) | Initialize iterator for bulk operation | DB\_MULTIPLE\_INIT |
 |-
 | dblayer\_next\_bulk\_op(DBI\_DATA *bulk, DBI\_DATA *key, DBI\_DATA *data) | Get next operation from bulk operation | DB\_MULTIPLE\_NEXT |
-| 
 
 
 I wonder if we should keep the callback definition. at the dblayer level.
@@ -317,16 +315,16 @@ I wonder if we should keep the callback definition. at the dblayer level.
 
 
 
-##Alternatives##
+## Alternatives ##
 
 * Redesign the cursor handling code:
 	* (no sure that ldbm supports bulk operation when reading data)
 	* (quite sure that ldbm does not support the recno)
 
 
-<span id="anchor-21"></span>Error handling
+Error handling
 
-<span id="anchor-22"></span>Proposed solution
+Proposed solution
 
 * Remap the errors to generic values
 * Add a function in bdb that remap the value (should be a simple switch)<br />
@@ -336,17 +334,12 @@ If the value cannot be mapped:<br />
 bdb error code: %d : %s&quot;, native\_rc, db\_strerror(native\_rc))
 * Modify dblayer\_strerror to print a message for generic errors and if DBI\_RC\_OTHER to generate a message from the thread local data string.
 
-<ul>
-<li><blockquote><p>This solution has the advantage that:</p></blockquote>
-<ul>
-<li>it does not impact the back-ldm/changelog code (except for dblayer\_strerror) </li>
-<li>It is quite efficient in the usual case as it handles a switch with few values</li>
-<li>Keep the ability to diagnose errors in the unexpected case</li></ul>
-</li>
-<li><blockquote><p>The drawbacks:</p></blockquote>
-<ul>
-<li>Message can be wrong if creative error handling is performed (i.e </li></ul>
-</li></ul>
+* This solution has the advantage that:</p></blockquote>
+	* it does not impact the back-ldm/changelog code (except for dblayer\_strerror) </li>
+	* It is quite efficient in the usual case as it handles a switch with few values</li>
+	* Keep the ability to diagnose errors in the unexpected case</li></ul>
+	  The drawbacks:
+	  Message can be wrong if creative error handling is performed (i.e </li></ul>
 
           rc1 = dblayer\_xxx(li, ...)
 
@@ -355,38 +348,23 @@ bdb error code: %d : %s&quot;, native\_rc, db\_strerror(native\_rc))
           log(dblayer\_strerror(rc1)) prints rc2 message if both values are are DBI\_RC\_OTHER)<br />
 Should double check that when hitting unexpected errors we just logs an error message and aborts the operation (as it is possible that we abort the txn before logging the errr)
 
-* ** Error handling should be done in the same thread than the operation (This is IMHO the case)
+* Error handling should be done in the same thread than the operation (This is IMHO the case)
 
-<span id="anchor-23"></span>Alternatives
+## Alternatives ##
 
 * I thought about keeping the db code as it, but then it implies a lot of changes as we need to access the db plugin to determine what action to do or to log the error. (but the dblayer instance context is not always easily available when the message is logged) 
 * Same as proposed solution but without storing data in thread local storage: problem is that we got clueless in case of unexpected database error. (unless an error message is logged by the plugin )<br />
 Hum that may be the better solution ...
 
-<span id="anchor-24"></span>Action Plan
 
-The task to do in order to migrate to the new idea.
+## Open Questions ##
 
-<span id="anchor-25"></span>Open Questions
-
-<ol style="list-style-type: decimal;">
-<li><p>API name ?</p>
-<ol style="list-style-type: lower-alpha;">
-<li><blockquote><p> dbimpl ? </p></blockquote></li>
-<li><blockquote><p>gdb ? </p></blockquote></li>
-<li><blockquote><p>gendb ?<br />
-(IMHO these 2 last names (For generic database) are confusing)</p></blockquote></li>
-<li><blockquote><p>Plgdb ? (plugable database)</p></blockquote></li></ol>
-</li>
-<li><p>Typedef name format ?</p>
-<ol style="list-style-type: lower-alpha;">
-<li><blockquote><p>&lt;PREFIX&gt;\_&lt;NAME&gt;</p></blockquote></li>
-<li><blockquote><p>&lt;prefix&gt;\_&lt;name&gt;\_t</p></blockquote></li></ol>
-</li></ol>
-
-
-
- 
-
-
-
+* API name ?
+	* dbimpl ?
+	* gdb ?
+	* gendb ?
+	  (IMHO these 2 last names (For generic database) are confusing)
+	* Plgdb ? (plugable database)
+* Typedef name format ?
+	* &lt;PREFIX&gt;\_&lt;NAME&gt;
+	* &lt;prefix&gt;\_&lt;name&gt;\_t
