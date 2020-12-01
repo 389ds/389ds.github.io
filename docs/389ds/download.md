@@ -35,13 +35,18 @@ If you want to use the cockpit web ui:
 
 ### CentOS 8.1+ (ds 1.4.x)
 
-In CentOS 8.1+ directory server is distributed as a module in EPEL 8 (see [Modularity](https://docs.fedoraproject.org/en-US/modularity/) documentation for more info).
-There are two streams available: `stable` and `testing`. Testing is a bleeding edge development version. As its name implies, it is NOT supposed to be used in production. After a period of testing and bug fixing it becomes the next stable version.
+In CentOS 8.1+ directory server is distributed as a module in EPEL 8 (see [Modularity](https://docs.fedoraproject.org/en-US/modularity/) documentation for more information).
+There are three streams available:
+* `stable` - rebuild of 389-ds-base package from the *oldest* of the [currently supported releases](https://fedoraproject.org/wiki/Releases#Current_Supported_Releases) of Fedora. Recommended version to use.
+* `testing` - rebuild of 389-ds-base package from the *latest* of the [currently supported releases](https://fedoraproject.org/wiki/Releases#Current_Supported_Releases) of Fedora. A preview of the new features that will be in the next stable release.
+* `next` - rebuild of 389-ds-base package from Fedora Rawhide, bleeding edge development version. **NOT RECOMMENDED** to be used in production, for testing purposes only.
 
-Each stream has 3 profiles:
+`stable` and `testing` streams have 3 profiles:
 * `default` - 389-ds-base and cockpit web ui
 * `minimal` - just 389-ds-base
 * `legacy` -  same as default plus legacy perl tools and scripts
+
+`next` has only `default` and `minimal`.
 
 ```
 yum install epel-release
