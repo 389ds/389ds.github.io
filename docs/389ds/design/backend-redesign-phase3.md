@@ -78,6 +78,10 @@ This should be done in a separate commit (using temporary #define wrapper to rem
 
 * dblayer\_in\_import: replace the check about db region by something else
 (I am thinking about using a file lock in the backend directory instead. No real reason to rely on the db architecture to know whether an import process is running)
+* Note: There are some work to do about the transaction handling:
+	* Need a read txn for read operation while in bdb most read operation were transactionless
+    * Need to remove recursive transaction handling (or at least handle them explicitly as nested when creating/commiting/aborting 
+          because lmdb does not support nested txn (so nested txn will be the parent txn and the commit/abort of nested txn should do nothing)
 
 ## API ##
 
@@ -87,19 +91,17 @@ Include file: dbimpl.h
 
 | Name | Role | Opaque | Old bdb name
 |-|-|-|-
-| DBI\_ENV | The global environment | PseudoOpaque<sup>(1)</sup> | DB\_ENV
+| dbi\_env\_t | The global environment | PseudoOpaque<sup>(1)</sup> | DB\_ENV
 |---
-| DBI\_DB | A database instance | PseudoOpaque<sup>(1)</sup> | DB
+| dbi\_db\_t | A database instance | PseudoOpaque<sup>(1)</sup> | DB
 |---
-| DBI\_TXN | A transaction | Yes<sup>(3)</sup> | DB\_TXN
+| dbi\_txn\_t | A transaction | Yes<sup>(3)</sup> | DB\_TXN
 |---
-| DBI\_CURSOR | A cursor (i.e: iterator on DB data) | PseudoOpaque<sup>(1)</sup> | DBC
+| dbi\_cursor\_t | A cursor (i.e: iterator on DB data) | PseudoOpaque<sup>(1)</sup> | DBC
 |---
-| DBI\_DATA | A key or a value | No | DBT
+| dbi\_data\_t | A key or a value | No | DBT
 |---
-| DBI\_BULK\_DATA | A set of keys or values | No | DBT
-|---
-| DBI\_CB | Contains all DB implementation callbacks | No | N/A
+| dbi\_cb\_t | Contains all DB implementation callbacks | No | N/A
 
 
 <sup>(1) </sup>DB\_ENV is used as opaque struct except dbenv-&gt;get\_open\_flags that is used in db\_uses\_feature that should be moved in bdb plugin anyway
@@ -136,9 +138,15 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 
 | 'Name' | 'Role' | 'Old bdb function' | 'Old bdb value'
 |-
-| DBI\_OP\_MOVE\_EQ\_EQ | Move cursor to key+value record | c\_get | DB\_GET\_BOTH
+| DBI\_OP\_MOVE\_FIRST\_EQ | Move cursor to first record having the key and get its value | c\_get | DB\_SET | DB\_MULTIPLE
 |-
-| DBI\_OP\_MOVE\_EQ\_GE | Move cursor to key+valueB such as valueB is the smallest value greater or equal to the specified value | c\_get | DB\_GET\_BOTH\_RANGE
+| DBI\_OP\_MOVE\_TO\_KEY | Move cursor to first record having the key and get its value | c\_get | DB\_SET
+|-
+| DBI\_OP\_MOVE\_NEAR\_KEY | Move cursor to record having smallest key greater or equal than the specified one. Then it gets the record | c\_get | DB\_SET\_RANGE
+|-
+| DBI\_OP\_MOVE\_TO\_DATA | Move cursor to key+value record | c\_get | DB\_GET\_BOTH
+|-
+| DBI\_OP\_MOVE\_NEAR\_DATA | Move cursor to record having specified key and smallest data greater or equal than the specified data and get the value| c\_get | DB\_GET\_BOTH\_RANGE
 |-
 | DBI\_OP\_GET\_RECNO | Get current record number.  | c\_get | DB\_GET\_RECNO
 |-
@@ -146,15 +154,11 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 |-
 | DBI\_OP\_NEXT | Move cursor to next record then get it.  | c\_get | DB\_NEXT
 |-
-| DBI\_OP\_NEXT\_EQ | Move cursor to next record having the same key then get it.  | c\_get | DB\_NEXT\_DUP
+| DBI\_OP\_NEXT\_DATA | Move cursor to next record having the same key then get the value.  | c\_get | DB\_NEXT\_DUP 
 |-
-| DBI\_OP\_NEXT\_NE | Move cursor to next record having different key then get it.  | c\_get | DB\_NEXT\_NODUP
+| DBI\_OP\_NEXT\_KEY | Move cursor to next record having different key then get the record.  | c\_get | DB\_NEXT\_NODUP
 |-
 | DBI\_OP\_PREV | Move cursor to previous record then get it.  | c\_get | DB\_PREV
-|-
-| DBI\_OP\_MOVE\_EQ | Move cursor to first record having the key and get its value | c\_get | DB\_SET
-|-
-| DBI\_OP\_MOVE\_GE | Move cursor to smallest record having a key greater or equal than the specified one. Then it gets the record | c\_get | DB\_SET\_RANGE
 |-
 | DBI\_OP\_MOVE\_RECNO | Move record to specified record number then get it.  | c\_get | DB\_SET\_RECNO
 |-
@@ -165,6 +169,7 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 | DBI\_OP\_DEL | Delete current key-data | c\_del | 0
 |-
 | DBI\_OP\_CLOSE | Close cursor | c\_close | N/A
+|-
 | DBI\_BULKOP\_NEXT | Get next block of records | c\_get | DB\_NEXT\_DUP | DB\_MULTIPLE Or DB\_NEXT\_DUP + DB\_MULTIPLE\_KEY
 |-
 | DBI\_BULKOP\_MOVE | Get block of records | c\_get | DB\_SET | DB\_MULTIPLE<br /> Or DB\_SET + DB\_MULTIPLE\_KEY
@@ -249,6 +254,7 @@ Note: the implementation plugin should log an error with error code and error te
 | dblayer\_get\_db\_fn\_t *dblayer\_get\_db\_fn ||
 |-
 | dblayer\_delete\_db\_fn\_t *dblayer\_delete\_db\_fn ||
+<<<<<<< HEAD
 |-
 | dblayer\_rm\_db\_file\_fn\_t *dblayer\_rm\_db\_file\_fn ||
 |-
@@ -264,6 +270,23 @@ Note: the implementation plugin should log an error with error code and error te
 |-
 | instance\_config\_entry\_callback\_fn\_t *instance\_add\_config\_fn ||
 |-
+=======
+|-
+| dblayer\_rm\_db\_file\_fn\_t *dblayer\_rm\_db\_file\_fn ||
+|-
+| dblayer\_import\_fn\_t *dblayer\_import\_fn ||
+|-
+| dblayer\_load\_dse\_fn\_t *dblayer\_load\_dse\_fn ||
+|-
+| dblayer\_config\_get\_fn\_t *dblayer\_config\_get\_fn ||
+|-
+| dblayer\_config\_set\_fn\_t *dblayer\_config\_set\_fn ||
+|-
+| instance\_config\_set\_fn\_t *instance\_config\_set\_fn ||
+|-
+| instance\_config\_entry\_callback\_fn\_t *instance\_add\_config\_fn ||
+|-
+>>>>>>> 67725b6... Update backend redesign phase 3 document
 | instance\_config\_entry\_callback\_fn\_t *instance\_postadd\_config\_fn ||
 |-
 | instance\_config\_entry\_callback\_fn\_t *instance\_del\_config\_fn ||
@@ -280,6 +303,10 @@ Note: the implementation plugin should log an error with error code and error te
 |-
 | dblayer\_auto\_tune\_fn\_t *dblayer\_auto\_tune\_fn ||
 
+<<<<<<< HEAD
+=======
+*Callbacks not yet implemented*
+>>>>>>> 67725b6... Update backend redesign phase 3 document
 
 | Name | Role | Old bdb value
 |-
@@ -295,9 +322,15 @@ Note: the implementation plugin should log an error with error code and error te
 |-
 | dblayer\_db\_op(DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Move cursor and get record | db-\>get
 |-
+<<<<<<< HEAD
 | dblayer\_db\_op(DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Add/replace a record | db-\>put
 |-
 | dblayer\_db\_op(DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Delete a record | db-\>del
+=======
+| dblayer\_db\_op(be, DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Add/replace a record | db-\>put
+|-
+| dblayer\_db\_op(be, DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Delete a record | db-\>del
+>>>>>>> 67725b6... Update backend redesign phase 3 document
 |-
 | dblayer\_get\_db\_id | | db-&gt;fname
 |-
