@@ -32,7 +32,7 @@ A partial list of major features is:
 | Database Import  | LDIF                 | LDIF                      | ✅ (Migration Tool Supports) |
 | Password Hashes  | Varies               | Varies                    | ✅ (All Formats Supported excluding ARGON2) |
 | oldap 2 ds repl  | -                    | -                         | ❌ (No mechanism for openldap to replicate to 389 is possible) |
-| ds 2 oldap repl  | -                    | SyncREPL                  | ✅ (Some config of OpenLDAP may be needed) |
+| ds 2 oldap repl  | -                    | SyncREPL                  | ✅ * (SLE/SUSE/2.0.0 only due to Rust requirement, limitations exist) |
 | TOTP             | TOTP Overlap         | -                         | ❌ (May be supported in the future) |
 | EntryUUID        | Part of OpenLDAP     | Plugin                    | ✅ * (SLE/SUSE/2.0.0 only due to Rust requirement) |
 
@@ -98,6 +98,11 @@ For more details see the tools help. The help is extensive and worth reading:
     openldap_to_ds --help
 
 By default the tool takes no actions and only displays the migration plan it would apply.
+
+An example of a migration command is:
+
+    openldap_to_ds <ds instance name> <path to slapd.d> [suffix.ldif [suffix.ldif ...]]
+    openldap_to_ds localhost /root/slapd.d /root/dc_example.ldif /root/dc_test.ldif
 
 Once the migration is complete, the tool will emit a checklist of post migration tasks for you to
 complete, including a list of non-migrated overlays.
