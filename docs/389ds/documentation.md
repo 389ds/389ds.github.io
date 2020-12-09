@@ -62,8 +62,7 @@ We maintain a number of how to guides for 389 Directory Server
 
 #### Directory Server Setup and Management
 
--   [How to Migrate to 389](howto/howto-migratetoldap.html)
--   [How to Migrate from openLdap](howto/howto-openldapmigration.html)
+-   [How to Migrate from OpenLDAP to 389 DS](howto/howto-openldap-migration.html)
 -   [How to StartTLS](howto/howto-starttls.html)
 -   [How to Only Accept TLS/SSL Connections](howto/howto-listensslonly.html)
 -   [How to Change UID](howto/howto-changeuid.html)
@@ -105,7 +104,6 @@ We maintain a number of how to guides for 389 Directory Server
 
 #### Other
 
--   [How to openLdap Integration](howto/howto-openldapintegration.html)
 -   [How to Kerberos](howto/howto-kerberos.html)
 -   [How to Persistent search](howto/howto-persistent-search.html)
 -   [How to SNMP Monitoring](howto/howto-snmpmonitoring.html)
@@ -145,6 +143,9 @@ These are potentially outdated or incorrect for the current DS version.
 -   [How to PHP and Admin Server](howto/howto-phpldapadmin.html)
 -   [Building Directory Server](development/legacy-building.html)
 -   [How to Migrate from Trac to Pagure](howto/howto-migrate-to-pagure.html)
+-   [How to Migrate to 389](howto/howto-migratetoldap.html)
+-   [How to Migrate from openLdap](howto/howto-openldapmigration.html)
+-   [How to openLdap Integration](howto/howto-openldapintegration.html)
 
 ### FAQ and tech docs
 
