@@ -370,21 +370,24 @@ Should double check that when hitting unexpected errors we just logs an error me
 * I thought about keeping the db code as it, but then it implies a lot of changes as we need to access the db plugin to determine what action to do or to log the error. (but the dblayer instance context is not always easily available when the message is logged) 
 * Same as proposed solution but without storing data in thread local storage: problem is that we got clueless in case of unexpected database error. (unless an error message is logged by the plugin )<br />
 Hum that may be the better solution ...
-
-
-## Open Questions ##
-
-* API name ?
-	* dbimpl ?
+* I wondered about API name and though about several names:
+	* dbimpl ?   ( That was the chosen name )
 	* gdb ?
 	* gendb ?
 	  (IMHO these 2 last names (For generic database) are confusing)
 	* Plgdb ? (plugable database)
 * Typedef name format ?
 	* &lt;PREFIX&gt;\_&lt;NAME&gt;
-	* &lt;prefix&gt;\_&lt;name&gt;\_t
+	* &lt;prefix&gt;\_&lt;name&gt;\_t ( That was the chosen format )
+
+
+
+## Open Questions ##
+
 * VLV and RECNO
 	Not an issue for this phase but it will be an issue when writing the lmdb implementation plugin.
+    (So far I have no idead how how to implement efficiently the DBI_OP_GET_RECNO (i.e: DB_GET_RECNO) and 
+      DBI_OP_MOVE_TO_RECNO (i.e DB_SET_RECNO) operation on lmdb
 
 	VLV search the index records by record number bdb is able to do that on btree database but lmdb does not offer this feature.
       The bad thing is that this numbering is directly brought by the VLV LDAP RFC draft so that is not something that we can
