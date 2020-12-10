@@ -57,6 +57,12 @@ not sure we can handle that as efficiently than with BDB (so far the only method
 		* build the complete idl and use the idl index counter
 	* Have a database implementation plugin API instead of direct reference to berkeley db components. Note: part of this is already implemented: 
 
+### Specific issues (solved in this phase) ###
+    * dblayer\_log\_print ==> must be moved in implementation dependant plugin
+    * Compare dup call back ==> must be moved in implementation dependant plugin:
+        * idl\_new\_compare\_dups
+
+
 ## Remaining work ##
 
 * rename the BDB types and definitions that are used widely in the backend and replication code.
@@ -138,8 +144,6 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 
 | 'Name' | 'Role' | 'Old bdb function' | 'Old bdb value'
 |-
-| DBI\_OP\_MOVE\_FIRST\_EQ | Move cursor to first record having the key and get its value | c\_get | DB\_SET | DB\_MULTIPLE
-|-
 | DBI\_OP\_MOVE\_TO\_KEY | Move cursor to first record having the key and get its value | c\_get | DB\_SET
 |-
 | DBI\_OP\_MOVE\_NEAR\_KEY | Move cursor to record having smallest key greater or equal than the specified one. Then it gets the record | c\_get | DB\_SET\_RANGE
@@ -148,9 +152,13 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 |-
 | DBI\_OP\_MOVE\_NEAR\_DATA | Move cursor to record having specified key and smallest data greater or equal than the specified data and get the value| c\_get | DB\_GET\_BOTH\_RANGE
 |-
-| DBI\_OP\_GET\_RECNO | Get current record number.  | c\_get | DB\_GET\_RECNO
+| DBI\_OP\_MOVE\_TO\_RECNO | Move record to specified record number then get it.  | c\_get | DB\_SET\_RECNO
 |-
-| DBI\_OP\_LAST | Move cursor to last record then get it.  | c\_get | DB\_LAST
+| DBI\_OP\_MOVE\_TO\_LAST | Move cursor to last record then get it.  | c\_get | DB\_LAST
+|-
+| DBI\_OP\_GET | Get current record number.  | get | DB\_GET
+|-
+| DBI\_OP\_GET\_RECNO | Get current record number.  | c\_get | DB\_GET\_RECNO
 |-
 | DBI\_OP\_NEXT | Move cursor to next record then get it.  | c\_get | DB\_NEXT
 |-
@@ -160,19 +168,20 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 |-
 | DBI\_OP\_PREV | Move cursor to previous record then get it.  | c\_get | DB\_PREV
 |-
-| DBI\_OP\_MOVE\_RECNO | Move record to specified record number then get it.  | c\_get | DB\_SET\_RECNO
+| DBI\_OP\_PUT | Insert new key-data | put | DB\_PUT
 |-
-| DBI\_OP\_PUT\_VALUE | Overwrite current position value | c\_put | DB\_CURRENT
+| DBI\_OP\_REPLACE | Overwrite current position value | c\_put | DB\_CURRENT
 |-
-| DBI\_OP\_PUT\_UNIQUE\_REC | Insert new key-data if it does not alreadyb exists | c\_put | DB\_NODUPDATA
+| DBI\_OP\_ADD | Insert new key-data if it does not already exists | put | DB\_NODUPDATA
 |-
-| DBI\_OP\_DEL | Delete current key-data | c\_del | 0
+| DBI\_OP\_ADD | Insert new key-data if it does not already exists | c\_put | DB\_NODUPDATA
+|-
+| DBI\_OP\_DEL | Delete key-data record | del | 0
+|-
+| DBI\_OP\_DEL | Delete record at cursor position | c\_del | 0
 |-
 | DBI\_OP\_CLOSE | Close cursor | c\_close | N/A
 |-
-| DBI\_BULKOP\_NEXT | Get next block of records | c\_get | DB\_NEXT\_DUP | DB\_MULTIPLE Or DB\_NEXT\_DUP + DB\_MULTIPLE\_KEY
-|-
-| DBI\_BULKOP\_MOVE | Get block of records | c\_get | DB\_SET | DB\_MULTIPLE<br /> Or DB\_SET + DB\_MULTIPLE\_KEY
 
 *Value handling options*
 
@@ -254,7 +263,6 @@ Note: the implementation plugin should log an error with error code and error te
 | dblayer\_get\_db\_fn\_t *dblayer\_get\_db\_fn ||
 |-
 | dblayer\_delete\_db\_fn\_t *dblayer\_delete\_db\_fn ||
-<<<<<<< HEAD
 |-
 | dblayer\_rm\_db\_file\_fn\_t *dblayer\_rm\_db\_file\_fn ||
 |-
@@ -270,23 +278,6 @@ Note: the implementation plugin should log an error with error code and error te
 |-
 | instance\_config\_entry\_callback\_fn\_t *instance\_add\_config\_fn ||
 |-
-=======
-|-
-| dblayer\_rm\_db\_file\_fn\_t *dblayer\_rm\_db\_file\_fn ||
-|-
-| dblayer\_import\_fn\_t *dblayer\_import\_fn ||
-|-
-| dblayer\_load\_dse\_fn\_t *dblayer\_load\_dse\_fn ||
-|-
-| dblayer\_config\_get\_fn\_t *dblayer\_config\_get\_fn ||
-|-
-| dblayer\_config\_set\_fn\_t *dblayer\_config\_set\_fn ||
-|-
-| instance\_config\_set\_fn\_t *instance\_config\_set\_fn ||
-|-
-| instance\_config\_entry\_callback\_fn\_t *instance\_add\_config\_fn ||
-|-
->>>>>>> 67725b6... Update backend redesign phase 3 document
 | instance\_config\_entry\_callback\_fn\_t *instance\_postadd\_config\_fn ||
 |-
 | instance\_config\_entry\_callback\_fn\_t *instance\_del\_config\_fn ||
@@ -303,10 +294,7 @@ Note: the implementation plugin should log an error with error code and error te
 |-
 | dblayer\_auto\_tune\_fn\_t *dblayer\_auto\_tune\_fn ||
 
-<<<<<<< HEAD
-=======
 *Callbacks not yet implemented*
->>>>>>> 67725b6... Update backend redesign phase 3 document
 
 | Name | Role | Old bdb value
 |-
@@ -322,15 +310,9 @@ Note: the implementation plugin should log an error with error code and error te
 |-
 | dblayer\_db\_op(DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Move cursor and get record | db-\>get
 |-
-<<<<<<< HEAD
-| dblayer\_db\_op(DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Add/replace a record | db-\>put
-|-
-| dblayer\_db\_op(DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Delete a record | db-\>del
-=======
 | dblayer\_db\_op(be, DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Add/replace a record | db-\>put
 |-
 | dblayer\_db\_op(be, DBI\_DB *db, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Delete a record | db-\>del
->>>>>>> 67725b6... Update backend redesign phase 3 document
 |-
 | dblayer\_get\_db\_id | | db-&gt;fname
 |-
@@ -401,3 +383,19 @@ Hum that may be the better solution ...
 * Typedef name format ?
 	* &lt;PREFIX&gt;\_&lt;NAME&gt;
 	* &lt;prefix&gt;\_&lt;name&gt;\_t
+* VLV and RECNO
+	Not an issue for this phase but it will be an issue when writing the lmdb implementation plugin.
+
+	VLV search the index records by record number bdb is able to do that on btree database but lmdb does not offer this feature.
+      The bad thing is that this numbering is directly brought by the VLV LDAP RFC draft so that is not something that we can
+        easely change.
+    * An idea is to count the records usign cursor next operation.
+		( a way to improve thing a bit would be to keep a record number <-> key association in a cache to avoid having 
+		to recount from the first record every time )<br />
+	* Another way would be to build the complete idl list (and keep it in a cache )<br />
+	  but the drawback is that entries added between two requests would not be seen.
+
+	I wonder if having vlv index would still then be useful ( maybe only to avoid having to sort the entries )<br />
+	(And paged control could also benefit of the chache to avoid having to rebuild the complete request. <br />
+
+
