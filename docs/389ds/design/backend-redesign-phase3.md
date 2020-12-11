@@ -400,5 +400,14 @@ Hum that may be the better solution ...
 
 	I wonder if having vlv index would still then be useful ( maybe only to avoid having to sort the entries )<br />
 	(And paged control could also benefit of the chache to avoid having to rebuild the complete request. <br />
+* Read transaction support
+    ns-slapd do not use read only txn with bdb (read operation are transactionless)
+     while lmdb requires them. 
+    We should determine the txn strategy:
+        * Having a single read txn for the whole ldap read operation.
+        * Having a read txn for every db read operation (is that efficient ?)
+        * Mixed approch: having a read txn for specific functions (like building idl from an index)
+    Anyway it is not an issue for this phase (The only concern in phase 3 is that the architecture 
+    should be flexible enough to easely support that evolution)
 
 
