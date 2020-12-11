@@ -14,13 +14,13 @@ LDAPI autobind allows to authenticate by mapping the effective UID and GID of a 
 Design
 ------
 
-Add two new LDAPI mapping entries that maps a UID/GID to a specific DN in the database.  At startup the server will look through the new a new configuration settings for the LDAPI DN *mapping base* subtree (**nsslapd-ldapiDNMappingBase**) for entries that contain objectclasses **nsLDAPIAuthMap/nsLDAPIFixedAuthMap**.  This is similar to **nsslapd-ldapientrysearchbase**, but this is only LDAPI mapping entries.  
+Add two new LDAPI mapping entries that maps a UID/GID to a specific DN in the database.  At startup the server will look through the new a new configuration settings for the LDAPI DN *mapping base* subtree (**nsslapd-ldapiDNMappingBase**) for entries that contain objectclasses **nsLDAPIAuthMap/nsLDAPIFixedAuthMap**.  This is similar to **nsslapd-ldapientrysearchbase**, but this is only LDAPI mapping entries.
 
-The first LDAP Mapping entry (*nsLDAPIAuthMap*) is the "dynamic" mapping of a system username to whatver the system returns as its UID/GID.  The other mapping entry is a "fixed" mapping (*nsLDAPIFixedAuthMap*) where the UID/GID is hardcoded into the mapping entry.
+The first LDAP Mapping entry (*nsLDAPIAuthMap*) is the "dynamic" mapping of a system username to whatver the system returns as its UID/GID.  The other mapping entry is a "fixed" mapping (*nsLDAPIFixedAuthMap*) where the UID/GID is hardcoded into the mapping entry.  One of the main reasons for having two entries (two objectclasses) is that we can use the schema definition to enforce valid configurations.  If you use *nsLDAPIAuthMap*, then you must have the LDAP DN and system username.  If you use *nsLDAPIFixedAuthMap*, then you must set the uidNumber, gidNumber, and LDAP DN.  So by separating the confgfuration into two entries makes things cleaner, less confusing, and less error prone.
 
-The *Dynamic* mapping works like this.  The dynamic mapping entries will contain the system user name (**nsslapd-ldapiUsername**) and the LDAP DN of the entry it should be mapped to.  The server will take the configured system username and find the UID/GID (via getpwnam) which it will store in an in-memory mapping structure.  This design allows for these mapping entries to also be replicated because there is nothing system specific about them, it's the server that will set the UID/GID locally.
+- The *Dynamic* mapping works like this.  The dynamic mapping entries will contain the system user name (**nsslapd-ldapiUsername**) and the LDAP DN of the entry it should be mapped to.  The server will take the configured system username and find the UID/GID (via getpwnam) which it will store in an in-memory mapping structure.  This design allows for these mapping entries to also be replicated because there is nothing system specific about them, it's the server that will set the UID/GID locally.
 
-The *Fixed* mapping takes a hard coded uidNumber and gidNumber and maps that to a specifc LDAP entry via **nsslapd-authenticateAsDN**.  Then this mapping is added the in-memory mapping structure. 
+- The *Fixed* mapping takes a hard coded uidNumber and gidNumber and maps that to a specifc LDAP entry via **nsslapd-authenticateAsDN**.  Then this mapping is added to the in-memory mapping structure. 
 
 
 Since this configuration is only processed at server startup if you add, modify, or delete an LDAPI mapping entry you must restart the server for that change to take effect.
@@ -33,7 +33,7 @@ Here is an example of a possible configuration.
 
     dn: cn=config
     nsslapd-ldapilisten: on
-    nsslapd-ldapifilepath: /var/run/slapd-standalone1.socket
+    nsslapd-ldapifilepath: /var/run/slapd-example.socket
     nsslapd-ldapiautobind: on
     nsslapd-ldapimaptoentries: on
     nsslapd-ldapiDNMappingBase: cn=auto_bind,dc=example,dc=com
@@ -57,7 +57,7 @@ Here is an example of a possible configuration.
 
 In the **dynamic** example, an LDAPI connection from system user **bind-dyndb-ldap** would then get mapped to a LDAP DN and bind as **krbprincipalname=DNS/server.ipa.example@IPA.EXAMPLE,cn=services,cn=accounts,dc=ipa,dc=example,dc=com**.
 
-In the **fixed** case, we take whatever system user that has uid/gid of 25 and map it to **krbprincipalname=DNS/server222.ipa.example@IPA.EXAMPLE,cn=services,cn=accounts,dc=ipa,dc=example,dc=com**
+In the **fixed** case, we take whatever system user has the uid/gid of 25 and it gets mapped to **krbprincipalname=DNS/server222.ipa.example@IPA.EXAMPLE,cn=services,cn=accounts,dc=ipa,dc=example,dc=com**
 
 
 Origin
