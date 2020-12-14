@@ -36,7 +36,7 @@ Here is an example of a possible configuration.
     nsslapd-ldapifilepath: /var/run/slapd-example.socket
     nsslapd-ldapiautobind: on
     nsslapd-ldapimaptoentries: on
-    nsslapd-ldapiDNMappingBase: cn=auto_bind,dc=example,dc=com
+    nsslapd-ldapiDNMappingBase: cn=auto_bind,cn=config
 
     dn: cn=dynamic example,cn=auto_bind,cn=config
     objectclass: top
