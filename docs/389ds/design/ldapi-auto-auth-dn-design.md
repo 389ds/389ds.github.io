@@ -59,7 +59,11 @@ In the **dynamic** example, an LDAPI connection from system user **bind-dyndb-ld
 
 In the **fixed** case, we take whatever system user has the uid/gid of 25 and it gets mapped to **krbprincipalname=DNS/server222.ipa.example@IPA.EXAMPLE,cn=services,cn=accounts,dc=ipa,dc=example,dc=com**
 
-There is also a reload task that can be run to fresh the LDAPI DN Mappings
+
+Reload Task
+-----------------------
+
+There is also a reload task that can be run to fresh the LDAPI DN Mappings on demand.  Otherwise the mappings are only computed at server startup.
 
     dn: cn=reload,cn=reload ldapi mappings,cn=tasks,cn=config
     objectclass: top
