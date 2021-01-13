@@ -34,7 +34,7 @@ It focus on:
 Current state
 =============
 
-Part of the changes are already pushed in the upstream branch. 
+Part of the changes are already pushed in the upstream branch.
 
 ( The plugin implementation and most dblayer wrapper are already coded)
 When initializing the dblayer API, the value of nsslapd-backend-implement configuration parameter is used to load *value* plugin then to call *value*\_init function that fills a set of callbacks in li-\>priv.
@@ -55,12 +55,15 @@ They are spread among the backend and replication changelog code while only bdb 
 not sure we can handle that as efficiently than with BDB (so far the only methods i am able to think about are:
 		* skip to next cursor n times
 		* build the complete idl and use the idl index counter
-	* Have a database implementation plugin API instead of direct reference to berkeley db components. Note: part of this is already implemented: 
+	* Have a database implementation plugin API instead of direct reference to berkeley db components. Note: part of this is already implemented:
 
 ### Specific issues (solved in this phase) ###
-    * dblayer\_log\_print ==> must be moved in implementation dependant plugin
-    * Compare dup call back ==> must be moved in implementation dependant plugin:
-        * idl\_new\_compare\_dups
+    * dblayer\_log\_print ==> must be moved in implementation dependant plugin ==> should remove the callback
+    * Values compare call back ==> must be moved in implementation dependant plugin as they works directly on db values
+        * idl\_new\_compare\_dups -
+        * entryrdn\_compare\_dups
+    * Same with compare key callback ????
+Should also remove use of DBTcmp ???
 
 
 ## Remaining work ##
@@ -86,7 +89,7 @@ This should be done in a separate commit (using temporary #define wrapper to rem
 (I am thinking about using a file lock in the backend directory instead. No real reason to rely on the db architecture to know whether an import process is running)
 * Note: There are some work to do about the transaction handling:
 	* Need a read txn for read operation while in bdb most read operation were transactionless
-    * Need to remove recursive transaction handling (or at least handle them explicitly as nested when creating/commiting/aborting 
+    * Need to remove recursive transaction handling (or at least handle them explicitly as nested when creating/commiting/aborting
           because lmdb does not support nested txn (so nested txn will be the parent txn and the commit/abort of nested txn should do nothing)
 
 ## API ##
@@ -127,7 +130,7 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 
 	typedef struct {
         DBI\_CB *cb;
-		DBI\_MEM\_OPTION flags; 
+		DBI\_MEM\_OPTION flags;
 		void *data;
 		size\_t size;
 		void *ctx;						/* Context handled by db implementation plugin */
@@ -162,7 +165,7 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 |-
 | DBI\_OP\_NEXT | Move cursor to next record then get it.  | c\_get | DB\_NEXT
 |-
-| DBI\_OP\_NEXT\_DATA | Move cursor to next record having the same key then get the value.  | c\_get | DB\_NEXT\_DUP 
+| DBI\_OP\_NEXT\_DATA | Move cursor to next record having the same key then get the value.  | c\_get | DB\_NEXT\_DUP
 |-
 | DBI\_OP\_NEXT\_KEY | Move cursor to next record having different key then get the record.  | c\_get | DB\_NEXT\_NODUP
 |-
@@ -211,7 +214,7 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 |-
 | DBI\_RC\_OTHER | Other database errors | N/A
 
-Note: the implementation plugin should log an error with error code and error text when getting an error that cannot be mapped 
+Note: the implementation plugin should log an error with error code and error text when getting an error that cannot be mapped
   ( To ease diagnostic in case of unexpected error )
 
 
@@ -325,7 +328,7 @@ I wonder if we should keep the callback definition. at the dblayer level.
 
  IMHO it should be better to define a callback struct in dbimpl.h i.e DBI\_CB because:
 * the db implementation plugin should not need to know about the dblayer or backend API
-* That allows to define a static callback struct in the plugin rather than explicitly set every callbacks in init function. 
+* That allows to define a static callback struct in the plugin rather than explicitly set every callbacks in init function.
 * the callback could be refered from the data that needs it (like values)
 
 
@@ -367,7 +370,7 @@ Should double check that when hitting unexpected errors we just logs an error me
 
 ## Alternatives ##
 
-* I thought about keeping the db code as it, but then it implies a lot of changes as we need to access the db plugin to determine what action to do or to log the error. (but the dblayer instance context is not always easily available when the message is logged) 
+* I thought about keeping the db code as it, but then it implies a lot of changes as we need to access the db plugin to determine what action to do or to log the error. (but the dblayer instance context is not always easily available when the message is logged)
 * Same as proposed solution but without storing data in thread local storage: problem is that we got clueless in case of unexpected database error. (unless an error message is logged by the plugin )<br />
 Hum that may be the better solution ...
 * I wondered about API name and though about several names:
@@ -386,14 +389,14 @@ Hum that may be the better solution ...
 
 * VLV and RECNO
 	Not an issue for this phase but it will be an issue when writing the lmdb implementation plugin.
-    (So far I have no idead how how to implement efficiently the DBI_OP_GET_RECNO (i.e: DB_GET_RECNO) and 
+    (So far I have no idead how how to implement efficiently the DBI_OP_GET_RECNO (i.e: DB_GET_RECNO) and
       DBI_OP_MOVE_TO_RECNO (i.e DB_SET_RECNO) operation on lmdb
 
 	VLV search the index records by record number bdb is able to do that on btree database but lmdb does not offer this feature.
       The bad thing is that this numbering is directly brought by the VLV LDAP RFC draft so that is not something that we can
         easely change.
     * An idea is to count the records usign cursor next operation.
-		( a way to improve thing a bit would be to keep a record number <-> key association in a cache to avoid having 
+		( a way to improve thing a bit would be to keep a record number <-> key association in a cache to avoid having
 		to recount from the first record every time )<br />
 	* Another way would be to build the complete idl list (and keep it in a cache )<br />
 	  but the drawback is that entries added between two requests would not be seen.
@@ -402,12 +405,45 @@ Hum that may be the better solution ...
 	(And paged control could also benefit of the chache to avoid having to rebuild the complete request. <br />
 * Read transaction support
     ns-slapd do not use read only txn with bdb (read operation are transactionless)
-     while lmdb requires them. 
+     while lmdb requires them.
     We should determine the txn strategy:
         * Having a single read txn for the whole ldap read operation.
         * Having a read txn for every db read operation (is that efficient ?)
         * Mixed approch: having a read txn for specific functions (like building idl from an index)
-    Anyway it is not an issue for this phase (The only concern in phase 3 is that the architecture 
+    Anyway it is not an issue for this phase (The only concern in phase 3 is that the architecture
     should be flexible enough to easely support that evolution)
 
+## Phasing ##
+
+The phase 3 is about being able to remove the bdb dependencies
+(i.e being able to build ns-slapd libbck-ldbm and replication without the bdb include and lib)
+Due to the size of these changes (FYI: Phase 3a already impacts 53 files), it seems better to split the phase
+in sub phases:
+   * phase 3a:
+        * Implements dbimpl API in back-ldbm (dbimpl.*h and proto-back-ldbm.h)
+        * Implements dbimpl API callbacks in bdb plugin (back-ldbm/db-bdb/bdb_layer.*)
+        * Move most of the monitor code in db-bdb (because it contained code to the bdb statistic)
+        * Remove Reference to bdb data/cursor/db/txn from back-ldbm/*.[ch] (use the dbimpl API instead).
+   * phase 3b:
+        * Remove Reference to bdb data/cursor/db/txn from replication-plugin (use the dbimpl API instead).
+   * phase 3c:
+        * Remove specific depencies to bdb (like the check on db region to determine if an import/backup is in progress in another process).
+        * Remove #include <db.h> from dbimpl.h
+   * phase 3d:
+        * Build and package db-bdb as a separate plugin that is independent of libback-ldbm
+   * phase 3e:
+        * Remove specific depencies to bdb in dbscan tool (use the dbimpl API instead. That imply to have a parameter to select the db plugin)
+        * Remove #include <db.h> from dbimpl.h
+
+As in initial plan:
+    * phase 4 is about the lmdb plugin (and maybe some specific tools)
+    * phase 5 is about the db-bdb plugin removal
+
+And I will add:
+    * phase 6 (Once bdb is gone) Improve the current txn model which is adapted to bdb but
+       not optimum for lmdb.
+       (Note: in phase 4 - we could run with current design by acting on the db plugin:
+         generating a read txn for single db operation if no txn is provided 
+         generating a read txn for single cursor creation until cursor deletion if no txn is provided 
+         to mimick current bdb behavior
 
