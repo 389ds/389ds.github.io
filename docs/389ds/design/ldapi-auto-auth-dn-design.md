@@ -14,7 +14,14 @@ LDAPI autobind allows to authenticate by mapping the effective UID and GID of a 
 Design
 ------
 
-Add a new LDAPI mapping entry that maps a UID/GID to a specific DN in the database.  At startup the server will look through the new a new configuration settings for the LDAPI DN mapping base subtree (**nsslapd-ldapiDNMappingBase**) for entries that contain objectclass **nsLDAPIAuthMap**.  This is similar to **nsslapd-ldapientrysearchbase**, but this is only LDAPI mapping entries.  Those new mapping entries will contain the system user name (**nsslapd-ldapiUsername**) and the LDAP DN of the entry it should be mapped to(**nsslapd-authenticateAsDN**).  The server will take the configured system username and find the UID/GID (via getpwnam) that is associated with it and store it in a in-memory mapping structure.  This approach can also handle cases when UID/GID assignment is dynamic (e.g. systemd dynamic users).  So during LDAPI authentication the uid/gid of the incoming connection can then be checked against the in-memory mapping and perform the bind dn rewrite if there is a match.  This design allows for these mapping entries to also be replicated because there is nothing system specific about them, it's the server that will set the UID/GID locally.
+Add two new LDAPI mapping entries that maps a UID/GID to a specific DN in the database.  At startup the server will look through the new a new configuration settings for the LDAPI DN *mapping base* subtree (**nsslapd-ldapiDNMappingBase**) for entries that contain objectclasses **nsLDAPIAuthMap/nsLDAPIFixedAuthMap**.  This is similar to **nsslapd-ldapientrysearchbase**, but this is only LDAPI mapping entries.
+
+The first LDAP Mapping entry (*nsLDAPIAuthMap*) is the "dynamic" mapping of a system username to whatver the system returns as its UID/GID.  The other mapping entry is a "fixed" mapping (*nsLDAPIFixedAuthMap*) where the UID/GID is hardcoded into the mapping entry.  One of the main reasons for having two entries (two objectclasses) is that we can use the schema definition to enforce valid configurations.  If you use *nsLDAPIAuthMap*, then you must have the LDAP DN and system username.  If you use *nsLDAPIFixedAuthMap*, then you must set the uidNumber, gidNumber, and LDAP DN.  So by separating the confgfuration into two entries makes things cleaner, less confusing, and less error prone.
+
+- The *Dynamic* mapping works like this.  The dynamic mapping entries will contain the system user name (**nsslapd-ldapiUsername**) and the LDAP DN of the entry it should be mapped to.  The server will take the configured system username and find the UID/GID (via getpwnam) which it will store in an in-memory mapping structure.  This design allows for these mapping entries to also be replicated because there is nothing system specific about them, it's the server that will set the UID/GID locally.
+
+- The *Fixed* mapping takes a hard coded uidNumber and gidNumber and maps that to a specifc LDAP entry via **nsslapd-authenticateAsDN**.  Then this mapping is added to the in-memory mapping structure. 
+
 
 Since this configuration is only processed at server startup if you add, modify, or delete an LDAPI mapping entry you must restart the server for that change to take effect.
 
@@ -26,20 +33,42 @@ Here is an example of a possible configuration.
 
     dn: cn=config
     nsslapd-ldapilisten: on
-    nsslapd-ldapifilepath: /var/run/slapd-standalone1.socket
+    nsslapd-ldapifilepath: /var/run/slapd-example.socket
     nsslapd-ldapiautobind: on
     nsslapd-ldapimaptoentries: on
-    nsslapd-ldapiDNMappingBase: cn=auto_bind,dc=example,dc=com
+    nsslapd-ldapiDNMappingBase: cn=auto_bind,cn=config
 
-    dn: cn=bind-dyndb-ldap,cn=auto_bind,dc=example,dc=com
+    dn: cn=dynamic example,cn=auto_bind,cn=config
     objectclass: top
     objectclass: nsLDAPIAuthMap
-    cn: bind-dyndb-ldap
-    description: LDAPI mapping for system user bind-dyndb-ldap
+    cn: dyanmic example
+    description: Take the system user bind-dyndb-ldap and find whatever the OS has set for its UID/GID, and then map that uid/gid to the ldap entry
     nsslapd-ldapiUsername: bind-dyndb-ldap
     nsslapd-authenticateAsDN: krbprincipalname=DNS/server.ipa.example@IPA.EXAMPLE,cn=services,cn=accounts,dc=ipa,dc=example,dc=com
+    
+    dn: cn=fixed example,cn=auto_bind,cn=config
+    objectclass: top
+    objectclass: nsLDAPIFixedAuthMap
+    cn: fixed example
+    description: Map system user with this UID/GID to nsslapd-authenticateAsDN entry
+    uidNumber: 25
+    gidNumber: 25
+    nsslapd-authenticateAsDN: krbprincipalname=DNS/server222.ipa.example@IPA.EXAMPLE,cn=services,cn=accounts,dc=ipa,dc=example,dc=com
 
-An LDAPI connection from system user **bind-dyndb-ldap** would then get mapped to a LDAP DN and bind as **krbprincipalname=DNS/server.ipa.example@IPA.EXAMPLE,cn=services,cn=accounts,dc=ipa,dc=example,dc=com**.
+In the **dynamic** example, an LDAPI connection from system user **bind-dyndb-ldap** would then get mapped to a LDAP DN and bind as **krbprincipalname=DNS/server.ipa.example@IPA.EXAMPLE,cn=services,cn=accounts,dc=ipa,dc=example,dc=com**.
+
+In the **fixed** case, we take whatever system user has the uid/gid of 25 and it gets mapped to **krbprincipalname=DNS/server222.ipa.example@IPA.EXAMPLE,cn=services,cn=accounts,dc=ipa,dc=example,dc=com**
+
+
+Reload Task
+-----------------------
+
+There is also a reload task that can be run to fresh the LDAPI DN Mappings on demand.  Otherwise the mappings are only computed at server startup.
+
+    dn: cn=reload,cn=reload ldapi mappings,cn=tasks,cn=config
+    objectclass: top
+    objectclass: extensibleObject
+    cn: reload
 
 
 Origin
