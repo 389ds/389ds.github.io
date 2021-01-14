@@ -436,14 +436,22 @@ in sub phases:
         * Remove #include <db.h> from dbimpl.h
 
 As in initial plan:
-    * phase 4 is about the lmdb plugin (and maybe some specific tools)
-    * phase 5 is about the db-bdb plugin removal
+
+   * phase 4 is about the lmdb plugin (and maybe some specific tools)
+   * phase 5 is about the db-bdb plugin removal
 
 And I will add:
-    * phase 6 (Once bdb is gone) Improve the current txn model which is adapted to bdb but
-       not optimum for lmdb.
-       (Note: in phase 4 - we could run with current design by acting on the db plugin:
-         generating a read txn for single db operation if no txn is provided 
-         generating a read txn for single cursor creation until cursor deletion if no txn is provided 
-         to mimick current bdb behavior
+
+   * phase 6 (Once bdb is gone) Improve the current txn model which is adapted to bdb but not optimum for lmdb.
+
+The phase 6 rationnal is that in phase 4 - we could keep current txn design by acting on the db plugin:
+        * generating a read txn for single db operation if no txn is provided 
+        * generating a read txn for single cursor creation until cursor deletion if no txn is provided 
+ to mimick current bdb behavior )
+
+Usign a single read txn for a complete read operation (and a single write txn for a write operation) in phase 6 
+would provide a performance gain (noneed to duplicate the data returned by the db as they stays mmaped
+until txn is aborted/commited) and offer a better consistency than current model. 
+But we cannot do it while bdb plugin is still around because of the risk of deadlock and excesive retries on bdb
+
 
