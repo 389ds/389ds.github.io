@@ -331,7 +331,41 @@ I wonder if we should keep the callback definition. at the dblayer level.
 * That allows to define a static callback struct in the plugin rather than explicitly set every callbacks in init function.
 * the callback could be refered from the data that needs it (like values)
 
+## db-bdb plugin  ##
 
+That is the plugin that implements the dbimpl API callbacks and calls libdb functions. There are a few interresting things to know:
+* DBT versus dbi_var_t handling.
+    * Typical data handing for most db operation is:
+<PRE>
+    bdb_dbival2dbt(key, &bdb_key, PR_FALSE);
+    bdb_dbival2dbt(data, &bdb_data, PR_FALSE);
+    rc=some_native_libdb_function(..., &bdb_key, &bdb_data, ...);
+    bdb_dbt2dbival(&bdb_key, key, PR_TRUE);
+    bdb_dbt2dbival(&bdb_data, data, PR_TRUE);
+    return bdb_map_error(__FUNCTION__, rc);
+</PRE>
+To convert the dbi_val_t to DBT before the libdb call then
+the opposite after the call.
+    * sometime we need to call backend function from the plugin
+      while having DBT values:
+<PRE>
+    bdb_dbt2dbival(&key, &dbikey, PR_FALSE);
+    idl = idl_fetch(be, db, &dbikey, NULL, NULL, &ret);
+    bdb_dbival2dbt(&dbikey, &key, PR_TRUE);
+</PRE>
+Note: In both case isresponse is set to PR_FALSE before the operation and PR_TRUE after it.
+if a key or data get alloced/realloced, the original key/data get freed (if the value flags allows it)
+
+* dup_cmp_fn callback
+As these callbacks are directly called within libdb (i.e using DBT)
+they have been moved within the dnb-bdb plugin and rather than directly
+setting the callback in upper layer, there is a dbimpl function to set some
+specific function.
+
+* bdb_map_error function
+  convert some well known error to the DBI counterpart.
+  for other error a generic value is returned after having logged
+  the bdb native error.
 
 ## Alternatives ##
 
@@ -340,22 +374,22 @@ I wonder if we should keep the callback definition. at the dblayer level.
 	* (quite sure that ldbm does not support the recno)
 
 
-Error handling
+* Error handling:
 
 Proposed solution
 
-* Remap the errors to generic values
-* Add a function in bdb that remap the value (should be a simple switch)<br />
+    * Remap the errors to generic values
+    * Add a function in bdb that remap the value (should be a simple switch)<br />
 If the value cannot be mapped:<br />
    add a string in thread local storage and return DBI\_RC\_OTHER<br />
    The string should contains the original return code and its associated message (i.e:<br />
 bdb error code: %d : %s&quot;, native\_rc, db\_strerror(native\_rc))
-* Modify dblayer\_strerror to print a message for generic errors and if DBI\_RC\_OTHER to generate a message from the thread local data string.
+    * Modify dblayer\_strerror to print a message for generic errors and if DBI\_RC\_OTHER to generate a message from the thread local data string.
 
-* This solution has the advantage that:</p></blockquote>
-	* it does not impact the back-ldm/changelog code (except for dblayer\_strerror) </li>
-	* It is quite efficient in the usual case as it handles a switch with few values</li>
-	* Keep the ability to diagnose errors in the unexpected case</li></ul>
+    * This solution has the advantage that:</p></blockquote>
+	    * it does not impact the back-ldm/changelog code (except for dblayer\_strerror) </li>
+	    * It is quite efficient in the usual case as it handles a switch with few values</li>
+	    * Keep the ability to diagnose errors in the unexpected case</li></ul>
 	  The drawbacks:
 	  Message can be wrong if creative error handling is performed (i.e </li></ul>
 
@@ -366,29 +400,27 @@ bdb error code: %d : %s&quot;, native\_rc, db\_strerror(native\_rc))
           log(dblayer\_strerror(rc1)) prints rc2 message if both values are are DBI\_RC\_OTHER)<br />
 Should double check that when hitting unexpected errors we just logs an error message and aborts the operation (as it is possible that we abort the txn before logging the errr)
 
-* Error handling should be done in the same thread than the operation (This is IMHO the case)
-
-## Alternatives ##
+    * Error handling should be done in the same thread than the operation (This is IMHO the case)
 
 * I thought about keeping the db code as it, but then it implies a lot of changes as we need to access the db plugin to determine what action to do or to log the error. (but the dblayer instance context is not always easily available when the message is logged)
 * Same as proposed solution but without storing data in thread local storage: problem is that we got clueless in case of unexpected database error. (unless an error message is logged by the plugin )<br />
 Hum that may be the better solution ...
 * I wondered about API name and though about several names:
 	* dbimpl ?   ( That was the chosen name )
-	* gdb ?
-	* gendb ?
-	  (IMHO these 2 last names (For generic database) are confusing)
-	* Plgdb ? (plugable database)
+	* gdb ?      (confusion with debugger)
+	* gendb ?    (confusion with ldap database generation tool)
+	* Plgdb ?    (plugable database)
 * Typedef name format ?
 	* &lt;PREFIX&gt;\_&lt;NAME&gt;
 	* &lt;prefix&gt;\_&lt;name&gt;\_t ( That was the chosen format )
 
 
-
 ## Open Questions ##
 
+These questions will need to be solved in phase 4.
+
 * VLV and RECNO
-	Not an issue for this phase but it will be an issue when writing the lmdb implementation plugin.
+	Not an issue for this phase but it will be an issue when writing the lmdb implementation plugin. (i.e Phase4)
     (So far I have no idead how how to implement efficiently the DBI_OP_GET_RECNO (i.e: DB_GET_RECNO) and
       DBI_OP_MOVE_TO_RECNO (i.e DB_SET_RECNO) operation on lmdb
 
@@ -412,10 +444,21 @@ Hum that may be the better solution ...
         * Mixed approch: having a read txn for specific functions (like building idl from an index)
     Anyway it is not an issue for this phase (The only concern in phase 3 is that the architecture
     should be flexible enough to easely support that evolution)
+My feeling is that in phase 4 we simply use the read txn inside the
+  lmdb plugin:
+        * generating a read txn for single db operation if no txn is provided
+        * generating a read txn for single cursor creation until cursor deletion if no txn is provided
+ and copy the db keys and values results in the dbi_val_t buffer (as bdb does with the DBT buffer)
+ This is not the most performant but it is fast to implement and it mimick current bdb behavior.
+Then once bdb is out we could have a perf improvement phase to boost the read
+ operation by using global txn and avoid needing to duplicate the key and values.  (no need to duplicate the data returned by the db as they stays mmaped
+until txn is aborted/commited) and offer a better consistency than current model.
+But we cannot do it while bdb plugin is still around because of the risk of deadlock and excesive retries on bdb
+
 
 ## Phasing ##
 
-The phase 3 is about being able to remove the bdb dependencies
+*The phase 3 is about being able to remove the bdb dependencies
 (i.e being able to build ns-slapd libbck-ldbm and replication without the bdb include and lib)
 Due to the size of these changes (FYI: Phase 3a already impacts 53 files), it seems better to split the phase
 in sub phases:
@@ -434,24 +477,6 @@ in sub phases:
    * phase 3e:
         * Remove specific depencies to bdb in dbscan tool (use the dbimpl API instead. That imply to have a parameter to select the db plugin)
         * Remove #include <db.h> from dbimpl.h
-
-As in initial plan:
-
-   * phase 4 is about the lmdb plugin (and maybe some specific tools)
-   * phase 5 is about the db-bdb plugin removal
-
-And I will add:
-
-   * phase 6 (Once bdb is gone) Improve the current txn model which is adapted to bdb but not optimum for lmdb.
-
-The phase 6 rationnal is that in phase 4 - we could keep current txn design by acting on the db plugin:
-        * generating a read txn for single db operation if no txn is provided 
-        * generating a read txn for single cursor creation until cursor deletion if no txn is provided 
- to mimick current bdb behavior )
-
-Usign a single read txn for a complete read operation (and a single write txn for a write operation) in phase 6 
-would provide a performance gain (noneed to duplicate the data returned by the db as they stays mmaped
-until txn is aborted/commited) and offer a better consistency than current model. 
-But we cannot do it while bdb plugin is still around because of the risk of deadlock and excesive retries on bdb
-
-
+* phase 4 is about the lmdb plugin (and maybe some specific tools)
+* phase 5 is about the db-bdb plugin removal
+* phase 6 Improve the current txn model which is adapted to bdb but not optimum for lmdb.
