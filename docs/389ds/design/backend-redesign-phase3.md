@@ -333,27 +333,25 @@ I wonder if we should keep the callback definition. at the dblayer level.
 
 ## db-bdb plugin  ##
 
-That is the plugin that implements the dbimpl API callbacks and calls libdb functions. There are a few interresting things to know:
+That is the plugin that implements the dbimpl API callbacks and calls libdb functions. The important points are:
 * DBT versus dbi_var_t handling.
     * Typical data handing for most db operation is:
 <PRE>
-    bdb_dbival2dbt(key, &bdb_key, PR_FALSE);
+    bdb_dbival2dbt(key, &bdb_key, PR_FALSE);   /* Convert dbi_val_t to DBT before the libdb call */
     bdb_dbival2dbt(data, &bdb_data, PR_FALSE);
     rc=some_native_libdb_function(..., &bdb_key, &bdb_data, ...);
-    bdb_dbt2dbival(&bdb_key, key, PR_TRUE);
+    bdb_dbt2dbival(&bdb_key, key, PR_TRUE);    /* Convert back the DBT to dbi_val after the libdb call */
     bdb_dbt2dbival(&bdb_data, data, PR_TRUE);
     return bdb_map_error(__FUNCTION__, rc);
 </PRE>
-To convert the dbi_val_t to DBT before the libdb call then
-the opposite after the call.
-    * sometime we need to call backend function from the plugin
-      while having DBT values:
+    * When calling backend function from the plugin (with DBT values):
 <PRE>
     bdb_dbt2dbival(&key, &dbikey, PR_FALSE);
     idl = idl_fetch(be, db, &dbikey, NULL, NULL, &ret);
     bdb_dbival2dbt(&dbikey, &key, PR_TRUE);
 </PRE>
-Note: In both case isresponse is set to PR_FALSE before the operation and PR_TRUE after it.
+
+Note: In both case <I>isresponse</I> is set to PR_FALSE before the operation and PR_TRUE after it.
 if a key or data get alloced/realloced, the original key/data get freed (if the value flags allows it)
 
 * dup_cmp_fn callback
@@ -378,33 +376,34 @@ specific function.
 
 Proposed solution
 
-    * Remap the errors to generic values
-    * Add a function in bdb that remap the value (should be a simple switch)<br />
-If the value cannot be mapped:<br />
-   add a string in thread local storage and return DBI\_RC\_OTHER<br />
-   The string should contains the original return code and its associated message (i.e:<br />
-bdb error code: %d : %s&quot;, native\_rc, db\_strerror(native\_rc))
-    * Modify dblayer\_strerror to print a message for generic errors and if DBI\_RC\_OTHER to generate a message from the thread local data string.
-
-    * This solution has the advantage that:</p></blockquote>
-	    * it does not impact the back-ldm/changelog code (except for dblayer\_strerror) </li>
-	    * It is quite efficient in the usual case as it handles a switch with few values</li>
-	    * Keep the ability to diagnose errors in the unexpected case</li></ul>
-	  The drawbacks:
-	  Message can be wrong if creative error handling is performed (i.e </li></ul>
-
+    * Solution 1
+        * Remap the errors to generic values
+        * Add a function in bdb that remap the value (should be a simple switch)
+If the value cannot be mapped we could:
+            * add a string in thread local storage and return DBI\_RC\_OTHER
+The string should contains the original return code and its associated message (i.e: bdb error code: %d : %s&quot;, native\_rc, db\_strerror(native\_rc))
+            * Modify dblayer\_strerror to print a message for generic errors and if DBI\_RC\_OTHER to generate a message from the thread local data string.
+    * This solution has the advantage that:
+	        * it does not impact the back-ldm/changelog code (except for dblayer\_strerror)
+	        * It is quite efficient in the usual case as it handles a switch with few values
+	        * Keep the ability to diagnose errors in the unexpected case
+        * The drawbacks:
+            * Message can be wrong if creative error handling is performed (i.e
+<PRE>
           rc1 = dblayer\_xxx(li, ...)
-
           rc2 = dblayer\_xxx(li, ...)
-
           log(dblayer\_strerror(rc1)) prints rc2 message if both values are are DBI\_RC\_OTHER)<br />
+</PRE>
 Should double check that when hitting unexpected errors we just logs an error message and aborts the operation (as it is possible that we abort the txn before logging the errr)
 
-    * Error handling should be done in the same thread than the operation (This is IMHO the case)
+            * Error handling should be done in the same thread than the operation (This is IMHO the case)
 
-* I thought about keeping the db code as it, but then it implies a lot of changes as we need to access the db plugin to determine what action to do or to log the error. (but the dblayer instance context is not always easily available when the message is logged)
-* Same as proposed solution but without storing data in thread local storage: problem is that we got clueless in case of unexpected database error. (unless an error message is logged by the plugin )<br />
-Hum that may be the better solution ...
+    * Solution 2
+I thought about keeping the db code as it, but then it implies a lot of changes as we need to access the db plugin to determine what action to do or to log the error. (but the dblayer instance context is not always easily available when the message is logged)
+    * Solution 3
+Same as solution 1 but without storing data in thread local storage: problem is that we got clueless in case of unexpected database error. (unless an error message is logged by the plugin 
+(Note: that is finally the implemented solution))
+
 * I wondered about API name and though about several names:
 	* dbimpl ?   ( That was the chosen name )
 	* gdb ?      (confusion with debugger)
