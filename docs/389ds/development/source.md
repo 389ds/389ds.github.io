@@ -40,6 +40,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.4.4.12.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.4.12.tar.bz2)|389-ds-base.git|389-ds-base-1.4.4.12|[Building](building.html)|9e2b4a1f28e3335fd92e3be607ec804330607cfd4fe819d5c04610f67f7598a6d4ee84d2a271aa0c432a429e80079258fc32c5044fac32612b0b2790904233ad|
 |[389-ds-base-1.4.4.11.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.4.11.tar.bz2)|389-ds-base.git|389-ds-base-1.4.4.11|[Building](building.html)|37bda0cffd880296d5d74a361c35dddddb161fad2bf81e063b6aff98006bcab1f5c159329aba376bebf2971bff36c0668af01b20e3049d713175bd00f96c8cb4|
 |[389-ds-base-1.4.4.10.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.4.10.tar.bz2)|389-ds-base.git|389-ds-base-1.4.4.10|[Building](building.html)|f8b6a51ca31d6039cc9f75b9cb7ecba7948e1619faf5de8e7a2bc411c68af5326ae250c60148d52e65f32ac8559cebe6f8d85c7741bf6bfb72fdd061ce2a36be|
 |[389-ds-base-1.4.4.9.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.4.9.tar.bz2)|389-ds-base.git|389-ds-base-1.4.4.9|[Building](building.html)|556edae2764baad7fa99eba8005cbb203a6bb6c9f9bd91194b29c2e187ebe788230438c528757424d86be00636d08d75c894440c67506765a4d1b65fa7b05206|
