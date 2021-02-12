@@ -24,7 +24,7 @@ git push access - you will need to be a member of the git389 group in FAS
 
 **DS** = the 389 source code SCM - git clone git@github.com:389ds/389-ds-base.git
 
-**Fedora** = the DS clone location which contains the spec files - (use **fedpkg clone 389-ds-base**)
+**Fedora** = the 389-ds-base dist-git repo which contains the specfile - (use **fedpkg clone 389-ds-base**)
 
 
 ### Do the Upstream Release
@@ -38,30 +38,28 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   **cd 389-ds-base**
 
--   **git checkout 389-ds-base-1.x.x**
+-   **git checkout 389-ds-base-x.x.x**
 
 -   Commit any fixes that have not yet been applied
 
 -   Do a **git log** to make sure all the commits are done!
 
--   Open/edit **VERSION.sh**
+-   Update **VERSION.sh** and set the new version string
 
--   Make sure **VERSION\_PREREL** is commented out
-
--   Set the new version string
-
--   **git commit -a -m “**bump version to \<new version\>**"**
+-   **git commit -a -m “**Bump version to \<new version\>**"**
 
 -   All commits must be done before **git tag**! Otherwise you might need to use **git tag -f \$TAG**
 
+-   Generate the source tarball, and changelog file (used for updating the specfile's changelog and the wiki release notes)
+
 -   **TAG=389-ds-base-1.3.9.1** ; **git tag \$TAG** ; **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$TAG.tar.bz2 ; git log -\\\-oneline 389-ds-base-1.3.9.0.. \> /tmp/cl-info**
 
--   **TAG=389-ds-base-1.4.4.6 ; git tag \$TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-1.4.4.5.. \> /tmp/cl-info**
+-   **TAG=389-ds-base-1.4.4.14 ; git tag \$TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-1.4.4.13.. \> /tmp/cl-info**
 
 -   Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and trac bugs. Leave the hash for coverity/misc updates.
 
 
-**Fedora** - Clone it, and update the spec files
+**Fedora** - Dist-Git - Clone it, and update the specfile
 --------------------------------------------
 
 -   **mkdir /fedora; cd /fedora**
@@ -92,28 +90,15 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   **fedpkg srpm** - Create a “*.src.rpm” file
 
--   **fedpkg scratch-build -\\\-srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm** - Submits the srpm to the koji build system. Takes a few minutes to run.
+-   **fedpkg scratch-build -\\\-srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm** - Submits the srpm to the koji build system.  For faster building you can select just a single architecture by using "**-\\\-arches=x86_64**", but beware you won't catch any build issues on other platforms so use this with caution.
 
 -   **fedpkg clog**
 
 -   **git commit -a -F clog**
 
--   **git push**
+-   **git push origin BRANCH**
 
--   If you need to update sub branches of master
-    -    **fedpkg switch-branch \<branch\>**
-    -    **git cherry-pick -x master**
-    -    You may to run *new-sources* if the sources file was not updated:  **fedpkg new-sources /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2**  Followed by a "git commit -a" after the scratch build completes.
-    -    **fedpkg verrel**
-    -    **fedpkg srpm**
-    -    **fedpkg scratch-build -\\\-srpm=389-ds-base-1.4.1.6-1.xxxxx.src.rpm**
-    -    **git push**
-
-
-**Fedora** - Do the official Koji build, and do the release "update"
-----------------------------------------------------------------
-
--   **fedpkg switch-branch master**
+-   Do the official Koji build, and update bodhi
 
 -   **fedpkg build -\\\-nowait**
 
@@ -128,7 +113,8 @@ git push access - you will need to be a member of the git389 group in FAS
         stable_karma=1
         unstable_karma=-1
 
--   Do **fedpkg update** for each branch you did a build for.
+-   Do **fedpkg update** for each branch you did a build for.  This will submit this build to "bohdi" for the final Fedora release
+
 
 DS - push the updates and the tag
 ---------------------------------
@@ -139,9 +125,10 @@ NOTE: Do not git push -\\\-tags - you may inadvertently push tags you did not in
 
 -   **cd /home/source/ds389/ds**
 
--   **git push origin 389-ds-base-1.4.0.12**
+-   **git push origin 389-ds-base-1.4.4**
 
--   **git push origin refs/tags/389-ds-base-1.4.0.12**
+-   **git push origin refs/tags/389-ds-base-1.4.4.12**
+
 
 Update The Wiki (internal use only)
 ------------------------------------
@@ -165,5 +152,10 @@ Update The Wiki (internal use only)
         /SOURCE/docs/389ds/development/source.md
 
 -   Push your updates
+
+-   Send email notifications about the new build to these lists, using this Subject:  **Announcing 389 Directory Server #.#.#**
+
+    - <389-announce@lists.fedoraproject.org>
+    - <389-users@lists.fedoraproject.org>
 
 -   Done!

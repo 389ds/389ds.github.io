@@ -26,8 +26,9 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
-|[389-ds-base-2.0.1.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-2.0.1.tar.bz2)|389-ds-base.git|389-ds-base-2.0.1|[Building](building.html)|34395b9fc73965518b4e0fc1ad5e2053bb0bb2fe38367437dd17a5a735d3d11106d510d43939083cbebcdff9c7790b367b44a3a563fb37899105ad24865eaa2b|
+|[389-ds-base-2.0.3.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-2.0.3.tar.bz2)|389-ds-base.git|389-ds-base-2.0.3|[Building](building.html)|48f0dcd7e4853646ea9bb38ec742f2b421b7bd6477d33070a8c97a764021ab7fa6fc005cb75ea87860b7b70998dc4df87790cf1c2bda3e6c0a9f08d39b00f6d2|
 |[389-ds-base-2.0.2.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-2.0.2.tar.bz2)|389-ds-base.git|389-ds-base-2.0.2|[Building](building.html)|42805311e45b2f3305f86da50d5a0128b19cd15aeb4787ccb67b5ceea9f7a7efe42076dff1d47d4d61012453405403c730c245d53431043eb05c125455938c37|
+|[389-ds-base-2.0.1.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-2.0.1.tar.bz2)|389-ds-base.git|389-ds-base-2.0.1|[Building](building.html)|34395b9fc73965518b4e0fc1ad5e2053bb0bb2fe38367437dd17a5a735d3d11106d510d43939083cbebcdff9c7790b367b44a3a563fb37899105ad24865eaa2b|
 
 
 ### 389 Directory Server 1.4.5 (this branch became 2.0.0 ...)
@@ -40,6 +41,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.4.4.13.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.4.13.tar.bz2)|389-ds-base.git|389-ds-base-1.4.4.13|[Building](building.html)|bd0c78d0845a1e65346ebe823d322b5686a42dfdfef97c40d0504aa85781218dd0748024102e2ddc9fe5677562655dace9f366625f3d4ef3bed2f938edc098f8|
 |[389-ds-base-1.4.4.12.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.4.12.tar.bz2)|389-ds-base.git|389-ds-base-1.4.4.12|[Building](building.html)|9e2b4a1f28e3335fd92e3be607ec804330607cfd4fe819d5c04610f67f7598a6d4ee84d2a271aa0c432a429e80079258fc32c5044fac32612b0b2790904233ad|
 |[389-ds-base-1.4.4.11.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.4.11.tar.bz2)|389-ds-base.git|389-ds-base-1.4.4.11|[Building](building.html)|37bda0cffd880296d5d74a361c35dddddb161fad2bf81e063b6aff98006bcab1f5c159329aba376bebf2971bff36c0668af01b20e3049d713175bd00f96c8cb4|
 |[389-ds-base-1.4.4.10.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.4.10.tar.bz2)|389-ds-base.git|389-ds-base-1.4.4.10|[Building](building.html)|f8b6a51ca31d6039cc9f75b9cb7ecba7948e1619faf5de8e7a2bc411c68af5326ae250c60148d52e65f32ac8559cebe6f8d85c7741bf6bfb72fdd061ce2a36be|
@@ -58,6 +60,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-1.4.3.20.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.20.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.20|[Building](building.html)|651c8d1d7a3c51b5a92542584bbfdde5a62c5bd7a1c09e6044bf1c6412f02244b34b252bf35e9c93bd696eeba1a741099015ad19d8d7358817d85cbf193630db|
 |[389-ds-base-1.4.3.19.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.19.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.19|[Building](building.html)|dd1aa11a425e46adfe115c4aab033f4dd48157402432482b2f76f1d0698753d3438954d8c2d3e4701d073297a95db070d2fefeeed2f064f09a5baa700716888a|
 |[389-ds-base-1.4.3.18.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.18.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.18|[Building](building.html)|554733d9e9182c805929fe5fc3513fdb8a4676db06f3f4aebf04e1070d5b0976dbc1f0ee886825607cba2e789beb6bd64362a62833b159747fc11328fcf61dc6|
 |[389-ds-base-1.4.3.17.tar.bz2](https://releases.pagure.org/389-ds-base/389-ds-base-1.4.3.17.tar.bz2)|389-ds-base.git|389-ds-base-1.4.3.17|[Building](building.html)|2a789eac2db298032cfd96a7b158144cdf1abdb635cd26759d2cc62528cb6ae2984cf8874f33f265909d67500d094c0ee75043cbae989e2fb2857b6817ba51fe|

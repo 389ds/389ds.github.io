@@ -22,7 +22,7 @@ Source tarballs are available for download at [Download 389-ds-base Source](http
 
 ### Highlights in 1.4.3.19
 
-- Bug fixes
+- Bug and Security fixes
 
 ### Installation and Upgrade 
 
