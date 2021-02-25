@@ -115,7 +115,17 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   First copy the contents of the edited **cl-info** file
 
+-   Go back to the source directory, which should be uncleaned after the tarball creation **cd /home/source/ds389/389-ds-base**
+
+-   Update Fedora spec file with Rust packages data **FEDORA_SPECFILE=/fedora/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust-on-fedora**
+
+-   Go back to Fedora repo directory **cd /fedora/389-ds-base**
+
+-   Run **git diff** and check that spec file has only "License:" field changes and 'Provides:  bundled(crate(*' replacements and the rest was not touched by the script
+
 -   Edit the spec file **/fedora/389-ds-base/389-ds-base.spec**
+
+-   Read the instructions around 'License:' field and remove the comments accordingly
 
 -   Change the version in the spec file.  Make sure the **release** field is set back to **1: %{?relprefix}1%{?prerel}%{?dist}**
 
