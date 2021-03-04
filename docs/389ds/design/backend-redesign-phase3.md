@@ -11,7 +11,7 @@ Status
 ==========
 Date: 2020 Nov, 26th
 
-Staus: Draft
+Staus: Mostly Implemented
 
 Tickets: [https://issues.redhat.com/browse/IDMDS-302](https://issues.redhat.com/browse/IDMDS-302)
 
@@ -34,19 +34,27 @@ It focus on:
 Current state
 =============
 
-Part of the changes are already pushed in the upstream branch.
+* Phase 3a: pushed in upstream bramch
+* Phase 3b: under review
+* Phase 3c: Coded but need rebase and review once phase 3b is done
+* Phase 3d: Cancelled - we keep the db plugin implementation within libback-ldbm for now 
+* Phase 3e: Coded but need rebase and review once phase 3b is done
 
-( The plugin implementation and most dblayer wrapper are already coded)
-When initializing the dblayer API, the value of nsslapd-backend-implement configuration parameter is used to load *value* plugin then to call *value*\_init function that fills a set of callbacks in li-\>priv.
 
-
-The dependency that remains are:
-
-* References to the Berkeley Database include (i.e &lt;libdb/db.h&gt;) types and data and macros.<br />
-They are spread among the backend and replication changelog code while only bdb plugin should use it.
-* Some of the code specific to bdb implementation needs to be moved inside the bdb plugin
-(typically the part of the database monitoring code that gather the statistics and reset them)
+### Specific issues (solved in this phase) ###
+    * dblayer\_log\_print ==> must be moved in implementation dependant plugin ==> should remove the callback
+    * Values compare call back ==> must be moved in implementation dependant plugin as they works directly on db values
+        * idl\_new\_compare\_dups -
+        * entryrdn\_compare\_dups
+    * Same with compare key callback ????
+    * Should also move use of DBTcmp within the db-bdb plugin 
+    * References to the Berkeley Database include (i.e &lt;libdb/db.h&gt;) types and data and macros.<br />
+          They are spread among the backend and replication changelog code while only bdb plugin should use it.
+    * Some of the code specific to bdb implementation needs to be moved inside the bdb plugin
+          (typically the part of the database monitoring code that gather the statistics and reset them)
 	* Error code handling and logging. Should find a way to get it independent of the database implementation while still be able to provide relevant data in case of unexpected trouble
+          (Common errors are handled by dbimpl API - unusual errors are logged within the db plugin )
+
 	* removal of bdb specific features that are not available on the other databases:
 	* dblayer\_in\_import checks the presence of a db region to detect that an import is running. An implementation agnostic method should be used instead.
 	* VLV uses record number.
@@ -57,40 +65,36 @@ not sure we can handle that as efficiently than with BDB (so far the only method
 		* build the complete idl and use the idl index counter
 	* Have a database implementation plugin API instead of direct reference to berkeley db components. Note: part of this is already implemented:
 
-### Specific issues (solved in this phase) ###
-    * dblayer\_log\_print ==> must be moved in implementation dependant plugin ==> should remove the callback
-    * Values compare call back ==> must be moved in implementation dependant plugin as they works directly on db values
-        * idl\_new\_compare\_dups -
-        * entryrdn\_compare\_dups
-    * Same with compare key callback ????
-Should also remove use of DBTcmp ???
-
-
-## Remaining work ##
-
-* rename the BDB types and definitions that are used widely in the backend and replication code.
+    * rename the BDB types and definitions that are used widely in the backend and replication code.
 (Although we could keep current names, that would be quite confusing for code readers)
 This should be done in a separate commit (using temporary #define wrapper to remap the new back to libdb) to simplify the reviewer job (it is plain sed substitution that impacts most backend and replication changelog source files. So it is better to keep it separate from the real changes)
-* move the monitoring statistics in bdb plugin and add wrapper at dblayer level
-      * perfctrs\_update should be moved in bdb and wrapper added
-      * perfctrs\_terminate: should be split: memory cleanup should stay at backend level but statistics should be clear at bdb plugin level. This will also allow to get rid of the dblayer\_db\_uses\_* functions that checks for existing feature
-      * remove old macros in dblayer that are already useless:
-         * DB\_OPEN
-         * TXN\_BEGIN
-         * TXN\_COMMIT
-         * TXN\_ABORT
-         * TXN\_CHECKPOINT
-         * MEMP\_STAT
-         * MEMP\_TRICKLE
-         * LOG\_ARCHIVE
-         * LOG\_FLUSH
+    * move the monitoring statistics in bdb plugin and add wrapper at dblayer level
+          * perfctrs\_update should be moved in bdb and wrapper added
+          * perfctrs\_terminate: should be split: memory cleanup should stay at backend level but statistics should be clear at bdb plugin level. This will also allow to get rid of the dblayer\_db\_uses\_* functions that checks for existing feature
+          * remove old macros in dblayer that are already useless:
+             * DB\_OPEN
+             * TXN\_BEGIN
+             * TXN\_COMMIT
+             * TXN\_ABORT
+             * TXN\_CHECKPOINT
+             * MEMP\_STAT
+             * MEMP\_TRICKLE
+             * LOG\_ARCHIVE
+             * LOG\_FLUSH
 
-* dblayer\_in\_import: replace the check about db region by something else
+    * dblayer\_in\_import: replace the check about db region by something else
 (I am thinking about using a file lock in the backend directory instead. No real reason to rely on the db architecture to know whether an import process is running)
-* Note: There are some work to do about the transaction handling:
-	* Need a read txn for read operation while in bdb most read operation were transactionless
-    * Need to remove recursive transaction handling (or at least handle them explicitly as nested when creating/commiting/aborting
-          because lmdb does not support nested txn (so nested txn will be the parent txn and the commit/abort of nested txn should do nothing)
+    * Note: There are some work to do about the transaction handling:
+	    * Need a read txn for read operation while in bdb most read operation were transactionless
+        * Need to remove recursive transaction handling (or at least handle them explicitly as nested when creating/commiting/aborting
+              because lmdb does not support nested txn (so nested txn will be the parent txn and the commit/abort of nested txn should do nothing)
+
+## VERY HIGH LEVEL API ##
+
+dbimpl API is part of libback-ldbm and
+dbimpl API users needs to include dbimpl.h and link with libback-ldbm 
+
+When initializing the dblayer API (or when requesting a private access to a file), the value of nsslapd-backend-implement configuration parameter is used to call *value*\_init function (within libback-ldbm) that fills a set of callbacks in li-\>priv.
 
 ## API ##
 
@@ -157,6 +161,8 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 |-
 | DBI\_OP\_MOVE\_TO\_RECNO | Move record to specified record number then get it.  | c\_get | DB\_SET\_RECNO
 |-
+| DBI\_OP\_MOVE\_TO\_FIRST | Move cursor to first record then get it.  | c\_get | DB\_FIRST
+|-
 | DBI\_OP\_MOVE\_TO\_LAST | Move cursor to last record then get it.  | c\_get | DB\_LAST
 |-
 | DBI\_OP\_GET | Get current record number.  | get | DB\_GET
@@ -186,15 +192,28 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 | DBI\_OP\_CLOSE | Close cursor | c\_close | N/A
 |-
 
-*Value handling options*
+*dbi_val_t flags*
+| 'Name' | 'Role' | 'Berkeley db flags'
+|-
+|0|data should be alloc or realloc|DB_DBT_MALLOC (if data is NULL) or DB_DBT_REALLOC|
+|DBI_VF_PROTECTED|data should not be freed||
+|DBI_VF_DONTGROW|data should not be realloced|N/A|
+|DBI_VF_DONTGROW+DBI_VF_PROTECTED|data should not be realloced|DB_DBT_USERMEM|
+|DBI_VF_READONLY|data should not be modified|DB_DBT_READONLY|
 
-| 'Name' | 'Role' | 'Old bdb value'
+*dbi_val_t flags to DBT flags mapping*
+| 'dbi_val_t' | 'DBT'
 |-
-| DBI\_MEM\_USER | Tell impl plugin to neither alloc nor free the memory | DB\_DBT\_USERMEM
+|0|DB_DBT_MALLOC ( or DB_DBT_REALLOC|
+|DBI_VF_PROTECTED|data should not be freed|
+
+
+*dbi_bulk_t flags*
+| 'Name' | 'Role'
 |-
-| DBI\_MEM\_MALLOC | Tell impl plugin to alloc and free the memory | DB\_DBT\_MALLOC
-|-
-| DBI\_MEM\_REALLOC | Tell impl plugin to reuse or realloc the memory | DB\_DBT\_REALLOC
+|DBI_VF_BULK_DATA|Bulk operation on data only|
+|DBI_VF_BULK_RECORD|Bulk operation on key+data|
+
 
 *error codes*
 
@@ -296,10 +315,6 @@ Note: the implementation plugin should log an error with error code and error te
 | instance\_search\_callback\_fn\_t *instance\_search\_callback\_fn ||
 |-
 | dblayer\_auto\_tune\_fn\_t *dblayer\_auto\_tune\_fn ||
-
-*Callbacks not yet implemented*
-
-| Name | Role | Old bdb value
 |-
 | dblayer\_cursor\_op(DBI\_CUR *cur, DBI\_OP op, DBI\_DATA *key, DBI\_DATA *data) | Move cursor and get record | cursor-&gt;c\_get
 |-
@@ -364,6 +379,10 @@ specific function.
   convert some well known error to the DBI counterpart.
   for other error a generic value is returned after having logged
   the bdb native error.
+
+* value handling:
+
+
 
 ## Alternatives ##
 
