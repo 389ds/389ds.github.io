@@ -11,7 +11,7 @@ Fedora packages are available on Fedora 32.
 
 <https://koji.fedoraproject.org/koji/taskinfo?taskID=63077711> - Fedora 32
 
-<> - Bodhi
+<https://bodhi.fedoraproject.org/updates/FEDORA-2021-ccf6d64826> - Bodhi
 
 
 The new packages and versions are:
