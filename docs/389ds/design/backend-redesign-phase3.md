@@ -347,14 +347,6 @@ Note: the implementation plugin should log an error with error code and error te
 |-
 | dblayer\_next\_bulk\_op(DBI\_DATA *bulk, DBI\_DATA *key, DBI\_DATA *data) | Get next operation from bulk operation | DB\_MULTIPLE\_NEXT |
 
-
-I wonder if we should keep the callback definition. at the dblayer level.
-
- IMHO it should be better to define a callback struct in dbimpl.h i.e DBI\_CB because:
-* the db implementation plugin should not need to know about the dblayer or backend API
-* That allows to define a static callback struct in the plugin rather than explicitly set every callbacks in init function.
-* the callback could be refered from the data that needs it (like values)
-
 ## db-bdb plugin  ##
 
 That is the plugin that implements the dbimpl API callbacks and calls libdb functions. The important points are:
@@ -442,6 +434,12 @@ Same as solution 1 but without storing data in thread local storage: problem is 
 	* &lt;PREFIX&gt;\_&lt;NAME&gt;
 	* &lt;prefix&gt;\_&lt;name&gt;\_t ( That was the chosen format )
 
+* Callback initialization
+I wonder if we should keep the callback definition. at the dblayer level.
+IMHO it should be better to define a callback struct in dbimpl.h i.e DBI\_CB because:
+    * the db implementation plugin should not need to know about the dblayer or backend API
+    * That allows to define a static callback struct in the plugin rather than explicitly set every callbacks in init function.
+    * the callback could be refered from the data that needs it (like values)
 
 ## Open Questions ##
 
