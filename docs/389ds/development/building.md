@@ -32,6 +32,15 @@ The server provides a rpm.mk file to make this easy, from the root of the source
 
     # make -f rpm.mk srpms
 
+Both these commands will build npm packages. During this process, by default, we check for JS vulnerabilities.
+Sometimes we need to skip audit-ci check because we are doing a bisect, checking older commit, or we just want to skip a known issue. For these purposes, we can use an environment variable SKIP_AUDIT_CI as per following:
+
+    # SKIP_AUDIT_CI=1 make -f rpm.mk rpms
+
+    or
+
+    # SKIP_AUDIT_CI=1 make -f rpm.mk srpms
+
 This creates the rpms/srpms under ~/source/389-ds-base/dist  Here is an example of the entire process
 
     # rm -rf ~/source/389-ds-base/dist   --> Clean it out first

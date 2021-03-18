@@ -105,13 +105,38 @@ It can happen that the building process will fail on one of the stages with an e
 
 It is advisable to create a separate commit for fixing the audit issues.
 
+Additionally, you may need to skip audit-ci check because you are doing a bisect, checking older commit, or we just want to skip a known issue. For these purposes, we can use an environment variable SKIP_AUDIT_CI as per following:
+
+    SKIP_AUDIT_CI=1 make -f rpm.mk rpms
+
+    SKIP_AUDIT_CI=1 make -f rpm.mk srpms
+
 In 389-ds-base-1.4.0 you can package the source code and latest UI (cockpit plugin/node_modules).  You do have to create a git tag, but you can just delete it after making the tarball
 
     export TAG=389-ds-base-1.4.0.25 ; git tag $TAG ; make -f rpm.mk dist-bz2
 
     git tag -d 389-ds-base-1.4.0.25
 
+Set Up a Cockpit UI Development Environment
+------------------
 
+If you are working on Cockpit UI patch, it may be handy to have an environment which automatically build when you do a change in the code, so you can see the result in browser right away.
+
+For that, you need to link your local cockpit environment to system-wide cockpit-389-ds directory:
+
+    make 389-console-devel-install
+
+And after that, you can run this command in a separate terminal (so you can monitor for any errors during the development):
+
+    cd ./src/cockpit/389-console
+    ./buildAndRun.sh
+
+If you want to have the npm-audit, you need to add '-a' parameter:
+        
+    ./buildAndRun.sh -a 
+
+So now, every time you make a change in the cockpit-389-ds sourse code and save it, - just refresh the browser to see the change.
+    
 Testing the server
 ------------------
 
