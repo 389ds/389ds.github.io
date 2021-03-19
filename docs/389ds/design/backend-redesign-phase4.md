@@ -28,7 +28,7 @@ This document is the continuation of ludwig's work about Berkeley database remov
 
 It focus on:
 
-* the mdb plugin implementation over dbimpl API
+* the lmdb plugin implementation over dbimpl API
 
 Current state
 =============
@@ -40,6 +40,8 @@ Working on Design (in other words very unstable draft)
   sources files are prefixed with mdb_
   lmdb lib: are got from packages: lmdb-devel lmdb-doc lmdb-libs 
 
+Note: lmdb documentation is in [file:///usr/share/doc/lmdb-doc/html/index.html](file:///usr/share/doc/lmdb-doc/html/index.html) once lmdb-doc is installed.
+
 ## Design ##
   The plan with this phase is to minimize as much as possible impacts outside of the mdb plugin
   so we do not provide pointer on db mmap outside of the plugin
@@ -49,58 +51,72 @@ Working on Design (in other words very unstable draft)
 
 ###  creating a single MDB_env versus one MDB_env per backend ###
     - Max Dbs question: (txn cost depends linearly of the max number of dbs )
-      if we split per suuffix we can keep it smaller 
-  - Consistency of txn across suffixes
+      if we split per suffix we can keep it smaller 
+    - Consistency of txn across suffixes
       The question is important for write txn as there is no way to commit them
       in a single step  (Is there write txn across different suffixes ?)
-  - Consistency of changelog (Not an issue as the changelog is already per suffix)
-  - Consistency with existing bdb model (today bdb_make_env  is called once:
+    - Consistency of changelog (Not an issue as the changelog is already per suffix)
+    - Consistency with existing bdb model (today bdb_make_env  is called once:
       (with the <INSTALLDIR>/var/lib/dirsrv/slapd-<INSTANCE>/db path )
 
-  ==> I suspect  that we will have to go for a single MDB_env in first phase
+==> I suspect that we will have to go for a single MDB_env in first phase
 
 ### db filename list ###
-  The whole db is a single mmap file and lmdb des not provides any interface 
+  The whole db is a single mmap file and lmdb does not provide any interface 
    to list the db names 
-  two solutions - use a specific db to keep the name list 
-    (probably using backendname - db file record)
-   peek the data from mdb struct (but that involving looking in opaque struct)
-  ==> This will impact dbstat tool too as we cannot looks for file anymore
+  two solutions
+- use a specific db to keep the name list 
+    (probably using "backendname --> db file name" records)
+- get the data from mdb struct (but that means getting knowledge of 
+  mdb opaque struct (which is usually not a good idea)
+
+==> This will impact dbstat tool too as we cannot looks for file anymore
       and we needs a way to list existings suffix and existsing files in suffixes
   
 
- 
-     
-
 ### mdb specific config parameters ##
-	MAXDBS  (cf mdb_env_set_maxdb)
-	DBMAXSIZE (cf mdb_env_set_maxdbs)
-	mdb_env_set_maxreaders: 1 per working threads + 1 per agmt
-     These needs to close the db env when changed (i.e: restart in first implementation)
+    - MAXDBS  (cf mdb_env_set_maxdb)
+    - DBMAXSIZE (cf mdb_env_set_maxdbs)
+    - mdb_env_set_maxreaders: should be around 1 per working threads +
+       1 per agmt 
+          so we could have an auto tuning value that will use the number ofr
+              working threads + 30 
+
+Note: changing these parameters requires db env closure (i.e: restart the instance in first implementation)
 
 ## mdb limitations ##
-  mdb_env_get_maxkeysize  How do we handle the oversized keys ?
-
-
-      
-
-mdb_env_set_maxdb issue (
+- mdb_env_get_maxkeysize 1024 bytes hardcoded limit:
+How do we handle the oversized keys ?
+    - Ignore it (return DBI_NOT_FOUND when looking for it) 
+       and reject it when trying to set the key
+    - Split the key and have a continuation mechansim. For example:
+        {<Prefix>KeyPart0   ---> idPart1 (where <Prefix> is = ~ :id: as usual)
+        .<idPart1>.Keypart1 ---> idPart2
+        .<idPartN>}KeypartN ---> idEntry
+        #MaxPartID --> idPartN (or something else)
 
 ### mdb-env-open flags ###
+    - db2ldif/db2bak MDB_RDONLY
+    - ns-slapd 0
+    - offline bak2db/ldif2db MDB_NOSYNC 
+use mdb_env_sync() and fflush(mdb_env_get_fd()) before closing the env
+(depending of the ldif file or the mmap size we may also use MDB_WRITEMAP flag)
+    - online bak2db (and maybe online db2ldif) duplicate the environment
+    - reindex (should probably be 0 to avoid breaking the whole db in case of error)
+   Note we may be in trouble if ldif2db fails and there is multiple bakends 
+    and the single env strategy id used ...
+
+### db open flags ###
+	- id2entry: MDB_INTEGERKEY | MDB_CREATE
+	- entrydn: MDB_CREATE
+    - index MDB_DUPSORT | MDB_DUPFIXED | MDB_CREATE
+	- changelog MDB_CREATE
+
 
 ### Type Mapping ###
-Alternative:
-    Have a single mdb_env
-        Pro: Similar to bdb implementation
-           : Can have a txn that spreads among suffixes
-
-
-    Have one per suffix
-    dbi_env_t : 
-
-typedef void dbi_env_t;         /* the global database framework context */
-typedef void dbi_db_t;          /* A database instance context */
-typedef void dbi_txn_t;         /* A transaction context */
+- dbi_env_t --> MDB_env
+- dbi_db_t --> MDB_dbi
+- dbi_txn_t --> MDB_txn
 
 
 
@@ -114,11 +130,33 @@ is:
     (in phase 4a no pointers towards memory mmap are kept outside db-mdb plugin)
 
 ## VLV and RECNO
+ ldbm does not implement a recno lookup as bdb does so we cannot use that .
+ We will have to use a cursor starting from first records and counting
+ the records we could have a cache that store count -> key every thousand of entries or so 
 
 
 ## bulk operation ##
+  
+  There is no support for  bulk read operation (not very surprising because read operations
+    are pretty fast anyway)
+  The interresting point is that we could avoid copy overhead for bulk operation 
+  (because in bdb the returned data are stored in a local buffer and no more used once 
+    the cursor is released so: 
+- bulk_buffer should only store the cursor
+- dbi_val_t key/data from dblayer_bulk_nextdata/dblayer_bulk_nextrecord does directly point towards mmmap values.
 
 ## monitoring ### 
+- unsigned int 	ms_psize
+- unsigned int 	ms_depth
+- size_t 	ms_branch_pages
+- size_t 	ms_leaf_pages
+- size_t 	ms_overflow_pages
+- size_t 	ms_entries
+
+- size_t 	me_mapsize
+- unsigned int 	me_maxreaders
+- unsigned int 	me_numreaders
+
 
 
 # Ideas about future improvements #
@@ -140,4 +178,6 @@ These are raw ideas (that would needs some benefit/cost evaluation)
     (i.e: Take backend lock in write mode on all dbs 
          then closing alls dbs then the env 
          change the env config and reopen everything  )
+- Having bulk write operations (mainly when handling: reindex / import)
+   (i.e: that means grouping a bunch of write operation in a single txn)
 
