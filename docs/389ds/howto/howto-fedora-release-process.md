@@ -82,11 +82,15 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   Then copy in the contents of **cl-info** underneath the header
 
+-   kinit *id*@FEDORAPROJECT.ORG
+
 -   **fedpkg verrel** - Verify changes to spec file is producing the correct version.
 
--   **fedpkg new-sources /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2 /home/source/ds389/jemalloc-5.1.0.tar.bz2**  - tar ball created by git archive cmd from above, and always include **jemalloc**
+-   **fedpkg new-sources /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2 /home/source/ds389/jemalloc-5.1.0.tar.bz2**  - tar ball created by git archive cmd from above, and always include **jemalloc**. Another option is just **uploading** the recent tarball **fedpkg upload /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2**
 
 -   **git status** - Should show the "sources" and ".gitignore" are staged
+
+-   remove from **sources** file the useless tarballs
 
 -   **fedpkg srpm** - Create a “*.src.rpm” file
 
