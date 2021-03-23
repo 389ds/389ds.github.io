@@ -229,25 +229,26 @@ Here are what openldap monitors:
 Entry:  cn=bdb,cn=config,cn=ldbm database,cn=plugins,cn=config
 
 Parameter similar to bdb one:
-| Name | Default Value | Comment
-|-|-
-| nsslapd-db-home-directory |  <INSTALL_DIR>/var/lib/dirsrv/slapd-<InstanceName>/db |
+
+| Name | Default Value | Comment |
+|-|-|-|
+| nsslapd-db-home-directory |  <INSTALL_DIR>/var/lib/dirsrv/slapd-<InstanceName>/db | |
 |---
-| nsslapd-search-bypass-filter-test | on | More a backend parameter than a bdb one
+| nsslapd-search-bypass-filter-test | on | More a backend parameter than a bdb one |
 |---
-| nsslapd-serial-lock  | on | More a backend parameter than a bdb one
+| nsslapd-serial-lock  | on | More a backend parameter than a bdb one |
 
 mdb specific parameters:
 
-| Name | Default Value | Comment
-|-|-
-| nsslapd-mdb-max-size | 0 | 0 means disk remaining size (when creating the db) 
- supponted value: a number followed by a suffix (typically M/G/T)
- note:  value is rounded down to a multiple of 10Mb
+| Name | Default Value | Comment |
+|-|-|-|
+| nsslapd-mdb-max-size | 0 | 0 means disk remaining size (when creating the db) |
+| | | supponted value: a number followed by a suffix (typically M/G/T) |
+| | | note:  value is rounded down to a multiple of 10Mb |
 |---
-| nsslapd-mdb-max-readers | 0 | 0 means number of working threads + 30 
+| nsslapd-mdb-max-readers | 0 | 0 means number of working threads + 30 |
 |---
-| nsslapd-mdb-max-dbs | 128 | 
+| nsslapd-mdb-max-dbs | 128 |  | 
 
 
 
