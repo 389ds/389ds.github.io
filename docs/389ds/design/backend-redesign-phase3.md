@@ -57,6 +57,7 @@ Current state
 
 	* removal of bdb specific features that are not available on the other databases:
 	* dblayer\_in\_import checks the presence of a db region to detect that an import is running. An implementation agnostic method should be used instead.
+        * Note: if fact according to my test (longduration/db_protect_long_test.py) this check is useless and could be removed safely.
 	* VLV uses record number.
 	  The only numer that we have is the one of the last record.
 	  The bad thing is that they are propagated up to the VLV ldap request. (it relates to the index and contentCount within the VLV control)
