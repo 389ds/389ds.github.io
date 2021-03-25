@@ -90,13 +90,13 @@ Here are the limits That I measured in my test.
 
 | Database type  | Key max  | Data max
 |-|-|-
-| No dup Support | 511 | 10M
+| No dup Support | 511 | > 6 GB
 |---
 | Dup Support | 511 | 511
 |---
 
 511 is the mdb_env_get_maxkeysize(env) hardcoded limit
-10M is stat.ms_psize with mdb_env_stat(env, &stat)
+Got a bit more than 6  GB in a db with size = 10GB
 		
 
 
@@ -111,10 +111,22 @@ How do we handle the oversized keys ?
         #MaxPartID --> idPartN (or something else anyway that is the max id )
     - Have a specific table for oversized keys in which we store:
 		key hash -> id + key 
+    - use a specific index key prefix (h?) and an hash (base64?) as key for binary object whose size > 256 bytes
+         (and mark the search as requiring filter check) (the filter check will then remove the hash duplicates)
+      Pro: it does not requires much change in the way index are looked 
+           it probably speed up the db lookup (but that could be mitigated by the fact that filter checking is needed)
+      Cons: Range search should be rejected ( unable to perform range search when oversized keys exists )
+           ==> Should also somehow flag the dbname so that we know that index search are not reliables
+           h{hash} --> id and a filter check is needed 
+- data are also limited to 511 bytes for DUPSORT databases
+    but that should not be an issue: because DUPSORT files are indexes (and their values are a plain entryId)
+    Large data may be entries or changes and  id2entry, changelog, and retrochagelog have unique keys
+    (and mdb limit (4GB) is greater than bdb ones)
+
        
 ** Note from Thierry : **  pierre: regarding LMDB keylen, IPA is using 'eq' index on attributes (usercertificate, publickey,..) with keys that >500bytes
 
-** Note from myself ** Should check how duplicate keys are handled and what are the limits
+
 
 
 ### mdb-env-open flags ###
@@ -142,17 +154,15 @@ use mdb_env_sync() and fflush(mdb_env_get_fd()) before closing the env
 |---
 | changelog/retrochangelog | MDB_CREATE | csn | change
 |---
-| #dbname | MDB_CREATE | bename/dbfilename | N/A 
+| #dbname | MDB_CREATE | bename/dbfilename | openFlags
 |---
-| #huge | MDB_CREATE | 'bename'/entryId:'entryId'.'n | n th part of entry
-|  |  | bename'/'dbname':'ContKeyId'.'n | EntryId.complete Key value
+| #huge | MDB_CREATE | bename'/'dbname':'ContKeyId'.'n | EntryId.complete Key value
 |  |  | #maxKeyId | max ContKeyId value | 
 
 
 PrefixIndex is the usual index type prefix (ie: '=' or '*' or '?' or ':MatchingRuleOID:') concat with the key value 
 Flag.entryId is:      
 - '0' followed by entry id ==> usual entryID
-- '1' followed by entry id ==> Huge entryID
 - '2' followed by continuation key id ==> Long Key (note: the key is truncated to fulfill the limit)
 
 
@@ -275,4 +285,8 @@ These are raw ideas (that would needs some benefit/cost evaluation)
          change the env config and reopen everything  )
 - Having bulk write operations (mainly when handling: reindex / import)
    (i.e: that means grouping a bunch of write operation in a single txn)
-
+- Simplifying the changelog iterator (we may want to keep the cache 
+    to limit to cost of opening a txn and a cursor but we would only copy
+    the relevant changes to the buffer 
+  Another idea would be to keep the cursor open and close it every N changes 
+   (but we should double check that it does not lead to uncontrolled database growth) 
