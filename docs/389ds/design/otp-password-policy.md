@@ -26,12 +26,13 @@ The number of attempts to authenticate is limited and/or the period of time the 
 # Major configuration options and enablement
 --------------------------------------------
 
-The password policy contains two new configuration attributes:
+The password policy contains new configuration attributes:
 
- - passwordOTPMaxUse (default: -1): It is the number of time the OTP password can be used to authenticate
- - passwordOTPExpirationDelay (default: -1): It is the number of seconds, after it has been set by administrator, that the OTP password can be used to authenticate
+ - passwordOTPMaxUse (default: -1): It is the number of time the registration password can be used to authenticate
+ - passwordOTPDelayExpireAt (default: -1): After the administator sets the registration password, it is the number of seconds before the registration password expires 
+ - passwordOTPDelayValidFrom (default: -1): After the administator sets the registration password, it is the number of seconds after which registration password starts to be valid for authenticate with
 
-By default OTP setting are disabled and no limit (#use / expiration) is enforced
+By default OTP setting are disabled and no limit (#use / expiration / validity) is enforced
 
 Those new limits are enforced at the condition that the password policy force the change of the 'userpassword' after a reset by administrator: 'passwordMustChange: **on**'
 
@@ -51,7 +52,7 @@ When bind fails (*do_bind* or *send_ldap_results_ext* ?), the server checks if t
 
 ### OTP policy
 
-OTP policy is set in the password policy with **passwordOTPMaxUse** and **passwordOTPExpDelay**. The password policy can be global or local ('pwdpolicysubentry'). The OTP policy trigger is that the administrator sets a temporary password that, once bound, the user must change. As a consequence the OTP policy also requires **passwordMustChange: on**. The password policy may look like:
+OTP policy is set in the password policy with **passwordOTPMaxUse**, **passwordOTPDelayExpireAt** and **passwordOTPDelayValidFrom**. The password policy can be global ('cn=config') or local ('pwdpolicysubentry'). The OTP policy trigger is that the administrator sets a temporary password that, once bound, the user must change. As a consequence the OTP policy also requires **passwordMustChange: on**. The password policy may look like:
 
     dn: cn="cn=nsPwPolicyEntry,uid=jdoe,ou=people,dc=example,dc=com",
          cn=nsPwPolicyContainer,ou=people,dc=example,dc=com
@@ -61,52 +62,52 @@ OTP policy is set in the password policy with **passwordOTPMaxUse** and **passwo
     objectclass: passwordpolicy
     passwordMustChange: on
     passwordOTPMaxUse: 3
-    passwordOTPExpDelay: 3600
+    passwordOTPDelayExpireAt: 3600
+    passwordOTPDelayValidFrom: 600
+    
 
-A bind, with the account using this policy, is allowed 3 times maximum. The bind being successful or not.
-The bind must be done within one hour after the administator set the OTP password.
-After these limits any bind, using this account, will fail.
+    dn: uid=mark,dc=example,dc=com
+    userpassword: xxx
+    pwdOTPReset: true
+    pwdOTPUseCount: 0
+    pwdOTPValidFrom: 20210325103000Z
+    pwdOTPExpireAt: 20210325110000Z
+
+With the account using this policy, the user can bind 3 times maximum. The bind being successful or not.
+The user has a *window* of 50 minutes to complete his registration.
+After the administrator set the 'userpassword', the user must wait 10 minutes before attempting a first bind and
+the user must bind within one hour.
+
+After or before these limits any bind, using this account, will fail.
 
 
 ### Schema Changes
 
-The password policy ('passwordPolicy') contains two new attributes:
+The password policy ('passwordPolicy') offers new OTP releated attributes:
 
-- **passwordOTPMaxUse** : It is the number of times the OTP password can be used to authenticate
-- **passwordOTPExpDelay** : It is the number of seconds, after password reset, that the OTP password can be used to authenticate
+ - **passwordOTPMaxUse** (default: -1): It is the number of time the registration password can be used to authenticate
+ - **passwordOTPDelayExpireAt** (default: -1): After the administator sets the registration password, it is the number of seconds before the registration password expires 
+ - **passwordOTPDelayValidFrom** (default: -1): After the administator sets the registration password, it is the number of seconds after which registration password starts to be valid for authenticate with
 
 A user entry may contains OTP related *operational* attributes:
 
-- **pwdOTPUseCount** : It is the number of times that the OTP password has been used
-- **pwdOTPExpTime** : It is the expiration time of the OTP password
-- **pwdOTPReset** : It is a flag indicating that the 'userpassword' is a OTP password
+- **pwdOTPUseCount** : It is the number of times that the OTP password has been used. -1 means it is not enforced
+- **pwdOTPExpireAt** :  It is the absolute time (UTC) before which the 'userpassword' is valid fro autentication. -1 means it is not enforced.
+- **pwdOTPValidFrom** : It is the absolute time (UTC) after which the 'userpassword' is valid fro autentication. -1 means it is not enforced.
+- **pwdOTPReset** : It is a flag indicating that the 'userpassword' is a OTP password (reset by the administrator). True mean the 'userpassword' is a OTP password (registration password)
 
 
-    attributeTypes: ( 2.16.840.1.113730.3.1.2378 NAME 'pwdOTPReset' DESC '389 Directory Server password policy attribute type'
-        EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation 
-        X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2379 NAME 'pwdOTPUseCount' DESC '389 Directory Server password policy attribute type' 
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation 
-        X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2380 NAME 'passwordOTPMaxUse' DESC '389 Directory Server password policy attribute type' 
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2381 NAME 'pwdOTPExpTime' DESC '389 Directory Server password policy attribute type' 
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2382 NAME 'passwordOTPExpDelay' DESC '389 Directory Server password policy attribute type' 
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
-    objectClasses: ( 2.16.840.1.113730.3.2.12 NAME 'passwordObject' DESC 'Netscape defined password policy objectclass' SUP top 
-        MAY ( pwdpolicysubentry $ passwordExpirationTime $ passwordExpWarned $ passwordRetryCount $ retryCountResetTime $ 
-        accountUnlockTime $ passwordHistory $ passwordAllowChangeTime $ passwordGraceUserTime $ pwdReset $ pwdOTPReset $ 
-        pwdOTPUseCount $ pwdOTPExpTime) X-ORIGIN 'Netscape Directory Server' )
-    objectClasses: ( 2.16.840.1.113730.3.2.13 NAME 'passwordPolicy' DESC 'Netscape defined password policy objectclass' SUP top 
-        MAY ( passwordMaxAge $ passwordExp $ passwordMinLength $ passwordKeepHistory $ passwordInHistory $ passwordChange $ 
-        passwordWarning $ passwordLockout $ passwordMaxFailure $ passwordResetDuration $ passwordUnlock $ passwordLockoutDuration $ 
-        passwordCheckSyntax $ passwordMustChange $ passwordStorageScheme $ passwordMinAge $ passwordResetFailureCount $ 
-        passwordGraceLimit $ passwordMinDigits $ passwordMinAlphas $ passwordMinUppers $ passwordMinLowers $ passwordMinSpecials $ 
-        passwordMin8bit $ passwordMaxRepeats $ passwordMinCategories $ passwordMinTokenLength $ passwordTrackUpdateTime $ 
-        passwordAdminDN $ passwordDictCheck $ passwordDictPath $ passwordPalindrome $ passwordMaxSequence $ passwordMaxClassChars $ 
-        passwordMaxSeqSets $ passwordBadWords $ passwordUserAttributes $ passwordSendExpiringTime $ passwordOTPMaxUse $ 
-        passwordOTPExpDelay) X-ORIGIN 'Netscape Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2378 NAME 'pwdOTPReset' DESC '389 Directory Server password policy attribute type' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2379 NAME 'pwdOTPUseCount' DESC '389 Directory Server password policy attribute type' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2381 NAME 'pwdOTPExpireAt' DESC '389 Directory Server password policy attribute type' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2381 NAME 'pwdOTPValidFrom' DESC '389 Directory Server password policy attribute type' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2380 NAME 'passwordOTPMaxUse' DESC '389 Directory Server password policy attribute type' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2382 NAME 'passwordOTPDelayExpireAt' DESC '389 Directory Server password policy attribute type' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2382 NAME 'passwordOTPDelayValidFrom' DESC '389 Directory Server password policy attribute type' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
+
+
+    objectClasses: ( 2.16.840.1.113730.3.2.12 NAME 'passwordObject' DESC 'Netscape defined password policy objectclass' SUP top MAY ( pwdpolicysubentry $ passwordExpirationTime $ passwordExpWarned $ passwordRetryCount $ retryCountResetTime $ accountUnlockTime $ passwordHistory $ passwordAllowChangeTime $ passwordGraceUserTime $ pwdReset $ pwdOTPReset $ pwdOTPUseCount $ pwdOTPExpireAt $ pwdOTPValidFrom ) X-ORIGIN 'Netscape Directory Server' )
+    objectClasses: ( 2.16.840.1.113730.3.2.13 NAME 'passwordPolicy' DESC 'Netscape defined password policy objectclass' SUP top MAY ( passwordMaxAge $ passwordExp $ passwordMinLength $ passwordKeepHistory $ passwordInHistory $ passwordChange $ passwordWarning $ passwordLockout $ passwordMaxFailure $ passwordResetDuration $ passwordUnlock $ passwordLockoutDuration $ passwordCheckSyntax $ passwordMustChange $ passwordStorageScheme $ passwordMinAge $ passwordResetFailureCount $ passwordGraceLimit $ passwordMinDigits $ passwordMinAlphas $ passwordMinUppers $ passwordMinLowers $ passwordMinSpecials $ passwordMin8bit $ passwordMaxRepeats $ passwordMinCategories $ passwordMinTokenLength $ passwordTrackUpdateTime $ passwordAdminDN $ passwordDictCheck $ passwordDictPath $ passwordPalindrome $ passwordMaxSequence $ passwordMaxClassChars $ passwordMaxSeqSets $ passwordBadWords $ passwordUserAttributes $ passwordSendExpiringTime $ passwordOTPMaxUse $ passwordOTPDelayExpireAt $ passwordOTPDelayValidFrom ) X-ORIGIN 'Netscape Directory Server' )
 
 
 # External Impact
