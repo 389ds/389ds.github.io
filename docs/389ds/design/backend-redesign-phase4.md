@@ -261,6 +261,19 @@ mdb specific parameters:
 | nsslapd-mdb-max-dbs | 128 |  | 
 
 
+# Phases #
+
+- 1) Build db-mdb plugin skeleton. Should be able to built
+- 2) DB Initialisation / Adding - Removing instance - Listing instances - dbscan changes (done early to have a test tool). Should be able to add/remove backend.
+- 3) Standard operation (dbimpl API in mdb)layer.c). Should be able to create/delete suffix an add/remove entries
+- 4) Import/Export. Sould be able to run some of the basic py.test
+- 5) Backup/Restore. Should be able to run most of the py.tests
+- 6) VLV 
+- 7) Monitoring and performance counters
+- 8) New Hash index type (for large binaryobject)
+- 9) Verify / Version / Upgrade
+
+
 
 
 
