@@ -36,9 +36,10 @@ Current state
 Working on Design (in other words very unstable draft)
 
 ## Naming ##
-  plugin directory: .../back-ldbm/db-mdb
-  sources files are prefixed with mdb_
-  lmdb lib: are got from packages: lmdb-devel lmdb-doc lmdb-libs 
+    plugin directory: .../back-ldbm/db-mdb
+    sources files are prefixed with mdb_
+    function names are prefixed with dbmdb_  (Could not use mdb_ that conflicts with ldbm libraries)
+    lmdb lib: are got from packages: lmdb-devel lmdb-doc lmdb-libs 
 
 Note: lmdb documentation is in [file:///usr/share/doc/lmdb-doc/html/index.html](file:///usr/share/doc/lmdb-doc/html/index.html) once lmdb-doc is installed.
 
