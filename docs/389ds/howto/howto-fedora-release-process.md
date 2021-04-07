@@ -52,9 +52,11 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   Generate the source tarball, and changelog file (used for updating the specfile's changelog and the wiki release notes)
 
--   **TAG=389-ds-base-1.3.9.1** ; **git tag \$TAG** ; **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$TAG.tar.bz2 ; git log -\\\-oneline 389-ds-base-1.3.9.0.. \> /tmp/cl-info**
+    -   **TAG=389-ds-base-1.3.9.1** ; **git tag \$TAG** ; **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$TAG.tar.bz2 ; git log -\\\-oneline 389-ds-base-1.3.9.0.. \> /tmp/cl-info**
 
--   **TAG=389-ds-base-1.4.4.14 ; git tag \$TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-1.4.4.13.. \> /tmp/cl-info**
+    -   **F32** : **TAG=389-ds-base-1.4.3.14 ; git tag \$TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-1.4.3.13.. \> /tmp/cl-info**
+    -   **F33** : **TAG=389-ds-base-1.4.4.14 ; git tag \$TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-1.4.4.13.. \> /tmp/cl-info**
+    -   **F34** : **TAG=389-ds-base-2.0.4 ; git tag \$TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-2.0.3.. \> /tmp/cl-info**
 
 -   Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and trac bugs. Leave the hash for coverity/misc updates.
 
