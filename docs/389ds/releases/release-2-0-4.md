@@ -11,11 +11,10 @@ Fedora packages are available on Fedora 34 and Rawhide
 
 Fedora 34:
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=61843474>
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=65380611> - Koji
 
-Bodhi:
+<https://bodhi.fedoraproject.org/updates/FEDORA-2021-123ca32c27> - Bohdi
 
-None
 
 The new packages and versions are:
 
