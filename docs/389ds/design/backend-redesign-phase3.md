@@ -166,7 +166,7 @@ And not the upper layer context (i.e cursor without backend or li\_instance)<br 
 |-
 | DBI\_OP\_MOVE\_TO\_LAST | Move cursor to last record then get it.  | c\_get | DB\_LAST
 |-
-| DBI\_OP\_GET | Get current record number.  | get | DB\_GET
+| DBI\_OP\_GET | Get record from key.  | get | DB\_GET
 |-
 | DBI\_OP\_GET\_RECNO | Get current record number.  | c\_get | DB\_GET\_RECNO
 |-
