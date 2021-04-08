@@ -60,6 +60,49 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and trac bugs. Leave the hash for coverity/misc updates.
 
+**Fedora** - Dist-Git - for Rawhide
+--------------------------------------------
+
+-   **git checkout rawhide** (on same fedpkg clone)
+-   Edit **389-ds-base.spec** with version/changelog (see paragraph below)
+
+-   kinit *id*@FEDORAPROJECT.ORG
+
+-   **fedpkg --release fxx verrel** - fxx being the next rawhide version
+
+-   **fedpkg new-sources /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2 /home/source/ds389/jemalloc-5.1.0.tar.bz2**  - tar ball created by git archive cmd from above, and always include **jemalloc**. Another option is just **uploading** the recent tarball **fedpkg upload /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2**
+
+-   **git status** - Should show the "sources" and ".gitignore" are staged
+
+-   remove from **sources** file the useless tarballs
+
+-   **fedpkg --release fxx srpm** - Create a “*.src.rpm” file
+
+-   **fedpkg --release fxx scratch-build -\\\-srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm -\\\-arches=x86_64**
+
+-   **fedpkg --release clog**
+
+-   **git commit -a -F clog**
+
+-   **git push origin BRANCH**
+
+-   Do the official Koji build, and update bodhi
+
+-   **fedpkg --release fxx build -\\\-nowait**
+
+-   An email will be sent from Koji telling you if the build was successful
+
+-   Once builds are done, and you received an email, run **fedpkg update** and edit as follows:
+
+        type=bugfix
+        request=testing
+        bugs= <leave blank if there are no “Fedora OS” specific bugs included in the release>
+        autokarma=True
+        stable_karma=1
+        unstable_karma=-1
+
+-   Do **fedpkg update** for each branch you did a build for.  This will submit this build to "bohdi" for the final Fedora release
+
 
 **Fedora** - Dist-Git - Clone it, and update the specfile
 --------------------------------------------
