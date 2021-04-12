@@ -64,6 +64,19 @@ git push access - you will need to be a member of the git389 group in FAS
 --------------------------------------------
 
 -   **git checkout rawhide** (on same fedpkg clone)
+
+-   Go back to the source directory, which should be uncleaned after the tarball creation **cd /home/source/ds389/389-ds-base**
+
+-   Update Fedora spec file with Rust packages data **FEDORA_SPECFILE=/fedora/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust-on-fedora**
+
+-   Go back to Fedora repo directory **cd /fedora/389-ds-base**
+
+-   Run **git diff** and check that spec file has only "License:" field changes and 'Provides:  bundled(crate(*' replacements and the rest was not touched by the script
+
+-   Edit the spec file **/fedora/389-ds-base/389-ds-base.spec**
+
+-   Read the instructions around 'License:' field and remove the comments accordingly
+
 -   Edit **389-ds-base.spec** with version/changelog (see paragraph below)
 
 -   kinit *id*@FEDORAPROJECT.ORG
@@ -91,18 +104,6 @@ git push access - you will need to be a member of the git389 group in FAS
 -   **fedpkg --release fxx build -\\\-nowait**
 
 -   An email will be sent from Koji telling you if the build was successful
-
--   Once builds are done, and you received an email, run **fedpkg update** and edit as follows:
-
-        type=bugfix
-        request=testing
-        bugs= <leave blank if there are no “Fedora OS” specific bugs included in the release>
-        autokarma=True
-        stable_karma=1
-        unstable_karma=-1
-
--   Do **fedpkg update** for each branch you did a build for.  This will submit this build to "bohdi" for the final Fedora release
-
 
 **Fedora** - Dist-Git - Clone it, and update the specfile
 --------------------------------------------
