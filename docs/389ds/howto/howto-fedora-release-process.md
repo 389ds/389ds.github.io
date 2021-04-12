@@ -108,6 +108,8 @@ git push access - you will need to be a member of the git389 group in FAS
 **Fedora** - Dist-Git - Clone it, and update the specfile
 --------------------------------------------
 
+-   You may check existing versions in [fedoraproject](https://src.fedoraproject.org/rpms/389-ds-base)
+
 -   **mkdir /fedora; cd /fedora**
 
 -   **fedpkg clone 389-ds-base**
