@@ -23,6 +23,8 @@ A user account inherit from a password policy that supports Temporary Password R
 and communicates that registration password to the end user. Then the end user can authenticate with its user account using the registration password.
 The number of attempts to authenticate is limited and/or the period of time the registration password is valid.
 
+An administrator wants to specify a same period of registration for a set of accounts. This although it is not possible to reset, at the exact same time, the registration password of all account.
+
 # Major configuration options and enablement
 --------------------------------------------
 
@@ -80,6 +82,11 @@ the user must bind within one hour.
 
 After or before these limits any bind, using this account, will fail.
 
+### update of temporary password attribute
+
+Reseting the password account also sets the TPR attributes  'pwdTPRValidFrom' and 'pwdTPRExpireAt' based on the current time. To allow a set of accounts to have the same values of 'pwdTPRValidFrom' and/or 'pwdTPRExpireAt'. Those attributes, that are **operational** , are modifiable (no *NO_USER_MODIFICATION* in the schema). So an administrator having the rights to update those attributes can overwrite the computed values.
+
+Updatable TPR attributes are: 'pwdTPRUseCount', 'pwdTPRValidFrom' and 'pwdTPRExpireAt'
 
 ### Schema Changes
 
@@ -97,17 +104,40 @@ A user entry may contains TPR related *operational* attributes:
 - **pwdTPRReset** : It is a flag indicating that the 'userpassword' is a TPR password (reset by the administrator). True mean the 'userpassword' is a TPR password (registration password)
 
 
-    attributeTypes: ( 2.16.840.1.113730.3.1.2378 NAME 'pwdTPRReset' DESC '389 Directory Server password policy attribute type' EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2379 NAME 'pwdTPRUseCount' DESC '389 Directory Server password policy attribute type' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2381 NAME 'pwdTPRExpireAt' DESC '389 Directory Server password policy attribute type' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2381 NAME 'pwdTPRValidFrom' DESC '389 Directory Server password policy attribute type' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2380 NAME 'passwordTPRMaxUse' DESC '389 Directory Server password policy attribute type' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2382 NAME 'passwordTPRDelayExpireAt' DESC '389 Directory Server password policy attribute type' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2382 NAME 'passwordTPRDelayValidFrom' DESC '389 Directory Server password policy attribute type' SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2378 NAME 'pwdTPRReset' DESC '389 Directory Server password policy attribute type'
+     EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation
+     X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2379 NAME 'pwdTPRUseCount' DESC '389 Directory Server password policy attribute type' 
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE USAGE directoryOperation 
+     X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2381 NAME 'pwdTPRExpireAt' DESC '389 Directory Server password policy attribute type'
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE MODIFICATION USAGE directoryOperation
+     X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2381 NAME 'pwdTPRValidFrom' DESC '389 Directory Server password policy attribute type'
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE MODIFICATION USAGE directoryOperation
+     X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2380 NAME 'passwordTPRMaxUse' DESC '389 Directory Server password policy attribute type'
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2382 NAME 'passwordTPRDelayExpireAt' DESC '389 Directory Server password policy attribute type'
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2382 NAME 'passwordTPRDelayValidFrom' DESC '389 Directory Server password policy attribute type'
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
 
 
-    objectClasses: ( 2.16.840.1.113730.3.2.12 NAME 'passwordObject' DESC 'Netscape defined password policy objectclass' SUP top MAY ( pwdpolicysubentry $ passwordExpirationTime $ passwordExpWarned $ passwordRetryCount $ retryCountResetTime $ accountUnlockTime $ passwordHistory $ passwordAllowChangeTime $ passwordGraceUserTime $ pwdReset $ pwdTPRReset $ pwdTPRUseCount $ pwdTPRExpireAt $ pwdTPRValidFrom ) X-ORIGIN 'Netscape Directory Server' )
-    objectClasses: ( 2.16.840.1.113730.3.2.13 NAME 'passwordPolicy' DESC 'Netscape defined password policy objectclass' SUP top MAY ( passwordMaxAge $ passwordExp $ passwordMinLength $ passwordKeepHistory $ passwordInHistory $ passwordChange $ passwordWarning $ passwordLockout $ passwordMaxFailure $ passwordResetDuration $ passwordUnlock $ passwordLockoutDuration $ passwordCheckSyntax $ passwordMustChange $ passwordStorageScheme $ passwordMinAge $ passwordResetFailureCount $ passwordGraceLimit $ passwordMinDigits $ passwordMinAlphas $ passwordMinUppers $ passwordMinLowers $ passwordMinSpecials $ passwordMin8bit $ passwordMaxRepeats $ passwordMinCategories $ passwordMinTokenLength $ passwordTrackUpdateTime $ passwordAdminDN $ passwordDictCheck $ passwordDictPath $ passwordPalindrome $ passwordMaxSequence $ passwordMaxClassChars $ passwordMaxSeqSets $ passwordBadWords $ passwordUserAttributes $ passwordSendExpiringTime $ passwordTPRMaxUse $ passwordTPRDelayExpireAt $ passwordTPRDelayValidFrom ) X-ORIGIN 'Netscape Directory Server' )
+    objectClasses: ( 2.16.840.1.113730.3.2.12 NAME 'passwordObject' DESC 'Netscape defined password policy objectclass' SUP top MAY
+     ( pwdpolicysubentry $ passwordExpirationTime $ passwordExpWarned $ passwordRetryCount $ retryCountResetTime $
+       accountUnlockTime $ passwordHistory $ passwordAllowChangeTime $ passwordGraceUserTime $ pwdReset $ 
+       pwdTPRReset $ pwdTPRUseCount $ pwdTPRExpireAt $ pwdTPRValidFrom ) X-ORIGIN 'Netscape Directory Server' )
+    objectClasses: ( 2.16.840.1.113730.3.2.13 NAME 'passwordPolicy' DESC 'Netscape defined password policy objectclass' SUP top MAY 
+       ( passwordMaxAge $ passwordExp $ passwordMinLength $ passwordKeepHistory $ passwordInHistory $ passwordChange $ 
+       passwordWarning $ passwordLockout $ passwordMaxFailure $ passwordResetDuration $ passwordUnlock $ 
+       passwordLockoutDuration $ passwordCheckSyntax $ passwordMustChange $ passwordStorageScheme $ passwordMinAge $ 
+       passwordResetFailureCount $ passwordGraceLimit $ passwordMinDigits $ passwordMinAlphas $ passwordMinUppers $ 
+       passwordMinLowers $ passwordMinSpecials $ passwordMin8bit $ passwordMaxRepeats $ passwordMinCategories $ 
+       passwordMinTokenLength $ passwordTrackUpdateTime $ passwordAdminDN $ passwordDictCheck $ passwordDictPath $ 
+       passwordPalindrome $ passwordMaxSequence $ passwordMaxClassChars $ passwordMaxSeqSets $ passwordBadWords $ 
+       passwordUserAttributes $ passwordSendExpiringTime $ passwordTPRMaxUse $ passwordTPRDelayExpireAt $ 
+       passwordTPRDelayValidFrom ) X-ORIGIN 'Netscape Directory Server' )
 
 
 # External Impact
