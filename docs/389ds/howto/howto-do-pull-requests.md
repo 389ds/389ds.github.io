@@ -62,7 +62,7 @@ That's it!
 
 ### Cherry Picking
 
-Often most fixes need to do into several branches.  We only use PR's for commits to master, but for 389-1.4.4, etc, we manaully cherry pcik these fixes.  So after the fix is in master, you will need do the following:
+Often most fixes need to be present in several branches.  We only use PR's for commits to master, but for 389-ds-base-1.4.4, etc, we manaully cherry pick these fixes.  So after the fix is in master, you will need do the following:
 
     $ git checkout master
     $ git pull origin master
