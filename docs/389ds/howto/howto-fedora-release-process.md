@@ -60,7 +60,7 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and trac bugs. Leave the hash for coverity/misc updates.
 
-**Fedora** - Dist-Git - for Rawhide
+**Fedora** - Dist-Git - master branch for Rawhide
 --------------------------------------------
 
 -   **git checkout rawhide** (on same fedpkg clone)
@@ -91,20 +91,78 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   **fedpkg --release fxx srpm** - Create a “*.src.rpm” file
 
--   **fedpkg --release fxx scratch-build -\\\-srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm -\\\-arches=x86_64**
+-   **fedpkg -\\\-release fxx scratch-build -\\\-srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm -\\\-arches=x86_64**
 
--   **fedpkg --release clog**
+-   **fedpkg clog**
 
 -   **git commit -a -F clog**
 
--   **git push origin BRANCH**
+-   **git push origin rawhide**
 
 -   Do the official Koji build, and update bodhi
 
--   **fedpkg --release fxx build -\\\-nowait**
+-   **fedpkg -\\\-release fxx build -\\\-nowait**
 
 -   An email will be sent from Koji telling you if the build was successful
 
+**Fedora** - Dist-Git - **modified** master branch for Rawhide
+--------------------------------------------
+
+Let assume master branch contains some fixes that are partial (or broken) and you want to do a rawhide build with a crafted list of patches
+
+- Prepare the source with selected list of patches on top of **2.0.4** for example
+    -   **git clone git@github.com:389ds/389-ds-base.git**
+
+    -   **cd 389-ds-base**
+
+    -   **git checkout -b upstream_2.0.4_plus_db_suffix**
+
+    -   rebase on **Bump version to 2.0.4.3** and apply the patches
+
+    -   then for each patch do git format-patch -\<number of patches\>
+
+- on fedpkg
+    -   **fedpkg clone 389-ds-base**
+
+    -   **cd 389-ds-base**
+
+    -   upload the source tarball (should not be necessary as it was already done): fedpkg upload \<source\>/389-ds-base-2.0.4.tar.bz2
+
+    -   Go back to the source directory (see above), which should be uncleaned after the tarball creation
+
+	-   copy the patches from the source tree (taking care of the numbering)
+
+        -   Update Fedora spec file with Rust packages data **FEDORA_SPECFILE=\<fedpkg\>/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust-on-fedora**
+
+    -  edit spec file to add the patches
+
+         Source0:          https://releases.pagure.org/389-ds-base/%{name}-%{version}%{?prerel}.tar.bz2
+        +Patch0:           0000-Issue-db_suffix.patch
+        +Patch1:           0001-Issue-foo.patch
+
+    -   **git add \<all patches\>**
+    -   edit the *source* file to keep only the right one
+
+    -   **fedpkg verrel** - Verify changes to spec file is producing the correct version.
+
+    -   **fedpkg prep**, and check the patches applied correctly
+
+    -   remove from **sources** file the useless tarballs
+
+    -   **fedpkg srpm** - Create a “*.src.rpm” file
+
+    -   **fedpkg scratch-build -\\\-srpm=389-ds-base-2.0.4-3.xxxxx.src.rpm** **-\\\-arches=x86_64**
+
+    -   **fedpkg clog**
+
+    -   **git commit -a -F clog**
+
+    -   **git push origin rawhide**
+
+    -   Do the official Koji build, and update bodhi
+
+    -   **fedpkg build -\\\-nowait**
+        - 
 **Fedora** - Dist-Git - Clone it, and update the specfile
 --------------------------------------------
 
