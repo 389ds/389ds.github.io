@@ -105,10 +105,10 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   An email will be sent from Koji telling you if the build was successful
 
-**Fedora** - Dist-Git - **modified** master branch for Rawhide
+**Fedora** - Dist-Git - **patch** on top of Rawhide
 --------------------------------------------
 
-Let assume master branch contains some fixes that are partial (or broken) and you want to do a rawhide build with a crafted list of patches
+Let assume rawhide branch contains some fixes that are partial (or broken) and you want to do a rawhide build with a crafted list of patches
 
 - Prepare the source with selected list of patches on top of **2.0.4** for example
     -   **git clone git@github.com:389ds/389-ds-base.git**
@@ -136,7 +136,14 @@ Let assume master branch contains some fixes that are partial (or broken) and yo
 
     -  edit spec file to add the patches
 
-         Source0:          https://releases.pagure.org/389-ds-base/%{name}-%{version}%{?prerel}.tar.bz2
+        Source0:          https://releases.pagure.org/389-ds-base/%{name}-%{version}%{?prerel}.tar.bz2
+        # 389-ds-git.sh should be used to generate the source tarball from git
+        Source1:          %{name}-git.sh
+        Source2:          %{name}-devel.README
+        %if %{bundle_jemalloc}
+        Source3:          https://github.com/jemalloc/%{jemalloc_name}/releases/download/%{jemalloc_ver}/%{jemalloc_name}-%{jemalloc_ver}.tar.bz2
+        %endif
+        
         +Patch0:           0000-Issue-db_suffix.patch
         +Patch1:           0001-Issue-foo.patch
 
@@ -162,7 +169,9 @@ Let assume master branch contains some fixes that are partial (or broken) and yo
     -   Do the official Koji build, and update bodhi
 
     -   **fedpkg build -\\\-nowait**
-        - 
+
+    -  You are **done** (no fedpkg update, no release note, no mail)
+
 **Fedora** - Dist-Git - Clone it, and update the specfile
 --------------------------------------------
 
