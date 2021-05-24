@@ -62,12 +62,14 @@ If you're new to the project you should start with our [getting started](docs/38
 
 ## Community
 
-To get in touch with us, you can try to reach us on *IRC* at **\#389** on **irc.libera.chat** or on one of our [mailing lists](docs/389ds/mailing-lists.html).
+To get in touch with us, you can try to reach us on **IRC** at **\#389** on **irc.libera.chat** or on one of our [mailing lists](docs/389ds/mailing-lists.html).
+
 
 
 ## News
 
-<blink>** We have moved our IRC channel \#389 from *freenode* to **irc.libera.chat** (irc://irc.libera.chat/389) **</blink>
+We have moved our IRC channel **\#389** from *freenode* to **irc.libera.chat** (irc://irc.libera.chat/389)
+<br>
 
 <!-- Try to keep this list under 10 releases  -->
 - 2021-05-14: Released **389-ds-base [1.4.3.23](docs/389ds/releases/release-1-4-3-23.html)**
