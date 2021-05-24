@@ -62,7 +62,7 @@ If you're new to the project you should start with our [getting started](docs/38
 
 ## Community
 
-To get in touch with us, you can try to reach us on **IRC at \#389 on **irc.libera.chat** or on one of our [mailing lists](docs/389ds/mailing-lists.html).
+To get in touch with us, you can try to reach us on *IRC* at **\#389** on **irc.libera.chat** or on one of our [mailing lists](docs/389ds/mailing-lists.html).
 
 
 ## News
