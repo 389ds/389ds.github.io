@@ -22,7 +22,7 @@ mailing lists and online chat sites in IRC.
 
 You can keep up with the goings-on of the project in our [mailing lists](mailing-lists.html).
 
-You can talk to other users in real time by joining the \#389 channel on the IRC server irc.freenode.net.
+You can talk to other users in real time by joining the \#389 channel on the IRC server irc.libera.chat.
 
 If you are new to LDAP Directory servers you may want to read an overview of the Directory Server
 [architecture](design/architecture.html). This will introduce you to a lot of the technology and

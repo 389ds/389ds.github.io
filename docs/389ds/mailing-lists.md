@@ -31,4 +31,4 @@ title: "Contact Us"
 
 ### IRC
 
-In addition, we generally hang out on IRC - **irc.freenode.net** channel **\#389**.
+In addition, we generally hang out on IRC - **irc.libera.chat** channel **\#389**.
