@@ -14,13 +14,13 @@ Previously database compaction (and replication changelog compaction) occurred e
 Design
 ------
 
-There is a difference on how this works between 389-ds-base-1.4.3 and 1.4.4 (and up).  In 1.4.4 the replication changelog was moved into the main database.  This obsoleted the old changelog compaction interval (nsslapd-changelogcompactdb-interval) in favor of the main database compact interval (nsslapd-db-compactdb-interval).
+There is a difference on how this works between 389-ds-base-1.4.3 and 1.4.4 (and up).  In 1.4.4 the replication changelog was moved into the main database.  This obsoleted the old changelog compaction interval (nsslapd-changelogcompactdb-interval) in favor of the main database compact interval (nsslapd-db-compactdb-interval).  So DB compaction will now do both the main database and its replication changelog at the same time.
 
-All versions now have a new setting under *cn=config,cn=ldbm database,cn=plugins,cn=config*:  **nsslapd-db-compactdb-time**  This setting defines a the Time Of Day that task will run.  By default the server will start the task 1 minute prior to midnight (localtime).  To change this time use the following format:  **HH:MM**:
+All versions now have a new setting under *cn=config,cn=ldbm database,cn=plugins,cn=config*:  **nsslapd-db-compactdb-time**  This setting defines the Time Of Day that compaction will run.  By default the server will start the compaction task 1 minute prior to midnight (localtime).  To change this time use the following format:  **HH:MM**:
 
     nsslapd-db-compactdb-time: 23:59
     
-To trigger compaction manually a new task can be created (this is available in all version of 389-ds-base):
+To trigger database compaction manually a new task can be created (this is available in all version of 389-ds-base):
 
      dn: cn=compact_it,cn=compact db,cn=tasks,cn=config
      objectclass: top
