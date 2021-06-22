@@ -38,6 +38,44 @@ By default TPR setting are disabled and no limit (#use / expiration / validity) 
 
 Those new limits are enforced at the condition that the password policy force the change of the 'userpassword' after a reset by administrator: 'passwordMustChange: **on**'
 
+**dsctl** supports new settings for global password policy (**pwpolicy**)
+
+    # configure global password policy to support temporary password rules such as
+    # a reset password is valid for 3 attempts, can be used 60sec after reset
+    # and expire 3600sec after reset
+    dsconf localhost pwpolicy set --pwptprmaxuse 3 --pwptprdelayexpireat 3600 --pwptprdelayvalidfrom 60
+
+    # read the configured values of global password policy
+    dsconf localhost pwpolicy get
+    Global Password Policy: cn=config
+    ------------------------------------
+    ...
+    passwordTPRMaxUse: 3
+    passwordTPRDelayExpireAt: 3600
+    passwordTPRDelayValidFrom: 60
+
+    # update the global policy to expire reset password after 10min
+    dsconf localhost pwpolicy set --pwptprdelayexpireat 600
+
+**dsctl** supports new settings for local password policy (**localpwp**)
+
+    # configure a local password policy for 'demo_user' entry to support
+    # temporary password rules such as a reset password is valid for 5 attempts, can be used 5sec after reset
+    # and expire 1/2h after reset
+    dsconf localhost localpwp adduser --pwptprmaxuse 5 --pwptprdelayexpireat 1800 --pwptprdelayvalidfrom 5 "uid=demo_user,ou=people,dc=example,dc=com"
+
+    # read the configured values from the local password policy
+    dsconf localhost localpwp get uid=demo_user,ou=people,dc=example,dc=com
+    Local User Policy Policy for "uid=demo_user,ou=people,dc=example,dc=com": cn=cn\3DnsPwPolicyEntry_user\2Cuid\3Ddemo_user\2Cou\3Dpeople\2Cdc\3Dexample\2Cdc\3Dcom,cn=nsPwPolicyContainer,ou=people,dc=example,dc=com
+    ------------------------------------
+    passwordTPRMaxUse: 5
+    passwordTPRDelayExpireAt: 1800
+    passwordTPRDelayValidFrom: 5
+
+    # update the policy to allow 10 uses of the reset password
+    dsconf localhost localpwp set --pwptprmaxuse 10 uid=demo_user,ou=people,dc=example,dc=com
+
+
 # Design
 --------
 
@@ -104,40 +142,67 @@ A user entry may contains TPR related *operational* attributes:
 - **pwdTPRReset** : It is a flag indicating that the 'userpassword' is a TPR password (reset by the administrator). True mean the 'userpassword' is a TPR password (registration password)
 
 
-    attributeTypes: ( 2.16.840.1.113730.3.1.2378 NAME 'pwdTPRReset' DESC '389 Directory Server password policy attribute type'
-     EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation
+    attributeTypes: ( 2.16.840.1.113730.3.1.2378 NAME 'pwdTPRReset'
+     DESC '389 Directory Server password policy attribute type'
+     EQUALITY booleanMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+     SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation
      X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2379 NAME 'pwdTPRUseCount' DESC '389 Directory Server password policy attribute type' 
-     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE USAGE directoryOperation 
+    attributeTypes: ( 2.16.840.1.113730.3.1.2379 NAME 'pwdTPRUseCount'
+     DESC '389 Directory Server password policy attribute type' 
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+     SINGLE-VALUE USAGE directoryOperation 
      X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2381 NAME 'pwdTPRExpireAt' DESC '389 Directory Server password policy attribute type'
-     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE MODIFICATION USAGE directoryOperation
+    attributeTypes: ( 2.16.840.1.113730.3.1.2381 NAME 'pwdTPRExpireAt'
+     DESC '389 Directory Server password policy attribute type'
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+     SINGLE-VALUE MODIFICATION USAGE directoryOperation
      X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2381 NAME 'pwdTPRValidFrom' DESC '389 Directory Server password policy attribute type'
-     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE MODIFICATION USAGE directoryOperation
+    attributeTypes: ( 2.16.840.1.113730.3.1.2381 NAME 'pwdTPRValidFrom'
+     DESC '389 Directory Server password policy attribute type'
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+     SINGLE-VALUE MODIFICATION USAGE directoryOperation
      X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2380 NAME 'passwordTPRMaxUse' DESC '389 Directory Server password policy attribute type'
-     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2382 NAME 'passwordTPRDelayExpireAt' DESC '389 Directory Server password policy attribute type'
-     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
-    attributeTypes: ( 2.16.840.1.113730.3.1.2382 NAME 'passwordTPRDelayValidFrom' DESC '389 Directory Server password policy attribute type'
-     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE X-ORIGIN '389 Directory Server' )
+
+    attributeTypes: ( 2.16.840.1.113730.3.1.2380 NAME 'passwordTPRMaxUse'
+     DESC '389 Directory Server password policy attribute type'
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+     SINGLE-VALUE
+     X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2382 NAME 'passwordTPRDelayExpireAt'
+     DESC '389 Directory Server password policy attribute type'
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+     SINGLE-VALUE
+     X-ORIGIN '389 Directory Server' )
+    attributeTypes: ( 2.16.840.1.113730.3.1.2382 NAME 'passwordTPRDelayValidFrom'
+     DESC '389 Directory Server password policy attribute type'
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+     SINGLE-VALUE
+     X-ORIGIN '389 Directory Server' )
 
 
-    objectClasses: ( 2.16.840.1.113730.3.2.12 NAME 'passwordObject' DESC 'Netscape defined password policy objectclass' SUP top MAY
-     ( pwdpolicysubentry $ passwordExpirationTime $ passwordExpWarned $ passwordRetryCount $ retryCountResetTime $
-       accountUnlockTime $ passwordHistory $ passwordAllowChangeTime $ passwordGraceUserTime $ pwdReset $ 
-       pwdTPRReset $ pwdTPRUseCount $ pwdTPRExpireAt $ pwdTPRValidFrom ) X-ORIGIN 'Netscape Directory Server' )
-    objectClasses: ( 2.16.840.1.113730.3.2.13 NAME 'passwordPolicy' DESC 'Netscape defined password policy objectclass' SUP top MAY 
-       ( passwordMaxAge $ passwordExp $ passwordMinLength $ passwordKeepHistory $ passwordInHistory $ passwordChange $ 
-       passwordWarning $ passwordLockout $ passwordMaxFailure $ passwordResetDuration $ passwordUnlock $ 
-       passwordLockoutDuration $ passwordCheckSyntax $ passwordMustChange $ passwordStorageScheme $ passwordMinAge $ 
-       passwordResetFailureCount $ passwordGraceLimit $ passwordMinDigits $ passwordMinAlphas $ passwordMinUppers $ 
-       passwordMinLowers $ passwordMinSpecials $ passwordMin8bit $ passwordMaxRepeats $ passwordMinCategories $ 
-       passwordMinTokenLength $ passwordTrackUpdateTime $ passwordAdminDN $ passwordDictCheck $ passwordDictPath $ 
-       passwordPalindrome $ passwordMaxSequence $ passwordMaxClassChars $ passwordMaxSeqSets $ passwordBadWords $ 
-       passwordUserAttributes $ passwordSendExpiringTime $ passwordTPRMaxUse $ passwordTPRDelayExpireAt $ 
-       passwordTPRDelayValidFrom ) X-ORIGIN 'Netscape Directory Server' )
+    objectClasses: ( 2.16.840.1.113730.3.2.12 NAME 'passwordObject'
+     DESC 'Netscape defined password policy objectclass' SUP top MAY
+     ( pwdpolicysubentry $ passwordExpirationTime $ passwordExpWarned $ passwordRetryCount
+       $ retryCountResetTime $accountUnlockTime $ passwordHistory $ passwordAllowChangeTime
+       $ passwordGraceUserTime $ pwdReset $ pwdTPRReset $ pwdTPRUseCount $ pwdTPRExpireAt
+       $ pwdTPRValidFrom )
+       X-ORIGIN 'Netscape Directory Server' )
+    objectClasses: ( 2.16.840.1.113730.3.2.13 NAME 'passwordPolicy'
+     DESC 'Netscape defined password policy objectclass' SUP top MAY 
+       ( passwordMaxAge $ passwordExp $ passwordMinLength $ passwordKeepHistory
+         $ passwordInHistory $ passwordChange $ passwordWarning $ passwordLockout
+         $ passwordMaxFailure $ passwordResetDuration $ passwordUnlock
+         $ passwordLockoutDuration $ passwordCheckSyntax $ passwordMustChange
+         $ passwordStorageScheme $ passwordMinAge $ passwordResetFailureCount
+         $ passwordGraceLimit $ passwordMinDigits $ passwordMinAlphas
+         $ passwordMinUppers $ passwordMinLowers $ passwordMinSpecials
+         $ passwordMin8bit $ passwordMaxRepeats $ passwordMinCategories
+         $ passwordMinTokenLength $ passwordTrackUpdateTime $ passwordAdminDN
+         $ passwordDictCheck $ passwordDictPath $ passwordPalindrome
+         $ passwordMaxSequence $ passwordMaxClassChars $ passwordMaxSeqSets
+         $ passwordBadWords $ passwordUserAttributes $ passwordSendExpiringTime
+         $ passwordTPRMaxUse $ passwordTPRDelayExpireAt $ passwordTPRDelayValidFrom )
+         X-ORIGIN 'Netscape Directory Server' )
 
 
 # External Impact
