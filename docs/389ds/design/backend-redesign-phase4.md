@@ -127,6 +127,15 @@ How do we handle the oversized keys ?
        
 ** Note from Thierry : **  pierre: regarding LMDB keylen, IPA is using 'eq' index on attributes (usercertificate, publickey,..) with keys that >500bytes
 
+### Other mbd limitations ###
+- There must not ever be two concurrent transactions using mdb_dbi_open.
+- LMDB does no internal bookkeeping of named databases, and you will have to ensure yourself that you open named databases with the same flags every time.
+MDB_RDONLY is useful because you can have multiple read-only transactions open, but only ever one write transaction.
+   So adding/removing/opening db should be serialized by a global mutex
+- Only a single read txn per threads (child txn are ok as long as the parent txn is not used while child txn is open)
+- Only a single write txn active at a time (the other will wait until the active one is complete)
+- Only a single env per process
+
 
 
 
@@ -185,20 +194,47 @@ is:
     (in phase 4a no pointers towards memory mmap are kept outside db-mdb plugin)
 
 ## VLV and RECNO
- ldbm does not implement a recno lookup as bdb does so we cannot use that .
- We will have to use a cursor starting from first records and counting
- the records we could have a cache that store count -> key every thousand of entries or so 
+ BDB implement vlv index by using an index with key based on entry value and the vlv search sort order i
+ (So that the vlv index records are directly sorted according the vlv sort order) The data is the entry ID.
+ note: the key is usually acceeded by its position in the tree (i.e RECNO) rather than by its value.
 
+ unlike bdb, ldbm does not implement a recno lookup. So we cannot use that.
+ We use a VLV index as in bdb and for each VLV index have a second database used a cache.
+ The cache will contains:
+    
+  For each VLV index have a second database "vlv cache" database that contains the following records:
+   Key:  D{key}{data}{key-size}  Data: {key-size}{data-size}{recno}{key}{data}
+   Key:  R{recno}                Data: {key-size}{data-size}{recno}{key}{data}
+   Key:  OK                      Data: OK
+The data and recno records exists for all vlv records whose recno modulo RECNO_CACHE_INTERVAL(1000) is 1 
+
+When looking up in the cache for recno, we perform a lookup for nearest key smaller or equal to R{recno}
+Then we lookup for key/data in vlv index and move the vlv index cursor by one until we got the wanted recno.  
+
+When removing/adding a key from vlv index the cache is cleared and rebuilt at next query.
 
 ## bulk operation ##
-  
-  There is no support for  bulk read operation (not very surprising because read operations
+
+BDB is supporting to kind of bulk read operations:
+- bulk data read to get all (or part) duplicates for a given key. This is typically used to compute an ID list.
+- bulk record read to get a set of key/data pair. This is typically used to build the changelog cache.
+
+In MDB there is not much support for bulk read operations (not very surprising because read operations
     are pretty fast anyway)
   The interresting point is that we could avoid copy overhead for bulk operation 
   (because in bdb the returned data are stored in a local buffer and no more used once 
     the cursor is released so: 
 - bulk_buffer should only store the cursor
 - dbi_val_t key/data from dblayer_bulk_nextdata/dblayer_bulk_nextrecord does directly point towards mmmap values.
+
+*** IMPORTANT NOTE *** The above descrption is not doable for bulk record read: The issue is that in changelog case
+    the cursor get closed between the value retrival phase and the result iteration phase
+     ==> nether keeping cursor reference of pointer towards the mmap is safe.
+     ==> Will have to copy the keys and data into the buffer until reaching one of the following:
+    * End of cursor
+    * Buffer size limit
+    * Number of record in bulk operation limit
+
 
 ## monitoring ### 
 Here are available values
@@ -215,7 +251,6 @@ Here are available values
 - unsigned int 	me_numreaders
 - number of db (number of entries in #dbnames db)
 - max number of db (from config)
-
 
 Here are what openldap monitors:
 
@@ -261,6 +296,17 @@ mdb specific parameters:
 |---
 | nsslapd-mdb-max-dbs | 128 |  | 
 
+## debuging ##
+
+Added a few debugging modules
+   to trace: 
+- lmdb API calls 
+- transaction handling
+- import writing queue opeartions
+
+The debug module sources are in mdb_debug.* files and trigered by:
+- DBMDB_DEBUG conditionnal compilation flag
+- dbgmdb_level variable whose value is a set of DBGMDB_LEVEL_MDBAPI, DBGMDB_LEVEL_TXN, DBGMDB_LEVEL_IMPORT flags
 
 # Phases #
 
