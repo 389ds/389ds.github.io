@@ -43,7 +43,7 @@ Communicating with the team
 
 We can be contacted via our mailing lists for [users](https://lists.fedoraproject.org/admin/lists/389-users.lists.fedoraproject.org/) or [developers](https://lists.fedoraproject.org/admin/lists/389-devel.lists.fedoraproject.org/).
 
-We are often in irc on irc.freenode.org - we use the #389 channel. We are distributed all around the world, so we may not answer. Email is your best communication option.
+We are often in irc on irc.libera.chat - we use the #389 channel. We are distributed all around the world, so we may not answer. Email is your best communication option.
 
 Issues and requests for enhancement can be raised on our [github instance](https://github.com/389ds/389-ds-base/)
 

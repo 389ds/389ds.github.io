@@ -62,21 +62,25 @@ If you're new to the project you should start with our [getting started](docs/38
 
 ## Community
 
-To get in touch with us, you can try to reach us on **IRC at \#389 on irc.freenode.net** or on one of our [mailing lists](docs/389ds/mailing-lists.html).
+To get in touch with us, you can try to reach us on **IRC** at **\#389** on **irc.libera.chat** or on one of our [mailing lists](docs/389ds/mailing-lists.html).
+
+
 
 ## News
 
+We have moved our IRC channel **\#389** from *freenode* to **irc.libera.chat** (irc://irc.libera.chat/389)
+<br>
+
 <!-- Try to keep this list under 10 releases  -->
+
+- 2021-06-24: Released **389-ds-base [2.0.6](docs/389ds/releases/release-2-0-6.html)**
+- 2021-05-30: Released **389-ds-base [2.0.5](docs/389ds/releases/release-2-0-5.html)**
+- 2021-05-30: Released **389-ds-base [1.4.4.15](docs/389ds/releases/release-1-4-4-16.html)**
+- 2021-05-14: Released **389-ds-base [1.4.3.23](docs/389ds/releases/release-1-4-3-23.html)**
 - 2021-04-07: Released **389-ds-base [2.0.4](docs/389ds/releases/release-2-0-4.html)**
-- 2021-02-12: Released **389-ds-base [2.0.3](docs/389ds/releases/release-2-0-3.html)**
 - 2021-04-06: Released **389-ds-base [1.4.4.15](docs/389ds/releases/release-1-4-4-15.html)**
 - 2021-03-19: Released **389-ds-base [1.4.4.14](docs/389ds/releases/release-1-4-4-14.html)**
-- 2021-03-19: Released **389-ds-base [1.4.3.22](docs/389ds/releases/release-1-4-3-22.html)**
-- 2021-03-05: Released **389-ds-base [1.4.3.21](docs/389ds/releases/release-1-4-3-21.html)**
-- 2021-02-12: Released **389-ds-base [1.4.3.20](docs/389ds/releases/release-1-4-3-20.html)**
-- 2021-02-12: Released **389-ds-base [1.4.4.13](docs/389ds/releases/release-1-4-4-13.html)**
-- 2021-02-11: Released **389-ds-base [1.4.3.19](docs/389ds/releases/release-1-4-3-19.html)**
-- 2021-01-14: Released **389-ds-base [2.0.2](docs/389ds/releases/release-2-0-2.html)**
+
 
 
 - [All past release notes](docs/389ds/releases/release-notes.html)

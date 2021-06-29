@@ -30,6 +30,9 @@ If you are adding a new design document, use the [template](design-template.html
 -   Rust...
 -   Pluggable Backend --> move to LMDB
 -   [LDAPI DN Rewritter](ldapi-auto-auth-dn-design.html)
+-   [RetroCL exclude attributes](retrocl-exclude-attrs.html)
+-   [Database Compaction Scheduling](compact-schedule-design.html)
+-   [DB Locks Monitoring](dblocks-monitoring.html)
 
 ## 389 Directory Server 1.4.4
 

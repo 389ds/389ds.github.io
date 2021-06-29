@@ -27,12 +27,12 @@ You will create a new branch under the *master* branch.  Make changes and commit
 
     $ git checkout master
     $ git pull
-    $ git checkout -b i9999
+    $ git checkout -b issue9999
     $ git commit -a -m "My Fix!"
     $ git push myfork
 
 
-Then file a pull-request in GitHub,  You will see this branch (ticket49999) in the GitHub UI.  Then send out a "please review" email to 389-devel mailing list <389-devel@lists.fedoraproject.org>.
+Then file a pull-request in GitHub,  You will see this branch (issue9999) in the GitHub UI.  Then send out a "please review" email to 389-devel mailing list <389-devel@lists.fedoraproject.org>.
 
 
 ### Amending A Fix
@@ -59,3 +59,21 @@ Once you gets your acks or *LGTM (Looks Good To Me)*, then rebase your branch wi
 Now the PR can be merged using the GitHub UI.
 
 That's it!
+
+### Cherry Picking
+
+Often most fixes need to be present in several branches.  We only use PR's for commits to master, but for 389-ds-base-1.4.4, etc, we manaully cherry pick these fixes.  So after the fix is in master, you will need do the following:
+
+    $ git checkout master
+    $ git pull origin master
+    $ git checkout 389-ds-base-1.4.4
+    $ git cherry-pick master
+    $ git push origin 389-ds-base-1.4.4
+
+    $ git checkout 389-ds-base-1.4.3
+    $ git pull origin 389-ds-base-1.4.3
+    $ git cherry-pick 389-ds-base-1.4.4
+    $ git push origin 389-ds-base-1.4.3
+
+    ...
+    ...
