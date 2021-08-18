@@ -296,6 +296,22 @@ mdb specific parameters:
 |---
 | nsslapd-mdb-max-dbs | 128 |  | 
 
+## Handling oversized index keys ##
+
+There is an simpler solution than implement a specific kind of index with hashed value:
+It is to simply hash the value if the key is too long. 
+In this case we also disable the filterbypass 
+At implementation level it means:
+- Add a max_key_size in ldbminfo initialzed to UINT_MAX and set to the mdb max key size while starting mdb database
+- While checking if key value must be encrypted , check the key lenght is smaller than max_key_size if it is the case:
+    replace the value by # <oldPrefix> <hash of oldKey in hexa>
+    disable filterbypass
+
+When searching for a key things are as usual (key will be hashed too)
+When reading index ranges IDs, if max_key_size is smaller than UINT_MAX 
+ lets try to search if there is a key starting with <Hash Prefix followed by equality Prefix> if such a key is found lets tell that the range search is unindexed.
+  otherwise range could be performed as usulas.   
+
 ## debuging ##
 
 Added a few debugging modules
