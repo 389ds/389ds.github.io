@@ -112,12 +112,12 @@ How do we handle the oversized keys ?
         #MaxPartID --> idPartN (or something else anyway that is the max id )
     - Have a specific table for oversized keys in which we store:
 		key hash -> id + key 
-    - use a specific index key prefix (h?) and an hash (base64?) as key for binary object whose size > 256 bytes
-         (and mark the search as requiring filter check) (the filter check will then remove the hash duplicates)
+    - use a specific index hash key prefix (h?) followed by the orignal (i.e equality or approximate) key prefix and hashed value in hexa as key for binary object whose size > max key size
+         (and mark the search as disabling  filter bypass) (the filter check will then remove the hash duplicates)
       Pro: it does not requires much change in the way index are looked 
            it probably speed up the db lookup (but that could be mitigated by the fact that filter checking is needed)
-      Cons: Range search should be rejected ( unable to perform range search when oversized keys exists )
-           ==> Should also somehow flag the dbname so that we know that index search are not reliables
+      Cons: Range search should be seen as unindexed ( unable to use index while performing range search when oversized keys exists )
+           ==> This could be done with a simple lookup of key stating with hash prefix followed by equality prefix
            h{hash} --> id and a filter check is needed 
 - data are also limited to 511 bytes for DUPSORT databases
     but that should not be an issue: because DUPSORT files are indexes (and their values are a plain entryId)
@@ -270,6 +270,49 @@ Here are what openldap monitors:
 |---
 | olmMDBEntries | Number of entries in DB | 
 
+## Handling oversized index keys ##
+
+mdb hardcode some limits about the record size:
+- keys are limited to mdb_env_get_maxkeysize(env) which is 511 with the default lmdb build.
+- the total key+data size has the same limit for DUPSORT database
+This mainly impact the equality, approximate and specific matching rules index keys.
+This also impact the AVA max size in DN (because of entryrdn index)
+ but it should not a real issue in practice (using huge rdn is suboptimal in term of performance anyway ...)
+Note:
+- The changelog / retrochangelog / id2entry / entrydn databases have fixed key size and are not impacted by the issue.
+- DUPSORT flags is only used for the indexes databases and indexes data are ID (fixed size)
+
+** Note from Thierry : **  pierre: regarding LMDB keylen, IPA is using 'eq' index on attributes (usercertificate, publickey,..) with keys that >500bytes.
+So we have to somehow support search on long keys.
+
+### implemented solution
+
+A solution is to replace the long key value by a smaller one (typically an hash)
+just before encrypting the keys (i.e in attrcrypt_encrypt_index_key) if needed:
+
+if the key is too long: 
+Before checking if key value must be encrypted , check the key lenght is smaller than max_key_size if it is the case:
+    replace the value by: HASH_PREFIX ORIGINAL_KEY_PREFIX bin2hexa(hash(original_key_value))
+    disable filterbypass
+
+At implementation level it means:
+- Add a max_key_size in ldbminfo initialzed to UINT_MAX
+- While starting bdb: set max_key_size to mdb_env_get_maxkeysize(env) - sizeof (ID)
+- When searching for a key: do as usual (key will be hashed too)
+- When reading index ranges IDs, if max_key_size is smaller than UINT_MAX
+ lets try to lookup for key starting with "HASH_PREFIX EQ_PREFIX". If found then mark the search as unindexed and returns AllIds, otherwise range could be performed as usual.   
+
+### rejected alternatives
+    - Ignore it (return DBI_NOT_FOUND when looking for it) 
+       and reject it when trying to set the key
+    - Split the key and have a continuation mechansim. For example:
+        {<Prefix>KeyPart0   ---> idPart1 (where <Prefix> is = ~ :id: as usual)
+        .<idPart1>.Keypart1 ---> idPart2
+        .<idPartN>}KeypartN ---> idEntry
+        #MaxPartID --> idPartN (or something else anyway that is the max id )
+    - Have a specific table for oversized keys in which we store:
+		key hash -> id + key 
+    - use a specific index type bases on hash 
 
 # Config entry #
 Entry:  cn=bdb,cn=config,cn=ldbm database,cn=plugins,cn=config
@@ -295,22 +338,6 @@ mdb specific parameters:
 | nsslapd-mdb-max-readers | 0 | 0 means number of working threads + 30 |
 |---
 | nsslapd-mdb-max-dbs | 128 |  | 
-
-## Handling oversized index keys ##
-
-There is an simpler solution than implement a specific kind of index with hashed value:
-It is to simply hash the value if the key is too long. 
-In this case we also disable the filterbypass 
-At implementation level it means:
-- Add a max_key_size in ldbminfo initialzed to UINT_MAX and set to the mdb max key size while starting mdb database
-- While checking if key value must be encrypted , check the key lenght is smaller than max_key_size if it is the case:
-    replace the value by # <oldPrefix> <hash of oldKey in hexa>
-    disable filterbypass
-
-When searching for a key things are as usual (key will be hashed too)
-When reading index ranges IDs, if max_key_size is smaller than UINT_MAX 
- lets try to search if there is a key starting with <Hash Prefix followed by equality Prefix> if such a key is found lets tell that the range search is unindexed.
-  otherwise range could be performed as usulas.   
 
 ## debuging ##
 
