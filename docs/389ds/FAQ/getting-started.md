@@ -12,20 +12,20 @@ used for data that does not change often but is read frequently such as email ad
 contact information; passwords and certificates; and any relatively static business data. It is
 really useful when you have a variety of clients that can talk to it. There is quite a bit of client
 software available for the Directory Server. The list of client software is available on our
-[client software](FAQ/client-software.html) page.
+[client software](client-software.html) page.
 
 ### Community Support
 
 As open source software, there are many ways to get help. This includes online
-[documentation](documentation.html), support provided by the project developers and community in the
+[documentation](../documentation.html), support provided by the project developers and community in the
 mailing lists and online chat sites in IRC.
 
-You can keep up with the goings-on of the project in our [mailing lists](mailing-lists.html).
+You can keep up with the goings-on of the project in our [mailing lists](../mailing-lists.html).
 
 You can talk to other users in real time by joining the \#389 channel on the IRC server irc.libera.chat.
 
 If you are new to LDAP Directory servers you may want to read an overview of the Directory Server
-[architecture](design/architecture.html). This will introduce you to a lot of the technology and
+[architecture](../design/architecture.html). This will introduce you to a lot of the technology and
 terminology behind an LDAP server.
 
 # Getting the 389 Directory Server software
@@ -76,7 +76,7 @@ a lot of information to help you.
 #### Documentation
 
 There's a huge amount of reference material available for the Directory Server. You might want to
-look at our [documentation](/documentation.html) page for information if you know exactly what you're
+look at our [documentation](../documentation.html) page for information if you know exactly what you're
 looking for.
 
 #### Integrating the Directory Server with your Software
@@ -85,7 +85,7 @@ A Directory Server is not a valuable piece of software in and of itself. It's im
 in how other pieces of software use it. Whether it's a mail client or a multi-thousand machine data
 center, you have to know how to make the best use of the Directory Server with your software. You
 might want to visit our page on using the Directory Server. It contains information on how to use
-DS from the perspective of a [client](client- software.html), or if you're interested in writing
+DS from the perspective of a [client](client-software.html), or if you're interested in writing
 plugins for the Directory Server, you might want to see our page on building Directory Server
 [plugins](../design/plugins.html). Our [documentation](../documentation.html) page contains a more
 complete list of software-related materials available.
@@ -98,12 +98,12 @@ whether or a you're a user or a developer - you will contribute back to the proj
 a few ways that you can do this. Send us feedback on your install experience and what was easy, hard
 or confusing. We always want to improve this! Did you find something you wish you could do with
 our command line tools? Maybe a feature you wish was possible? Contact us, so we can help you
-get started with [development](../development.html). We are always willing to mentor and help new
+get started with [development](../contributing.html). We are always willing to mentor and help new
 contributors.
 
 ### The Future
 
-To see the direction the project is going in, check out our [roadmap](/docs/FAQ/roadmap.html).
+To see the direction the project is going in, check out our [roadmap](roadmap.html).
 
-Our current [wishlist](/docs/FAQ/wishlist.html) is also available.
+Our current [wishlist](wishlist.html) is also available.
 

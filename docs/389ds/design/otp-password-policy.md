@@ -36,7 +36,7 @@ The password policy contains new configuration attributes:
 
 By default TPR setting are disabled and no limit (#use / expiration / validity) is enforced
 
-Those new limits are enforced at the condition that the password policy force the change of the 'userpassword' after a reset by administrator: 'passwordMustChange: **on**'
+If **passwordMustChange** is enabled in the password policy of a user, Directory Server enforces the temporary password rules conditions after an administrator updates the **userPassword** attribute of that user.
 
 **dsctl** supports new settings for global password policy (**pwpolicy**)
 
