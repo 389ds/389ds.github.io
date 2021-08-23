@@ -28,6 +28,7 @@ and Open LDAP Lightning Memory-Mapped Database Manager as "mdb"
 
 ## Checking which lib is active: ##
     dsconf instance backend config get | grep nsslapd-backend-implement
+
         ( should be bdb or mdb )
 
 ## Switch which lib is used by default ##
@@ -38,6 +39,7 @@ For CI tests and dscreate tool there are two way to proceed:
 ## Switch a single instance ##
     - dsconf instance backend config set --db_lib bdb
     - dsconf instance backend config set --db_lib mdb
+
 Notes:
 	- this require a server restarts
 	- the first time the lib is changed, the db will be empty 
@@ -55,6 +57,19 @@ There are a few behavior differences between bdb and mdb due to the architecture
 
 # mdb specific parameters #
 
-There are a few parameters specific to mdb:
- TBC
+There are a few parameters specific to mdb visisble with:
+    dsconf instance backend config get
 
+    - nsslapd-mdb-max-size Maximum database size (0 means it is computed from available disk space up to a value of 1GB). Value may be as great as the available disk space but beware that it is memory mmaped memory. So:
+        - the file will tend to grow up to its maximum
+        - if real memory is smaller than the file then pages will be swappped 
+        - My first experience about configuring oversized database was interresting:
+            at first I did not capped the value to 1Gb and the basic import scenario was spending
+            hours before failing because disk was full (with a real db size around 10Gb on the test VM)
+            while once capped to 1 GB the import was successful in less than 10 minutes 
+		==> *Correct sizing matters*
+    - nsslapd-mdb-max-readers Maximum nomber of readers (note: maximum number of writer is 1 ) 
+        The default value is 10 + number of working threads (and should probably not need any change)
+    - nsslapd-mdb-max-dbs Maximum number of files in the db 
+        Set by default to 128,
+        It may need to be increased ( should be greater than the total number of indexes and of backends)

@@ -69,6 +69,7 @@ We maintain a number of how to guides for 389 Directory Server
 -   [How to Upgrade DN Format](howto/howto-upgrade-to-new-dn-format.html)
 -   [How to Use SSF Restrictions](howto/howto-use-ssf-restrictions.html)
 -   [How to Inactivate Accounts using nsAccountLock](howto/howto-account-inactivation.html)
+-   [How to use LMDB](howto/howto-use-lmdb.html)
 
 #### Operating System
 
@@ -146,7 +147,6 @@ These are potentially outdated or incorrect for the current DS version.
 -   [How to Migrate to 389](howto/howto-migratetoldap.html)
 -   [How to Migrate from openLdap](howto/howto-openldapmigration.html)
 -   [How to openLdap Integration](howto/howto-openldapintegration.html)
--   [How to use LMDB](howto/howto-use-lmdb.html)
 
 ### FAQ and tech docs
 
