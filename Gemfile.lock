@@ -10,7 +10,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.6.0)
+    addressable (>= 2.8.0)
       public_suffix (>= 2.0.2, < 4.0)
     colorator (1.1.0)
     concurrent-ruby (1.1.5)
@@ -31,7 +31,7 @@ GEM
       i18n (~> 0.7)
       jekyll-sass-converter (~> 1.0)
       jekyll-watch (~> 2.0)
-      kramdown (~> 1.14)
+      kramdown ('>= 2.3.1')
       liquid (~> 4.0)
       mercenary (~> 0.3.3)
       pathutil (~> 0.9)
@@ -103,6 +103,7 @@ DEPENDENCIES
   rack-rewrite
   stringex
   typogruby
+  addressable
 
 BUNDLED WITH
    1.17.1
