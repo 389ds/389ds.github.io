@@ -313,6 +313,39 @@ At implementation level it means:
     - Have a specific table for oversized keys in which we store:
 		key hash -> id + key 
     - use a specific index type bases on hash 
+## ldif import/export ##
+    mdb architecture impacted both the ldif export and ldif import:
+    - on export size the change is minor and due to the fact that the entries read from id2entry 
+      are direct pointer towards the read-only memory map (but ldif_getline libldap function that 
+       reads entry from ldif was directly modifying the memory to remove \\r) 
+      The ldif_getline_ro function was rewritten without tampering the memory
+      and a dup_ldif_line also add to copy the line in a berval
+    - several issues impacted the ldif import (mostly related that we can only have 1 open write txn at a time
+    - and some write operation should be done in a synchronous way while most the others may be
+      asynchronous. (typically the operation needed to determine the children/parent relationship)
+    - to limit the code impact at backend level the back_txn struct was modify to add a callback
+       (back_special_handling_fn)
+    - The backend code:
+        - BTXNACT_INDEX_ADD,            /* data is a index_update_t */
+        - BTXNACT_INDEX_DEL,            /* data is a index_update_t */
+        - BTXNACT_VLV_ADD,              /* data is an entry ID */
+        - BTXNACT_VLV_DEL,              /* data is an entry ID */
+        - BTXNACT_ID2ENTRY_ADD,         /* data is the entry */
+        - BTXNACT_ENTRYRDN_ADD,         /* key is a srdn, data is an id */
+        - BTXNACT_ENTRYRDN_DEL          /* key is a srdn, data is an id */
+      is modified to call the callback (if set) with the caller location (as listed above) 
+      instead writing in the database.
+    - at db-mdb level:
+        - A new "writing thread is created among the threads pool that handles two operations queues"
+        - The usual foreman and worthreads now use a pseudo_back_txn_t (a back_txn with the callback set followed by some context to identify to worker info and the target file) when calling back the dblayer functions and they queues directly the open or write action in the right writing thread queues
+ (and wait for success/failure if it is the synchronous queue (i.e entryid, parentid and entryrdn ) 
+       - The pseudo_back_txn_t callback also queue the operation in the right queue as above
+       - and the writing threads loops waiting on available operations
+           for each opeartion on synchronous queue: perform the operation and send the result to the calling worker thread else perform asynchronous operation.
+            
+     BTW There is a third queue needed to handle the very special case of upgrade (when entries needs to be rewritten - in this case a temporary file is used to queue the operation 
+(but thinking more about it, if will probably be safer to duplicate the id2entry toward a special db then clear id2entry and wire the provider on that special db (rather than id2entry) and perform import as usual - anyway there is nothing to upgrade right now so we have time to change that)
+
 
 # Config entry #
 Entry:  cn=bdb,cn=config,cn=ldbm database,cn=plugins,cn=config
