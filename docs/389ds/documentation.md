@@ -146,6 +146,7 @@ These are potentially outdated or incorrect for the current DS version.
 -   [How to Migrate to 389](howto/howto-migratetoldap.html)
 -   [How to Migrate from openLdap](howto/howto-openldapmigration.html)
 -   [How to openLdap Integration](howto/howto-openldapintegration.html)
+-   [How to use LMDB](howto/howto-use-lmdb.html)
 
 ### FAQ and tech docs
 
