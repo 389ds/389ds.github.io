@@ -49,7 +49,8 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Search rewriters](search_rewriters.html)
 -   [New Keywords in Access Log RESULT Message](access-log-new-time-stats-design.html)
 -   [Reject Internal Unindexed Searches](reject-internal-unindexed-design.html)
--   [One-Time Password policy](otp-password-policy.html)
+-   [Temporary Password policy](otp-password-policy.html)
+-   [Automatic virtual attribute toggle](vattr-automatic-toggle.html)
 
 ## 389 Directory Server 1.4.2 (RHEL 8.2)
 
