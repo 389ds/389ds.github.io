@@ -41,9 +41,20 @@ The Cos plugin is enabled by default. It registers virtual attributes (*cosAttri
 The server will be configured to ignore by default virtual attributes (**nsslapd-ignore-virtual-attrs: on**).
 
 If *nsslapd-ignore-virtual-attrs: off* (setting by the DS admin) do nothing, so do lookup for virtual attributes.
-In slapi_vattrspi_regattr, if *nsslapd-ignore-virtual-attrs: on* and there is a registered attribute different than *nsRole* then toggle *nsslapd-ignore-virtual-attrs: off*.
-Few second after startup (2sec), spawn a virtual-attribute check thread. That thread will do an internal search with the following filter *'(|(objectclass=nsRoleDefinition)(objectclasss=cosSuperDefinition))*'. If it retrieve one or more entries, then it toggles *nsslapd-ignore-virtual-attrs: off*. Before doing the internal search, the thread exits if *nsslapd-ignore-virtual-attrs: off*.
 
+In slapi_vattrspi_regattr, if *nsslapd-ignore-virtual-attrs: on* and there is a registered attribute different than *nsRole* then toggle *nsslapd-ignore-virtual-attrs: off*. It logs the following message
+
+    INFO - slapi_vattrspi_regattr - Because employeeType is a new registered virtual attribute , nsslapd-ignore-virtual-attrs set to 'off'
+
+
+Few second after startup (3sec), the server spawn a virtual-attribute check thread. That thread will do an internal search with the following filter *"(&(objectclass=ldapsubentry)(|(objectclass=nsRoleDefinition)(objectclass=cosSuperDefinition)))"*. If it retrieves one or more entries, then it toggles *nsslapd-ignore-virtual-attrs: off*. Before doing the internal search, the thread exits if *nsslapd-ignore-virtual-attrs: off*.
+
+    INFO - vattr_check_thread - Found a role/cos definition in cn=FILTERROLEENGROLE,o=acivattr,dc=example,dc=com
+    INFO - vattr_check_thread - Because of virtual attribute definition nsslapd-ignore-virtual-attrs set to 'off'
+
+Once the server is startup, new virtual attributes can be register. **COS** definition lead to call to *slapi_vattrspi_regattr* and the toggle of *nsslapd-ignore-virtual-attrs* is managed there. **Role** definition already have the *nsRole* virtual attribute registered, so it needs to be managed in **roles_cache_trigger_update_role**. When a new role definition is added the following message is logged in the error logs
+
+    INFO - roles_cache_trigger_update_role - Because of virtual attribute definition (role) then nsslapd-ignore-virtual-attrs set to 'off'
 
 # Tests
 
@@ -70,19 +81,22 @@ Out of the box virtual attributes are disabled (default value *nsslapd-ignore-vi
 
   - Check the #workers threads: dsconf localhost config get nsslapd-threadnumber
   - Check that 'dsconf localhost config get nsslapd-ignore-virtual-attrs' returns *on*
-  - Run the following commands: searchrate -h localhost -p 389 --bindDN "cn=directory manager" --bindPassword ... --baseDN "dc=example,dc=com" --scope sub --filter "(&(uidNumber=\*)(gidNumber=99998)(displayName=Demo User)(legalName=Demo User Name)(homeDirectory=\*)(cn=Demo User))"  --numThreads *<number workers>*
+  - Run the following commands
+
+    searchrate -h localhost -p 389 --bindDN "cn=directory manager" --bindPassword ... --baseDN "dc=example,dc=com" --scope sub --filter "(&(uidNumber=\*)(gidNumber=99998)(displayName=Demo User)(legalName=Demo User Name)(homeDirectory=\*)(cn=Demo User))"  --numThreads *<number workers>*
 
 Enable support of virtual attribute
 
   - Check the #workers threads: dsconf localhost config get nsslapd-threadnumber
   - Check that 'dsconf localhost config get nsslapd-ignore-virtual-attrs' returns *on*
-  - Run the following commands: searchrate -h localhost -p 389 --bindDN "cn=directory manager" --bindPassword ... --baseDN "dc=example,dc=com" --scope sub --filter "(&(uidNumber=\*)(gidNumber=99998)(displayName=Demo User)(legalName=Demo User Name)(homeDirectory=\*)(cn=Demo User))"  --numThreads *<number workers>*
+  - Run the following commands
+
+    searchrate -h localhost -p 389 --bindDN "cn=directory manager" --bindPassword ... --baseDN "dc=example,dc=com" --scope sub --filter "(&(uidNumber=\*)(gidNumber=99998)(displayName=Demo User)(legalName=Demo User Name)(homeDirectory=\*)(cn=Demo User))"  --numThreads *<number workers>*
 
 # Reference
 -----------------
 
-https://github.com/389ds/389-ds-base/issues/4678
-https://bugzilla.redhat.com/show_bug.cgi?id=1974236
+[4678](https://github.com/389ds/389-ds-base/issues/4678) and [1974236](https://bugzilla.redhat.com/show_bug.cgi?id=1974236)
 
 # Author
 --------
