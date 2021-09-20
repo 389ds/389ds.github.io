@@ -73,16 +73,13 @@ We have moved our IRC channel **\#389** from *freenode* to **irc.libera.chat** (
 
 <!-- Try to keep this list under 10 releases  -->
 
+- 2021-09-20: Released **389-ds-base [1.4.4.17](docs/389ds/releases/release-1-4-4-17.html)**
 - 2021-09-20: Released **389-ds-base [2.0.10](docs/389ds/releases/release-2-0-10.html)**
 - 2021-08-30: Released **389-ds-base [2.0.9](docs/389ds/releases/release-2-0-9.html)**
 - 2021-08-23: Released **389-ds-base [2.0.8](docs/389ds/releases/release-2-0-8.html)**
-- 2021-07-15: Released **389-ds-base [2.0.7](docs/389ds/releases/release-2-0-7.html)**
-- 2021-06-24: Released **389-ds-base [2.0.6](docs/389ds/releases/release-2-0-6.html)**
-- 2021-05-30: Released **389-ds-base [1.4.4.15](docs/389ds/releases/release-1-4-4-16.html)**
+- 2021-05-30: Released **389-ds-base [1.4.4.16](docs/389ds/releases/release-1-4-4-16.html)**
 - 2021-05-14: Released **389-ds-base [1.4.3.23](docs/389ds/releases/release-1-4-3-23.html)**
 - 2021-04-06: Released **389-ds-base [1.4.4.15](docs/389ds/releases/release-1-4-4-15.html)**
-- 2021-03-19: Released **389-ds-base [1.4.4.14](docs/389ds/releases/release-1-4-4-14.html)**
-
 
 
 - [All past release notes](docs/389ds/releases/release-notes.html)
