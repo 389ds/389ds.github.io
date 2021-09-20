@@ -5,6 +5,7 @@ title: "Release Notes"
 # Release Notes
 ========================================================================
 
+- [389 Directory Server 2.0.10](release-2-0-10.html) *(Sep 20, 2021)*
 - [389 Directory Server 2.0.9](release-2-0-9.html) *(Aug 30, 2021)*
 - [389 Directory Server 2.0.8](release-2-0-8.html) *(Aug 23, 2021)*
 - [389 Directory Server 2.0.7](release-2-0-7.html) *(Jul 15, 2021)*
