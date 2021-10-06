@@ -33,6 +33,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [RetroCL exclude attributes](retrocl-exclude-attrs.html)
 -   [Database Compaction Scheduling](compact-schedule-design.html)
 -   [DB Locks Monitoring](dblocks-monitoring.html)
+-   [Global Counters Contention](global-counters-contention.html)
 
 ## 389 Directory Server 1.4.4
 
