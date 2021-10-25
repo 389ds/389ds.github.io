@@ -11,10 +11,10 @@ title: "Documentation"
 
 ### Directory Server Documentation
 
-The best documentation for use and deployment can be found in the [Red Hat Directory Server documentation](https://access.redhat.com/site/documentation/Red_Hat_Directory_Server/). Although these documents are for Red Hat Directory Server, they apply to 389 DS as well. However, be sure to read the [Release Notes](releases/release-notes.html) and [Install Guide](legacy/install-guide.html) for 389 DS first in case there are important differences.
+The best documentation for use and deployment can be found in the Red Hat Directory Server documentation. Although these documents are for Red Hat Directory Server, they apply to 389 DS as well. However, be sure to read the [Release Notes](releases/release-notes.html) and [Install Guide](legacy/install-guide.html) for 389 DS first in case there are important differences.
 
-- [Red Hat Directory Server 10, 1.3.x series](https://access.redhat.com/documentation/en/red-hat-directory-server/?version=10)
-- [Red Hat Directory Server 9, 1.2.x series](https://access.redhat.com/documentation/en/red-hat-directory-server/?version=9)
+- [Product Documentation for Red Hat Directory Server 11](https://access.redhat.com/documentation/en-us/red_hat_directory_server/11)
+- [Product Documentation for Red Hat Directory Server 10](https://access.redhat.com/documentation/en-us/red_hat_directory_server/10)
 
 ### Design Documents & Roadmap
 
