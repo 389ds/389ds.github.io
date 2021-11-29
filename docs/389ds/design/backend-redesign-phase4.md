@@ -426,3 +426,5 @@ These are raw ideas (that would needs some benefit/cost evaluation)
     the relevant changes to the buffer 
   Another idea would be to keep the cursor open and close it every N changes 
    (but we should double check that it does not lead to uncontrolled database growth) 
+   
+   **Note**: issue [4939](https://github.com/389ds/389-ds-base/issues/4939) leaded to redesign the ldif export (see [the new design](https://directory.fedoraproject.org/docs/389ds/design/lmdb-import-design.html))
