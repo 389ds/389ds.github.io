@@ -26,7 +26,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Phase 4 - Implement LMDB](backend-redesign-phase4.html)
 
 ## 389 Directory Server 2.0.0
-
+-   [Connection Table Multi List](connection-table-lists.html)
 -   Rust...
 -   Pluggable Backend --> move to LMDB
 -   [LDAPI DN Rewritter](ldapi-auto-auth-dn-design.html)
