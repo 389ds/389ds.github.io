@@ -106,46 +106,51 @@ and write txn are not only serialized but handled in batch.
 
 #### Worker (slot s):
    Wait until slot s get ready:
-   Mark slot as busy
-   decode entry to get a fully decoded entry
-   determine the ancestors ids and rdn_element (either from parent id or from parent dn)
-       [0] From worker slot micro cache (that contains last entry and its ancestors (id + rdn_elem))
-       [1] From writer cache (containing the not yet commited write txn (id + rdn_elem))
-       [2] From rdn index (using entryrdn_index_read_ext)
-   if not found
-       wait until no worker works on id below the entry id and retest [1] and [2]
-	   if still not found
-	        mark the entry as skipped (if import) or as fatal error (otherwise)
-                mark slot as free
-                loop back to "Wait until slot s get ready"
-    update the micro cache
-    push in writer queue  entryrdn: 'P' entry id ==> rdn_element(parent id, parent RDN)
-    push in writer queue entryrdn: entry id ==>  rdn_element(entry id, entry RDN)
-    push in writer queue entryrdn: 'C' parent id ==> rdn_element(entry id + entry RDN)
-    push in writer cache queue entry id + entry rdn_element
-    for each id in ancestors
-      push in writer queue ancestorid: id-ancestor -> id->entry
-    for each attribute in entry
-      if attribute is indexed
-        generate index key (similar to what is done in index_addordel_values_ext_sv without storing the data)
-    for each vlv index
-	  if entry matchs the filter
-        generate the key (as vlv_update_index without storing the data)
-        push in writer queue index dbi: key -> entry Id
-    encode entry to string (similar to id2entry_add_ext but without storing the entry)
-    push in writer queue  id2enytry:  entryid (id_internal_to_stored(e->ep_id, temp_id);)  ==> entrystr
+   prepare the entry
+       decode the data to get a fully decoded backentry
+   process entryrdn
+       determine the ancestors ids and rdn_element by querying the rdncache (either from parent id or from parent dn) 
+           [0] From worker slot micro cache (that contains last entry and its ancestors (id + rdn_elem))
+           [1] From writer cache (containing the not yet commited write txn (id + rdn_elem))
+           [2] From rdn index (using entryrdn_index_read_ext)
+        if not found
+            mark the entry as skipped (if import) or as fatal error (otherwise)
+            mark slot as free
+            loop back to "Wait until slot s get ready"
+        update entryrdn cache and check if added elem has the right id 
+	    otherwise try to handle duplicate DN 
+	      either by aborting or skipping the entry or renaming the entry or then as tombstone entry
+        push in writer queue  entryrdn: 'P' entry id ==> rdn_element(parent id, parent RDN)
+        push in writer queue entryrdn: entry id ==>  rdn_element(entry id, entry RDN)
+        push in writer queue entryrdn: 'C' parent id ==> rdn_element(entry id + entry RDN)
+        ( note if entry is the suffix only nrdn ==> rdn_element(entry id, entry RDN) is pushed )
+        push in writer parentid: queue parent id ==> entry id
+        for each id in ancestors
+        push in writer queue ancestorid: id-ancestor ==> id->entry
+    Release the slot s and signal the other threads 
+	process foreman
+        encode and push the entry in writer thread queue. (id2enytry: entry id ==> encoded data 
+    process standard index:
+	    for each attribute in entry
+          if attribute is indexed
+            generate index key (similar to what is done in index_addordel_values_ext_sv without storing the data)
+    process vlv index:
+	    for each vlv index
+	      if entry matchs the filter
+            generate the key (as vlv_update_index without storing the data)
+            push in writer queue index dbi: key -> entry Id
 
 
 ###  Writer
-   Wait until (WriterDone is pushed) or Queue is full
-   Clear parent cache
+   Wait until producer and all worker threads have finished or until queue has more than 2000 elements.
+   use compare and swap atomic operation to get the queued elements and 
+   reset the queue 
+   If no element finish the thread
    Open write txn
-   for each item in queue
+   for each element in queue
     put dbi  -> key, data
    Commit TXN
-   if writerDone has been it
-       mark thread as finished.
-       exit the thread
+   and loop back to waiting for element
 
 ###Epilogue
     if (abort flags is set) {
@@ -203,74 +208,117 @@ and write txn are not only serialized but handled in batch.
 		
 #### Caches:
 ##### EntryRdn cache
-That is typically the entryrdn caches
-We need it:
-* to convert a DN into ancestor id list
-* to convert an ID into ancestor id list
-* get the rdn_elem of the parent to generate the new entryrdn records
-So a cache entry should contains:
-* entryID
-* parentID
-* rdn_elem (i.e the "data" within entryrdn.db record)
-* wait_id (wait_id is used to determine what to do if value is not found:
-    * wait until all wait_id lesser than current wait_id are removed then retry.
-    * returns NO_SUCH_OBJECT error
-* the cache handle (so we can release it to be able to free the resources when they are no more used)
-And is looked up either by:
-    *id + wait_id
-    *parent id + rdn + wait_id
-Actions:
-    cacheInit(maxworkers)
-    cacheAddWaitID(cache, wait_id, workerId)
-    cacheAddEntry(cache, wait_id, entryId, parentId, rdn_elem)
-    cacheClear(cache) remove all entries except wait_id
-    cacheIDLookup(cache, wait_id, entryId)
-    cacheRDNLookup(cache, wait_id, parentId, rdn)
+
+######Why using a cache:
+The main goal of this cache is to held the entryrdn elem that have been queued to the writer thread but not yet fully written in the entryrdn.db database instance (i.e before txn get committed).
+It also store the ancestors elem in the cache to try to speed up the ancestor discovery. 
+( this is efficient if there is lot of entries having same parent and not so efficient if tree is deeply nested )
+
+######Access method
+There are mostly 3 methods:
+* Adding a new elem:
+    RDNcacheElem_t *rdncache_add_elem(RDNcache_t *cache, WorkerQueueData_t *slot, ID entryid, ID parentid, int nrdnlen, const char *nrdn, int rdnlen, const char *rdn)
+* lookup by entry id:
+    RDNcacheElem_t *rdncache_id_lookup(RDNcache_t *cache,  WorkerQueueData_t *slot, ID entryid)
+   This is typically used to retrieve the ancestors when having the parentid
+* lookup by parent id and nrdn:
+    RDNcacheElem_t *rdncache_lookup_by_rdn(RDNcacheHead_t *head,  ID parentid, const char *nrdn)
+    this is typically used to retrieve the parent ID when having the DN.
+    Note: suffix parent ID is 0
+
+######Data Stored
+They are the data needed to build the entryrdn.db dbi records:
+* entry ID
+* parent entry ID
+* entry rdn
+* normalized entry rdn
+Beside the elem:
+* an ordered table pointing on the elements and ordered by entry ID
+* an ordered table pointing on the elements and ordered by parent ID + nrdn
+* a refcnt counter that tells how many elements are used by other threads
+
+######Cache flushing strategy
+The strataegy is too keep two list of elements and rotate them when writing thread txn is commited.
+Current list is where new data are added.
+Whenever the writer thread commits a txn the cache is rotated:
+  previous queue get released (and freed if no other thread is still using an element)
+  current queue is moved to previous queue
+  a new empty current queue is alloced.
+
+######Lookup algorythm
+The lookup is done in two phases of 3 subphases:
+* First phase: Looks in
+    * current queue - if found returns
+    * previous queue - if found add in current queue and returns.
+    * entryrdn.db database instance - if found add in current queue and returns.
+* Second phase is same as first one and run after waiting that all worker threads working on wait_id smaller than our have processed their entry.
 
 #### Other data:
+##### ImportCtx:
+There is one ImportCtx struct per ImportJob and it contains
+the global data needed to perform the import over mdb 
+
+|Field|Usage |
+| --- | --- |
+| job | The ImportJob |
+| ctx | The db-mdb plugin context |
+| entryrdndbi | the entryrdn database instance |
+| slots | the array of worker threads contextes (cf ImportSlot) |
+| nbslots | number of worker threads |
+| cache | entrrdn cache |
+| worker_queue | worker queue |
+| writer_queue | writer queue |
+
+##### ImportSlot:
+This struct represent a worker thread context
+
+|Field|Usage |
+| --- | --- |
+|wait_id | A value that determine the order in which the slots have been filled | 
+
 ##### ImportJob:
 The ImportJob struct is reused with the following restriction:
 
 |Field|Usage |
 | --- | --- |
-|task |x |
-|flags |x |
-|input_filenames |x |
-|index_list |x |
-|worker_list |x |
-|number_indexers |x |
-|starting_ID |x |
-|first_ID |x |
-|lead_ID |x |
-|ready_ID |x |
-|ready_EID |x |
-|trailing_ID |x |
-|current_pass |x |
-|total_pass |x |
-|skipped |x |
-|not_here_skipped |x |
-|merge_chunk_size |x |
-|voodoo logic for deciding when to begin |x |
-|uuid_gen_type |x |
-|uuid_namespace |x |
-|mothers |x |
-|average_progress_rate |x |
-|recent_progress_rate |x |
-|cache_hit_ratio |x |
-|start_time |x |
-|progress_history |x |
-|progress_times |x |
-|job_index_buffer_size |x |
-|job_index_buffer_suggestion |x |
-|include_subtrees |x |
-|exclude_subtrees |x |
-|fifo |x |
-|task_status |x |
-|wire_lock |x |
-|wire_cv |x |
-|main_thread |x |
-|encrypt |x |
-|usn_value |x |
-|upgradefd |x |
-|numsubordinates |x |
-|writer_ctx |x |
+|task | task |
+|flags |flags |
+|input_filenames |ldif filenames |
+|index_list |index_list |
+|worker_list |worker_list |
+|number_indexers |Not used |
+|starting_ID |Not used |
+|first_ID |Not used |
+|lead_ID |Not used |
+|ready_ID |Not used |
+|ready_EID |Not used |
+|trailing_ID |Not used |
+|current_pass |Not used |
+|total_pass |Not used |
+|skipped |skipped |
+|not_here_skipped |not_here_skipped |
+|merge_chunk_size |Not used |
+|voodoo logic for deciding when to begin |Not used |
+|uuid_gen_type |uuid_gen_type |
+|uuid_namespace |uuid_namespace |
+|mothers |??? |
+|average_progress_rate |average_progress_rate |
+|recent_progress_rate |recent_progress_rate |
+|cache_hit_ratio |Not used |
+|start_time |start_time |
+|progress_history |progress_history |
+|progress_times |progress_times |
+|job_index_buffer_size |Not used |
+|job_index_buffer_suggestion |Not used |
+|include_subtrees |include_subtrees |
+|exclude_subtrees |exclude_subtrees |
+|fifo |Not used |
+|task_status |task_status |
+|wire_lock |Used with wire_cv |
+|wire_cv |Used to wait until main-thread initialization is done and we are reading to queue entries |
+|main_thread |main import thread (dbmdb_import_main) tid |
+|encrypt |encrypt |
+|usn_value |usn_value |
+|upgradefd |??? |
+|numsubordinates |??? |
+|writer_ctx |the ImportCtx struct |
