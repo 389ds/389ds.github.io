@@ -5,4 +5,4 @@ title: "Howto: MultiMasterReplication"
 # Multi-Master Replication
 --------------------------
 
-For setting up replication, please refer to <https://access.redhat.com/knowledge/docs/en-US/Red_Hat_Directory_Server/9.0/html/Administration_Guide/Managing_Replication.html>
+For setting up replication, please refer to <https://access.redhat.com/documentation/en-us/red_hat_directory_server/11/html/administration_guide/managing_replication>
