@@ -58,12 +58,12 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 
 If you find a bug, or would like to see a new feature, file it in our GitHub project: <https://github.com/389ds/389-ds-base>
 
-eccfa2af9 Bump version to 2.0.14
-f308faeb9 Issue 5127 - ds_selinux_restorecon.sh: always exit 0
-68c97a2bb Issue 5037 - in OpenQA changelog trimming can crashes (#5070)
-e19a538e3 Issue 4992 - BUG - slapd.socket container fix (#4993)
-f0b69ea7c Issue 5079 - BUG - multiple ways to specific primary (#5087)
-c1a569244 Issue 5080 - BUG - multiple index types not handled in openldap migration (#5094)
-e7d6aef46 Issue 5135 - UI - Disk monitoring threshold does update properly
-72eb93ac9 Issue 5129 - BUG - Incorrect fn signature in add_index (#5130)
+- Bump version to 2.0.14
+- Issue 5127 - ds_selinux_restorecon.sh: always exit 0
+- Issue 5037 - in OpenQA changelog trimming can crashes (#5070)
+- Issue 4992 - BUG - slapd.socket container fix (#4993)
+- Issue 5079 - BUG - multiple ways to specific primary (#5087)
+- Issue 5080 - BUG - multiple index types not handled in openldap migration (#5094)
+- Issue 5135 - UI - Disk monitoring threshold does update properly
+- Issue 5129 - BUG - Incorrect fn signature in add_index (#5130)
 
