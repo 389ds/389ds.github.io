@@ -25,7 +25,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
-|[389-ds-base-2.1.0.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.1.0.tar.gz)|389-ds-base.git|389-ds-base-2.1.0|[Building](building.html)|2189e17ec9139206e4e2e70b8b55b87c41198f46b8f977958d92fe8dbb2a8fdbd7ed3e362579235c73433492a82ed483aa8cb5c6d1132728e880e3085ecc4d93|
+|[389-ds-base-2.1.0.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.1.0.tar.gz)|389-ds-base.git|389-ds-base-2.1.0|[Building](building.html)|496195b848566a0ccee272f06a041e2f764a5c8f3d84651a0fc3c7ca9128102ac6e8a8c9ae0945ce1742f39006daa724e394d0481d7c494a9701bf6c8709be51|
 
 ### 389 Directory Server 2.0.0
 
