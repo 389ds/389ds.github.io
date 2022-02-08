@@ -61,11 +61,13 @@ build it
 # Testing DS
 ------------
 
-You can now test ns-slapd. You may find that setup-ds.pl hangs. You should try running with --debug in this case.
+First enable setuid dumping:
 
-    setup-ds.pl --debug
+    # sysctl fs.suid_dumpable=1
 
-If setup-ds.pl hangs, it's (likely) that ASAN caused ns-slapd to terminate before startup could complete. ctrl - c the setup-ds.pl process and proceed as normal.
+Disabling selinux could be needed if the ASAN report is not generated
+
+If dscreate hangs, it's (likely) that ASAN caused ns-slapd to terminate before startup could complete. ctrl - c dscreate process and proceed as normal.
 
 To test, run ns-slapd in the foreground:
 
@@ -73,7 +75,7 @@ To test, run ns-slapd in the foreground:
 
 Or you can run as normal:
 
-    start-dirsrv
+    dsctl slapd-INSTANCE start
     OR
     systemctl start dirsrv@.service
 
