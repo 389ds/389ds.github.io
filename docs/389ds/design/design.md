@@ -34,6 +34,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Database Compaction Scheduling](compact-schedule-design.html)
 -   [DB Locks Monitoring](dblocks-monitoring.html)
 -   [Global Counters Contention](global-counters-contention.html)
+-   [Support of In Chain matching rule](matching-rule-in-chain.md.html)
 
 ## 389 Directory Server 1.4.4
 
