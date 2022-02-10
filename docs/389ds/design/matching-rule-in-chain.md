@@ -12,10 +12,10 @@ title: "Matching rule in chain"
 
 Matching rule in chain, LDAP_MATCHING_RULE_IN_CHAIN (1.2.840.113556.1.4.1941), is an *extensible match* for search filter. It is used to lookup ancestry of an LDAP entry. For doing this it walks the chain of ancestry and so reveal all direct or indirect membership, like 
 
-	- (member:1.2.840.113556.1.4.1941:=uid=foo,dc=com)   *# all direct or indirect groups, 'foo' is member of*
-	- (manager:1.2.840.113556.1.4.1941:=uid=bar,dc=com)  *# all direct or indirect users 'bar' is manager of*
-	- (parentOrganization:1.2.840.113556.1.4.1941:=ou=baz,dc=com) *# all direct or indirect organization 'baz' belongs to*
-	- (memberof:1.2.840.113556.1.4.1941:=cn=grp1,dc=com) *# all direct or indirect members of 'grp1' group*
+	- (member:1.2.840.113556.1.4.1941:=uid=foo,dc=com)   # all direct or indirect groups, 'foo' is member of
+	- (manager:1.2.840.113556.1.4.1941:=uid=bar,dc=com)  # all direct or indirect users 'bar' is manager of
+	- (parentOrganization:1.2.840.113556.1.4.1941:=ou=baz,dc=com) # all direct or indirect organization 'baz' belongs to
+	- (memberof:1.2.840.113556.1.4.1941:=cn=grp1,dc=com) # all direct or indirect members of 'grp1' group
 
 The benefits is that with a single search request, a ldap client can retrieve the ancestry without the need to iterate thru transveral group membership.
 
@@ -55,16 +55,16 @@ For upgrade, the function *upgrade_server()* (*ldap/servers/slapd/upgrade.c*) cr
 
 ## description of matching rules
 
-A matching rule defines, for a given OID/name/alias, callbacks to identify candidates that match an assertion value and callbacks to check if a given filter component matches or not.
+A matching rule defines, for a given OID/name/alias, callbacks to identify candidates that match an assertion value and callbacks to check if a given entry matches or not a give filter component.
 
 During a search, a filter component selects (via the attribute syntax or the extensible match OID) a given matching rule. The matching rule is first called to compute the database keys that matches the assertion value (mr_values2keys). Then the searches looks from the index files, to transform each database key into a set of database IDs. So if there are a set of db keys, then it creates equivalent number of set of IDs.
 In case of extensible match, the final candidate list of database ID is the **intersection** of the sets of db IDs.
 
 In the final phase of the search, before returning a given entry, the matching rule is called to verify if filter component matches the entry.
 
-## in chain matching rule
+## "In chain" matching rule
 
-The plugin init function **inchain_init**, registers the matching rules (via *syntax_register_matching_rule_plugins*) via the names/alias **inchainMatch** and **1.2.840.113556.1.4.1941**. A consequence is that the In chain matching rule is add to the supported matching rules in the schema.
+The plugin init function **inchain_init**, registers the matching rules (via *syntax_register_matching_rule_plugins*) via the names/alias **inchainMatch** and **1.2.840.113556.1.4.1941**. A consequence is that the "*In chain*" matching rule is added to the supported matching rules in the schema.
 
 The new matching rule is defined in *ldap/servers/plugins/syntaxes/inchain.c*.
 
@@ -88,15 +88,15 @@ Regarding *mr_plugin_def* structure, *in chain* matching rule,
 
 ### mr_values2keys
 
-The is a callback that is responsible to build, from an **assertion value** of an *extended match* filter component, the set of keys that matches the assertion.
+*mr_values2keys* is a callback that is responsible to build, from an **assertion value** of an *extended match* filter component, the set of keys that matches the assertion.
 
 If the syntax of *attributeType*, is not *DistinguishedName*, then it returns NULL.
 
-It returns the **nsuniqueid** of ancestors of **assertion value**. For example '*(member:1.2.840.113556.1.4.1941:=uid=foo,dc=example)*' returns the **nsuniqueid** of all the direct and indirect groups where *uid=foo,dc=example* is a '*member*'. each **nsuniqueid** is a *key*.
+It returns the **nsuniqueid** of ancestors of **assertion value**. For example '*(member:1.2.840.113556.1.4.1941:=uid=foo,dc=example)*' returns the **nsuniqueid** of all groups where *uid=foo,dc=example* is a direct or indirect '*member*'. A **nsuniqueid** is a database *key* used to look up the *nsuniqueid* index.
 
 To implement this, the function **memberof_get_groups** should be moved out from **memberof.c** and implemented into slapi-private function. This function should return either **groupdn** or **nsuniqueids** of the groups.
 
-mr_values2keys calls <a href="#Get the groups">memberof_get_groups</a> and retrieves **nsuniqueids** of the groups that the target entry belongs to. We need a *database key* to retrieve, from an index, the *database ID* (entryid) of the group. The index **nsuniqueids** being faster that **entryrdn**, it is better to retrieve the **nsuniqueids**.
+mr_values2keys calls <a href="#get-the-groups">memberof_get_groups</a> and retrieves **nsuniqueids** of the groups that the target entry belongs to. We need a *database key* to retrieve, from an index, the *database ID* (entryid) of the group. The index **nsuniqueids** being faster that **entryrdn**, it is better to retrieve the **nsuniqueids**.
 
 
 ### mr_filter_ava
@@ -109,7 +109,7 @@ So *mr_filter_ava* will always return *SUCCESS* (0).
 
 TBC if it needs to be implemented or not
 
-## In chain plugin
+## "In chain" plugin
 
 The In chain MR is define as a new *syntax* plugin in configuration templates: *ldap/ldif/template-dse-minimal.ldif.in* and *ldap/ldif/template-dse.ldif.in*.
 
@@ -171,11 +171,11 @@ TBD
 # Reference
 -----------------
 
-[4678](https://github.com/389ds/389-ds-base/issues/4678) and [1974236](https://bugzilla.redhat.com/show_bug.cgi?id=1974236)
-[user releated searches](https://ldapwiki.com/wiki/Active%20Directory%20User%20Related%20Searches)
-[group releated searches](https://ldapwiki.com/wiki/Active%20Directory%20Group%20Related%20Searches)
-[LDAP_MATCHING_RULE_IN_CHAIN](https://ldapwiki.com/wiki/LDAP_MATCHING_RULE_IN_CHAIN)
-[LDAP_MATCHING_RULE_TRANSITIVE_EVAL](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/1e889adc-b503-4423-8985-c28d5c7d4887)
+[4678](https://github.com/389ds/389-ds-base/issues/4678) and [1974236](https://bugzilla.redhat.com/show_bug.cgi?id=1974236)<br>
+[user releated searches](https://ldapwiki.com/wiki/Active%20Directory%20User%20Related%20Searches)<br>
+[group releated searches](https://ldapwiki.com/wiki/Active%20Directory%20Group%20Related%20Searches)<br>
+[LDAP_MATCHING_RULE_IN_CHAIN](https://ldapwiki.com/wiki/LDAP_MATCHING_RULE_IN_CHAIN)<br>
+[LDAP_MATCHING_RULE_TRANSITIVE_EVAL](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/1e889adc-b503-4423-8985-c28d5c7d4887)<br>
 
 # Author
 --------
