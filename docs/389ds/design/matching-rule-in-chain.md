@@ -111,7 +111,7 @@ TBC if it needs to be implemented or not
 
 ## "In chain" plugin
 
-The In chain MR is define as a new *syntax* plugin in configuration templates: *ldap/ldif/template-dse-minimal.ldif.in* and *ldap/ldif/template-dse.ldif.in*.
+The In chain MR is define as a new *syntax* plugin
 
     dn: cn=In Chain,cn=plugins,cn=config
     objectclass: top
@@ -121,9 +121,19 @@ The In chain MR is define as a new *syntax* plugin in configuration templates: *
     nsslapd-pluginpath: libsyntax-plugin
     nsslapd-plugininitfunc: inchain_init
     nsslapd-plugintype: syntax
-    nsslapd-pluginenabled: on
+    nsslapd-pluginenabled: off
 
-To allow smooth upgrades, *ldap/servers/slapd/upgrade.c* will create that entry.
+Use of this MR is restricted to uses having read access to 
+
+    dn: oid=1.2.840.113556.1.4.1941,cn=features,cn=config
+    objectClass: top
+    objectClass: directoryServerFeature
+    oid: 1.2.840.113556.1.4.1941
+    cn: InChain Matching Rule
+
+Those two entries are present in templates: *ldap/ldif/template-dse-minimal.ldif.in* and *ldap/ldif/template-dse.ldif.in*.  To allow smooth upgrades, *ldap/servers/slapd/upgrade.c* will create those entries.
+
+Because of the potential performance impact, this Matching Rule is **not enabled** by default and its uses is limited user allowed to read the entry **oid=1.2.840.113556.1.4.1941,cn=features,cn=config**. see (<a href="#limitations">limitations</a>)
 
 ## Get the groups
 
@@ -154,6 +164,8 @@ This function is moved out of *memberof plugin* to be added as a slapi private f
 
 This function uses a complex configuration structure, that is preserved. Note that this function, retrieves membership groups but also update the target entry, adding the *'memberof: group'* when it is missing. This second part (fixup) is *useless* for *mr_values2keys*, the new function should have a toggle to decide if the '*fixup*' part is needed or not.
 
+This function is reponsible of enforcing **access control**, so that if the bound use has not access to some entries or membership attributes in the entries then the links are not followed. This function will basically behave like *deref_check_access* is doing.
+
 RFE [\#5156](https://github.com/389ds/389-ds-base/issues/5156) is taking care of that move.
 
 ## Extensible filter
@@ -163,6 +175,14 @@ The filter component is used to build a candidate list and then to verify that s
 When evaluating an *extensible filter* (see filterindex.c:extensible_candidate) with *1.2.840.113556.1.4.1941*, the In chain <a href="#mr_values2keys">callback</a> returns (*SLAPI_PLUGIN_MR_KEYS*) the set of database keys (*nsuniqueid*) that match the direct/nested assertion equality test.
 
 The *nsuniqueid* index is then lookup (*indextype_EQUALITY*) to get for each key (*nsuniqueid*) the ID list. For a given *nsuniqueid*, the ID list contains one ID. The set of database keys (*nsuniqueid*) is then translated into a ID list that is the **union** (*idl_union*) of the corresponding ID of each nsuniqueid.
+
+## limitations
+
+Because such matching rule is expensive to compute, it is not enable by default. To enable it you need to run **dsconf instance schema matchingrules enable inChainMatch** and **dsctl instance restart**. Another option is to enable the MR by default but add a config parameter **dsconf instance config replace nsslapd-inchainmatch-enabled=on**.
+
+The use of the *inChain* matching rule, is limited to bound user having **SLAPI_ACL_READ** access to the entry **oid=1.2.840.113556.1.4.1941,cn=features,cn=config** (similarly to *sync_feature_allowed*). If any users is allowed to use this MR just ADD the following ACI to aci: **(targetattr != "aci")(version 3.0; acl "InChain Matching Rule"; allow( read, search ) userdn = "ldap:///all";)**
+
+For performance reasons, the membership attribute used in the InChain matching rule must be indexed. This can be tested with a new slapi-private function that export *is_indexed*.
 
 # Tests
 
