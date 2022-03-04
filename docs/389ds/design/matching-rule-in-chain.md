@@ -109,7 +109,7 @@ So *mr_filter_ava* will always return *SUCCESS* (0).
 
 TBC if it needs to be implemented or not
 
-## "In chain" plugin
+## InChain plugin
 
 The In chain MR is define as a new *syntax* plugin
 
@@ -122,6 +122,7 @@ The In chain MR is define as a new *syntax* plugin
     nsslapd-plugininitfunc: inchain_init
     nsslapd-plugintype: syntax
     nsslapd-pluginenabled: off
+    nsslapd-pluginshortcut-member: on
 
 Use of this MR is restricted to uses having read access to 
 
@@ -167,6 +168,43 @@ This function uses a complex configuration structure, that is preserved. Note th
 This function is reponsible of enforcing **access control**, so that if the bound use has not access to some entries or membership attributes in the entries then the links are not followed. This function will basically behave like *deref_check_access* is doing.
 
 RFE [\#5156](https://github.com/389ds/389-ds-base/issues/5156) is taking care of that move.
+
+## memberof shortcut
+
+An exstensible search using InChain MR with **member** link attribute, expects to retrieves all the groups a specific user belongs to.
+
+	- (member:1.2.840.113556.1.4.1941:=uid=foo,dc=com)   # all direct or indirect groups, 'foo' is member of
+
+In case **memberof plugin** is enabled, the entry uid=foo contains *'memberof'* attribute with all the groups it belongs to. In such case, using the *'memberof'* value of 'uid=foo' is a shortcut compare to reevaluated <a href="#get-the-groups">memberof_get_groups</a> for the 'uid=foo' entry. It is a pre-computed and stored attribute that 'InChain' can take benefit of.
+
+This approach has a limitation regarding the **access control**. For example if we have the following request/setting
+
+
+    ldapsearch -D "uid=requestor,ou=people,dc=com" -W -b "cn=com" "(member:1.2.840.113556.1.4.1941:=uid=foo,dc=com)" dn
+        
+    /* uid=requestor has access to following entries/attr except G1 */
+    
+    dn: G0
+    member: G1
+    
+    dn: G1	/* uid=requestor has NOT access to that entry */
+    member: G2  /* uid=requestor has NOT access to that entry */
+    
+    dn: G2
+    member: foo
+    
+    dn: foo
+    memberof: G0
+    memberof: G1
+    memberof: G2
+
+If InChain MR uses the shortcut *'memberof'* attribute (that does not enforce ACI), the result of the ldapsearch is: G2, G1 and G0.
+
+If InChain MR calls <a href="#get-the-groups">memberof_get_groups</a>, the result is: G2. Indeed ACI enforcement will allow the retrieval of G2. But G1 being denied, it is not returned and as a consequence neither G0 (G0 is kind of being hidden by G1).
+
+A large set of deployments, grants search/read access rights to group membership attribute. Any bound user being allowed to see group membership of any other user. In such case, using the shortcut is valid. In others deployment, *'memberof* shortcut will be disabled and group membership will go through <a href="#get-the-groups">memberof_get_groups</a> and ACI enforcement.
+
+To toggle those two modes the <a href="#InChain plugin">InChain plugin</a> entry contains **nsslapd-pluginshortcut-member**. Whose value is **on** by **default**. Being on, InChain plugin will use *'memberof'* attribute, else it will compute the groups that 'foo' is memberof.
 
 ## Extensible filter
 
