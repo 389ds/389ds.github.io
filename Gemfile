@@ -6,12 +6,12 @@ gem 'jekyll'
 gem 'jekyll-paginate'
 gem 'jekyll-plantuml'
 gem 'jekyll-sitemap'
-gem 'kramdown'
+gem 'kramdown', ">= 2.3.0"
+gem 'kramdown-parser-gfm'
 gem 'rack-jekyll', :git => 'https://github.com/awood/rack-jekyll'
-gem 'nokogiri', '~>1.13.2'
 gem 'pygments.rb'
 gem 'stringex'
-gem 'rack', "~>2.1.4"
+gem 'rack', "~>2.2"
 gem 'rack-rewrite'
 gem 'puma'
 
