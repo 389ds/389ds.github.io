@@ -1,20 +1,16 @@
+FROM 389ds/389ds-website-ruby-27
+MAINTAINER awood@redhat.com
 
-FROM opensuse/tumbleweed:latest
-MAINTAINER william@blackhats.net.au
+USER root
+RUN mkdir -p /site && chmod 777 /site
+WORKDIR /site
 
-EXPOSE 4000
-
-RUN zypper in -y python2-Pygments gcc gcc-c++ libxml2-devel libxslt-devel \
-    ruby2.6-rubygem-bundler git make tar gzip ruby-devel && \
-    zypper clean
-
-RUN mkdir -p /root/389wiki
-WORKDIR /root/389wiki
-
-ADD ./ /root/389wiki
-
+# The gems are installed globally and the copied Gemfiles will be
+# hidden when the site source is mounted into /site
+COPY ./Gemfile* .
 RUN bundle install
 
-CMD ["jekyll", "serve", "-H", "0.0.0.0"]
-
-
+USER 1001
+# Turn off disk caching; jekyll tries to create a .jekyll-cache directory in the volume
+# mount which is doesn't have permission to do
+CMD bundle exec jekyll serve -d /tmp --disable-disk-cache --livereload -H 0.0.0.0

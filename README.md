@@ -1,7 +1,22 @@
 # 389 Directory Server Wiki
 
 ## Getting Started
+### Container Development (Easy Mode)
+1. Build the `Dockerfile.openshift` and `Dockerfile` images in that order.  You
+   can also pull the `389ds/389ds-website-ruby-27` from Quay.io.
+   ```
+   $ podman build -t 389ds/389ds-website-ruby-27 -f Dockerfile.openshift
+   $ podman build -t site-test -f Dockerfile
+   ```
+1. Run the `site-test` image with the site source mounted into it.  The `:z`
+   tells Podman to set the SELinux context on the volume.
+   ```
+   $ podman run -v .:/site:z -p 4000:4000 --rm site-test
+   ```
+1. You should only need to rebuild the underlying images if something in the
+   site software stack changes: e.g. new dependencies, library updates, etc.
 
+### Local Development (Hard Mode)
 You can test our your changes locally with:
 
 `docker build -t 389wiki:latest .`

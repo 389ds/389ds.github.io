@@ -9,7 +9,7 @@ RUN yum install -y --setopt=tsflags=nodocs python3 && \
     yum clean all -y
 
 # Keep this value up to date with the BUNDLED WITH version in Gemfile.lock
-RUN gem install bundler:2.2.15
+RUN gem install bundler:2.3.10
 
 COPY ./.s2i/bin/ $STI_SCRIPTS_PATH
 
