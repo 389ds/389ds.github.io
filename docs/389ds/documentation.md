@@ -70,6 +70,7 @@ We maintain a number of how to guides for 389 Directory Server
 -   [How to Use SSF Restrictions](howto/howto-use-ssf-restrictions.html)
 -   [How to Inactivate Accounts using nsAccountLock](howto/howto-account-inactivation.html)
 -   [How to use LMDB](howto/howto-use-lmdb.html)
+-   [How to deploy 389 DS on OpenShift](howto/howto-deploy-389ds-on-openshift.html)
 
 #### Operating System
 
