@@ -35,6 +35,7 @@ Available tags:
 * Custom TLS certificate and key should be placed in `/data/tls/server.crt` and `/data/tls/server.key`, respectively.
 * CA certificates should be placed under `/data/tls/ca/` in separate files, i.e. `/data/tls/ca/ca1.crt`, `/data/tls/ca/ca2.crt`, etc.
 * `ns-slapd` is running on ports 3389 and 3636 inside the pod.
+* A `StatefulSet` is used instead of `Deployment` kind. It provides guarantees about the ordering and uniqueness of the Pods. Each Pod (and 389 instance in it) will have its own `PersistentVolume` attached. See [`StatefulSet` documentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) and [tutorial](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/) for more information.
 * Scaling `StatefulSet` doesn't automatically setup replication between the instances.
 
 ## Deploying 389 Directory Server container
@@ -203,7 +204,7 @@ Create a new project:
 oc new-project demo 
 ```
 
-Create a service account for dirsrv and grant anyuid SCC: 
+Create a service account for dirsrv and grant anyuid SCC (you should have `cluster-admin` role to be able to do that):
 ```
 oc create serviceaccount dirsrv-sa
 oc adm policy add-scc-to-user anyuid -n demo -z dirsrv-sa
@@ -232,29 +233,34 @@ oc expose svc dirsrv-internal-svc
 ```
 $ oc get routes
 NAME                  HOST/PORT                                        PATH   SERVICES              PORT               TERMINATION   WILDCARD
-dirsrv-external-svc   dirsrv-external-svc-demo.apps.cliuster.domain.tld          dirsrv-external-svc   dirsrv-nonsecure                 None
-dirsrv-internal-svc   dirsrv-internal-svc-demo.apps.cliuster.domain.tld          dirsrv-internal-svc   dirsrv-nonsecure                 None
+dirsrv-external-svc   dirsrv-external-svc-demo.apps.cluster.domain.tld          dirsrv-external-svc   dirsrv-nonsecure                 None
+dirsrv-internal-svc   dirsrv-internal-svc-demo.apps.cluster.domain.tld          dirsrv-internal-svc   dirsrv-nonsecure                 None
 ```
+
+Note: If you don't already have TLS certificate and key, see [kubernetes docs](https://kubernetes.io/docs/tasks/administer-cluster/certificates/) how to create them manually or use something like [cert-manager](https://cert-manager.io/docs/).
 
 Create TLS and CA secrets:
 ```
 oc create secret tls dirsrv-tls-secret --cert=/path/to/tls.cert --key=/path/to/tls.key
 oc create secret generic dirsrv-tls-ca --from-file=/path/to/ca1.crt --from-file=/path/to/ca2.crt
 ```
+Currently `dscontainer` doesn't support CA bundles, so each CA certificate should be added separately.
 
 (Optionally) Create a secret with Directory Manager's password:
 ```
 oc create secret generic dirsrv-dm-password --from-literal=dm-password='Secret123'
 ```
+
 Create `StatefulSet` for 389 Directory Server:
 ```
-os apply -f dirsrv-statefulset.yaml
+oc apply -f dirsrv-statefulset.yaml
 ```
 
 A newly deployed 389 Directory Server should be up and running. You can check that it is accessible by running `ldapsearch` from inside the cluster:
 
+
 ```
-$ oc run ldap-client --rm -it --image=quay.io/vashirov/ds:client -- bash
+$ oc run ldap-client --rm -it --image=quay.io/389ds/clients:latest -- bash
 If you don't see a command prompt, try pressing enter.
 [root@ldap-client /]# ldapsearch -xLLL -H ldap://dirsrv-internal-svc.demo.svc.cluster.local:3389 -b "" -s base
 dn:
@@ -262,10 +268,11 @@ objectClass: top
 netscapemdsuffix: cn=ldap://dc=dirsrv-0,dc=dirsrv-internal-svc,dc=demo,dc=svc,
  dc=cluster,dc=local:3389
 ```
+Note: See [kubernetes docs](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/) for the Pod and services naming conventions. `dirsrv-internal-svc` in the URL above comes from `serviceName: dirsrv-internal-svc` in the `StatefulSet`. If you renamed it, adjust accordingly.
 
 And outside of the cluster:
 ```
-$ ldapsearch -xLLL -H ldap://dirsrv-external-svc-demo.apps.cliuster.domain.tld:30389 -b "" -s base
+$ ldapsearch -xLLL -H ldap://dirsrv-external-svc-demo.apps.cluster.domain.tld:30389 -b "" -s base
 dn:
 objectClass: top
 netscapemdsuffix: cn=ldap://dc=dirsrv-0,dc=dirsrv-internal-svc,dc=demo,dc=svc,
@@ -274,7 +281,7 @@ netscapemdsuffix: cn=ldap://dc=dirsrv-0,dc=dirsrv-internal-svc,dc=demo,dc=svc,
 
 Using LDAPS:
 ```
-$ ldapsearch -xLLL -H ldaps://dirsrv-external-svc-demo.apps.cliuster.domain.tld:30636 -b "" -s base
+$ ldapsearch -xLLL -H ldaps://dirsrv-external-svc-demo.apps.cluster.domain.tld:30636 -b "" -s base
 dn:
 objectClass: top
 netscapemdsuffix: cn=ldap://dc=dirsrv-0,dc=dirsrv-internal-svc,dc=demo,dc=svc,
@@ -290,6 +297,11 @@ First, scale the stateful set, so that 2 pods will be running:
 
 ```
 oc scale statefulset dirsrv --replicas=2
+```
+
+Wait until all pods are ready
+```
+oc get pods -w
 ```
 
 Create backend and suffix
@@ -318,10 +330,9 @@ oc exec -ti dirsrv-0 -- dsconf localhost repl-agmt create --suffix dc=example,dc
 oc exec -ti dirsrv-1 -- dsconf localhost repl-agmt create --suffix dc=example,dc=com --bind-dn cn=rmanager,cn=config --bind-passwd password --bind-method SIMPLE --conn-protocol LDAP --host dirsrv-0.dirsrv-internal-svc.demo.svc.cluster.local --port 3389 meTo0 
 ```
 
-Initialize replication agreements
+Initialize a consumer
 ```
 oc exec -ti dirsrv-0 -- dsconf localhost repl-agmt init meTo1 --suffix dc=example,dc=com
-oc exec -ti dirsrv-1 -- dsconf localhost repl-agmt init meTo0 --suffix dc=example,dc=com
 ```
 
 Add a user:
@@ -346,7 +357,7 @@ ldap_user
 
 Try logging in as a new user:
 ```
-$ ldapwhoami -x -H ldaps://dirsrv-external-svc-demo.apps.cliuster.domain.tld:30636 -D "uid=ldap_user,ou=people,dc=example,dc=com" -w password
+$ ldapwhoami -x -H ldaps://dirsrv-external-svc-demo.apps.cluster.domain.tld:30636 -D "uid=ldap_user,ou=people,dc=example,dc=com" -w password
 dn: uid=ldap_user,ou=people,dc=example,dc=com
 ```
 
