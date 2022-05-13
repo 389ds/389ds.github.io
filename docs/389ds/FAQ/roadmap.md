@@ -111,8 +111,8 @@ This is always our goal, and we are making progress in this area by replacing th
 
 Adding a REST interface to the database is a long term goal.
 
-#### Security Audit Log & Tooling
+### Security Audit Log & Tooling
 
-A log that tracks authentication/authorization events:  failed binds,  account lock, insufficent access, etc.  Allows Admins to check for brute force attacks and password spraying.  See the design [doc](../design/security-audit-log-design.html), and CLI enhancement to generate reports.
+A log that tracks authentication/authorization events:  failed binds,  account lock, insufficent access, etc.  Allows Admins to check for brute force attacks and password spraying.  See the [design doc here](../design/security-audit-log-design.html), and CLI enhancement to generate reports.
 
 
