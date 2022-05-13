@@ -80,8 +80,7 @@ This is the identity/database content tool.  This is used to manage a variety of
 
 We have a new web UI Cockpit plugin.  Now you can manage the server in Cockpit via a new plugin for the Directory Server.  Setting up things like Replication, databases, and monitoring have been greatly improved since the old Java console.
 
-WARNING - Currently there is no LDAP browser/editor in the UI.  For now, you need to use CLI tools, or other browsers like Apache Directory Studio, ldapvi, etc.  That being said, we do plan to add a generic browser/editor (more on this later).
-
+UPDATE - There is now a LDAP browser/editor in the UI. 
 <br>
 
 ## What is coming in 389-ds-base-1.4.next (RHDS 11.x)
@@ -111,5 +110,9 @@ This is always our goal, and we are making progress in this area by replacing th
 ### REST Interface
 
 Adding a REST interface to the database is a long term goal.
+
+#### Security Audit Log & Tooling
+
+A log that tracks authentication/authorization events:  failed binds,  account lock, insufficent access, etc.  Allows Admins to check for brute force attacks and password spraying.  See the design [doc](../design/security-audit-log-design.html), and CLI enhancement to generate reports.
 
 
