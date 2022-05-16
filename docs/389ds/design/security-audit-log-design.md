@@ -112,7 +112,7 @@ Convenient time for sorting and building reports
     
 #### EVENT
 
- - authentication FAILED_BIND  --> INVALID_PASSWORD | NO_SUCH_ENTRY
+ - authentication FAILED_BIND  --> INVALID_PASSWORD, NO_SUCH_ENTRY, ACCOUNT_LOCKED
  - authorization UNAUTH_ACCESS --> err=50  mod dn=""
  
 #### DN
@@ -170,6 +170,10 @@ Provide a tool to parse the logs for the customers and generate meaningful repor
     
         How far to look into the logs (default is the entire log)
         
+    --verbose ?? ***
+    
+        Override default verbose options?  Use different name.  Do we want this?  Should report always be "verbose"?
+        
     *** Open to other naming suggestions
 
 
@@ -177,42 +181,98 @@ Provide a tool to parse the logs for the customers and generate meaningful repor
 
 Each report should general stats like number of failed binds (expired, lockout, invalid password, etc), maxber, etc.  Just get the counts.  Maybe just include this in all events/reports?
 
+Failures:
+- FAILED_BIND (err=49) - Bad password
+- NO_SUCH_ENTRY (err=49) - The bind DN did not match any entry (discovery attempt?)
+- ACCOUNT_LOCKED (err=53?) - Account is locked out
+
+
 
 #### AUTH
 
 Stats specific to BINDS.   Bursts, brute force, account lock out.
 
+    Failed Binds (530) (4 users)
+    =========================================================
+    - [500] uid=mark,ou=people,dc=example,dc=com
+        - [490] 10.10.10.1
+            - 10/10/2022 12:32:21 - conn=1 - FAILED_BIND
+            - 10/10/2022 12:32:21 - conn=12 - FAILED_BIND
+            - ...
+        - [10] 10.10.10.2
+            - 10/10/2022 13:18:21 - conn=23 - FAILED_BIND
+            - 10/10/2022 13:18:21 - conn=33 - FAILED_BIND
+            - ...
+    - [20] uid=sarah,ou=people,dc=example,dc=com
+        - [20] 10.10.10.1
+            - 10/10/2022 12:32:21 - conn=1 - ACCOUNT_LOCKED (any other info available?)
+            - ...
+    - [10] uid=mark.reynolds,ou=people,dc=example,dc=com
+        - [10] 10.10.10.1
+            - 10/10/2022 12:32:21 - conn=1 - NO_SUCH_ENTRY
+            - ...
+
+
+#### Burst Events (password spraying)
+    
+12:00:00 - 12:59:00: 0
+13:00:00 - 13:59:00: 1
+14:00:00 - 14:59:00: 0
+15:00:00 - 15:59:00: 6
+16:00:00 - 16:59:00: 0
+17:00:00 - 17:59:00: 245 (2 entries)
+    - [240] uid=mark,ou=people,dc=example,dc=com
+        - [235] 20.20.20.167
+            - 10/10/2022 17:01:21 - conn=1 - FAILED_BIND
+            - ...       
+        - [5] 20.20.20.167
+            - 10/10/2022 17:01:21 - conn=1 - FAILED_BIND
+            - ...
+    - [5] uid=scott,ou=people,dc=example,dc=com
+        - [5] 220.21.21.101
+            - 10/10/2022 17:07:21 - conn=41 - NO_SUCH_ENTRY
+            - ...
+18:00:00 - 18:59:00: 178  (1 entry)
+    - [178] uid=mark,ou=people,dc=example,dc=com
+        - [178] 20.20.20.167
+            - 10/10/2022 18:32:21 - conn=190 - FAILED_BIND
+            - ...
+            - 10/10/2022 18:32:21 - conn=270 - ACCOUNT LOCKED
+          
+19:00:00 - 19:59:00: 0
+20:00:00 - 20:59:00: 3
+21:00:00 - 21:59:00: 0
+22:00:00 - 22:59:00: 0
+23:00:00 - 23:59:00: 5
+
+
+#### Slow brute force
+
+Single entry attack that occurs over time.
+
+daily, weekly, monthly?
 
 #### AUTHZ (authorization)
 
 Entries trying to modify (add, mod, delete, modrdn) data that they should not.
 
+    - [3] uid=mark,ou=people,dc=example,dc=com
+        - [2] 10.10.10.1
+            - 10/10/2022 12:32:21 - conn=1 - MOD dn="uid=admin,ou=privledged users,dc=example,dc=com"
+            - 10/10/2022 12:32:21 - conn=12 - DEL dn="cn=customers,ou=groups,dc=example,dc=com"
+        - [1] 10.10.10.2
+            - 10/10/2022 13:18:21 - conn=23 - MOD dn="cn=service_account,ou=special users,dc=example,dc=com"
 
 #### INJECT (injection/encoding)
 
 - maxbersize, other data corruption
 
+???
 
 
 
+## UI
 
-
-
-    
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Allow the UI to view the logs, and generate these reports.  Should the UI view the results as text, or in a tree!!!!  Lot of work
 
 
