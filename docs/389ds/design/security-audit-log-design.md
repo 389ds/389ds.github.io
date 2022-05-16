@@ -28,7 +28,7 @@ Need to check for bursts of failed logins (on any entry), failed binds on a sing
 
 Discovery/phishing - binds that fail with error 32 (internally) could be someone trying to discover user DN values.  We return error 49 to client, but internally we can detect the error 32 and log a security audit event.
 
-DOS/injection/encoding issues?  Not sure how detectable this would be.
+DOS/injection/encoding/maxbersize issues?  Not sure how detectable this would be.
 
  
 ## Events
@@ -46,6 +46,12 @@ DOS/injection/encoding issues?  Not sure how detectable this would be.
 - Cons: Tricky/incomplete coverage.  Only works for mods, not searches :-(
     - Add new access log keyword when results are restricted by ACI?  False positives?  Only add keyword when entire resource is denied?)
     - Is this worth pursuing?
+
+
+### Injection Attack
+
+- maxbersize
+- Other encoding errors?
 
 
 ## Reporting
@@ -122,6 +128,7 @@ Convenient time for sorting and building reports
 Detailed info.  Failed bind, account lockout, authorization resource DN - what the user tried to modify (mod_dn="") err=50, etc.
 
 
+
 ## Configuration
 -------------------------------------------------------
 
@@ -138,5 +145,74 @@ Detailed info.  Failed bind, account lockout, authorization resource DN - what t
     nsslapd-securitylog-maxlogsize: 100
     nsslapd-securitylog-maxlogsperdir: 10
     nsslapd-securitylog-mode: 600
+
+
+
+## dsctl security-report
+
+Provide a tool to parse the logs for the customers and generate meaningful reports
+
+### Usage
+
+    --interval UNIT   ***
+    
+        DAY, WEEK, MONTH, ALL (default is ALL)
+        
+    --interval-size   ***
+    
+        The number of UNITs to report on.  (default is 1)
+        
+    --event EVENT 
+    
+        BASIC, AUTH, AUTHZ, INJECT, ALL (default is ALL)
+        
+    --age NUM_OF_DAYS  ***
+    
+        How far to look into the logs (default is the entire log)
+        
+    *** Open to other naming suggestions
+
+
+### Report Examples
+
+Each report should general stats like number of failed binds (expired, lockout, invalid password, etc), maxber, etc.  Just get the counts.  Maybe just include this in all events/reports?
+
+
+#### AUTH
+
+Stats specific to BINDS.   Bursts, brute force, account lock out.
+
+
+#### AUTHZ (authorization)
+
+Entries trying to modify (add, mod, delete, modrdn) data that they should not.
+
+
+#### INJECT (injection/encoding)
+
+- maxbersize, other data corruption
+
+
+
+
+
+
+
+    
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
