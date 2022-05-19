@@ -28,7 +28,7 @@ Need to check for bursts of failed logins (on any entry), failed binds on a sing
 
 Discovery/phishing - binds that fail with error 32 (internally) could be someone trying to discover user DN values.  We return error 49 to client, but internally we can detect the error 32 and log a security audit event.
 
-DOS/injection/encoding/maxbersize issues?  Not sure how detectable this would be.
+TCP Attacks - DOS/injection/encoding/maxbersize
 
  
 ## Events
@@ -48,10 +48,11 @@ DOS/injection/encoding/maxbersize issues?  Not sure how detectable this would be
     - Is this worth pursuing?
 
 
-### Injection Attack
+### TCP Attack
 
 - maxbersize
-- Other encoding errors?
+- Crafted packets
+- Data corruption
 
 
 ## Reporting
@@ -106,22 +107,28 @@ Yes preferred format!
 
 Friendly date format
 
+
 #### UTC time
 
 Convenient time for sorting and building reports
-    
+
+
 #### EVENT
 
  - authentication FAILED_BIND  --> INVALID_PASSWORD, NO_SUCH_ENTRY, ACCOUNT_LOCKED
  - authorization UNAUTH_ACCESS --> err=50  mod dn=""
+ - tcp attack TCP_ERROR --> closed connection codes:  B1, B2, B3
+ 
  
 #### DN
 
 - Bind DN
 
+
 #### IP
 
 - client IP address
+
 
 #### MSG
 
@@ -164,7 +171,7 @@ Provide a tool to parse the logs for the customers and generate meaningful repor
         
     --event EVENT 
     
-        BASIC, AUTH, AUTHZ, INJECT, ALL (default is ALL)
+        BASIC, AUTH, AUTHZ, TCP, ALL (default is ALL)
         
     --age NUM_OF_DAYS  ***
     
@@ -185,7 +192,6 @@ Failures:
 - FAILED_BIND (err=49) - Bad password
 - NO_SUCH_ENTRY (err=49) - The bind DN did not match any entry (discovery attempt?)
 - ACCOUNT_LOCKED (err=53?) - Account is locked out
-
 
 
 #### AUTH
@@ -220,25 +226,26 @@ Stats specific to BINDS.   Bursts, brute force, account lock out.
 14:00:00 - 14:59:00: 0
 15:00:00 - 15:59:00: 6
 16:00:00 - 16:59:00: 0
-17:00:00 - 17:59:00: 245 (2 entries)
-    - [240] uid=mark,ou=people,dc=example,dc=com
-        - [235] 20.20.20.167
+17:00:00 - 17:59:00: 245 (245 entries)
+    - [1] uid=mark,ou=people,dc=example,dc=com
+        - [1] 20.20.20.167
             - 10/10/2022 17:01:21 - conn=1 - FAILED_BIND
-            - ...       
-        - [5] 20.20.20.167
-            - 10/10/2022 17:01:21 - conn=1 - FAILED_BIND
-            - ...
-    - [5] uid=scott,ou=people,dc=example,dc=com
-        - [5] 220.21.21.101
+    - [1] uid=scott,ou=people,dc=example,dc=com
+        - [1] 220.21.21.101
             - 10/10/2022 17:07:21 - conn=41 - NO_SUCH_ENTRY
-            - ...
+    - [1] uid=scotty,ou=people,dc=example,dc=com
+        - [1] 220.21.21.101
+            - 10/10/2022 17:07:21 - conn=341 - FAILED_BIND
+    ...
+    ...
+    ...
 18:00:00 - 18:59:00: 178  (1 entry)
     - [178] uid=mark,ou=people,dc=example,dc=com
         - [178] 20.20.20.167
             - 10/10/2022 18:32:21 - conn=190 - FAILED_BIND
             - ...
             - 10/10/2022 18:32:21 - conn=270 - ACCOUNT LOCKED
-          
+            - 10/10/2022 18:32:22 - conn=271 - ACCOUNT LOCKED          
 19:00:00 - 19:59:00: 0
 20:00:00 - 20:59:00: 3
 21:00:00 - 21:59:00: 0
@@ -246,11 +253,33 @@ Stats specific to BINDS.   Bursts, brute force, account lock out.
 23:00:00 - 23:59:00: 5
 
 
+#### Discovery Attacks
+
+Trying to bind as entries to discover if that user/DN exists
+
+
+    Discovery Binds (530)
+    =========================================================
+    - [1] uid=mark.reynolds,ou=people,dc=example,dc=com
+        - [1] 10.10.10.1
+            - 10/10/2022 12:32:21 - conn=1 - NO_SUCH_ENTRY
+    - [1] uid=mreynolds,ou=people,dc=example,dc=com
+        - [1] 10.10.10.1
+            - 10/10/2022 12:32:22 - conn=3 - NO_SUCH_ENTRY
+    - [1] uid=mark reynolds,ou=people,dc=example,dc=com
+        - [1] 10.10.10.1
+            - 10/10/2022 12:32:23 - conn=4 - NO_SUCH_ENTRY
+    - [1] cn=mark reynolds,ou=people,dc=example,dc=com
+        - [1] 10.10.10.1
+            - 10/10/2022 12:32:23 - conn=5 - NO_SUCH_ENTRY
+
+
 #### Slow brute force
 
 Single entry attack that occurs over time.
 
 daily, weekly, monthly?
+
 
 #### AUTHZ (authorization)
 
@@ -263,11 +292,16 @@ Entries trying to modify (add, mod, delete, modrdn) data that they should not.
         - [1] 10.10.10.2
             - 10/10/2022 13:18:21 - conn=23 - MOD dn="cn=service_account,ou=special users,dc=example,dc=com"
 
-#### INJECT (injection/encoding)
 
-- maxbersize, other data corruption
+#### TCP Attacks
 
-???
+maxbersize, data corruption, crafted packets, etc
+
+- B1 (SLAPD_DISCONNECT_BAD_BER_TAG)
+- B2 (SLAPD_DISCONNECT_BER_TOO_BIG)
+- B3 (SLAPD_DISCONNECT_BER_PEEK)
+
+Do the security logging in:  disconnect_server_nomutex_ext()
 
 
 
