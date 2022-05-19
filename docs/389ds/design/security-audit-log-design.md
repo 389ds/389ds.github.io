@@ -5,6 +5,8 @@ title: "Security Audit log"
 Security Audit log
 ======================================================
 
+{% include toc.md %}
+
 ## Why
 ------------------------------------------------------
 To properly track issues over time as the normal DS logs can rotate too quickly.  Instead we can have a more specialized/condensed log that will maintain this data for longer since it's not consuming as much disk resources.
@@ -118,7 +120,7 @@ Convenient time for sorting and building reports
  - authentication FAILED_BIND  --> INVALID_PASSWORD, NO_SUCH_ENTRY, ACCOUNT_LOCKED
  - authorization UNAUTH_ACCESS --> err=50  mod dn=""
  - tcp attack TCP_ERROR --> closed connection codes:  B1, B2, B3
- 
+
  
 #### DN
 
@@ -137,7 +139,8 @@ Detailed info.  Failed bind, account lockout, authorization resource DN - what t
 
 
 ## Configuration
--------------------------------------------------------
+
+Just like any other DS log
 
     nsslapd-securitylog: /var/log/dirsrv/slapd-localhost/security
     nsslapd-securitylog-logging-enabled: on
@@ -155,15 +158,17 @@ Detailed info.  Failed bind, account lockout, authorization resource DN - what t
 
 
 
-## dsctl security-report
+## CLI security-report
 
-Provide a tool to parse the logs for the customers and generate meaningful reports
+Add this to dsctl or a new tool?  Maybe a new log tool for security and access log (logconv.pl replacement) to parse the logs for the customers and generate meaningful reports.
 
 ### Usage
 
+Provide options so we can do checks on, what type of vents to check (--event=AUTH), how what events happened in the last 45 days (--age=45).  Or I want reports at certain intervals.  Give me a report for each week for the last 90 days (--interval=WEEK --age=90).  Or give me a weekly report for the last ten weeks (--interval=WEEK --interval-size=10).
+
     --interval UNIT   ***
     
-        DAY, WEEK, MONTH, ALL (default is ALL)
+        DAY, WEEK, MONTH, ALL (default is ALL the log)
         
     --interval-size   ***
     
@@ -179,9 +184,10 @@ Provide a tool to parse the logs for the customers and generate meaningful repor
         
     --verbose ?? ***
     
-        Override default verbose options?  Use different name.  Do we want this?  Should report always be "verbose"?
+        Override default verbose options?  Use different name.  Do we want this?  Shouldn't report always be "verbose"?
         
     *** Open to other naming suggestions
+
 
 
 ### Report Examples
@@ -245,7 +251,7 @@ Stats specific to BINDS.   Bursts, brute force, account lock out.
             - 10/10/2022 18:32:21 - conn=190 - FAILED_BIND
             - ...
             - 10/10/2022 18:32:21 - conn=270 - ACCOUNT LOCKED
-            - 10/10/2022 18:32:22 - conn=271 - ACCOUNT LOCKED          
+            - 10/10/2022 18:32:22 - conn=271 - ACCOUNT LOCKED
 19:00:00 - 19:59:00: 0
 20:00:00 - 20:59:00: 3
 21:00:00 - 21:59:00: 0
