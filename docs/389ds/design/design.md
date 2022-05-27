@@ -240,6 +240,19 @@ If you are adding a new design document, use the [template](design-template.html
 
 -----------------------------------------------
 
+## Replication Design Documents
+
+- [CSN pending list and ruv updates](csn-pending-lists-and-ruv-update.html)
+- [Change log processing](changelog-processing-in-repl-state-sending-updates.html)
+- [Agreement Status](repl-agmt-status-design.html)
+- [Bootstrap Credentials](repl-agmt-bootstrap-design.html)
+- [Integrate changelog into backend database](integrate-changelog-database-and-backend-database.html)
+- [Replication troubleshooting WIP](replication_troubleshooting.html)
+
+
+
+-----------------------------------------------
+
 ## Design Discussions
 -   [Token Auth](token-auth.html)
 -   [Entry State Resolution](entry-state-resolution.html)

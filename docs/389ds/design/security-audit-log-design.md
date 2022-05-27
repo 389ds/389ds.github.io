@@ -39,8 +39,9 @@ TCP Attacks - DOS/injection/encoding/maxbersize
 ### Authentication:
 
 - Track error 49 
-- Track error 53 - account lockout?
+- Track error 19 - account lockout (constraint violation)
 
+Should we track Root DN (cn=directory manager) failed binds differently?  Separate stat/report?
 
 ### Authorization
 
@@ -82,8 +83,8 @@ Let's *not* do this, or even have this as an config option, but as an exmaple he
     <TIMESTAMP> <EVENT> <IP> <CONN ID> <DN> <MSG>
     
     
-    [13/May/2022:14:19:21.828151054 -0400 utc_time=16774847578] event=FAILED_BIND ip=127.0.0.1 conn=2 dn="uid=mark,ou=people,dc=example,dc=com" msg=INVALID_PASSWORD
-    [13/May/2022:14:19:22.828151058 -0400 utc_time=16383747834] event=FAILED_BIND ip=127.0.0.1 conn=7 dn="uid=mike,ou=people,dc=example,dc=com" msg=NO_SUCH_ENTRY
+    [13/May/2022:14:19:21.828151054 -0400 utc_time=16774847578] event=FAILED_BIND ip=127.0.0.1 conn=2 dn="uid=mark,ou=people,dc=example,dc=com" bind_method="SIMPLE" msg=INVALID_PASSWORD
+    [13/May/2022:14:19:22.828151058 -0400 utc_time=16383747834] event=FAILED_BIND ip=127.0.0.1 conn=7 dn="uid=mike,ou=people,dc=example,dc=com" bind_method="SIMPLE" msg=NO_SUCH_ENTRY
 
 
 ### JSON format 
@@ -91,20 +92,23 @@ Let's *not* do this, or even have this as an config option, but as an exmaple he
 Yes preferred format!
 
     {
-    	date: '', // Human readable
-    	utc_time: '', // For easy sorting/reporting
-    	event: '',
-    	ip: '',
-    	conn_id: '',
-    	dn: '',
-    	msg: ''
+        date: '', // Human readable
+        utc_time: '', // For easy sorting/reporting
+        event: '',
+        client_ip: '',
+        server_ip: '',
+        conn_id: '',
+        dn: '',
+        bind_method: 'SIMPLE, SASL/GSSAPI, SASL/DIGEST-MD5, SSLCLIENTAUTH',
+        root_dn: true/false,
+        msg: ''
     }
 
 
-    {'date': '13/May/2022:14:19:21.828151054 -0400', 'utc_time': '168485945', 'event': 'FAILED_BIND', dn: 'uid=mark,ou=people,dc=example,dc=com', 'ip': '127.0.0.1', 'conn_id': '2', 'msg': 'INVALID_PASSWORD'}
-    {'date': '13/May/2022:14:19:22.828151058 -0400', 'utc_time': '168499999', 'event': 'FAILED_BIND', dn: 'uid=mike,ou=people,dc=example,dc=com', 'ip': '127.0.0.1', 'conn_id': '7', 'msg': 'NO_SUCH_ENTRY'}
-        
-        
+    {'date': '13/May/2022:14:19:21.828151054 -0400', 'utc_time': '168485945', 'event': 'FAILED_BIND', dn: 'uid=mark,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '2', 'msg': 'INVALID_PASSWORD'}
+    {'date': '13/May/2022:14:19:22.828151058 -0400', 'utc_time': '168499999', 'event': 'FAILED_BIND', dn: 'uid=mike,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '7', 'msg': 'NO_SUCH_ENTRY'}
+
+
 #### Date
 
 Friendly date format
@@ -155,6 +159,13 @@ Just like any other DS log
     nsslapd-securitylog-maxlogsize: 100
     nsslapd-securitylog-maxlogsperdir: 10
     nsslapd-securitylog-mode: 600
+    nsslapd-securitylog-level: 1
+
+### Logging Levels
+
+By default the security log will only log failures or specific events.  For completeness it could be beneficial to record successful binds.  Since this would add much more content to the log it will only be written if a specific log level is selected.
+
+The default level is "1" and it will only record security events.  Level "2" will also include successful binds in the security log.
 
 
 
@@ -169,23 +180,31 @@ Provide options so we can do checks on, what type of vents to check (--event=AUT
     --interval UNIT   ***
     
         DAY, WEEK, MONTH, ALL (default is ALL the log)
-        
+
     --interval-size   ***
     
         The number of UNITs to report on.  (default is 1)
-        
+
     --event EVENT 
     
         BASIC, AUTH, AUTHZ, TCP, ALL (default is ALL)
-        
+
     --age NUM_OF_DAYS  ***
     
         How far to look into the logs (default is the entire log)
-        
+
+    --start-date
+
+        Date to start parsing the log
+
+    --end-date
+
+        Date to stop parsing
+
     --verbose ?? ***
-    
+
         Override default verbose options?  Use different name.  Do we want this?  Shouldn't report always be "verbose"?
-        
+
     *** Open to other naming suggestions
 
 
@@ -197,7 +216,7 @@ Each report should general stats like number of failed binds (expired, lockout, 
 Failures:
 - FAILED_BIND (err=49) - Bad password
 - NO_SUCH_ENTRY (err=49) - The bind DN did not match any entry (discovery attempt?)
-- ACCOUNT_LOCKED (err=53?) - Account is locked out
+- ACCOUNT_LOCKED (err=19) - Account is locked out (pwp policy issue)
 
 
 #### AUTH
@@ -208,25 +227,26 @@ Stats specific to BINDS.   Bursts, brute force, account lock out.
     =========================================================
     - [500] uid=mark,ou=people,dc=example,dc=com
         - [490] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - FAILED_BIND
-            - 10/10/2022 12:32:21 - conn=12 - FAILED_BIND
+            - 10/10/2022 12:32:21 - conn=1 - method=simple - FAILED_BIND
+            - 10/10/2022 12:32:21 - conn=12 - method=simple - FAILED_BIND
             - ...
         - [10] 10.10.10.2
-            - 10/10/2022 13:18:21 - conn=23 - FAILED_BIND
-            - 10/10/2022 13:18:21 - conn=33 - FAILED_BIND
+            - 10/10/2022 13:18:21 - conn=23 - method=simple - FAILED_BIND
+            - 10/10/2022 13:18:21 - conn=33 - method=simple - FAILED_BIND
             - ...
-    - [20] uid=sarah,ou=people,dc=example,dc=com
+    - [20] uid=jamie,ou=people,dc=example,dc=com
         - [20] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - ACCOUNT_LOCKED (any other info available?)
+            - 10/10/2022 12:32:21 - conn=1 - method=simple - ACCOUNT_LOCKED (any other info available?)
             - ...
     - [10] uid=mark.reynolds,ou=people,dc=example,dc=com
         - [10] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - NO_SUCH_ENTRY
+            - 10/10/2022 12:32:21 - conn=1 - method=simple - NO_SUCH_ENTRY
             - ...
 
 
 #### Burst Events (password spraying)
-    
+
+```
 12:00:00 - 12:59:00: 0
 13:00:00 - 13:59:00: 1
 14:00:00 - 14:59:00: 0
@@ -235,29 +255,29 @@ Stats specific to BINDS.   Bursts, brute force, account lock out.
 17:00:00 - 17:59:00: 245 (245 entries)
     - [1] uid=mark,ou=people,dc=example,dc=com
         - [1] 20.20.20.167
-            - 10/10/2022 17:01:21 - conn=1 - FAILED_BIND
-    - [1] uid=scott,ou=people,dc=example,dc=com
+            - 10/10/2022 17:01:21 - conn=1 - method=simple - FAILED_BIND
+    - [1] uid=thierry,ou=people,dc=example,dc=com
         - [1] 220.21.21.101
-            - 10/10/2022 17:07:21 - conn=41 - NO_SUCH_ENTRY
-    - [1] uid=scotty,ou=people,dc=example,dc=com
+            - 10/10/2022 17:07:21 - conn=41 - method=simple - FAILED_BIND
+    - [1] uid=simon,ou=people,dc=example,dc=com
         - [1] 220.21.21.101
-            - 10/10/2022 17:07:21 - conn=341 - FAILED_BIND
+            - 10/10/2022 17:07:21 - conn=341 - method=simple - FAILED_BIND
     ...
     ...
     ...
 18:00:00 - 18:59:00: 178  (1 entry)
-    - [178] uid=mark,ou=people,dc=example,dc=com
+    - [178] uid=pierre,ou=people,dc=example,dc=com
         - [178] 20.20.20.167
-            - 10/10/2022 18:32:21 - conn=190 - FAILED_BIND
+            - 10/10/2022 18:32:21 - conn=190 - method=simple - FAILED_BIND
             - ...
-            - 10/10/2022 18:32:21 - conn=270 - ACCOUNT LOCKED
-            - 10/10/2022 18:32:22 - conn=271 - ACCOUNT LOCKED
+            - 10/10/2022 18:32:21 - conn=270 - method=simple - ACCOUNT LOCKED
+            - 10/10/2022 18:32:22 - conn=271 - method=simple - ACCOUNT LOCKED
 19:00:00 - 19:59:00: 0
 20:00:00 - 20:59:00: 3
 21:00:00 - 21:59:00: 0
 22:00:00 - 22:59:00: 0
 23:00:00 - 23:59:00: 5
-
+```
 
 #### Discovery Attacks
 
@@ -268,16 +288,16 @@ Trying to bind as entries to discover if that user/DN exists
     =========================================================
     - [1] uid=mark.reynolds,ou=people,dc=example,dc=com
         - [1] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - NO_SUCH_ENTRY
+            - 10/10/2022 12:32:21 - conn=1 - method=simple - NO_SUCH_ENTRY
     - [1] uid=mreynolds,ou=people,dc=example,dc=com
         - [1] 10.10.10.1
-            - 10/10/2022 12:32:22 - conn=3 - NO_SUCH_ENTRY
+            - 10/10/2022 12:32:22 - conn=3 - method=simple - NO_SUCH_ENTRY
     - [1] uid=mark reynolds,ou=people,dc=example,dc=com
         - [1] 10.10.10.1
-            - 10/10/2022 12:32:23 - conn=4 - NO_SUCH_ENTRY
+            - 10/10/2022 12:32:23 - conn=4 - method=simple - NO_SUCH_ENTRY
     - [1] cn=mark reynolds,ou=people,dc=example,dc=com
         - [1] 10.10.10.1
-            - 10/10/2022 12:32:23 - conn=5 - NO_SUCH_ENTRY
+            - 10/10/2022 12:32:23 - conn=5 - method=simple - NO_SUCH_ENTRY
 
 
 #### Slow brute force
