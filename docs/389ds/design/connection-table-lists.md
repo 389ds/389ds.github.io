@@ -7,13 +7,13 @@ title: "Connection Table - Multi active list"
 
 {% include toc.md %}
 
-#Overview
+# Overview
 ---------
 
 The connection table (CT) is fundamental to 389 DS connection management, it is used to prevent memory allocation latencies by pre-allocating memory for connections and also enables monitoring to gather statistics on active connections. Currently the slapd_daemon process spends a lot of cycles iterating over the CT, once to determine how many file descriptors are read ready and should be polled and then again to find connections that require processing. This becomes a bottleneck when the number of established connections is high. This work is an attempt to address this.
 
 
-#Current implementation
+# Current implementation
 -----------------------
 
 
@@ -79,7 +79,6 @@ Here is the updated CT struct, showing only modified or new members.
 		...
 		int list_size;
 		int list_num;
-		int list_select; 
 		Connection **c;
 		...
 		...
@@ -90,24 +89,23 @@ Here is the updated CT struct, showing only modified or new members.
 
 - list_size - number of elements in each CT list
 - list_num - number of CT lists
-- list_select - used to evenly share the connection load between lists.
 - c - 2d array of connection references. Slot 0 of each list is used as head of the linked list.
 - fd - 2d array of file descriptors, one for each active connection. Used when polling for conection activity. The first slot of each file descriptor array is used as a signal pipe, for ct_list_thread <-> accept_thread signaling.  
 
 ## Connection processing
-Here is a logical view of connection management, note the slapd_daemon is responsible for managing all connections.
+Here is a logical view of connection management, now each dedicated CT list thread is responsible for managing active connections on a specific CT list. The workload has been moved from the daemon to multiple dedicated threads.
 
 ![proposed ct processing](../../../images/ct-multi-list-1.png "proposed ct processing")
 
 ## Considerations
 ### Load balancing
-With multiple CT lists, the connection load needs to be spread equally balanced lists. A simple counter (list_select) is used for this, as a connection is moved from the freelist to an active list, the CT is queried to determine which CT list will be used.
+With multiple CT lists the connection management load needs to be balanced equally across all lists. As a connection is moved from the freelist to an active list, the CT is queried to determine which CT list should be used. Currently the CT list with the lowest number of connections is used.
 
 ### Signaling
 A signal pipe is used for thread <-> CT communications, with this change each CT list/thread pair will need a signal pipe for communications.
 
 ### Number of CT threads
-With this change, each CT list will have its own dedicated thread. As the number of CT lists/threads increase so too does the systemic overhead of handling such. Multiple numbers of CT lists were tested, with two CT lists being the optimum. This value is hardcoded and used during CT creation.
+With this change, each CT list will have its own dedicated thread. As the number of CT lists/threads increase so too does the systemic overhead of handling such. Multiple numbers of CT lists were tested, with two CT lists being the optimum. Currently this value is hard coded, in the future it will be a configurable option.
 
 
 ## Opens
