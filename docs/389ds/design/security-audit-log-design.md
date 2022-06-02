@@ -42,6 +42,7 @@ TCP Attacks - DOS/injection/encoding/maxbersize
 - Track error 19 - account lockout (constraint violation)
 
 Should we track Root DN (cn=directory manager) failed binds differently?  Separate stat/report?
+What about replication manager?  Is this detectable in code?
 
 ### Authorization
 
@@ -78,7 +79,7 @@ Should we track Root DN (cn=directory manager) failed binds differently?  Separa
 
 ### Text format 
 
-Let's *not* do this, or even have this as an config option, but as an exmaple here it is:
+Let's *not* do this, or even have this as an config option, but as an example here it is:
 
     <TIMESTAMP> <EVENT> <IP> <CONN ID> <DN> <MSG>
     
@@ -105,8 +106,8 @@ Yes preferred format!
     }
 
 
-    {'date': '13/May/2022:14:19:21.828151054 -0400', 'utc_time': '168485945', 'event': 'FAILED_BIND', dn: 'uid=mark,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '2', 'msg': 'INVALID_PASSWORD'}
-    {'date': '13/May/2022:14:19:22.828151058 -0400', 'utc_time': '168499999', 'event': 'FAILED_BIND', dn: 'uid=mike,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '7', 'msg': 'NO_SUCH_ENTRY'}
+    {'date': '13/May/2022:14:19:21.828151054 -0400', 'utc_time': '168485945', 'event': 'FAILED_BIND', 'dn': 'uid=mark,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '2', 'msg': 'INVALID_PASSWORD'}
+    {'date': '13/May/2022:14:19:22.828151058 -0400', 'utc_time': '168499999', 'event': 'FAILED_BIND', 'dn': 'uid=mike,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '7', 'msg': 'NO_SUCH_ENTRY'}
 
 
 #### Date
@@ -130,11 +131,18 @@ Convenient time for sorting and building reports
 
 - Bind DN
 
+#### Bind Method
+
+The bind method used: SIMPLE, SASL/GSSAPI, SASL/DIGEST-MD5, SSLCLIENTAUTH
 
 #### IP
 
 - client IP address
+- server IP address
 
+#### Conn & Op ID's
+
+The connection and operation ID's
 
 #### MSG
 
@@ -211,7 +219,7 @@ Provide options so we can do checks on, what type of vents to check (--event=AUT
 
 ### Report Examples
 
-Each report should general stats like number of failed binds (expired, lockout, invalid password, etc), maxber, etc.  Just get the counts.  Maybe just include this in all events/reports?
+Each report should general stats like number of failed binds (expired, lockout, invalid password, etc), maxbersize, etc.  Just get the counts.  Maybe just include this in all events/reports?
 
 Failures:
 - FAILED_BIND (err=49) - Bad password
