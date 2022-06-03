@@ -42,13 +42,17 @@ TCP Attacks - DOS/injection/encoding/maxbersize
 - Track error 19 - account lockout (constraint violation)
 
 Should we track Root DN (cn=directory manager) failed binds differently?  Separate stat/report?
+
 What about replication manager?  Is this detectable in code?
+
+Other "high profile" accounts, how to specify them (multi-valued config attribute?)
 
 ### Authorization
 
 - Track ACI failures:  err=50
 - Cons: Tricky/incomplete coverage.  Only works for mods, not searches :-(
-    - Add new access log keyword when results are restricted by ACI?  False positives?  Only add keyword when entire resource is denied?)
+    - Add new access log keyword when search results are restricted by ACI?  False positives?  Only add keyword when **entire** resource is denied?)
+    - Log event when checking filter access, but when if denying filter access expected or malicious?
     - Is this worth pursuing?
 
 
@@ -89,12 +93,13 @@ What about replication manager?  Is this detectable in code?
         dn: '',
         bind_method: 'SIMPLE, SASL/GSSAPI, SASL/DIGEST-MD5, SSLCLIENTAUTH',
         root_dn: true/false,
+        high_profile: true/false, // Include root_dn here?
         msg: ''
     }
 
 
-    {'date': '13/May/2022:14:19:21.828151054 -0400', 'utc_time': '168485945', 'event': 'FAILED_BIND', 'dn': 'uid=mark,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '2', 'op_id': '1', 'msg': 'INVALID_PASSWORD'}
-    {'date': '13/May/2022:14:19:22.828151058 -0400', 'utc_time': '168499999', 'event': 'FAILED_BIND', 'dn': 'uid=mike,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '7', 'op_id': '1', 'msg': 'NO_SUCH_ENTRY'}
+    {'date': '13/May/2022:14:19:21.828151054 -0400', 'utc_time': '168485945', 'event': 'FAILED_BIND', 'dn': 'uid=mark,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'high_profile': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '2', 'op_id': '1', 'msg': 'INVALID_PASSWORD'}
+    {'date': '13/May/2022:14:19:22.828151058 -0400', 'utc_time': '168499999', 'event': 'FAILED_BIND', 'dn': 'uid=mike,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'high_profile': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '7', 'op_id': '1', 'msg': 'NO_SUCH_ENTRY'}
 
 
 #### Date
@@ -131,6 +136,10 @@ The bind method used: SIMPLE, SASL/GSSAPI, SASL/DIGEST-MD5, SSLCLIENTAUTH
 
 The connection and operation ID's
 
+#### High Profile
+
+If the targeted DN is on a "high profile" list (system admins, Root DN, etc) then flag it as so.
+
 #### MSG
 
 Detailed info.  Failed bind, account lockout, authorization resource DN - what the user tried to modify (mod_dn="") err=50, etc.
@@ -155,6 +164,9 @@ Just like any other DS log
     nsslapd-securitylog-maxlogsperdir: 10
     nsslapd-securitylog-mode: 600
     nsslapd-securitylog-level: 1
+    nsslapd-securitylog-high-profile-dn: <DN>
+    nsslapd-securitylog-high-profile-dn: <DN2>
+    
 
 ### Logging Levels
 
@@ -164,7 +176,12 @@ The default level is "1" and it will only record security events.  Level "2" wil
 
 
 
-## CLI security-report
+## CLI security-report ?
+
+
+**After talking with William, he suggested we let tooling like Splunk handle the reporting, so perhaps we can just provide a simple report based on generic stats of the security log, like logconv.pl ???  If we wanto to do it all ourselves then we can do reports like the ones below...**
+
+<br>
 
 Add this to dsctl or a new tool?  Maybe a new log tool for security and access log (logconv.pl replacement) to parse the logs for the customers and generate meaningful reports.
 
@@ -205,10 +222,6 @@ Provide options so we can do checks on, what type of vents to check (--event=AUT
 
 
 ### Report Examples
-
-** After talking with William, he suggested we let tooling Splunk handle the reporting, so perhaps we can just provide a simple report based on generic stats of the security log, like logconv.pl ???  If we do it ourselves we can do reports like the ones below...**
-
-<br>
 
 Each report should general stats like number of failed binds (expired, lockout, invalid password, etc), maxbersize, etc.  Just get the counts.  Maybe just include this in all events/reports?
 
