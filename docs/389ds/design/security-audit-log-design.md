@@ -77,20 +77,6 @@ What about replication manager?  Is this detectable in code?
 ## Log Format
 --------------------------------------------------
 
-### Text format 
-
-Let's *not* do this, or even have this as an config option, but as an example here it is:
-
-    <TIMESTAMP> <EVENT> <IP> <CONN ID> <DN> <MSG>
-    
-    
-    [13/May/2022:14:19:21.828151054 -0400 utc_time=16774847578] event=FAILED_BIND ip=127.0.0.1 conn=2 dn="uid=mark,ou=people,dc=example,dc=com" bind_method="SIMPLE" msg=INVALID_PASSWORD
-    [13/May/2022:14:19:22.828151058 -0400 utc_time=16383747834] event=FAILED_BIND ip=127.0.0.1 conn=7 dn="uid=mike,ou=people,dc=example,dc=com" bind_method="SIMPLE" msg=NO_SUCH_ENTRY
-
-
-### JSON format 
-
-Yes preferred format!
 
     {
         date: '', // Human readable
@@ -99,6 +85,7 @@ Yes preferred format!
         client_ip: '',
         server_ip: '',
         conn_id: '',
+        op_id: '',
         dn: '',
         bind_method: 'SIMPLE, SASL/GSSAPI, SASL/DIGEST-MD5, SSLCLIENTAUTH',
         root_dn: true/false,
@@ -106,8 +93,8 @@ Yes preferred format!
     }
 
 
-    {'date': '13/May/2022:14:19:21.828151054 -0400', 'utc_time': '168485945', 'event': 'FAILED_BIND', 'dn': 'uid=mark,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '2', 'msg': 'INVALID_PASSWORD'}
-    {'date': '13/May/2022:14:19:22.828151058 -0400', 'utc_time': '168499999', 'event': 'FAILED_BIND', 'dn': 'uid=mike,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '7', 'msg': 'NO_SUCH_ENTRY'}
+    {'date': '13/May/2022:14:19:21.828151054 -0400', 'utc_time': '168485945', 'event': 'FAILED_BIND', 'dn': 'uid=mark,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '2', 'op_id': '1', 'msg': 'INVALID_PASSWORD'}
+    {'date': '13/May/2022:14:19:22.828151058 -0400', 'utc_time': '168499999', 'event': 'FAILED_BIND', 'dn': 'uid=mike,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '7', 'op_id': '1', 'msg': 'NO_SUCH_ENTRY'}
 
 
 #### Date
@@ -219,6 +206,10 @@ Provide options so we can do checks on, what type of vents to check (--event=AUT
 
 ### Report Examples
 
+** After talking with William, he suggested we let tooling Splunk handle the reporting, so perhaps we can just provide a simple report based on generic stats of the security log, like logconv.pl ???  If we do it ourselves we can do reports like the ones below...**
+
+<br>
+
 Each report should general stats like number of failed binds (expired, lockout, invalid password, etc), maxbersize, etc.  Just get the counts.  Maybe just include this in all events/reports?
 
 Failures:
@@ -235,20 +226,20 @@ Stats specific to BINDS.   Bursts, brute force, account lock out.
     =========================================================
     - [500] uid=mark,ou=people,dc=example,dc=com
         - [490] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - method=simple - FAILED_BIND
-            - 10/10/2022 12:32:21 - conn=12 - method=simple - FAILED_BIND
+            - 10/10/2022 12:32:21 - conn=1 - op=1 - method=simple - FAILED_BIND
+            - 10/10/2022 12:32:21 - conn=12 - op=1 - method=simple - FAILED_BIND
             - ...
         - [10] 10.10.10.2
-            - 10/10/2022 13:18:21 - conn=23 - method=simple - FAILED_BIND
-            - 10/10/2022 13:18:21 - conn=33 - method=simple - FAILED_BIND
+            - 10/10/2022 13:18:21 - conn=23 - op=1 - method=simple - FAILED_BIND
+            - 10/10/2022 13:18:21 - conn=33 - op=1 - method=simple - FAILED_BIND
             - ...
     - [20] uid=jamie,ou=people,dc=example,dc=com
         - [20] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - method=simple - ACCOUNT_LOCKED (any other info available?)
+            - 10/10/2022 12:32:21 - conn=1 - op=1 - method=simple - ACCOUNT_LOCKED (any other info available?)
             - ...
     - [10] uid=mark.reynolds,ou=people,dc=example,dc=com
         - [10] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - method=simple - NO_SUCH_ENTRY
+            - 10/10/2022 12:32:21 - conn=1 - op=1 - method=simple - NO_SUCH_ENTRY
             - ...
 
 
@@ -263,23 +254,23 @@ Stats specific to BINDS.   Bursts, brute force, account lock out.
 17:00:00 - 17:59:00: 245 (245 entries)
     - [1] uid=mark,ou=people,dc=example,dc=com
         - [1] 20.20.20.167
-            - 10/10/2022 17:01:21 - conn=1 - method=simple - FAILED_BIND
+            - 10/10/2022 17:01:21 - conn=1 - op=1 - method=simple - FAILED_BIND
     - [1] uid=thierry,ou=people,dc=example,dc=com
         - [1] 220.21.21.101
-            - 10/10/2022 17:07:21 - conn=41 - method=simple - FAILED_BIND
+            - 10/10/2022 17:07:21 - conn=41 - op=1 - method=simple - FAILED_BIND
     - [1] uid=simon,ou=people,dc=example,dc=com
         - [1] 220.21.21.101
-            - 10/10/2022 17:07:21 - conn=341 - method=simple - FAILED_BIND
+            - 10/10/2022 17:07:21 - conn=341 - op=1 - method=simple - FAILED_BIND
     ...
     ...
     ...
 18:00:00 - 18:59:00: 178  (1 entry)
     - [178] uid=pierre,ou=people,dc=example,dc=com
         - [178] 20.20.20.167
-            - 10/10/2022 18:32:21 - conn=190 - method=simple - FAILED_BIND
+            - 10/10/2022 18:32:21 - conn=190 - op=1 - method=simple - FAILED_BIND
             - ...
-            - 10/10/2022 18:32:21 - conn=270 - method=simple - ACCOUNT LOCKED
-            - 10/10/2022 18:32:22 - conn=271 - method=simple - ACCOUNT LOCKED
+            - 10/10/2022 18:32:21 - conn=270 - op=1 - method=simple - ACCOUNT LOCKED
+            - 10/10/2022 18:32:22 - conn=271 - op=1 - method=simple - ACCOUNT LOCKED
 19:00:00 - 19:59:00: 0
 20:00:00 - 20:59:00: 3
 21:00:00 - 21:59:00: 0
@@ -296,16 +287,16 @@ Trying to bind as entries to discover if that user/DN exists
     =========================================================
     - [1] uid=mark.reynolds,ou=people,dc=example,dc=com
         - [1] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - method=simple - NO_SUCH_ENTRY
+            - 10/10/2022 12:32:21 - conn=1 - op=1 - method=simple - NO_SUCH_ENTRY
     - [1] uid=mreynolds,ou=people,dc=example,dc=com
         - [1] 10.10.10.1
-            - 10/10/2022 12:32:22 - conn=3 - method=simple - NO_SUCH_ENTRY
+            - 10/10/2022 12:32:22 - conn=3 - op=1 - method=simple - NO_SUCH_ENTRY
     - [1] uid=mark reynolds,ou=people,dc=example,dc=com
         - [1] 10.10.10.1
-            - 10/10/2022 12:32:23 - conn=4 - method=simple - NO_SUCH_ENTRY
+            - 10/10/2022 12:32:23 - conn=4 - op=1 - method=simple - NO_SUCH_ENTRY
     - [1] cn=mark reynolds,ou=people,dc=example,dc=com
         - [1] 10.10.10.1
-            - 10/10/2022 12:32:23 - conn=5 - method=simple - NO_SUCH_ENTRY
+            - 10/10/2022 12:32:23 - conn=5 - op=1 - method=simple - NO_SUCH_ENTRY
 
 
 #### Slow brute force
@@ -321,10 +312,10 @@ Entries trying to modify (add, mod, delete, modrdn) data that they should not.
 
     - [3] uid=mark,ou=people,dc=example,dc=com
         - [2] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - MOD dn="uid=admin,ou=privledged users,dc=example,dc=com"
-            - 10/10/2022 12:32:21 - conn=12 - DEL dn="cn=customers,ou=groups,dc=example,dc=com"
+            - 10/10/2022 12:32:21 - conn=1 - op=1 - MOD dn="uid=admin,ou=privledged users,dc=example,dc=com"
+            - 10/10/2022 12:32:21 - conn=12 - op=1 - DEL dn="cn=customers,ou=groups,dc=example,dc=com"
         - [1] 10.10.10.2
-            - 10/10/2022 13:18:21 - conn=23 - MOD dn="cn=service_account,ou=special users,dc=example,dc=com"
+            - 10/10/2022 13:18:21 - conn=23 - op=1 - MOD dn="cn=service_account,ou=special users,dc=example,dc=com"
 
 
 #### TCP Attacks
