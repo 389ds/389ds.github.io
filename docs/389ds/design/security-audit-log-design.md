@@ -178,7 +178,7 @@ The default level is "1" and it will only record security events.  Level "2" wil
 ## CLI security-report ?
 
 
-**After talking with William, he suggested we let tooling like Splunk handle the reporting, so perhaps we can just provide a simple report based on generic stats of the security log, like logconv.pl ???  If we wanto to do it all ourselves then we can do reports like the ones below...**
+**After talking with William, he suggested we let tooling like Splunk handle the reporting, so perhaps we can just provide a simple report based on generic stats of the security log, like logconv.pl ???  If we want to do it all ourselves then we can do reports like the ones below...**
 
 Add this to dsctl or a new tool?  Maybe a new log tool for security and access log (logconv.pl replacement) to parse the logs for the customers and generate meaningful reports.
 
