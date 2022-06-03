@@ -15,7 +15,7 @@ The access logs do have all the info this security audit log would maintain, but
 
 The security audit log would not be as busy, and would not rotate nearly as fast, allowing for months/years of audit information to be kept without consuming a lot of disk space.
 
-Provide a tool to parse the new security log into useful reports 
+Provide a tool to parse the new security log into useful reports ?
 
 
 ## What
@@ -25,12 +25,9 @@ Track authentication/authorization failures.  The most important attacks are on 
 
 - Brute force is targeting a single user with many bind attempts.  This can be done in bulk or spread over time (to avoid account lockout)
 - Password Spraying is where an attacker tries a common password(s) against many entries (to avoid detection/account lock out as well).
-
-Need to check for bursts of failed logins (on any entry), failed binds on a single entry (in bursts or spread out over months).
-
-Discovery/phishing - binds that fail with error 32 (internally) could be someone trying to discover user DN values.  We return error 49 to client, but internally we can detect the error 32 and log a security audit event.
-
-TCP Attacks - DOS/injection/encoding/maxbersize
+- Need to check for bursts of failed logins (on any entry), failed binds on a single entry (in bursts or spread out over months).
+- Discovery/phishing - binds that fail with error 32 (internally) could be someone trying to discover user DN values.  We return error 49 to client, but internally we can detect the error 32 and log a security audit event.
+- TCP Attacks - DOS/injection/encoding/maxbersize
 
  
 ## Events
@@ -43,7 +40,7 @@ TCP Attacks - DOS/injection/encoding/maxbersize
 
 Should we track Root DN (cn=directory manager) failed binds differently?  Separate stat/report?
 
-What about replication manager?  Is this detectable in code?
+What about replication manager?  Is this easily detectable in code?
 
 Other "high profile" accounts, how to specify them (multi-valued config attribute?)
 
@@ -58,9 +55,12 @@ Other "high profile" accounts, how to specify them (multi-valued config attribut
 
 ### TCP Attack
 
+B1-B3 conn codes
+
 - maxbersize
 - Crafted packets
 - Data corruption
+
 
 
 ## Reporting (or not)
@@ -105,19 +105,19 @@ Other "high profile" accounts, how to specify them (multi-valued config attribut
 
 #### Date
 
-Friendly date format
+- Friendly date format
 
 
 #### UTC time
 
-Convenient time for sorting and building reports
+- Convenient time for sorting and building reports
 
 
 #### EVENT
 
- - authentication FAILED_BIND  --> INVALID_PASSWORD, NO_SUCH_ENTRY, ACCOUNT_LOCKED
- - authorization UNAUTH_ACCESS --> err=50  mod dn=""
- - tcp attack TCP_ERROR --> closed connection codes:  B1, B2, B3
+- authentication FAILED_BIND  --> INVALID_PASSWORD, NO_SUCH_ENTRY, ACCOUNT_LOCKED
+- authorization UNAUTH_ACCESS --> err=50  mod dn=""
+- tcp attack TCP_ERROR --> closed connection codes:  B1, B2, B3
 
  
 #### DN
@@ -126,7 +126,7 @@ Convenient time for sorting and building reports
 
 #### Bind Method
 
-The bind method used: SIMPLE, SASL/GSSAPI, SASL/DIGEST-MD5, SSLCLIENTAUTH
+- The bind method used: SIMPLE, SASL/GSSAPI, SASL/DIGEST-MD5, SSLCLIENTAUTH
 
 #### IP
 
@@ -135,16 +135,15 @@ The bind method used: SIMPLE, SASL/GSSAPI, SASL/DIGEST-MD5, SSLCLIENTAUTH
 
 #### Conn & Op ID's
 
-The connection and operation ID's
+- The connection and operation ID's
 
 #### High Profile
 
-If the targeted DN is on a "high profile" list (system admins, Root DN, etc) then flag it as so.
+- If the targeted DN is on a "high profile" list (system admins, Root DN, etc) then flag it as so.
 
 #### MSG
 
-Detailed info.  Failed bind, account lockout, authorization resource DN - what the user tried to modify (mod_dn="") err=50, etc.
-
+- Detailed info.  Failed bind, account lockout, authorization resource DN - what the user tried to modify (mod_dn="") err=50, etc.
 
 
 ## Configuration
@@ -176,13 +175,10 @@ By default the security log will only log failures or specific events.  For comp
 The default level is "1" and it will only record security events.  Level "2" will also include successful binds in the security log.
 
 
-
 ## CLI security-report ?
 
 
 **After talking with William, he suggested we let tooling like Splunk handle the reporting, so perhaps we can just provide a simple report based on generic stats of the security log, like logconv.pl ???  If we wanto to do it all ourselves then we can do reports like the ones below...**
-
-<br>
 
 Add this to dsctl or a new tool?  Maybe a new log tool for security and access log (logconv.pl replacement) to parse the logs for the customers and generate meaningful reports.
 
@@ -346,6 +342,6 @@ Do the security logging in:  disconnect_server_nomutex_ext()
 
 ## UI
 
-Allow the UI to view the logs, and generate these reports.  Should the UI view the results as text, or in a tree!!!!  Lot of work
+Allow the UI to view the logs, and generate these reports?  Should the UI view the results as text, or in a tree (lot of work)!?
 
 
