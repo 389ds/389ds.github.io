@@ -63,7 +63,7 @@ Other "high profile" accounts, how to specify them (multi-valued config attribut
 - Data corruption
 
 
-## Reporting
+## Reporting (or not)
 --------------------------------------------------------------
 
 - New tool, or part of dsctl, to parse the security log to highlight potential issues
@@ -76,6 +76,7 @@ Other "high profile" accounts, how to specify them (multi-valued config attribut
 - General stats
     - Report total "EVENT_TYPE"
 - CSV reports a must
+- **Or, do we let something like "Splunk" handle most of the reporting needs ???**
   
     
 ## Log Format
