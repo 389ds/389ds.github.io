@@ -15,8 +15,6 @@ The access logs do have all the info this security audit log would maintain, but
 
 The security audit log would not be as busy, and would not rotate nearly as fast, allowing for months/years of audit information to be kept without consuming a lot of disk space.
 
-Provide a tool to parse the new security log into useful reports ?
-
 
 ## What
 -----------------------------------------------------
@@ -55,28 +53,15 @@ Other "high profile" accounts, how to specify them (multi-valued config attribut
 
 ### TCP Attack
 
-B1-B3 conn codes
-
 - maxbersize
 - Crafted packets
 - Data corruption
 
+- B1 (SLAPD_DISCONNECT_BAD_BER_TAG)
+- B2 (SLAPD_DISCONNECT_BER_TOO_BIG)
+- B3 (SLAPD_DISCONNECT_BER_PEEK)
 
-
-## Reporting (or not)
---------------------------------------------------------------
-
-- New tool, or part of dsctl, to parse the security log to highlight potential issues
-- Track brute force attacks (fast and slow)
-    - Be able to find patterns over time, is someone slowly trying to brute force attack someones password (a few attempts per day over time)
-- Do weekly/monthly/yearly audits
-- Report on entries with the most bind failures
-- Failure frequency/regularity - alert when pattern is found
-    - check if password fails every day/week/month.  Not just volume but frequency
-- General stats
-    - Report total "EVENT_TYPE"
-- CSV reports a must
-- **Or, do we let something like "Splunk" handle most of the reporting needs ???**
+Do the security logging in:  disconnect_server_nomutex_ext()
   
     
 ## Log Format
@@ -152,7 +137,6 @@ Just like any other DS log
 
     nsslapd-securitylog: /var/log/dirsrv/slapd-localhost/security
     nsslapd-securitylog-logging-enabled: on
-    nsslapd-securitylog-compress: off
     nsslapd-securitylog-logexpirationtime: 12
     nsslapd-securitylog-logexpirationtimeunit: month
     nsslapd-securitylog-logmaxdiskspace: 500
@@ -163,181 +147,49 @@ Just like any other DS log
     nsslapd-securitylog-maxlogsize: 100
     nsslapd-securitylog-maxlogsperdir: 10
     nsslapd-securitylog-mode: 600
-    nsslapd-securitylog-level: 1
-    nsslapd-securitylog-high-profile-dn: <DN>
-    nsslapd-securitylog-high-profile-dn: <DN2>
-    
-
-### Logging Levels
-
-By default the security log will only log failures or specific events.  For completeness it could be beneficial to record successful binds.  Since this would add much more content to the log it will only be written if a specific log level is selected.
-
-The default level is "1" and it will only record security events.  Level "2" will also include successful binds in the security log.
+    nsslapd-securitylog-logbuffering: on
+    nsslapd-securitylog-compress: on
 
 
-## CLI security-report ?
+## CLI security-report
+
+We'll let other tooling do the complex parsing (e.g. Splunk).  However, we can still provide a generic report.
+
+Example of basic report we could produce.
+
+    Successful Binds:       ####
+    Failed binds:           ####
+    Root DN Failed Binds:   ####
+
+    Authentication Events
+        Invalid Password:   ####
+        Account Locked:     ####
+        No Such Entry:      ####
+
+    Authorization Events
+        Unauthorized Ops:   ####
+
+    TCP Events
+        B1 (BAD_BER_TAG):   ####
+        B2 (BER_TOO_BIG):   ####
+        B3 (BER_PEEK):      ####
 
 
-**After talking with William, he suggested we let tooling like Splunk handle the reporting, so perhaps we can just provide a simple report based on generic stats of the security log, like logconv.pl ???  If we want to do it all ourselves then we can do reports like the ones below...**
+Should we add more information about common IP addresses, or common accounts?  How far down the rabbit hole do we go?
 
-Add this to dsctl or a new tool?  Maybe a new log tool for security and access log (logconv.pl replacement) to parse the logs for the customers and generate meaningful reports.
+    Top 100 Failed Binds
+        uid=mark,ou=people,dc=example,dc=com       179
+        cn=directory manager                        89
+        ...
 
-### Usage
+    Top 100 Clients
+        10.10.10.201              493
+          - Failed binds:  400
+          - Acount locked: 93
 
-Provide options so we can do checks on, what type of vents to check (--event=AUTH), how what events happened in the last 45 days (--age=45).  Or I want reports at certain intervals.  Give me a report for each week for the last 90 days (--interval=WEEK --age=90).  Or give me a weekly report for the last ten weeks (--interval=WEEK --interval-size=10).
-
-    --interval UNIT   ***
-    
-        DAY, WEEK, MONTH, ALL (default is ALL the log)
-
-    --interval-size   ***
-    
-        The number of UNITs to report on.  (default is 1)
-
-    --event EVENT 
-    
-        BASIC, AUTH, AUTHZ, TCP, ALL (default is ALL)
-
-    --age NUM_OF_DAYS  ***
-    
-        How far to look into the logs (default is the entire log)
-
-    --start-date
-
-        Date to start parsing the log
-
-    --end-date
-
-        Date to stop parsing
-
-    --verbose ?? ***
-
-        Override default verbose options?  Use different name.  Do we want this?  Shouldn't report always be "verbose"?
-
-    *** Open to other naming suggestions
-
-
-
-### Report Examples
-
-Each report should general stats like number of failed binds (expired, lockout, invalid password, etc), maxbersize, etc.  Just get the counts.  Maybe just include this in all events/reports?
-
-Failures:
-- FAILED_BIND (err=49) - Bad password
-- NO_SUCH_ENTRY (err=49) - The bind DN did not match any entry (discovery attempt?)
-- ACCOUNT_LOCKED (err=19) - Account is locked out (pwp policy issue)
-
-
-#### AUTH
-
-Stats specific to BINDS.   Bursts, brute force, account lock out.
-
-    Failed Binds (530) (4 users)
-    =========================================================
-    - [500] uid=mark,ou=people,dc=example,dc=com
-        - [490] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - op=1 - method=simple - FAILED_BIND
-            - 10/10/2022 12:32:21 - conn=12 - op=1 - method=simple - FAILED_BIND
-            - ...
-        - [10] 10.10.10.2
-            - 10/10/2022 13:18:21 - conn=23 - op=1 - method=simple - FAILED_BIND
-            - 10/10/2022 13:18:21 - conn=33 - op=1 - method=simple - FAILED_BIND
-            - ...
-    - [20] uid=jamie,ou=people,dc=example,dc=com
-        - [20] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - op=1 - method=simple - ACCOUNT_LOCKED (any other info available?)
-            - ...
-    - [10] uid=mark.reynolds,ou=people,dc=example,dc=com
-        - [10] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - op=1 - method=simple - NO_SUCH_ENTRY
-            - ...
-
-
-#### Burst Events (password spraying)
-
-```
-12:00:00 - 12:59:00: 0
-13:00:00 - 13:59:00: 1
-14:00:00 - 14:59:00: 0
-15:00:00 - 15:59:00: 6
-16:00:00 - 16:59:00: 0
-17:00:00 - 17:59:00: 245 (245 entries)
-    - [1] uid=mark,ou=people,dc=example,dc=com
-        - [1] 20.20.20.167
-            - 10/10/2022 17:01:21 - conn=1 - op=1 - method=simple - FAILED_BIND
-    - [1] uid=thierry,ou=people,dc=example,dc=com
-        - [1] 220.21.21.101
-            - 10/10/2022 17:07:21 - conn=41 - op=1 - method=simple - FAILED_BIND
-    - [1] uid=simon,ou=people,dc=example,dc=com
-        - [1] 220.21.21.101
-            - 10/10/2022 17:07:21 - conn=341 - op=1 - method=simple - FAILED_BIND
-    ...
-    ...
-    ...
-18:00:00 - 18:59:00: 178  (1 entry)
-    - [178] uid=pierre,ou=people,dc=example,dc=com
-        - [178] 20.20.20.167
-            - 10/10/2022 18:32:21 - conn=190 - op=1 - method=simple - FAILED_BIND
-            - ...
-            - 10/10/2022 18:32:21 - conn=270 - op=1 - method=simple - ACCOUNT LOCKED
-            - 10/10/2022 18:32:22 - conn=271 - op=1 - method=simple - ACCOUNT LOCKED
-19:00:00 - 19:59:00: 0
-20:00:00 - 20:59:00: 3
-21:00:00 - 21:59:00: 0
-22:00:00 - 22:59:00: 0
-23:00:00 - 23:59:00: 5
-```
-
-#### Discovery Attacks
-
-Trying to bind as entries to discover if that user/DN exists
-
-
-    Discovery Binds (530)
-    =========================================================
-    - [1] uid=mark.reynolds,ou=people,dc=example,dc=com
-        - [1] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - op=1 - method=simple - NO_SUCH_ENTRY
-    - [1] uid=mreynolds,ou=people,dc=example,dc=com
-        - [1] 10.10.10.1
-            - 10/10/2022 12:32:22 - conn=3 - op=1 - method=simple - NO_SUCH_ENTRY
-    - [1] uid=mark reynolds,ou=people,dc=example,dc=com
-        - [1] 10.10.10.1
-            - 10/10/2022 12:32:23 - conn=4 - op=1 - method=simple - NO_SUCH_ENTRY
-    - [1] cn=mark reynolds,ou=people,dc=example,dc=com
-        - [1] 10.10.10.1
-            - 10/10/2022 12:32:23 - conn=5 - op=1 - method=simple - NO_SUCH_ENTRY
-
-
-#### Slow brute force
-
-Single entry attack that occurs over time.
-
-daily, weekly, monthly?
-
-
-#### AUTHZ (authorization)
-
-Entries trying to modify (add, mod, delete, modrdn) data that they should not.
-
-    - [3] uid=mark,ou=people,dc=example,dc=com
-        - [2] 10.10.10.1
-            - 10/10/2022 12:32:21 - conn=1 - op=1 - MOD dn="uid=admin,ou=privledged users,dc=example,dc=com"
-            - 10/10/2022 12:32:21 - conn=12 - op=1 - DEL dn="cn=customers,ou=groups,dc=example,dc=com"
-        - [1] 10.10.10.2
-            - 10/10/2022 13:18:21 - conn=23 - op=1 - MOD dn="cn=service_account,ou=special users,dc=example,dc=com"
-
-
-#### TCP Attacks
-
-maxbersize, data corruption, crafted packets, etc
-
-- B1 (SLAPD_DISCONNECT_BAD_BER_TAG)
-- B2 (SLAPD_DISCONNECT_BER_TOO_BIG)
-- B3 (SLAPD_DISCONNECT_BER_PEEK)
-
-Do the security logging in:  disconnect_server_nomutex_ext()
-
+        10.20.10.30               201
+          - Failed binds:  150
+          - No Such Entry:  51
 
 
 ## UI
