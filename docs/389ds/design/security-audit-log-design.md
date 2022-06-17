@@ -40,7 +40,6 @@ Should we track Root DN (cn=directory manager) failed binds differently?  Separa
 
 What about replication manager?  Is this easily detectable in code?
 
-Other "high profile" accounts, how to specify them (multi-valued config attribute?)
 
 ### Authorization
 
@@ -79,13 +78,12 @@ Do the security logging in:  disconnect_server_nomutex_ext()
         dn: '',
         bind_method: 'SIMPLE, SASL/GSSAPI, SASL/DIGEST-MD5, SSLCLIENTAUTH',
         root_dn: true/false,
-        high_profile: true/false, // Include root_dn here?
         msg: ''
     }
 
 
-    {'date': '13/May/2022:14:19:21.828151054 -0400', 'utc_time': '168485945', 'event': 'FAILED_BIND', 'dn': 'uid=mark,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'high_profile': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '2', 'op_id': '1', 'msg': 'INVALID_PASSWORD'}
-    {'date': '13/May/2022:14:19:22.828151058 -0400', 'utc_time': '168499999', 'event': 'FAILED_BIND', 'dn': 'uid=mike,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'high_profile': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '7', 'op_id': '1', 'msg': 'NO_SUCH_ENTRY'}
+    {'date': '13/May/2022:14:19:21.828151054 -0400', 'utc_time': '168485945', 'event': 'FAILED_BIND', 'dn': 'uid=mark,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '2', 'op_id': '1', 'msg': 'INVALID_PASSWORD'}
+    {'date': '13/May/2022:14:19:22.828151058 -0400', 'utc_time': '168499999', 'event': 'FAILED_BIND', 'dn': 'uid=mike,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '7', 'op_id': '1', 'msg': 'NO_SUCH_ENTRY'}
 
 
 #### Date
@@ -121,10 +119,6 @@ Do the security logging in:  disconnect_server_nomutex_ext()
 #### Conn & Op ID's
 
 - The connection and operation ID's
-
-#### High Profile
-
-- If the targeted DN is on a "high profile" list (system admins, Root DN, etc) then flag it as so.
 
 #### MSG
 
