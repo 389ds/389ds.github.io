@@ -78,7 +78,7 @@ Do the security logging in:  disconnect_server_nomutex_ext()
         dn: '',
         bind_method: 'SIMPLE, SASL/GSSAPI, SASL/DIGEST-MD5, SSLCLIENTAUTH',
         root_dn: true/false,
-        msg: ''
+        msg: 'INVALID_PASSWORD, NO_SUCH_ENTRY, ACCOUNT_LOCKED, CERT_MAP_FAILED'
     }
 
 
@@ -96,9 +96,14 @@ Do the security logging in:  disconnect_server_nomutex_ext()
 - Convenient time for sorting and building reports
 
 
-#### EVENT
+#### EVENT & Message
 
-- authentication FAILED_BIND  --> INVALID_PASSWORD, NO_SUCH_ENTRY, ACCOUNT_LOCKED
+- authentication FAILED_BIND
+    - Messages:
+        - INVALID_PASSWORD
+        - NO_SUCH_ENTRY
+        - ACCOUNT_LOCKED
+        - CERT_MAP_FAILED
 - authorization UNAUTH_ACCESS --> err=50  mod dn=""
 - tcp attack TCP_ERROR --> closed connection codes:  B1, B2, B3
 
