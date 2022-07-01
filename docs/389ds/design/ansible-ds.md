@@ -1,6 +1,16 @@
-**ANSIBLE-DS**
+---
+title: "ANSIBLE-DS Design"
+---
+
+# ansible-ds Design
+
+-------------------
+
+{% include toc.md %}
 
 # General considerations
+
+------------------------
 
 Note: I do not describe the ansible variable in this document because they are precisely  described in the ansible collection Readme
 
@@ -33,7 +43,7 @@ Other ansible work over 389ds
   But the drawback is that it is harder to manage for the sysadmin user because the configuration will then be split among lots of playbooks and it will be harder to
   deploy (because a set of playbooks will need to be run to deploy the service)
   Having a single module complexify the ansible option scheme but the configuration is handled in a single playbook.
-
+  
   And when written in yaml the configuration does not seems so complex
   but when writting playbook a special care must be done about the "state" option because it appears on several nested levels.
 
@@ -44,6 +54,8 @@ Other ansible work over 389ds
 
 # Test strategy
 
+---
+
 Automated tests are based on pytest framework that run:
 
 - python testcases for the plugins
@@ -51,6 +63,8 @@ Automated tests are based on pytest framework that run:
 - yaml test case for the playbooks
 
 # General architecture
+
+---
 
 The ansible is delivered as a galaxy ansible collection
 
@@ -74,7 +88,9 @@ The typical workflow is a playbook that use roles that interfaces plugins that i
 
 # plugin architecture
 
-## utilities modules
+---
+
+# utilities modules
 
 An utility module is a python library used by other plugins.
 
@@ -110,37 +126,37 @@ Provides the code needed to:
 
 - Root entity
   Contains the:
-
+  
   - instances list
-
+  
   - the installlation prefix
 
 - Instance entities
   Represents a directory server instance
   Contains the:
-
+  
   - instance parameters (including: cn=config , global database parameters, )
-
+  
   - backend list
-
+  
   - plugin list
-
+  
   - sasl mapping entries list
-
+  
   - modifier list (a list of change to apply the dse.ldif, typically to add entries/attribute not handled by the various the entities (like the replication manager entry)
 
 - backends entities
   Contains the:
-
+  
   - backend parameters (i.e mapping tree, backend parameters, database per backend parameter, replication parameters)
-
+  
   - index list
-
+  
   - replication agreement list
 
 - index entities
   Contains the:
-
+  
   - index parameters (for standard or vlv index)
 
 - Plugin entities
