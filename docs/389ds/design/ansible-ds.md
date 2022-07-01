@@ -22,7 +22,7 @@ Other ansible work over 389ds
 
 - [https://github.com/freeipa/ansible-freeipa.git](https://github.com/freeipa/ansible-freeipa.git)
 
-- [https://galaxy.ansible.com/lvps/389ds_server](https://galaxy.ansible.com/lvps/389ds_server)
+- [https://galaxy.ansible.com/lvps/389ds\_server](https://galaxy.ansible.com/lvps/389ds_server)
 
 - [https://galaxy.ansible.com/cscfi/389-ds](https://galaxy.ansible.com/cscfi/389-ds)
 
@@ -165,7 +165,7 @@ Provides the code needed to:
 
 - Sasl mapping entry entities
 
-### dsentities_options
+### dsentities\_options
 
 #### Goal
 
@@ -176,15 +176,15 @@ This module provides the specification of ansible parameter associated with the 
 This module is generated from the dsentities module by:
  `python utils/gendoc.py spec` command.
 
-It generates a CONTENT_OPTIONS variable containing the argument specification for the entities module using the format specified in
+It generates a CONTENT\_OPTIONS variable containing the argument specification for the entities module using the format specified in
 
-[Ansible module architecture — Ansible Documentation](https://docs.ansible.com/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec)
+[Ansible module architecture — Ansible Documentation](https://docs.ansible.com/ansible/latest/dev\_guide/developing\_program\_flow\_modules.html#argument-spec)
 
-This variable is then used by ds_server module to parse the ansible variables.
+This variable is then used by ds\_server module to parse the ansible variables.
 
 ## plugins
 
-### ds_server plugin
+### ds\_server plugin
 
 #### Goal
 
@@ -199,7 +199,7 @@ update ds configuration. It allows to:
 #### Architecture
 
 This module is derivated from Ansible module example and:
-using dsentities_options as parameter spec to parse the ansible parameters
+using dsentities\_options as parameter spec to parse the ansible parameters
 creates a dsentities.YAMLRoot instance from these parameters
 calls the YAMLRoot.update method
 format the result
