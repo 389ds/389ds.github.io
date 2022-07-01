@@ -16,15 +16,13 @@ Other ansible work over 389ds
 
 - [https://galaxy.ansible.com/cscfi/389-ds](https://galaxy.ansible.com/cscfi/389-ds)
 
-- 
-
 ## Considered alternatives:
 
 - System Roles versus Product roles
   After discussion with system roles people and product manager, the decision was to focus on Product role.
 
 - Merge with IPA ansible roles
-  After discussion with system roles people, product manager and IPA ansible people the decision was to not try to integrate with IPA roles 
+  After discussion with system roles people, product manager and IPA ansible people the decision was to not try to integrate with IPA roles
 
 - Having a specific package versus including thing in 389-ds-base
 
@@ -32,27 +30,25 @@ Other ansible work over 389ds
 
 - Having a single module that handles directory server configuration on an host or having multiple modules that handles part of the configuration.
   Having several part (i.e instance/backend/index/agreements) has the advantage of having simpler plugin and playbook variable structure
-  But the drawback is that it is harder to manage for the sysadmin user because the configuration will then be split among lots of playbooks and it will be harder to 
+  But the drawback is that it is harder to manage for the sysadmin user because the configuration will then be split among lots of playbooks and it will be harder to
   deploy (because a set of playbooks will need to be run to deploy the service)
-  Having a single module complexify the ansible option scheme but the configuration is handled in a single playbook. 
-  
-  And when written in yaml the configuration does not seems so complex 
+  Having a single module complexify the ansible option scheme but the configuration is handled in a single playbook.
+
+  And when written in yaml the configuration does not seems so complex
   but when writting playbook a special care must be done about the "state" option because it appears on several nested levels.
 
 - Using set of dict versus dict of dict in ansible options
   a dict of dict: (ie. { 'name1' : { 'optionA': 'valueA' }, 'name2' : { ... } ) is easier to access than a set of dict (i.e: [ { 'name': 'name1', 'optionA': 'valueA' },{'name': 'name2', ...} ]
   But it is not compatible with Ansible option specification nor the way used by Ansible to document the option (Dict keys are supposed to be consrant))
-  So although internally the module handles a dict of dict, it loads and presents data as a set of dict 
-  
-  
+  So although internally the module handles a dict of dict, it loads and presents data as a set of dict
 
 # Test strategy
 
 Automated tests are based on pytest framework that run:
 
-- python testcases for the plugins 
+- python testcases for the plugins
 
-- yaml test case for the playbooks 
+- yaml test case for the playbooks
 
 # General architecture
 
@@ -114,37 +110,37 @@ Provides the code needed to:
 
 - Root entity
   Contains the:
-  
+
   - instances list
-  
+
   - the installlation prefix
 
 - Instance entities
   Represents a directory server instance
   Contains the:
-  
+
   - instance parameters (including: cn=config , global database parameters, )
-  
+
   - backend list
-  
-  - plugin list 
-  
+
+  - plugin list
+
   - sasl mapping entries list
-  
+
   - modifier list (a list of change to apply the dse.ldif, typically to add entries/attribute not handled by the various the entities (like the replication manager entry)
 
 - backends entities
   Contains the:
-  
+
   - backend parameters (i.e mapping tree, backend parameters, database per backend parameter, replication parameters)
-  
+
   - index list
-  
+
   - replication agreement list
 
 - index entities
   Contains the:
-  
+
   - index parameters (for standard or vlv index)
 
 - Plugin entities
@@ -187,7 +183,7 @@ update ds configuration. It allows to:
 #### Architecture
 
 This module is derivated from Ansible module example and:
-using dsentities_options as parameter spec to parse the ansible parameters 
+using dsentities_options as parameter spec to parse the ansible parameters
 creates a dsentities.YAMLRoot instance from these parameters
 calls the YAMLRoot.update method
 format the result
