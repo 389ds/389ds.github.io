@@ -54,7 +54,7 @@ If you're new to the project you should start with our [getting started](docs/38
 -   Online, zero downtime, LDAP-based update of schema, configuration, and management including Access Control Information (ACIs)
 -   Asynchronous Multi-Master Replication, to provide fault tolerance and high write performance
 -   The codebase has been deployed continuously for more than a decade by sites around the world
--   Extensive [documentation](https://access.redhat.com/documentation/en-us/red_hat_directory_server/11/)
+-   Extensive [documentation](https://access.redhat.com/documentation/en-us/red_hat_directory_server/12/)
 -   Secure authentication and transport (TLS, and SASL)
 -   LDAPv3 compliant server
 
@@ -73,12 +73,12 @@ We have moved our IRC channel **\#389** from *freenode* to **irc.libera.chat** (
 
 <!-- Try to keep this list under 10 releases  -->
 
-- 2022-3-23: Released **389-ds-base [2.1.1](docs/389ds/releases/release-2-1-1.html)**
-- 2022-3-23: Released **389-ds-base [2.0.15](docs/389ds/releases/release-2-0-15.html)**
-- 2022-2-2: Released **389-ds-base [2.1.0](docs/389ds/releases/release-2-1-0.html)**
-- 2022-1-28: Released **389-ds-base [2.0.14](docs/389ds/releases/release-2-0-14.html)**
-- 2022-1-24: Released **389-ds-base [2.0.13](docs/389ds/releases/release-2-0-13.html)**
-- 2021-12-16: Released **389-ds-base [2.0.12](docs/389ds/releases/release-2-0-12.html)**
+- 2022-07-05: Released **389-ds-base [2.2.2](docs/389ds/releases/release-2-2-2.html)**
+- 2022-07-05: Released **389-ds-base [2.1.3](docs/389ds/releases/release-2-1-3.html)**
+- 2022-07-05: Released **389-ds-base [2.0.16](docs/389ds/releases/release-2-0-16.html)**
+- 2022-03-23: Released **389-ds-base [2.1.1](docs/389ds/releases/release-2-1-1.html)**
+- 2022-03-23: Released **389-ds-base [2.0.15](docs/389ds/releases/release-2-0-15.html)**
+- 2022-02-02: Released **389-ds-base [2.1.0](docs/389ds/releases/release-2-1-0.html)**
 - 2021-09-20: Released **389-ds-base [1.4.4.17](docs/389ds/releases/release-1-4-4-17.html)**
 
 

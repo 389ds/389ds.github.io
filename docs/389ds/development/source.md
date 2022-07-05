@@ -21,10 +21,18 @@ The source code was produced by first doing a git clone to get the repository, t
 
     git archive --prefix=PKGNAME/ TAG | bzip2 > PKGNAME.tar.bz2
 
+### 389 Directory Server 2.2.0
+
+|Source tarball|git module|git tag|More Info|SHA512SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-2.2.2.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.2.2.tar.gz)|389-ds-base.git|389-ds-base-2.2.2|[Building](building.html)|96572dbd5dfb9fb10d353613cc367b8f761f1958d217c7e381a58e9cea13169884453a3f70f7da68289298669371968282c7fdf292c520f389bc2daa394355db|
+
+
 ### 389 Directory Server 2.1.0
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-2.1.3.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.1.3.tar.gz)|389-ds-base.git|389-ds-base-2.1.3|[Building](building.html)|d5942bc84115a9b671931de0667c69291c1465cf405f438f16f452e5e1f13d24b171985ca86399cf0d867ab273d4b80a5896050f7381223ac4b44cc394794e65|
 |[389-ds-base-2.1.1.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.1.1.tar.gz)|389-ds-base.git|389-ds-base-2.1.1|[Building](building.html)|38feb135847ef409e03642433a84aea84b65f7c0d55cae35e71ff3c541e2c33bb5c1b207096438c7578db7ec98ce8b3fa3a0282d3ca0637ad9e593bc324fb78c|
 |[389-ds-base-2.1.0.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.1.0.tar.gz)|389-ds-base.git|389-ds-base-2.1.0|[Building](building.html)|496195b848566a0ccee272f06a041e2f764a5c8f3d84651a0fc3c7ca9128102ac6e8a8c9ae0945ce1742f39006daa724e394d0481d7c494a9701bf6c8709be51|
 
@@ -32,6 +40,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-2.0.16.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.0.16.tar.gz)|389-ds-base.git|389-ds-base-2.0.16|[Building](building.html)|a1df34954043c72810131bee14c905a571e4333c08944be7616d8de885c834a2659f4616e17a44f8ffbb6b31fbb782ba21646194fe5deb7a47a1fcdad4087ec6|
 |[389-ds-base-2.0.15.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.0.15.tar.gz)|389-ds-base.git|389-ds-base-2.0.15|[Building](building.html)|5eaa2c7720ac0aa595f03226267af51923bc05638afc8c525007341a598a843d0db34af606c8d3b161edfd4c3656d5ad448cd426fa1ccacd54ba64fba43010ef|
 |[389-ds-base-2.0.14.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.0.14.tar.gz)|389-ds-base.git|389-ds-base-2.0.14|[Building](building.html)|803520ea4901d71021ff2771ea175fb5c30d02705eff51d24d68f1a537194c4766e0618d6a89590b46bbcce03d7b17245260e9930351f41e78a61d29de1363d4|
 |[389-ds-base-2.0.13.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.0.13.tar.gz)|389-ds-base.git|389-ds-base-2.0.13|[Building](building.html)|ab9429b391b32d4a09ea5fb0ce15fcf31f7c13e781588ce5587a0ed169959938ce59bff857dbf58bb9413208f6c35792c127cad27c7aca6aa53ef66ef4c36196|
