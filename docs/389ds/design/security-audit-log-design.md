@@ -67,6 +67,8 @@ Do the security logging in:  disconnect_server_nomutex_ext()
 --------------------------------------------------
 
 
+Authentication.Authorization
+
     {
         date: '', // Human readable
         utc_time: '', // For easy sorting/reporting
@@ -82,9 +84,24 @@ Do the security logging in:  disconnect_server_nomutex_ext()
     }
 
 
-    {'date': '13/May/2022:14:19:21.828151054 -0400', 'utc_time': '168485945', 'event': 'FAILED_BIND', 'dn': 'uid=mark,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '2', 'op_id': '1', 'msg': 'INVALID_PASSWORD'}
-    {'date': '13/May/2022:14:19:22.828151058 -0400', 'utc_time': '168499999', 'event': 'FAILED_BIND', 'dn': 'uid=mike,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '7', 'op_id': '1', 'msg': 'NO_SUCH_ENTRY'}
+    {'date': '13/May/2022:14:19:21.828151054 -0400', 'utc_time': '168485945', 'event': 'BIND_FAILED', 'dn': 'uid=mark,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '2', 'op_id': '1', 'msg': 'INVALID_PASSWORD'}
+    {'date': '13/May/2022:14:19:22.828151058 -0400', 'utc_time': '168499999', 'event': 'BIND_FAILED', 'dn': 'uid=mike,ou=people,dc=example,dc=com', 'bind_method': 'SIMPLE', 'root_dn': 'false', 'client_ip': '127.0.0.1', 'server_ip': '127.0.0.1', 'conn_id': '7', 'op_id': '1', 'msg': 'NO_SUCH_ENTRY'}
 
+
+TCP Errors
+
+    {
+        "date": "", 
+        "utc_time": #####, 
+        "event": "TCP_ERROR", 
+        "client_ip": "", 
+        "server_ip": "", 
+        "ldap_version": 3, 
+        "conn_id": 1, 
+        "msg": "Bad Ber Tag or uncleanly closed connection - B1"
+    }
+    
+    {"date": "[15/Jul/2022:13:50:29.688975861 -0400] ", "utc_time": 1657907429, "event": "TCP_ERROR", "client_ip": "::1", "server_ip": "::1", "ldap_version": 3, "conn_id": 1, "msg": "Bad Ber Tag or uncleanly closed connection - B1"
 
 #### Date
 
@@ -98,13 +115,13 @@ Do the security logging in:  disconnect_server_nomutex_ext()
 
 #### EVENT & Message
 
-- authentication FAILED_BIND
+- authentication BIND_FAILED
     - Messages:
         - INVALID_PASSWORD
         - NO_SUCH_ENTRY
         - ACCOUNT_LOCKED
         - CERT_MAP_FAILED
-- authorization UNAUTH_ACCESS --> err=50  mod dn=""
+- authorization AUTHZ_ERROR --> err=50
 - tcp attack TCP_ERROR --> closed connection codes:  B1, B2, B3
 
  
@@ -194,5 +211,11 @@ Should we add more information about common IP addresses, or common accounts?  H
 ## UI
 
 Allow the UI to view the logs, and generate these reports?  Should the UI view the results as text, or in a tree (lot of work)!?
+
+## Issue
+
+<https://github.com/389ds/389-ds-base/issues/5335>
+
+*Need new ticket for new CLI tool (dslog)*
 
 
