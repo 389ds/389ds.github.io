@@ -21,7 +21,7 @@ EXPORT CONTROL. As required by U.S. law, you (Licensee) represents and warrants 
 
 After you have installed packages for your system as below, see our [install guide](/docs/389ds/howto/howto-install-389.html) for what's next.
 
-### Fedora (ds 1.4.x)
+### Fedora (ds 2.x)
 
     dnf install 389-ds-base
 
@@ -29,9 +29,25 @@ If you want to use the cockpit web ui:
 
     dnf install cockpit-389-ds
 
-### OpenSUSE LEAP (ds 1.4.x)
+### OpenSUSE LEAP (ds 2.x)
 
     zypper install 389-ds
+
+### CentOS Stream 9, EL9 (ds 2.x)
+
+`389-ds-base` is part of AppStream repository and can be installed by running
+```
+dnf install 389-ds-base
+```
+
+`cockpit-389-ds` is not distributed in AppStream. We provide 2 separate copr repositories that contain both `389-ds-base` and `cockpit-389-ds`:
+* [`@389ds/389-directory-server`](https://copr.fedorainfracloud.org/coprs/g/389ds/389-directory-server/) - rebuild of 389-ds-base package from the latest of the [currently supported releases](https://fedoraproject.org/wiki/Releases#Current_Supported_Releases) of Fedora.
+* [`@389ds/389-directory-server-next`](https://copr.fedorainfracloud.org/coprs/g/389ds/389-directory-server-next/) - rebuild of 389-ds-base package from Fedora Rawhide, bleeding edge development version. **NOT RECOMMENDED** to be used in production, for testing purposes only.
+
+```
+dnf copr enable @389ds/389-directory-server
+dnf install 389-ds-base cockpit-389-ds
+```
 
 ### CentOS 8.1+ (ds 1.4.x)
 
