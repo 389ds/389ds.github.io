@@ -21,14 +21,20 @@ The source code was produced by first doing a git clone to get the repository, t
 
     git archive --prefix=PKGNAME/ TAG | bzip2 > PKGNAME.tar.bz2
 
-### 389 Directory Server 2.2.0
+### 389 Directory Server 2.3
+
+|Source tarball|git module|git tag|More Info|SHA512SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-2.3.0.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.3.0.tar.gz)|389-ds-base.git|389-ds-base-2.3.0|[Building](building.html)|688ef95106489e3df8161f778aba440ea22b916f8641d612bf428f5c515a2361092a5ab96f5ac6570f09820545394029f1f74221fead65e8504731248f17290e|
+
+### 389 Directory Server 2.2
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
 |[389-ds-base-2.2.2.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.2.2.tar.gz)|389-ds-base.git|389-ds-base-2.2.2|[Building](building.html)|96572dbd5dfb9fb10d353613cc367b8f761f1958d217c7e381a58e9cea13169884453a3f70f7da68289298669371968282c7fdf292c520f389bc2daa394355db|
+|[389-ds-base-2.2.3.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.2.3.tar.gz)|389-ds-base.git|389-ds-base-2.2.3|[Building](building.html)|321439224658e628b1c8e2efc8d443a6cc4d081b2c080eef8f2b696a7875ca81e2b818b32999830c406aa884e18ab3f2cbca7beebc1cb512690ece670b2d9561|
 
-
-### 389 Directory Server 2.1.0
+### 389 Directory Server 2.1
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
@@ -38,7 +44,7 @@ The source code was produced by first doing a git clone to get the repository, t
 |[389-ds-base-2.1.1.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.1.1.tar.gz)|389-ds-base.git|389-ds-base-2.1.1|[Building](building.html)|38feb135847ef409e03642433a84aea84b65f7c0d55cae35e71ff3c541e2c33bb5c1b207096438c7578db7ec98ce8b3fa3a0282d3ca0637ad9e593bc324fb78c|
 |[389-ds-base-2.1.0.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.1.0.tar.gz)|389-ds-base.git|389-ds-base-2.1.0|[Building](building.html)|496195b848566a0ccee272f06a041e2f764a5c8f3d84651a0fc3c7ca9128102ac6e8a8c9ae0945ce1742f39006daa724e394d0481d7c494a9701bf6c8709be51|
 
-### 389 Directory Server 2.0.0
+### 389 Directory Server 2.0
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
