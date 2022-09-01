@@ -103,6 +103,7 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   An email will be sent from Koji telling you if the build was successful
 
+
 **Fedora** - Dist-Git - **patch** on top of Rawhide
 --------------------------------------------
 
@@ -119,18 +120,14 @@ Let assume rawhide branch contains some fixes that are partial (or broken) and y
 
     -   then for each patch do git format-patch -\<number of patches\>
 
-- on fedpkg
+- On fedpkg
+
     -   **fedpkg clone 389-ds-base**
-
     -   **cd 389-ds-base**
-
     -   upload the source tarball (should not be necessary as it was already done): fedpkg upload \<source\>/389-ds-base-2.0.4.tar.bz2
-
     -   Go back to the source directory (see above), which should be uncleaned after the tarball creation
-
 	-   copy the patches from the source tree (taking care of the numbering)
-
-        -   Update Fedora spec file with Rust packages data **FEDORA_SPECFILE=\<fedpkg\>/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust-on-fedora**
+        -   Update Fedora spec file with Rust packages data **DS_SPECFILE=\<fedpkg\>/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust**
 
     -  edit spec file to add the patches
 
@@ -185,7 +182,7 @@ Let assume rawhide branch contains some fixes that are partial (or broken) and y
 
 -   Go back to the source directory, which should be uncleaned after the tarball creation **cd /home/source/ds389/389-ds-base**
 
--   Update Fedora spec file with Rust packages data **FEDORA_SPECFILE=/fedora/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust-on-fedora**
+-   Update Fedora spec file with Rust packages data **DS_SPECFILE=/fedora/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust**
 
 -   Go back to Fedora repo directory **cd /fedora/389-ds-base**
 
