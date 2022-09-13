@@ -1,9 +1,8 @@
-
 ---
 title: "Slapi membership"
 ---
 
-# Slapi Membership"
+# Slapi Membership
 ----------------
 
 {% include toc.md %}
@@ -127,9 +126,9 @@ Limitations are:
 		- -3 flag to return memberof values is invalid because of the membership_attr
 	
 
-## plugins potentially using slapi_memberof
+## Plugins potentially using slapi_memberof
 
-### referential integrity
+### Referential Integrity
 
 When a target entry is *deleted* or *renamed*, the plugin updates the entries (groups) that are *Directly* refering to the target entry. 
 The reference is stored in a *DistinguishedName* attribute. The plugin supports several refering attribute names. For example, by default *member*, *uniquemember*, *owner* and *seeAlso*.
@@ -171,7 +170,7 @@ In conclusion, referential integrity can use *slapi_memberof*.
 	max_groups: -1
 	
 
-### ACL plugin
+### ACL Plugin
 
 When access control is evaluated, it selects which ACI apply before evaluating them. During the selection it checks the bind rule against the bound entry.
 bind rule 'groupdn' requires to evaluate if the bound entry is member of groups. If 'groupdn' uses a filter several groups are evaluated, else only one.
@@ -202,7 +201,7 @@ For the following reasons, even if it is theoretically possible to use *slapi_me
  - DS_LASGroupDnAttrEval/acllas__handle_group_entry are complex code so the fix will not be easy
  - For cache management, it keeps the hierarchy of the nested groups. This info is not available with *slapi_memberof* and I do not know if we can easily get rid of it.
 
-### memberof plugin
+### Memberof Plugin
 
 
 For FIXUP task, the server retrieves the entries to fixup with the filter set in the fixup task.
@@ -238,6 +237,7 @@ For memberof plugin key considerations are
 
 
 # Tests
+--------------------------
 
 TBD
 
@@ -248,3 +248,4 @@ TBD
 --------
 
 <tbordaz@redhat.com>
+
