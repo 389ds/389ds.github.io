@@ -11,6 +11,11 @@ If you are adding a new design document, use the [template](design-template.html
 
 {% include toc.md %}
 
+## Ansible DS Collection
+
+-   [User Facing Design](ansible-user-facing-design.html)
+-   [Backup Role](ansible-backup-role.html)
+
 ## Roadmap
 
 -   [Directory Server Roadmap](../FAQ/roadmap.html)
