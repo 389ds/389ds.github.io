@@ -52,28 +52,35 @@ Ansible Inventory Structure Example
                      ...
                 port: 389
                 secure_port: 636
+                state: present
                 # ... many other cn=config parameters
                 backends:
                   -
                     backend_name: "userRoot"
+                    state: present
                     # ... backend configuration parameters
                     agmts:
                       -
                         replicahost: "dssuppliers.test.local"
                         replicaport: "389"
+                        state: present
                         # ... replication configuration
                     indexes:
                       -
                         indextype: "eq"
+                        state: present
                         # ... index configuration
                       -
                         indextype: "pres"
+                        state: present
                         # ... index configuration
                   -
                     backend_name: "redHat"
+                    state: present
                     # ... backend configuration parameters
                     indexes:
                       indextype: "eq"
+                      state: present
                       # ... index configuration
               - 
                 instance: "localhost"
@@ -81,9 +88,11 @@ Ansible Inventory Structure Example
                      $ANSIBLE_VAULT;1.1;AES256
                      ...
                 port: 389
+                state: present
                 # ... many other cn=config parameters
                 backends:
                   backend_name: "userRoot"
+                  state: present
         dssuppliers:
           hosts:
             dssupplier.test.local
@@ -95,20 +104,25 @@ Ansible Inventory Structure Example
                    ...
               port: 389
               secure_port: 636
+              state: present
               # ... many other cn=config parameters
               backends:
                 backend_name: "userRoot"
+                state: present
                 # ... backend configuration parameters
                 agmts:
                   -
                     replicahost: "dsconsumer.test.local"
                     replicaport: "389"
+                    state: present
                     # ... replication configuration
                 indexes:
                   -
                     indextype: "eq"
+                    state: present
                     # ... index configuration
                   -
                     indextype: "pres"
-                      # ... index configuration
+                    state: present
+                    # ... index configuration
 
