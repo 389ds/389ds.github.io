@@ -20,17 +20,17 @@ Instance Topology Configuration
 -------
 
 The whole configuration will be done in Ansible Inventory. It's the core and the main source of truth for the whole topology.
-A single role (with a plugin behind it) will consume the inventory and change/create the topology defined by it. The role name will be **389ds_server**. Only top-level variables will have the **389ds_server_** prefix. The inventory will have a nested structure. The example can be found at the end of the document.
-The detailed description will be posted on a separate page for **389ds_server** design.
+A single role (with a plugin behind it) will consume the inventory and change/create the topology defined by it. The role name will be **ds389_server**. Only top-level variables will have the **ds389_server_** prefix. The inventory will have a nested structure. The example can be found at the end of the document.
+The detailed description will be posted on a separate page for **ds389_server** design.
 
 Role Structure
 ------------------------------
 
-- **389ds_server** - the role that will manage the Ansible Inventory. The whole configuration is presented in the Ansible Inventory Structure chapter;
-- **389ds_info** - the role for collecting 389 DS instances;
-- **[389ds_backup](ansible-backup-role.html)** - the role that allows to backup 389 DS instance, to copy a backup from the server to the controller, to copy all backups from the server to the controller, to remove a backup from the server, to remove all backups from the server, to restore a 389 DS server locally and from the controller and also to copy a backup from the controller to the server.
+- **ds389_server** - the role that will manage the Ansible Inventory. The whole configuration is presented in the Ansible Inventory Structure chapter;
+- **ds389_info** - the role for collecting 389 DS instances;
+- **[ds389_backup](ansible-backup-role.html)** - the role that allows to backup 389 DS instance, to copy a backup from the server to the controller, to copy all backups from the server to the controller, to remove a backup from the server, to remove all backups from the server, to restore a 389 DS server locally and from the controller and also to copy a backup from the controller to the server.
 
-More task roles will be added later when they'll be developed (i.e. **389ds_memberof_fixup** can be used for the MemberOf plugin Fixup task). Its variable will be called with the role name prefix (i.e. **389ds_memberof_fixup_filter**).
+More task roles will be added later when they'll be developed (i.e. **ds389_memberof_fixup** can be used for the MemberOf plugin Fixup task). Its variable will be called with the role name prefix (i.e. **ds389_memberof_fixup_filter**).
 
 Please note that Monitoring and Logging should be managed via external tools. It's a general Ansible design approach which is already respected by other projects.
 Additionally, in the future, we can work with Logging System Role to provide an integrated environment for the logging.
@@ -44,7 +44,7 @@ Ansible Inventory Structure Example
           hosts:
             dsconsumer.test.local
           vars:
-            389ds_server_instances:
+            ds389_server_instances:
               - 
                 instance: "myconsumer"
                 rootpw: !vault |
@@ -97,7 +97,7 @@ Ansible Inventory Structure Example
           hosts:
             dssupplier.test.local
           vars:
-            389ds_server_instances:
+            ds389_server_instances:
               instance: "mysupplier"
               rootpw: !vault |
                    $ANSIBLE_VAULT;1.1;AES256

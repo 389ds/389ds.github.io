@@ -64,7 +64,7 @@ Example playbook to create a backup on the 389 DS server locally:
   become: true
 
   roles:
-  - role: 389ds_backup
+  - role: ds389_backup
     state: present
 ```
 
@@ -78,11 +78,11 @@ Example playbook to create a backup of the 389 DS server that is transferred to 
   become: true
 
   vars:
-    389ds_backup_to_controller: yes
-    # 389ds_backup_keep_on_server: yes
+    ds389_backup_to_controller: yes
+    # ds389_backup_keep_on_server: yes
 
   roles:
-  - role: 389ds_backup
+  - role: ds389_backup
     state: present
 ```
 
@@ -96,11 +96,11 @@ Example playbook to create a backup of the 389 DS server that is transferred to 
   become: true
 
   vars:
-    389ds_backup_to_controller: yes
-    389ds_backup_keep_on_server: yes
+    ds389_backup_to_controller: yes
+    ds389_backup_keep_on_server: yes
 
   roles:
-  - role: 389ds_backup
+  - role: ds389_backup
     state: present
 ```
 
@@ -114,11 +114,11 @@ Copy backup `ds-full-2020-10-01-10-00-00` from server to controller:
   become: true
 
   vars:
-    389ds_backup_name: dsinst-2020-10-01-10-00-00
-    389ds_backup_to_controller: yes
+    ds389_backup_name: dsinst-2020-10-01-10-00-00
+    ds389_backup_to_controller: yes
 
   roles:
-  - role: 389ds_backup
+  - role: ds389_backup
     state: copied
 ```
 
@@ -132,13 +132,13 @@ Copy backups `ds-full-2020-10-01-10-00-00` and `ds-full-2020-10-02-10-00-00` fro
   become: true
 
   vars:
-    389ds_backup_name:
+    ds389_backup_name:
     - ds-full-2020-10-01-10-00-00
     - ds-full-2020-10-02-10-00-00
-    389ds_backup_to_controller: yes
+    ds389_backup_to_controller: yes
 
   roles:
-  - role: 389ds_backup
+  - role: ds389_backup
     state: copied
 ```
 
@@ -152,11 +152,11 @@ Copy all backups from server to controller that are following the backup naming 
   become: true
 
   vars:
-    389ds_backup_name: all
-    389ds_backup_to_controller: yes
+    ds389_backup_name: all
+    ds389_backup_to_controller: yes
 
   roles:
-  - role: 389ds_backup
+  - role: ds389_backup
     state: copied
 ```
 
@@ -170,10 +170,10 @@ Remove backup `ds-full-2020-10-01-10-00-00` from server:
   become: true
 
   vars:
-    389ds_backup_name: ds-full-2020-10-01-10-00-00
+    ds389_backup_name: ds-full-2020-10-01-10-00-00
 
   roles:
-  - role: 389ds_backup
+  - role: ds389_backup
     state: absent
 ```
 
@@ -187,12 +187,12 @@ Remove backups `ds-full-2020-10-01-10-00-00` and `ds-full-2020-10-02-10-00-00` f
   become: true
 
   vars:
-    389ds_backup_name:
+    ds389_backup_name:
     - ds-full-2020-10-01-10-00-00
     - ds-full-2020-10-02-10-00-00
 
   roles:
-  - role: 389ds_backup
+  - role: ds389_backup
     state: absent
 ```
 
@@ -206,10 +206,10 @@ Remove all backups from server that are following the backup naming scheme:
   become: true
 
   vars:
-    389ds_backup_name: all
+    ds389_backup_name: all
 
   roles:
-  - role: 389ds_backup
+  - role: ds389_backup
     state: absent
 ```
 
@@ -223,10 +223,10 @@ Example playbook to restore an 389 DS server locally:
   become: true
 
   vars:
-    389ds_backup_name: ds-full-2020-10-22-11-11-44
+    ds389_backup_name: ds-full-2020-10-22-11-11-44
 
   roles:
-  - role: 389ds_backup
+  - role: ds389_backup
     state: restored
 ```
 
@@ -240,11 +240,11 @@ Example playbook to restore 389 DS server from controller:
   become: true
 
   vars:
-    389ds_backup_name: dsinst.test.local_ds-full-2020-10-22-11-11-44
-    389ds_backup_from_controller: yes
+    ds389_backup_name: dsinst.test.local_ds-full-2020-10-22-11-11-44
+    ds389_backup_from_controller: yes
 
   roles:
-  - role: 389ds_backup
+  - role: ds389_backup
     state: restored
 ```
 
@@ -258,11 +258,11 @@ Example playbook to copy a backup from controller to the 389 DS server:
   become: true
 
   vars:
-    389ds_backup_name: dsinst.test.local_ds-full-2020-10-22-11-11-44
-    389ds_backup_from_controller: yes
+    ds389_backup_name: dsinst.test.local_ds-full-2020-10-22-11-11-44
+    ds389_backup_from_controller: yes
 
   roles:
-  - role: 389ds_backup
+  - role: ds389_backup
     state: copied
 ```
 
@@ -283,12 +283,12 @@ Special Variables
 
 Variable | Description | Required
 -------- | ----------- | --------
-389ds_backup_name | The 389 DS backup name(s). Only for removal of server local backup(s) with `state: absent`, to copy server local backup(s) to the controller with `state: copied` and `389ds_backup_from_server` set, to copy a backup from the controller to the server with `state: copied` and `389ds_backup_from_controller` set or to restore a backup with `state: restored` either locally on the server of from the controller with `389ds_backup_from_controller` set. If `all` is used all available backups are copied or removed that are following the backup naming scheme. string list | no
-389ds_backup_keep_on_server | Keep local copy of backup on server with `state: present` and `389ds_backup_to_controller`, bool (default: `no`) | no
-389ds_backup_to_controller | Copy backup to controller, prefixes backup with node name, remove backup on server if `389ds_backup_keep_on_server` is not set, bool (default: `no`) | no
-389ds_backup_controller_path | Pre existing path on controller to store the backup in with `state: present`, path on the controller to copy the backup from with `state: copied` and `389ds_backup_from_controller` set also for the restore with `state: restored` and `389ds_backup_from_controller` set. If this is not set, the current working dir is used. string | no
-389ds_backup_name_prefix | Set prefix to use for backup directory on controller with `state: present` or `state: copied` and `389ds_backup_to_controller` set, The default is the server FQDN, string | no
-389ds_backup_from_controller | Copy backup from controller to server, restore if `state: restored`, copy backup to server if `state: copied`, bool (default: `no`) | no
+ds389_backup_name | The 389 DS backup name(s). Only for removal of server local backup(s) with `state: absent`, to copy server local backup(s) to the controller with `state: copied` and `ds389_backup_from_server` set, to copy a backup from the controller to the server with `state: copied` and `ds389_backup_from_controller` set or to restore a backup with `state: restored` either locally on the server of from the controller with `ds389_backup_from_controller` set. If `all` is used all available backups are copied or removed that are following the backup naming scheme. string list | no
+ds389_backup_keep_on_server | Keep local copy of backup on server with `state: present` and `ds389_backup_to_controller`, bool (default: `no`) | no
+ds389_backup_to_controller | Copy backup to controller, prefixes backup with node name, remove backup on server if `ds389_backup_keep_on_server` is not set, bool (default: `no`) | no
+ds389_backup_controller_path | Pre existing path on controller to store the backup in with `state: present`, path on the controller to copy the backup from with `state: copied` and `ds389_backup_from_controller` set also for the restore with `state: restored` and `ds389_backup_from_controller` set. If this is not set, the current working dir is used. string | no
+ds389_backup_name_prefix | Set prefix to use for backup directory on controller with `state: present` or `state: copied` and `ds389_backup_to_controller` set, The default is the server FQDN, string | no
+ds389_backup_from_controller | Copy backup from controller to server, restore if `state: restored`, copy backup to server if `state: copied`, bool (default: `no`) | no
 
 
 Authors
