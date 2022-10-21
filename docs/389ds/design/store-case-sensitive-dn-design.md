@@ -10,7 +10,7 @@ Overview
 
 Directory Server switched to a new IDL format where we only stored the RDN of an entry in the database (id2entry) and not the full DN.  This allowed for more efficient moving of entries between subtrees.  However building the DN from the entry's RDN (via entryrdn_lookup_dn()) is very expensive.  It also forces the case of base DN in the entry DN to match its parent - so the case of the entire DN is NOT preserved.  So by additionally storing the full/intact DN in the entry saves us this work and provides a nice performance boost when first loading entries from disk and into the caches.  We are storing this DN in a new operational attribute "**dsEntryDN**".  
 
-Some customers prefer to have the case DN preserved to way tit was added by the client.  So return the original DN (case intact) you can enable a new config setting under cn=config: **nsslapd-return-original-entrydn=on**.
+Some customers prefer to have the case DN preserved to way it was added by the client.  So to return the original DN (case intact) you can enable a new config setting under *cn=config*: **nsslapd-return-original-entrydn=on**.
 
 Use Cases
 ---------
