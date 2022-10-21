@@ -30,10 +30,11 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Ansible DS](ansible-ds.html)
 
 ## 389 Directory Server 2.x
+-   [Store Case-Sensitive DN in Entry](store-case-sensitive-dn-design.html)
 -   [Security Audit Log](security-audit-log-design.html)
 -   [Slapi_memberof](slapi-memberof.html)
 -   [Connection Table Multi List](connection-table-lists.html)
--   Rust...
+-   Rust by default in 2.3
 -   Pluggable Backend --> move to LMDB
 -   [OTP Password Policy](otp-password-policy.html)
 -   [LDAPI DN Rewritter](ldapi-auto-auth-dn-design.html)
