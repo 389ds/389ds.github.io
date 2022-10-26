@@ -24,6 +24,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Phase 1 & 2 - separate BDB code & confguration](backend-redesign.html)
 -   [Phase 3 - Generic DB layer](backend-redesign-phase3.html)
 -   [Phase 4 - Implement LMDB](backend-redesign-phase4.html)
+-   [LMDB Import Design](lmdb-import-design.html)
 
 ## Ansible
 
