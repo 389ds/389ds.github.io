@@ -23,7 +23,7 @@ Major configuration options and enablement
 
 The DN returned to the client can be controlled by the following setting under **cn=config**
 
-    nsslapd-return-original-entrydn:  on/off     Default is "off"
+    nsslapd-return-original-entrydn:  on/off     Default is "on"
 
 When "on" it will return the DN exactly how it was originally added to the database (what is stored in **dsEntryDN**.  If it's "off" then the base DN of the entry DN will match the database suffix configuration as set under **cn=userroot,cn=ldbm database,cn=plugins,cn=config** via the attribute **nsslapd-suffix**.  Basically when "off" it will continue to return DN as it has since RHDS 10 (389-ds-base-1.3.10)
 
