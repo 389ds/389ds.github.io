@@ -112,7 +112,7 @@ The idea is to have the same model for all functions with the following threads:
     Change backend state (to referral)
     if Import of Total update:
         delete the backend bdi ...
-
+    
     Generate be attribute list and open/create associated dbi
         Special dbi/indexes:
             id2entry (if upgrade rename it to :id2entry to avoid overwriting it.
@@ -135,12 +135,11 @@ The idea is to have the same model for all functions with the following threads:
 
 #### Provider:
 
-| Mode          | Caller                  | Action                                                                                                                                                                                                                                                                                  |
-| ------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| index/upgrade | index/upgrade           | Get next entry in id2entry (reopening a txn and a cursor / moving to last seen id and getting next one) prepare entry and parent entry info ==> push id and entry data to worker                                                                                                        |
-| bulk import   | dbmdb_db2ldif           | Get next entry from bulk import queue (pushed by ldap operation worker thread when receiving the ldap add operation from the supplier) then prepare the entry and parent entry info (delaying the  entry util parent entry exists) then push the id and the entry ldif string to worker |
-| import        | dbmdb_db2ldif           | Get next entry in ldif file, generate an id and push the id and the entry ldif string to worker                                                                                                                                                                                         |
-| total update  | dbmdb_bulk_import_queue | push the entry to worker                                                                                                                                                                                                                                                                |
+| Mode          | Caller        | Action                                                                                                                                                                                                                                                                                  |
+| ------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| index/upgrade | index/upgrade | Get next entry in id2entry (reopening a txn and a cursor / moving to last seen id and getting next one) prepare entry and parent entry info ==> push id and entry data to worker                                                                                                        |
+| bulk import   | dbmdb_db2ldif | Get next entry from bulk import queue (pushed by ldap operation worker thread when receiving the ldap add operation from the supplier) then prepare the entry and parent entry info (delaying the  entry util parent entry exists) then push the id and the entry ldif string to worker |
+| import        | dbmdb_db2ldif | Get next entry in ldif file, generate an id then prepare the entry and parent entry info and push these data to worker. If RUV is seen before the suffix entry it is kept and push after the last entry.                                                                                |
 
     Find a free slot to store entry with id PidE and DN rdn/nrdn and idP (and reserve it)
     if no free slot wait until we can get a free slot)
@@ -257,7 +256,7 @@ The queue contains some threshold for flow control and utilities
             - dbi  (i.e the database instance)
             - key  (the record key)
             - data (the record data)
-
+    
     The items in this queue are pushed by the worker threads and read by the writer thread
 
 ##### Bulk import queue
@@ -278,7 +277,7 @@ bulk import thread to handle the waiting entries
   handled by bulk import provider thread.
 ```
 
-#####
+##### 
 
 #### EntryInfo private database:
 
