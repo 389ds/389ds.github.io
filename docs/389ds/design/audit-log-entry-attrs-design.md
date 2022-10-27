@@ -22,6 +22,26 @@ Add a new configuration setting **nsslapd-auditlog-display-attrs** that accepts 
 
 The unhashed userpassword attribute **unhashed#user#password**, used by winsync, is also automatically blocked from the output.
 
+The audit log entry attributes are prefixed with a hash/pound sign **#**.  This makes the displayed attributes comments and will not interfere with tools that were previously parsing/replaying the audit log:
+
+```
+time: 20221027102743
+dn: uid=73747737483,ou=people,dc=example,dc=com
+#cn: Frank Lee
+result: 0
+changetype: modify
+replace: description
+description: what
+-
+replace: modifiersname
+modifiersname: cn=dm
+-
+replace: modifytimestamp
+modifytimestamp: 20221027142743Z
+-
+```
+
+
 Implementation
 --------------
 
