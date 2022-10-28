@@ -18,7 +18,7 @@ There are cases where the DN of the entry does not contain useful identifying in
 Design
 ------
 
-Add a new configuration setting **nsslapd-auditlog-display-attrs** that accepts a space or comma separated list of attributes that should be displayed in the audit log.  This attribute should also accept **"*"** to display all the attributes from the entry.
+Add a new configuration setting **nsslapd-auditlog-display-attrs** that accepts a space separated list of attributes that should be displayed in the audit log.  This attribute should also accept **"*"** to display all the attributes from the entry.
 
 The unhashed userpassword attribute **unhashed#user#password**, used by winsync, is also automatically blocked from the output.
 
@@ -42,13 +42,10 @@ modifytimestamp: 20221027142743Z
 ```
 
 
-Implementation
---------------
-
-Any additional requirements or changes discovered during the implementation phase.
-
 Major configuration options and enablement
 ------------------------------------------
+
+The followiung setting affects both audit and auditfail logs
 
     cn=config
     nsslapd-auditlog-display-attrs: [ATTR ATTR ATTR] | *
