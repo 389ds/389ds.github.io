@@ -8,7 +8,7 @@ title: "Audit Log Display Entry Attributes"
 Overview
 --------
 
-Add a new config settings for the audit/auditfail log that will display specific, or all, attributes from the entry being modified
+Add a new config settings for the audit log that will display specific, or all, attributes from the entry being modified
 
 Use Cases
 ---------
@@ -45,7 +45,7 @@ modifytimestamp: 20221027142743Z
 Major configuration options and enablement
 ------------------------------------------
 
-The followiung setting affects both audit and auditfail logs
+The following setting only affects the audit log.  The auditfail log can **not** display these attributes.
 
     cn=config
     nsslapd-auditlog-display-attrs: [ATTR ATTR ATTR] | *
