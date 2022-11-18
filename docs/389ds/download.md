@@ -33,7 +33,7 @@ If you want to use the cockpit web ui:
 
     zypper install 389-ds
 
-### CentOS Stream 9, EL9 (ds 2.x)
+### CentOS Stream 8/9, EL8/EL9 (ds 2.x)
 
 `389-ds-base` is part of AppStream repository and can be installed by running
 ```
@@ -49,7 +49,19 @@ dnf copr enable @389ds/389-directory-server
 dnf install 389-ds-base cockpit-389-ds
 ```
 
+If you're upgrading from EPEL8 modular packages, enable copr repository and reset the old module:
+
+```
+dnf copr enable @389ds/389-directory-server
+dnf update 389-ds-base cockpit-389-ds
+dnf module reset 389-directory-server
+```
+
 ### CentOS 8.1+ (ds 1.4.x)
+
+Instructions below are outdated since EPEL Modular repository was deprecated, please use copr repository from the section above.
+<details>
+<summary>Old instructions for 389-directory-server module</summary>
 
 In CentOS 8.1+ directory server is distributed as a module in EPEL 8 (see [Modularity](https://docs.fedoraproject.org/en-US/modularity/) documentation for more information).
 There are three streams available:
@@ -70,6 +82,8 @@ yum install epel-release
 yum update epel-release
 yum module install 389-directory-server:stable/default
 ```
+
+</details>
 
 ### RHEL 6, RHEL 7, CentOS 6, CentOS 7 (ds 1.3.x)
 
