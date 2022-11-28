@@ -33,30 +33,10 @@ Here is a "MarkDown" template for writing design docs
     -   logic flow
     -   access control considerations
 
-    Implementation
-    --------------
-
-    Any additional requirements or changes discovered during the implementation phase.
-
     Major configuration options and enablement
     ------------------------------------------
 
     Any configuration options? Any commands to enable/disable the feature or turn on/off its parts?
-
-    Replication
-    -----------
-
-    Any impact on replication?
-
-    Updates and Upgrades
-    --------------------
-
-    Any impact on updates and upgrades?
-
-    Dependencies
-    ------------
-
-    Any new package and library dependencies.
 
     External Impact
     ---------------

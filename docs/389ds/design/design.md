@@ -31,6 +31,8 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Ansible DS](ansible-ds.html)
 
 ## 389 Directory Server 2.x
+
+-   [Improve Automember Fixup Task](automember-rebuild-cleanup-design.html)
 -   [Audit Log Display Entry Attributes](audit-log-entry-attrs-design.html)
 -   [Store Case-Sensitive DN in Entry](store-case-sensitive-dn-design.html)
 -   [Security Audit Log](security-audit-log-design.html)
