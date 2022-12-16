@@ -100,25 +100,27 @@ slapi_memberof(Slapi_MemberOfConfig *config, Slapi_DN *member_sdn, Slapi_MemberO
 
 ### description
 
-    Slapi_memberof retrieve all entries that are directly or indirectly referring to <member_sdn>
+Slapi_memberof retrieve all entries that are directly or indirectly referring to <member_sdn>
     
 ### arguments
     
-    **groupattr** is the attribute name. It is used, along with **subtree**, to build the filter matching the referring entries. If **subtree** is False the filter looks like "<groupattr>=<member_dn>". If **subtree_search** is True then the filter is "<groupattr>=*<member_dn>".
+**groupattr** is the attribute name. It is used, along with **subtree**, to build the filter matching the referring entries. If **subtree** is False the filter looks like "<groupattr>=<member_dn>". If **subtree_search** is True then the filter is "<groupattr>=*<member_dn>".
     
-    For a given **member_sdn**, Slapi_memberof retrieves referring entries in the same suffix where **member_sdn** is. If **allBackend** is True, it retrieves referring entries in all the backends. **entryScopes** and **entryScopeExcludeSubtree** are used to check that entries (referred and referring) are considered or not. If the entry is in **entryScopeExcludeSubtree**, it is ignored. Else the server search referring entries in the full suffix or in **entryScopes** if it only part of the suffix.
+For a given **member_sdn**, Slapi_memberof retrieves referring entries in the same suffix where **member_sdn** is. If **allBackend** is True, it retrieves referring entries in all the backends. **entryScopes** and **entryScopeExcludeSubtree** are used to check that entries (referred and referring) are considered or not. If the entry is in **entryScopeExcludeSubtree**, it is ignored. Else the server search referring entries in the full suffix or in **entryScopes** if it only part of the suffix.
     
-    When **recursive** is False, it retrieves the directly referring entries to **member_sdn**. Else it retrieves the directly and indirectly referring entries. For example U1 is referenced by G1 and G1 is referenced by G2, if **recursive**=True then it returns G1 and G2 else it returns G1.
+When **recursive** is False, it retrieves the directly referring entries to **member_sdn**. Else it retrieves the directly and indirectly referring entries. For example U1 is referenced by G1 and G1 is referenced by G2, if **recursive**=True then it returns G1 and G2 else it returns G1.
     
-	If slapi_memberof is called with **groupattr** that is identical to **memberofgroupattr** in memberof plugin then there is a possibility to speed up slapi_memberof computation using **memberof** attribute from **member_sdn** entry. The **flag** is used to specify if slapi_memberof should use or not **memberof** to retrieve referencing entries. It exists limitations to reuse **memberof** attribute:
-	- memberof plugin must be enabled
-	- **groupattr** should be in *memberofgroupattr** value set
-	- **entryScopes**, **entryScopeExcludeSubtree** and **allBackend** should match the configuration of memberof plugin
-	- **recursive** should match **memberOfSkipNested**
+If slapi_memberof is called with **groupattr** that is identical to **memberofgroupattr** in memberof plugin then there is a possibility to speed up slapi_memberof computation using **memberof** attribute from **member_sdn** entry. The **flag** is used to specify if slapi_memberof should use or not **memberof** to retrieve referencing entries. It exists limitations to reuse **memberof** attribute:
+
+- memberof plugin must be enabled
+- **groupattr** should be in *memberofgroupattr** value set
+- **entryScopes**, **entryScopeExcludeSubtree** and **allBackend** should match the configuration of memberof plugin
+- **recursive** should match **memberOfSkipNested**
+
 The **flag** values are:
-	- RECOMPUTE: computes **result** even if values of **memberof** could be reused.
-	- REUSE_ONLY: Only set **result** if the **memberof** values from memberof plugin are used. Meaning that all limitations are fulfill. If some limitations are not fulfill, slapi_memberof fails
-	- REUSE_IF_POSSIBLE: If all limitations are fulfill, use **memberof** to set **result**, else recomputes **result**
+- RECOMPUTE: computes **result** even if values of **memberof** could be reused.
+- REUSE_ONLY: Only set **result** if the **memberof** values from memberof plugin are used. Meaning that all limitations are fulfill. If some limitations are not fulfill, slapi_memberof fails
+- REUSE_IF_POSSIBLE: If all limitations are fulfill, use **memberof** to set **result**, else recomputes **result**
 	
 **error_msg** and **error_msg_length** are used to store a message explaining the reason of the failure of slapi_memberof
 
@@ -168,14 +170,13 @@ So for referential integrity plugins key considerations are
 
 In conclusion, referential integrity can use *slapi_memberof*.
 
-	
-        - groupattr: there is a call to slapi_memberof for each referencing attribute
-        - subtree_search: True for MODRDN, False else
-        - allBackends: if *nsslapd-pluginContainerScope* is set, then it is False, else it is True 
-        - entryScopes:  if *nsslapd-pluginContainerScope* is set, then *entryScopes* is set to *nsslapd-pluginContainerScope*, else it is NULL
-        - entryScopeExcludeSubtrees: is NULL
-        - recursive is False
-        - flag is RECOMPUTE
+- groupattr: there is a call to slapi_memberof for each referencing attribute
+- subtree_search: True for MODRDN, False else
+- allBackends: if *nsslapd-pluginContainerScope* is set, then it is False, else it is True 
+- entryScopes:  if *nsslapd-pluginContainerScope* is set, then *entryScopes* is set to *nsslapd-pluginContainerScope*, else it is NULL
+- entryScopeExcludeSubtrees: is NULL
+ - recursive is False
+- flag is RECOMPUTE
 	
 
 ### ACL Plugin
@@ -258,13 +259,13 @@ For memberof plugin key considerations are
 
 In conclusion memberof plugin can use slapi_memberof with
 
-        - groupattr: there is a call to slapi_memberof for each referencing attribute (*memberOfGroupAttr*)
-        - subtree_search: False
-        - allBackends: if *memberOfAllBackends* is 'on', then it is True, else it is False 
-        - entryScopes:  array of *memberOfEntryScope*
-        - entryScopeExcludeSubtrees: array of memberOfEntryScopeExcludeSubtree
-        - recursive True if fixup task or *memberOfSkipNested* is False. else it is False.
-        - flag is RECOMPUTE
+- groupattr: there is a call to slapi_memberof for each referencing attribute (*memberOfGroupAttr*)
+- subtree_search: False
+- allBackends: if *memberOfAllBackends* is 'on', then it is True, else it is False 
+- entryScopes:  array of *memberOfEntryScope*
+ - entryScopeExcludeSubtrees: array of memberOfEntryScopeExcludeSubtree
+- recursive True if fixup task or *memberOfSkipNested* is False. else it is False.
+- flag is RECOMPUTE
 
 # Tests
 --------------------------
