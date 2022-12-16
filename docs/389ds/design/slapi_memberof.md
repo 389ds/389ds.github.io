@@ -20,15 +20,14 @@ This new plugin API function is also required by a futur implementation of *Inch
 # Use cases
 -----------
 
-A plugin uses *slapi_memberof* to retrieve the list of groups DN that a given entry DN belongs to. It specifies 
+A plugin uses *slapi_memberof* to retrieve the list of entries that refer to a given entry. It specifies 
   - an entry SDN
-  - a list of *membership* attributes to considere
-  - optional a filter to search with
-  - optional the base of the DIT to look into 
-  - optional maximum nesting level 
-  - optional maximum group to retrieve
-  - Flag to reuse_only / reuse_if_possible / recompute *memberof* values
-*slapi_memberof* returns an array of slapi_sdn containing all the groups DN that a given entry belongs to
+  - a *membership* attributes to consider 
+  - optional scopes to take into account (multi backends, included/excluded scopes)
+  - retrieve direct or direct+indirect referencing entries
+  
+Upon success, *slapi_memberof* returns a couple of valueset with nsuniqueid/dn of the referring entries.
+
 
 # Configuration changes
 --------------------------------------------
@@ -67,64 +66,68 @@ In 389DS, the reverse membership relation (i.e. *memberOf*, *ismemberOf*) is sto
 Storing the value improves READ response time but slow down WRITE. Computing the value improve WRITE and slow down READ. Reverse membership needs to be computed anyway. Both approaches have benefit/loss. This design assumes that '*memberof*' attribute is a real attribute stored in the entry. 
 
 
-## memberof attribute
-
-When configured and enabled, memberof plugin maintain a valid set of *memberof* values (*memberOfAttr*). As consequence *slapi_memberof* could reuse those values at the following conditions:
-
-
-- The Flag is set to 'reuse_only' or 'reuse_if_possible' *memberof* values
-- the base of the DIT (slapi_memberof) is included in memberOfEntryScope (memberof plugin). If it is not the case it fails and returns -2.
-- *membership* attributes (slapi_memberof) are the same as memberOfGroupAttr (memberof plugin). If it is not the case it fails and returns -3.
-
-
-Limitations are:
-
-- if *slapi_memberof* is called with a flag to 'recompute', it computes (internal search) *memberof* values.
-- *memberof* plugin computes membership taking into account **all** configured membership attributes.  This is the current behavior of *memberof* plugin and *slapi_memberof* behave similarly. For example:
-
-    	G1 --member--> G2 --uniquemember--> U1. 
-    	U1.memberof = [G1, G2]
-    	slapi_memberof(U1, [member, uniquemember], flag=reuse) => [G1, G2]
-    	slapi_memberof(U1, [member, uniquemember], flag=recompute) => [G1, G2]
-    
-
-- with 'reuse' flag, maximum nesting is not enforced
-- with 'reuse' flag, maximum groups is not enforced
-
-*memberof* plugin will eventually use *slapi_memberof*, it calls *slapi_memberof* with flag 'recompute'.
-
 ## slapi_memberof interface
 
-    int slapi_memberof(slapi_sdn *target_entry, char **membership_attr, char *filter, slapi_sdn *base, slapi_sdn **group_sdn, int max_nesting, int max_groups, int flag, char *error_msg, int error_msg_lgth)
     
-	According to the value of 'flag' , it returns or computes 'group_sdn'. 'group_sdn' contains the set of groups that 'target_entry' belongs to (directly or indirectly). The server uses the set of membership attributes membership_attr to determine if the entry belongs or not to a group. If slapi_memberof computes group_sdn, then it enforces that not more the max_groups are returned and that the depth of nested group is less than max_nesting.
-	If 'filter' is specified it uses it without using 'target_entry', 'membship_attr' and force max_nesting to 1. 
-	Input parameters
-		- target_entry is the target entry SDN 
-		- membership_attr is a NULL terminated array of membership attribute
-		- filter to use to retrieve the groups
-		- base is the SDN of the base entry. If NULL, it uses the base suffix containing *target_entry*
-		- max_nesting is the length of the path 'group' to 'target_entry'. 1 means direct members. By default, for safety reason max_nesting is limited to 20.
-		- max groups is the maximum number of groups to put into 'group_sdn' array. By default, for safety reason max_groups is 1000.
-		- error_msg_lgth: lenght of the error_msg buffer
-		- flag
-			- reuse_only: it returns the values of 'memberof' in 'group_sdn'. If 'base' or 'membership_attr' are not conform, it fails.
-			- reuse_if_possible: If 'base' or 'membership_attr' conform to *memberof plugin* configuration, it returns the values of *memberof* in group_sdn. Else it switches to 'recompute' mode.
-			- recompute: It uses 'base' , 'membership_attr', 'filter', 'max_groups', 'max_nesting' to compute membership and return the groups DN in 'group_sdn'.
-		
-	Output parameters
-		- group_sdn, NULL terminated array of slapi_sdn containing the DN of the groups having target_entry as member
-                  the group_sdn should be freed by the caller
-	        - error_msg: buffer that contains a message explaining the return code != 0. If rc = 0, buffer is not changed
-	        
-	Return code:
-		-  2 maximum nesting hit
-		-  1 maximum groups hit
-		-  0 success
-		- -1 internal error
-		- -2 flag to return memberof values is invalid because of the base
-		- -3 flag to return memberof values is invalid because of the membership_attr
+    typedef enum {
+        REUSE_ONLY,
+        REUSE_IF_POSSIBLE,
+        RECOMPUTE
+    } memberof_flag_t;
+    
+    typedef struct _slapi_memberofresult {
+        Slapi_ValueSet *nsuniqueid_vals;
+        Slapi_ValueSet *dn_vals;
+    } Slapi_MemberOfResult;
+    
+    typedef struct _slapi_memberofconfig
+    {
+        char *groupattr;
+        PRBool subtree_search;
+        PRBool allBackends;
+        Slapi_DN **entryScopes;
+        Slapi_DN **entryScopeExcludeSubtrees;
+        PRBool recursive;
+        memberof_flag_t flag;
+        char *error_msg;
+        int errot_msg_lenght;
+    } Slapi_MemberOfConfig;
+    
+    
+
+    int
+slapi_memberof(Slapi_MemberOfConfig *config, Slapi_DN *member_sdn, Slapi_MemberOfResult *result)
+
+### description
+
+    Slapi_memberof retrieve all entries that are directly or indirectly referring to <member_sdn>
+    
+### arguments
+    
+    **groupattr** is the attribute name. It is used, along with **subtree**, to build the filter matching the referring entries. If **subtree** is False the filter looks like "<groupattr>=<member_dn>". If **subtree_search** is True then the filter is "<groupattr>=*<member_dn>".
+    
+    For a given **member_sdn**, Slapi_memberof retrieves referring entries in the same suffix where **member_sdn** is. If **allBackend** is True, it retrieves referring entries in all the backends. **entryScopes** and **entryScopeExcludeSubtree** are used to check that entries (referred and referring) are considered or not. If the entry is in **entryScopeExcludeSubtree**, it is ignored. Else the server search referring entries in the full suffix or in **entryScopes** if it only part of the suffix.
+    
+    When **recursive** is False, it retrieves the directly referring entries to **member_sdn**. Else it retrieves the directly and indirectly referring entries. For example U1 is referenced by G1 and G1 is referenced by G2, if **recursive**=True then it returns G1 and G2 else it returns G1.
+    
+	If slapi_memberof is called with **groupattr** that is identical to **memberofgroupattr** in memberof plugin then there is a possibility to speed up slapi_memberof computation using **memberof** attribute from **member_sdn** entry. The **flag** is used to specify if slapi_memberof should use or not **memberof** to retrieve referencing entries. It exists limitations to reuse **memberof** attribute:
+	- memberof plugin must be enabled
+	- **groupattr** should be in *memberofgroupattr** value set
+	- **entryScopes**, **entryScopeExcludeSubtree** and **allBackend** should match the configuration of memberof plugin
+	- **recursive** should match **memberOfSkipNested**
+The **flag** values are:
+	- RECOMPUTE: computes **result** even if values of **memberof** could be reused.
+	- REUSE_ONLY: Only set **result** if the **memberof** values from memberof plugin are used. Meaning that all limitations are fulfill. If some limitations are not fulfill, slapi_memberof fails
+	- REUSE_IF_POSSIBLE: If all limitations are fulfill, use **memberof** to set **result**, else recomputes **result**
 	
+**error_msg** and **error_msg_length** are used to store a message explaining the reason of the failure of slapi_memberof
+
+### result
+
+The **result** contains a valuset *nsuniqueid* and *dn* of the matching entries. The valuesets are ordered similarly, so the first *nsuniqueid* and first *dn* are related to the first entry. The second  *nsuniqueid* and second *dn*are related to the second entry,... Those valuesets are allocated by slapi_memberof and the caller is responsible to free them. If needed the plugin can retrieve Slapi_Entry using *slapi_search_get_entry*.
+
+### returned code
+
 
 ## Plugins potentially using slapi_memberof
 
@@ -133,41 +136,46 @@ Limitations are:
 When a target entry is *deleted* or *renamed*, the plugin updates the entries (groups) that are *Directly* refering to the target entry. 
 The reference is stored in a *DistinguishedName* attribute. The plugin supports several refering attribute names. For example, by default *member*, *uniquemember*, *owner* and *seeAlso*.
 
-referint update is done within original transaction or done later with a dedicated thread. Weither it is insync or not it uses *update_integrity()* to update the refering groups.
+referint update is done within original transaction or done later with a dedicated thread. Weither it is insync or not it uses *update_integrity()* to update the refering groups. **slapi_memberof** is called by *update_integrity()*
+
+#### membership attributes
 
 If entry *DN_A* is DEL, the plugins does as many internal **searches** as there are refering attributes. Then for each entries refering to *DN_A*, it **MOD_DEL** the value '*refering_attribute_name*: *DN_A*')
 
-If entry *DN_A* is MODDN into *DN_B*, the plugins does as many internal **searches** as there are refering attributes. Then for each entries refering to *DN_A*, it **MOD_DEL** the value '*refering_attribute_name*: *DN_A*' then **MOD_ADD* the '*refering_attribute_name*: *DN_A*')
+If entry *DN_A* is MODDN into *DN_B*, the plugins does as many internal **searches** as there are refering attributes. Then for each entries refering to *DN_A* or some of entries is *DN_A* subtree, it **MOD_DEL** the value '*refering_attribute_name*: *DN_A*' then **MOD_ADD* the '*refering_attribute_name*: *DN_B*')
+
+So *referencing entries* are searched with a **single** membership attribute at a time
+
+#### Scopes
+
+The plugin updates references to the target entry at the condition the *target entry* belongs to *target scopes* and if *referencing entries* (aka static groups) belong to *referencing scopes*.
+
+*target scopes* are related to **Target entry**. They are configured with '*nsslapd-pluginEntryScope*' (multi-valued) and '*nsslapd-pluginExcludeEntryScope*' (single valued). A *target entry* belongs to *target scopes* if it is not into '*nsslapd-pluginExcludeEntryScope*' and in '*nsslapd-pluginEntryScope*'. By default, there is no '*nsslapd-pluginExcludeEntryScope*' and any entry is in '*nsslapd-pluginEntryScope*', so any **target entry** belongs to **target scopes**. Those configuration attributes are enforced before the call to *update_integrity()*. So *target scopes* are enforced **before** the call to *update_integrity()* and *slapi_memberof*. 
+
+*referencing scopes* are related to **referencing entries**. They are configured with '*nsslapd-pluginContainerScope*' (single-valued). A *referencing entries* belongs to *referencing scopes* if it is under '*nsslapd-pluginContainerScope*'. By default, there is no '*nsslapd-pluginContainerScope*' and scopes covers *all suffixes*, so any *referencing entries* belongs to *referencing scopes*. So if '*nsslapd-pluginContainerScope*' is defined '*entryScopes*' contains it unique value and '*allBackends*' is false.
+
+So membership is computed when searching for *referencing entries* and the scope is either defined by '*nsslapd-pluginContainerScope*' or by the set of *suffixes*. The scope is used as base search during internal search.
+
+#### key considerations
 
 So for referential integrity plugins key considerations are
 
-- **multiple** refering attributes (i.e *member*, *uniquemember*, *owner* and *seeAlso*) with *DN Syntax*. Can be configured.
-- Entries to fixup are retrieved by **one** refering attribute at a time (i.e. 1 internal search for each of those attributes *member*, *uniquemember*, *owner* and *seeAlso*). This is because the plugins does a **MOD_DEL** of a specific value.
+- Although **multiple** referencing attributes (i.e *member*, *uniquemember*, *owner* and *seeAlso*) with *DN Syntax* can be configured, the search of *referencing entries* uses only **one** *referencing attribute* at a time. In short for *member*, *uniquemember*, *owner* and *seeAlso* it triggers 4 searches.  This is because the plugins does a **MOD_DEL** of a specific value.
 - Only **Direct** refering entries are retrieved and fixup
-- base: Only monitors users/groups under nsslapd-pluginEntryScope
+- An internal search use one single base. If all the suffixes will be searched (no '*nsslapd-pluginContainerScope*') it triggers as much search as there are suffixes.
 - filters: '(member=*targetDN*)' or '(member=\**targetDN*)' (for MODRDN and children entries)
 - take groups from the result of a search (filter)
 
 In conclusion, referential integrity can use *slapi_memberof*.
 
-	int slapi_memberof(target_entry, membership_attr, char *filter, slapi_sdn *base, slapi_sdn **group_sdn, int max_nesting, int max_groups, int flag, char *error_msg, int error_msg_lgth)
 	
-	For DELETE operation
-	
-	target_entry : DN of the deleted entry
-	membership_attr: set of membership attribute (i.e.  member, uniqueMember, seeAlso,...)
-	base: nsslapd-pluginEntryScope
-	max_nesting: 1 (direct membership)
-	max_groups: -1
-	
-	
-	For MODRDN operation
-	
-	As many call as membership attributes
-	filter="(<membership_attr>=*<target_entry>)"
-	base: nsslapd-pluginEntryScope
-	max_nesting: 1 (direct membership)
-	max_groups: -1
+        - groupattr: there is a call to slapi_memberof for each referencing attribute
+        - subtree_search: True for MODRDN, False else
+        - allBackends: if *nsslapd-pluginContainerScope* is set, then it is False, else it is True 
+        - entryScopes:  if *nsslapd-pluginContainerScope* is set, then *entryScopes* is set to *nsslapd-pluginContainerScope*, else it is NULL
+        - entryScopeExcludeSubtrees: is NULL
+        - recursive is False
+        - flag is RECOMPUTE
 	
 
 ### ACL Plugin
@@ -178,12 +186,11 @@ DS_LASGroupDnEval check (acllas_eval_one_group/acllas__user_ismember_of_group) i
 
 It iterates through members and nested members using internal search with the following fixed constraints.
 
-    
-   	membership attributes: (member uniquemember memberURL memberCertificateDescription) 
-
-	Groups are matching"(|(objectclass=groupOfNames) (objectclass=groupOfUniqueNames)(objectclass=groupOfCertificates)(objectclass=groupOfURLs))" )
+The membership for ACI is defined with static definitions.  membership attributes are: member uniquemember memberURL memberCertificateDescription. The static groups matches this filter "(|(objectclass=groupOfNames) (objectclass=groupOfUniqueNames)(objectclass=groupOfCertificates)(objectclass=groupOfURLs))". 
 
 Matching entries are added into a cache *info->memberInfo* ( acllas__handle_group_entry)
+
+Referencing entries are all stored into a cache (per operation) and not using internal search.
 
 
 
@@ -200,6 +207,7 @@ For the following reasons, even if it is theoretically possible to use *slapi_me
  - it is security code and any regression will be a CVE
  - DS_LASGroupDnAttrEval/acllas__handle_group_entry are complex code so the fix will not be easy
  - For cache management, it keeps the hierarchy of the nested groups. This info is not available with *slapi_memberof* and I do not know if we can easily get rid of it.
+ - Because ACL does use slapi_memberof, the interface of slapi_memberof does not support maximum nesting and maximum groups
 
 ### Memberof Plugin
 
@@ -223,23 +231,49 @@ In a first phase, for *each* membership attribute, the server finds (memberof_mo
 For each of them it computes the groups it belongs to (memberof_get_groups) and finally fixup the member.
 In a second phase (memberof_del_dn_from_groups/memberof_replace_dn_from_groups) the servers updates the reference to the target entry in all the groups that have the target entry as direct member (for *all* membership attributes).
 
+#### membership attributes
+
+The membership attributes can contain several attributes that are defined in the configuration entry '*memberOfGroupAttr*'.
+
+
+#### scopes
+
+
+*scopes* are related to a **group entry** (entry that is listing its members). By defaults *scopes* are limited to the backend where the *target group entry* is located, so if there are several backends then membership is *not* updated if *target group entry* and *referred member entry* are in different backends. In order to extend the *scopes* to all backends (not only the backend of the *target entry*), the configuration attribute '*memberOfAllBackends*' must be set to '*on*' (it is '*off*' by default). If a backend/suffix is a sub-suffix of *parent* suffix and if the *target group entry* is in *parent* suffix then *referred member entries* are updated even if they are into the *sub-suffix*.
+
+*scopes* They are configured with '*memberOfEntryScope*' (multi-valued) and '*memberOfEntryScopeExcludeSubtree*' (multi-valued). A *group entry* belongs to *scopes* if it is not into '*memberOfEntryScopeExcludeSubtree*' and in '*memberOfEntryScope*'. By default, there is no '*memberOfEntryScope*' and no '*memberOfEntryScopeExcludeSubtree*', so by default *scopes* covers *all suffixes* and any **group entry** belongs to the **scopes**. 
+
+#### key considerations
+
 For memberof plugin key considerations are
 
 - **multiple** refering attribute (*member* *uniquemember* *memberURL* *memberCertificateDescription*) via memberOfGroupAttr attribute of the memberof plugin config entry.
 - The computation of reverse relation of membership
-	- done with *all* referring attributes (.e.g SRCH "(|(member=target_dn)(uniquemember=target_dn)...)").
+	- done with *all* referring attributes
 	- not limited in nesting/total number
 
 - For an entry that is member of some groups, the fixup procedure (in memberof_fix_memberof_callback) is called *after* computing all the groups (memberof_get_groups) the entry is member of. So fixup procedure is separated from the computation of membership.
 - **Direct** and **indirect** referring entries are retrieved
 - scopes contains include/exclude scopes (memberOfEntryScope, memberOfEntryScopeExcludeSubtree)
 
+In conclusion memberof plugin can use slapi_memberof with
 
+        - groupattr: there is a call to slapi_memberof for each referencing attribute (*memberOfGroupAttr*)
+        - subtree_search: False
+        - allBackends: if *memberOfAllBackends* is 'on', then it is True, else it is False 
+        - entryScopes:  array of *memberOfEntryScope*
+        - entryScopeExcludeSubtrees: array of memberOfEntryScopeExcludeSubtree
+        - recursive True if fixup task or *memberOfSkipNested* is False. else it is False.
+        - flag is RECOMPUTE
 
 # Tests
 --------------------------
 
-TBD
+Should run successfully 
+ - tests/suites/plugins/referint_test.py
+ - tests/suites/plugins/memberof_test.py
+ - tests/suites/memberof_plugin
+
 
 # Reference
 -----------------
