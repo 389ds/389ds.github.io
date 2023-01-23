@@ -51,10 +51,10 @@ git push access - you will need to be a member of the git389 group in FAS
 -   All commits must be done before **git tag**! Otherwise you might need to use **git tag -f \$TAG**
 
 -   Generate the source tarball, and changelog file (used for updating the specfile's changelog and the wiki release notes)
-
-    -   **TAG=389-ds-base-1.3.9.1** ; **git tag \$TAG** ; **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$TAG.tar.bz2 ; git log -\\\-oneline 389-ds-base-1.3.9.0.. \> /tmp/cl-info**
-    -   **F37** : **TAG=389-ds-base-2.2.3 ; git tag \$TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-2.2.2.. \> /tmp/cl-info**
-    -   **F38** : **TAG=389-ds-base-2.3.1 ; git tag \$TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-2.3.0.. \> /tmp/cl-info**
+    -   **rm -rf src/cockpit/389-console/dist src/cockpit/389-console/cockpit_dist **
+    -   **TAG=389-ds-base-1.3.9.1** ; **git tag \$TAG** ; **git archive -\\\-prefix=\$TAG/ \$TAG \| bzip2 \> \$TAG.tar.bz2 ; git log -\\\-oneline 389-ds-base-1.3.9.0.. \> /tmp/cl-info **
+    -   **F37** : **TAG=389-ds-base-2.2.3 ; git tag \$TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-2.2.2.. \> /tmp/cl-info **
+    -   **F38** : **TAG=389-ds-base-2.3.3 ; git tag \$TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log -\\\-oneline 389-ds-base-2.3.2.. \> /tmp/cl-info **
 
 -   Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and trac bugs. Leave the hash for coverity/misc updates.
 
@@ -65,7 +65,7 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   Go back to the source directory, which should be uncleaned after the tarball creation **cd /home/source/ds389/389-ds-base**
 
--   Update Fedora spec file with Rust packages data **DS_SPECFILE=/fedora/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust**
+-   Update Fedora spec file with Rust packages data **DS_SPECFILE=/home/mareynol/source/FEDORA/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust **
 
 -   Go back to Fedora repo directory **cd /fedora/389-ds-base**
 
