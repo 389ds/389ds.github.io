@@ -65,6 +65,17 @@ In 389DS, the reverse membership relation (i.e. *memberOf*, *ismemberOf*) is sto
 
 Storing the value improves READ response time but slow down WRITE. Computing the value improve WRITE and slow down READ. Reverse membership needs to be computed anyway. Both approaches have benefit/loss. This design assumes that '*memberof*' attribute is a real attribute stored in the entry. 
 
+## limits and risks
+
+The computation of all the groups, referencing a given entry, can be expensive. It uses internal searches, caches intermediate data, compare DN/scopes... all this eats CPU and memory.
+
+The server protects itself from too large set of groups referencing an entry. If the server reach the limit of 100.000 groups it interrupts the computation. This limit can be tune with **nsslapd-maxgroup-membership**.
+
+The caller can also limit the cost of the call and specify the maximum number of groups that will be returned. Caller specifies **maxgroups** in **Slapi_MemberOfConfig**, so that when it reaches the limit then the computation is interrupted when .
+
+When the computation is interrupted because it hits a limit, the caller is notified with **maxgroupsReached=True** boolean in **Slapi_MemberOfResult**.
+
+Except the risk of high cost of computation, another risk is that it exists loops in references. The loop can be direct A --> B --> A or indirect A --> B --> C -->... --> A. This risk is solved with the use of an ancestors cache (**already_seen_ndn_vals**) that keeps, for any membership paths all the already visited groups. This cache is currently implemented in memberof plugin.
 
 ## slapi_memberof interface
 
@@ -78,6 +89,7 @@ Storing the value improves READ response time but slow down WRITE. Computing the
     typedef struct _slapi_memberofresult {
         Slapi_ValueSet *nsuniqueid_vals;
         Slapi_ValueSet *dn_vals;
+        PRBool maxgroupsReached;
     } Slapi_MemberOfResult;
     
     typedef struct _slapi_memberofconfig
@@ -88,6 +100,7 @@ Storing the value improves READ response time but slow down WRITE. Computing the
         Slapi_DN **entryScopes;
         Slapi_DN **entryScopeExcludeSubtrees;
         PRBool recursive;
+        int maxgroups;
         memberof_flag_t flag;
         char *error_msg;
         int errot_msg_lenght;
