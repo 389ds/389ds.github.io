@@ -14,7 +14,7 @@ Collection naming
 We should carefully name the collection so it's well-aligned with other products and it's well discoverable in the Ansible world.
 
 Suggested upstream names for the collection (up for discussion):
-**389ds.ansible_ds**
+**ds389.ansible_ds**
 
 Instance Topology Configuration
 -------
