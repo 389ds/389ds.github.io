@@ -80,32 +80,33 @@ This is the identity/database content tool.  This is used to manage a variety o
 
 We have a new web UI Cockpit plugin.  Now you can manage the server in Cockpit via a new plugin for the Directory Server.  Setting up things like Replication, databases, and monitoring have been greatly improved since the old Java console.
 
-UPDATE - There is now an LDAP browser/editor in the UI.
 <br>
 
 ## Red Hat Directory Server 12
 
 RHDS 12 is based of off the 389-ds-base-2.x series.  RHDS 12.0 (389-ds-base-2.0) maps to RHEL/Centos 9.0, RHDS 12.1 (389-ds-base-2.1) to RHEL/Centos 9.1, etc
 
+Most RFE's can be found and described on the [Design Doc Page](../design/design.html#389-directory-server-2x)
+
 ### Initial Phase of LMDB Support
 
-We will be replacing the internal backend database library (libdb or sleepcat DB) with LMDB.  This will not be fully supported until 389-ds-base-3.0, but you can enable it in 389-ds-base-2.3 and play around with it, but it's not fully ready for production.
+We will be replacing the internal backend database library (libdb, or sleepycat DB) with LMDB.  This will not be fully supported until 389-ds-base-3.0, but you can enable it in 389-ds-base-2.3 and play around with it, but it's not fully ready for production.  Currently we see improvement with some operatons, but worse performance with others.  Some of the potential performance improvements that can come from LMDB require rewriting the database transaction model, which can not be done until libdb/sleepycat is completely removed from teh code.  This can not happen until 389-ds-base-3.x ...
 
 ### Container Support
 
-389-ds-base-2.x does work in Openshift and Docker.  See this [link]() for information on how to set it up.
+389-ds-base-2.x does work in Openshift and Docker.  See this [link](../howto/howto-deploy-389ds-on-openshift.html) for information on how to get it working
 
 ### LDAP Editor/Browser in UI
 
-This is now available, and is also being continuously backported to 389-ds-base-1.4.3 (Centos/RHEL)
+Database conentg (users and grouips) can now be managed inthe UI.  Also we are continuously backporting these improvements to older versions like  389-ds-base-1.4.3 (Centos/RHEL)
 
 ### Concurrent Connection Improvements
 
-Improvements are currently being made to improve performance  when handling 1000's of concurrent connections.  There is still more work to do, but it is improving...
+Improvements are currently being made to improve performance when handling 1000's of concurrent connections.  There is still more work to do, but it is improving...  See the [Design Page](../design/connection-table-lists.html)
 
 ### New Security Audit Log
 
-There is a new log written in JSON that tracks BIND operations (failed and successful, account lockout/password policy, TCP errors, etc.  The JSON format allows easy parsing and handing off to other tools like Splunk for processing.  For more info see the [Design Page]()
+There is a new log written in JSON that tracks BIND operations (failed and successful, account lockout/password policy, TCP errors, etc.  The JSON format allows easy parsing and handing off to other tools like Splunk for processing.  For more infor see the [Design Page](../design/security-audit-log-design.html)
 
 
 <br>
@@ -119,7 +120,7 @@ This is always our goal, and we are making progress in this area by replacing th
 
 ### REST Interface
 
-Adding a REST interface to the database is a long-term goal.
+Adding a REST interface to the database is a long term goal.  Will probably be designed towork with Cockpit since we are not shiopping a http server.
 
 ### Self-Service Web Portal
 
