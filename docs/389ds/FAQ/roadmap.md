@@ -13,10 +13,10 @@ The following describes what we would like to get done in various releases of Di
 ## Red Hat Directory Server 11
 ------------------------------
 
-RHDS 11 refers to the 389-ds-base-1.4.x series in RHEL 8/CentOS 8. For example the 389-ds-base-1.3.x releases were used in Red Hat Directory Server 10 on RHEL 7.  So eventually RHDS 12 (RHEL 9) will be the 1.5.x series.
+RHDS 11 refers to the 389-ds-base-1.4.x series in RHEL 8/CentOS 8. For example the 389-ds-base-1.3.x releases were used in Red Hat Directory Server 10 on RHEL 7. 
 
 
-## What is new in 389-ds-base-1.4.1 (RHDS 11)
+### What is new in 389-ds-base-1.4.1 (RHDS 11)
 ---------------------------------------------
 
 ### Enhanced Password Policy
@@ -83,20 +83,30 @@ We have a new web UI Cockpit plugin.  Now you can manage the server in Cockpit v
 UPDATE - There is now a LDAP browser/editor in the UI. 
 <br>
 
-## What is coming in 389-ds-base-1.4.next (RHDS 11.x)
----------------------------------------------
+## Red Hat Directory Server 12
 
-- **Container support**(both openshift and docker).  In 389-d-base-1.4.2 (upstream) we do offer a docker file, and have many people successfully using it already.
+RHDS 12 is based of off tghe 389-ds-base-2.x series.  RHDS 12.0 (389-ds-base-2.0) maps to RHEL/Centos 9.0, RHDS 12.1 (389-ds-base-2.1) to RHEL/Centos 9.1, etc
 
-- **New Backend** - We are working toward replacing the libdb (Sleepycat) database backend with LMDB (Lightning Memory-Mapped Database).  We expect greatly improved database performance, and entry cache improvements.
+### Initial Phase of LMDB Support
 
-- **Self-Service Web Portal** - A basic Flask web application that users can log into and update some of their information and password.
+We will be replacing the internal backend database library (libdb, or sleepcat DB) with LMDB.  This will not be fully supported until 389-ds-base-3.0, but you can enable it in 389-ds-base-2.3 and play around with it, but its not fully ready for production.
 
-- **TLS Database Password Protection** - We are adding a way to store the TLS/NSS database password so that it is not in clear text on the file system, but still accessible to the server.
+### Container Support
 
-- **Concurrent Connection Improvements** - A new connection framework is in the works that will allow much improved management of concurrent connections.
+389-ds-base-2.x does work in Openshift and Docker.  See this [link]() for information on how to set it up.
 
-- **LDAP Editor for Web UI** - A simple, but versatile, LDAP browser/editor that will also include an improved ACI editor.
+### LDAP Editor/Browser in UI
+
+This is now available, and is also being continuously backported to 389-ds-base-1.4.3 (Centos/RHEL)
+
+### Concurrent Connection Improvements
+
+Improvements are currently being made to improve performance  when handling 1000's of concurrent connections.  There is still more work to do, but it is improving...
+
+### New Security Audit Log
+
+There is a new log written in JSON that tracks BIND operations (failed and successful, account lockout/password policy, TCP errors, etc.  The JSON format allows easy parsing and handing off to other tools like Splunk for processing.  For more infor see the [Design Page]()
+
 
 <br>
 
@@ -111,8 +121,7 @@ This is always our goal, and we are making progress in this area by replacing th
 
 Adding a REST interface to the database is a long term goal.
 
-### Security Audit Log & Tooling
+### Self-Service Web Portal
 
-A log that tracks authentication/authorization events:  failed binds,  account lock, insufficent access, etc.  Allows Admins to check for brute force attacks and password spraying.  See the [design doc here](../design/security-audit-log-design.html), and CLI enhancement to generate reports.
-
+A basic Flask web application that users can log into and update some of their information and password.  This is more of an exmaple, that people can use as they want and customize.  It will proably not be a fully supported feature (just like the old Directory Server Gateway for those who remember that).
 
