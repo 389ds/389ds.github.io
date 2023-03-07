@@ -1,0 +1,17 @@
+// Shows how ansible configure 389ds instances
+
+digraph AnsibleDs389Module {
+    title [label="ds389_module architecture", shape=plaintext, fontsize=18];
+    ds389_module [label="ds389_module", shape=box];
+    dsutil [label="ds389_util.py", shape=box];
+    entities [label="ds389_entities.py", shape=box];
+    entities_options [label="ds389_entities_options.py", shape=box];
+    lib389 [label="lib389", shape=box];
+    ds389_module -> entities
+    entities -> dsutil 
+    entities_options -> entities
+    entities -> entities_options
+    entities -> lib389
+    dsutil -> lib389
+}
+

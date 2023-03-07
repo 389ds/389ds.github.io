@@ -1,5 +1,6 @@
 ---
 title: "ANSIBLE-DS Design"
+
 ---
 
 # ansible-ds Design
@@ -43,7 +44,7 @@ Other ansible work over 389ds
   But the drawback is that it is harder to manage for the sysadmin user because the configuration will then be split among lots of playbooks and it will be harder to
   deploy (because a set of playbooks will need to be run to deploy the service)
   Having a single module complexify the ansible option scheme but the configuration is handled in a single playbook.
-  
+
   And when written in yaml the configuration does not seems so complex
   but when writting playbook a special care must be done about the "state" option because it appears on several nested levels.
 
@@ -61,6 +62,8 @@ Automated tests are based on pytest framework that run:
 - python testcases for the plugins
 
 - yaml test case for the playbooks
+
+- inventory test cases
 
 # General architecture
 
@@ -86,15 +89,69 @@ The collection consist in a set of:
 
 The typical workflow is a playbook that use roles that interfaces plugins that import utilities modules.
 
-# plugin architecture
+# plugins and module architecture
 
 ---
 
-# utilities modules
+Plugins and modules are written in python.
 
-An utility module is a python library used by other plugins.
+- Plugins stand on ansible controller host (referred as 'localhost' in playbooks)
 
-### dsutil
+- Module stands on remote hosts (where the 389ds instances are)
+
+<img src="../../../images/ansible_1.svg">
+("red" nodes are on the ansible controlling host, while "blue" and "green" are on two remote hosts)
+
+## Module
+
+### Goal
+
+ The module is an executable standing on remote machine and in charge of interacting with 389ds.
+
+### Architecture
+
+<img src="../../../images/ansible_2.svg">
+
+The module is a python main executable that interacts with a few python libraries
+
+## ds389_module file
+
+### Goal
+
+This executable allows to:
+
+- update ds configuration. It allows to:
+
+  - create instances
+  - delete instance
+  - update configuration instance
+
+- gather facts about ds configuration:
+
+  - list existing instances
+  - determine their started/stopped state
+  - get the parameters with non default values
+
+#### Architecture
+
+This module is derivated from Ansible module example and perform the following:
+
+- Decode json parameter provided in stdin by the calling plugin
+
+- Perform action according on the presence of a dict in these parameters:
+
+| dict              | action                                                                                                                                                                           |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ds389_server      | using dsentities_options as parameter spec to parse the ansible parameters<br/>creates a dsentities.YAMLRoot instance from these parameters<br/>calls the YAMLRoot.update method |
+| ds389_server_fact | Collect the fact                                                                                                                                                                 |
+
+- format the result as json written to stdout
+
+# Utilities modules
+
+An utility module is a python library used by the ds389_module module..
+
+### ds389_util
 
 #### Goal
 
@@ -126,37 +183,37 @@ Provides the code needed to:
 
 - Root entity
   Contains the:
-  
+
   - instances list
-  
+
   - the installlation prefix
 
 - Instance entities
   Represents a directory server instance
   Contains the:
-  
+
   - instance parameters (including: cn=config , global database parameters, )
-  
+
   - backend list
-  
+
   - plugin list
-  
+
   - sasl mapping entries list
-  
+
   - modifier list (a list of change to apply the dse.ldif, typically to add entries/attribute not handled by the various the entities (like the replication manager entry)
 
 - backends entities
   Contains the:
-  
+
   - backend parameters (i.e mapping tree, backend parameters, database per backend parameter, replication parameters)
-  
+
   - index list
-  
+
   - replication agreement list
 
 - index entities
   Contains the:
-  
+
   - index parameters (for standard or vlv index)
 
 - Plugin entities
@@ -165,7 +222,7 @@ Provides the code needed to:
 
 - Sasl mapping entry entities
 
-### dsentities\_options
+### ds389_entities\_options
 
 #### Goal
 
@@ -184,7 +241,7 @@ This variable is then used by ds\_server module to parse the ansible variables.
 
 ## plugins
 
-### ds\_server plugin
+### ds\_server action plugin
 
 #### Goal
 
@@ -198,8 +255,35 @@ update ds configuration. It allows to:
 
 #### Architecture
 
-This module is derivated from Ansible module example and:
-using dsentities\_options as parameter spec to parse the ansible parameters
-creates a dsentities.YAMLRoot instance from these parameters
-calls the YAMLRoot.update method
-format the result
+This module is derivated from Ansible action plugin  example and:
+
+- Get needed variables from the plugin parameters and ansible inventory.
+
+- Perform some computation on theses variables:
+
+  - Evaluate Jinja2 expressions (mostly to evaluate vault variable)
+  - Merge values according to the ds389_merge_xxx variables
+
+- Call the ds389_module with proper parameters:
+
+  - in ds389_server dict for the 389ds related variables
+  - in ds389_ansible dict for ansible variables:
+
+- Format the result (adding some data when debbugin option are set_
+
+### ds_info fact plugin
+
+#### Goal
+
+Collect data about 389ds instances installed on host
+
+#### Architecture
+
+This module is derivated from Ansible fact plugin example and:
+
+Get the ansible_hostname from Ansible environbment
+
+- Call the ds389_module with proper parameters:
+
+  - in ds389_info dict for the host and prefix variables
+  - in ds389_ansible dict for ansible variables:

@@ -1,0 +1,30 @@
+// Shows how ansible configure 389ds instances
+
+digraph AnsibleDs389Server {
+    title [label="389ds configuration through ansible", shape=plaintext, fontsize=18];
+    inventory [label="Inventory", shape=cylinder, color=red];
+    playbook [label="Playbook", shape=box, color=red];
+    ds389_server [label="ds389_server action plugin", shape=box, color=red];
+    ds389_info [label="ds389_info facts plugin", shape=box, color=red];
+    ds389_module_1 [label="ds389_module module", shape=box, color=blue];
+    ds389_instance_11 [label="ds389 instance", shape=cylinder, color=blue];
+    ds389_instance_12 [label="ds389 instance", shape=cylinder, color=blue];
+    ds389_module_2 [label="ds389_module module", shape=box, color=green];
+    ds389_instance_21 [label="ds389 instance", shape=cylinder, color=green];
+    ds389_instance_22 [label="ds389 instance", shape=cylinder, color=green];
+    inventory -> playbook
+    inventory -> ds389_server
+    playbook -> ds389_server
+    playbook -> ds389_info
+    inventory -> ds389_info
+    ds389_info -> ds389_module_1
+    ds389_info -> ds389_module_2
+    ds389_info -> playbook
+    ds389_server -> ds389_module_1
+    ds389_module_1 -> ds389_instance_11
+    ds389_module_1 -> ds389_instance_12
+    ds389_server -> ds389_module_2
+    ds389_module_2 -> ds389_instance_21
+    ds389_module_2 -> ds389_instance_22
+}
+
