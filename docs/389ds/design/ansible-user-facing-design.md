@@ -49,15 +49,17 @@ all:
   children:
     ldapservers:
       vars:
-        ds389_instances:
+        ds389_server_instances:
           - name: localhost
             rootpw: "{{ vault_ds389_rootpw }}"
             backends:
               - name: userroot
                 suffix: dc=example,dc=com
                 # ancestors
-                index:
+                indexes:
                   - name: myattr
+                    indextype:
+                      - eq
 
       children:
         suppliers:
@@ -66,12 +68,12 @@ all:
               - name: localhost.userroot
                 merge:
                   ReplicaRole: supplier
-                  ReplicacwPort: 636
+                  ReplicaPort: 636
                   ReplicaTransportInfo: SSL
-                  ReplicationManagerDN: cn=replication manager, cn=config
-                  ReplicationManagerPassword: "{{ vault_ds389_replmanpw }}"
+                  ReplicaBindDN: cn=replication manager, cn=config
+                  ReplicaCredentials: "{{ vault_ds389_replmanpw }}"
             ds389_agmts:
-              - target: "{{ Group[consumers] }}"
+              - target: "{{ groups['consumers'] }}"
           hosts:
             ds389vm1:
               ds389_option_02:
@@ -98,7 +100,7 @@ all:
               - name: localhost.userroot
                 merge:
                   ReplicaRole: consumer
-                  ReplicacwPort: 636
+                  ReplicaPort: 636
                   ReplicaTransportInfo: SSL
                   ReplicationManagerDN: cn=replication manager, cn=config
                   ReplicationManagerPassword: "{{ vault_ds389_replmanpw }}"
@@ -119,8 +121,8 @@ all:
   children:
     ldapservers:
       vars:
-        vault_ds389_rootpw: !unsafe rootdnpw
-        vault_ds389_replman: !unsafe replmanpw
+        vault_ds389_rootpw: !unsafe rootdnpw00
+        vault_ds389_replmanpw: !unsafe replmanpw00
 ```
 
 Notes about this example:
