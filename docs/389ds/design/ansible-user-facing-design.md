@@ -28,7 +28,6 @@ Role Structure
 
 - **[ds389_backup](ansible-backup-role.html)** - the role that allows to backup 389 DS instance, to copy a backup from the server to the controller, to copy all backups from the server to the controller, to remove a backup from the server, to remove all backups from the server, to restore a 389 DS server locally and from the controller and also to copy a backup from the controller to the server.
 
-More task roles will be added later when they'll be developed (i.e. **ds389_memberof_fixup** can be used for the MemberOf plugin Fixup task). Its variable will be called with the role name prefix (i.e. **ds389_memberof_fixup_filter**).
 
 Please note that Monitoring and Logging should be managed via external tools. It's a general Ansible design approach which is already respected by other projects.
 Additionally, in the future, we can work with Logging System Role to provide an integrated environment for the logging.
@@ -37,8 +36,13 @@ Additionally, in the future, we can work with Logging System Role to provide an 
 
 The detailed description for theses plugins and the design will be posted on a separate page: [ds389_module design](ansible-ds389-module.md).
 
-- **ds389_server** - the action plugin that synchronize the Ansible Inventory with the 389ds instances.
+- **ds389_server** - the action plugin that synchronize the Ansible Inventory with the 389ds instances;
 - **ds389_info** - the fact plugin for collecting data about 389 DS instances;
+
+Additional, in development, we have task plugins which will be added in timely maner.
+For example, **ds389_memberof_fixup** can be used for the MemberOf plugin Fixup task. And its variables will be called with the role name prefix (i.e. **ds389_memberof_fixup_filter**).
+Details can be found here: **[Ansible 389 DS Tasks Design](ansible-ds389-tasks.html)**
+
 
 Ansible Inventory Structure Example
 ---------------------------

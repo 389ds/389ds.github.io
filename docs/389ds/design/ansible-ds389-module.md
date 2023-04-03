@@ -15,7 +15,7 @@ title: "ANSIBLE ds389_module Design"
 
 ------------------------
 
-This module goals are:
+This module's goals are:
 
 - [1] Manage 389ds instances configuration. Including:
   - Manage state: present/absent/started/stopped
@@ -45,7 +45,7 @@ They are the first level parameters of the ds389_server action plugin :
 | State              | True     | String<br/>(Enum) | Determine the state of the instances                                                                                                                |
 | ds389_instances    | False    | List of dict      | The instance configuration                                                                                                                          |
 | ds389_agmts        | True     | List of dict      | Data about replication agreement targets                                                                                                            |
-| ds389_option_*     | True     | List of dict      | Data used to merge/append value in parameters (Because Ansible overide dicts and lists instead of merging them)                                     |
+| ds389_option_*     | True     | List of dict      | Data used to merge/append value in parameters (Because Ansible overrides dicts and lists instead of merging them)                                     |
 | ds389_prefix       | True     | String            | Path of ds389 install prefix                                                                                                                        |
 | ansible_host       | False    | String            | The remote host currently handled by the playbook. Used locally by the plugin to generate the ds389 parameters sent to the module from the host map |
 | ansible_verbosity  | False    | Integer           | number of v when running ansible-playbook -vvv playbook.yml. Used  locally by the plugin and also sent to the module                                |
@@ -80,12 +80,12 @@ this file will be generated dynamically from the module options table)
 
 #### ds389_agmts
 
-Each dict in the list have the following format:
+Each dict in the list has the following format:
 
 | Field  | Optional | Description                                                                             | Action                                                                                                                                                      |
 | ------ | -------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | name   | True     | Mostly used when the dict needs to be a target for a ds389_option_* merge               | ignored                                                                                                                                                     |
-| target | False    | a string used to determine what are the target replicas <br/>or a list of such strings. | target are resolved and for each replicas a ds389.agmts dict is added containing this dict attributes (except the target) and the target backend attributes |
+| target | False    | a string used to determine what are the target replicas <br/>or a list of such strings. | targets are resolved and for each replicas a ds389.agmts dict is added containing this dict attributes (except the target) and the target backend attributes |
 | *      | True     | Other standard 389ds agreement values. (Typically those related to the supplier side)   | kept as is                                                                                                                                                  |
 
 Note: it is still possible to describe agreements as children of the backend. 
@@ -93,7 +93,7 @@ That can be useful to target a replica that is not managed by ansible
 
 ### ds389_option_*
 
-Each dict in the list have one of the following formats:
+Each dict in the list has one of the following formats:
 
 | Field | Optional | Type   | Description                                                       | Action                            |
 | ----- | -------- | ------ | ----------------------------------------------------------------- | --------------------------------- |
@@ -155,7 +155,7 @@ The role of this plugin is to gather the data from inventory and generate the mo
 | args name              | Description                                                          | Handling                          |
 | ---------------------- | -------------------------------------------------------------------- | --------------------------------- |
 | state                  | The optional state                                                   | Sent to the module as ds389.state |
-| Common data processing | Any ds389_* variable provided as argument overide the inventory ones | Common data processing            |
+| Common data processing | Any ds389_* variable provided as argument override the inventory ones | Common data processing            |
 
 ### Collected data from task_vars
 
@@ -163,17 +163,17 @@ The role of this plugin is to gather the data from inventory and generate the mo
 | ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ansible_host       | The remote host currently handled by the playbook.           | Used locally by the plugin to generate the ds389 parameters sent to the module from the host map                                                  |
 | ansible_verbosity  | number of v when running ansible-playbook -vvv playbook.yml. | Used  locally by the plugin and also sent to the module as ds389.ansible_vars.ansible_verbosity                                                   |
-| ansible_version    | ansible version                                              | Not used (may be usefull later on to clear some cached data)                                                                                      |
-| ansible_user_uid   | The remote user uid                                          | Not used (may be usefull later on to check it is 0 if there is no prefix)                                                                         |
+| ansible_version    | ansible version                                              | Not used (maybe useful later on to clear some cached data)                                                                                      |
+| ansible_user_uid   | The remote user uid                                          | Not used (maybe useful later on to check it is 0 if there is no prefix)                                                                         |
 | ansible_check_mode | Tells when the action can change                             | Sent to the module in ds389.ansible_vars.ansible_check_mode                                                                                       |
-| hostvars           | dict of hosts dict                                           | Common data processing is applied on every hosts to collect the backends data from the hosts because  are needed to compute the agreements data.) |
+| hostvars           | dict of hosts dict                                           | Common data processing is applied on every host to collect the backends data from the hosts because  are needed to compute the agreements data.) |
 
 ansible_verbosity levels: 
 
 | Verbosity | Debug data returned                                                                                                                                |
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 0         | None except the error messages                                                                                                                     |
-| 1         | Plugin calling parameters<br/>Module calling parameters.<br/>Note: only "safe" values that does not contains data extracted from vault are logged. |
+| 1         | Plugin calling parameters<br/>Module calling parameters.<br/>Note: only "safe" values that do not contain data extracted from vault are logged. |
 | 2         | Module "INFO" traces                                                                                                                               |
 | 3         | Module "DEBUG" traces                                                                                                                              |
 
@@ -190,7 +190,7 @@ The following data are collected from each hosts in task_vars.hostsvars to gener
 
 The processing for a given host extracted from the hostsvars list
 
-- walk the variables and check if they matches the wanted variable. i
+- walk the variables and check if they match the wanted variable. i
 
 - if that is the case:
 
@@ -202,7 +202,7 @@ The processing for a given host extracted from the hostsvars list
 
 ### Topology global validation
 
-As the module only reveives the data related the current host, validation tests about the global topology must be done at the plugin level. And while doing these tests some other consistency test are also done at the plugin level.
+As the module only receives the data related the current host, validation tests about the global topology must be done at the plugin level. And while doing these tests some other consistency test are also done at the plugin level.
 Typically:
 
 - Checking that for a given suffix, supplier's Replica ID are uniques among all hosts

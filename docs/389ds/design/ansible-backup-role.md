@@ -294,5 +294,5 @@ ds389_backup_from_controller | Copy backup from controller to server, restore if
 Authors
 =======
 
-Simon Pichugin
-Big parts of README.md and basig Ansible logic is taken from https://github.com/freeipa/ansible-freeipa/tree/master/roles/ipabackup
+Simon Pichugin (@droideck)
+Big parts of README.md and basic Ansible logic is taken from https://github.com/freeipa/ansible-freeipa/tree/master/roles/ipabackup
