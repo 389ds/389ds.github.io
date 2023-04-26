@@ -9,14 +9,14 @@ The 389 Directory Server team is proud to announce 389-ds-base version 2.2.7
 
 Fedora packages are available on Fedora 37
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=100381421>
+<https://koji.fedoraproject.org/koji/buildinfo?buildID=2192884>
 
 <https://bodhi.fedoraproject.org/updates/FEDORA-2023-2b32a0879e> - Bohdi
 
 
 The new packages and versions are:
 
-- 389-ds-base-2.2.7-1
+- 389-ds-base-2.2.7-2
 
 Source tarballs are available for download at [Download 389-ds-base Source](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.2.7.tar.gz)
 
@@ -50,7 +50,7 @@ Please provide feedback and comments to the 389-users mailing list: <https://lis
 
 If you find a bug, or would like to see a new feature, file it in our GitHub project: <https://github.com/389ds/389-ds-base>
 
-- Bump version to 2.2.7
+- Bump version to 2.2.7-2
 - Issue 5734 - RFE - Exclude pwdFailureTime and ContextCSN (#5735)
 - Issue 5726 - ns-slapd crashing in ldbm_back_upgradednformat (#5727)
 - Issue 5714 - UI - fix typo, db settings, log settings, and LDAP editor paginations
