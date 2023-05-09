@@ -40,7 +40,7 @@ Local Policy Example:
 Implementation
 --------------
 
-Since access control rules do need to be set, it is recommended that a group is used for the password administrators. This way only one ACI is needed to manage the password administrators.  It is highly recommended to not use the ROot DN, or a Password Administrator, to do all the password management.  Any paossword management that needs to be follow the password policy should be done by an existing entry in the database that has permissions to update the userpassword attribute.
+Since access control rules do need to be set, it is recommended that a group is used for the password administrators. This way only one ACI is needed to manage the password administrators.  It is highly recommended to not use the Root DN, or a Password Administrator, to do all the password management.  Any password management that needs to be follow the password policy should be done by an existing entry in the database that has permissions to update the userpassword attribute.
 
 Feature Management
 -----------------
