@@ -2,10 +2,10 @@
 title: "Releases/2.4.0"
 ---
 
-389 Directory Server 2.4.0
+389 Directory Server 2.4.1
 -----------------------------
 
-The 389 Directory Server team is proud to announce 389-ds-base version 2.4.0
+The 389 Directory Server team is proud to announce 389-ds-base version 2.4.1
 
 Fedora packages are available on Rawhide (f39)
 
@@ -15,11 +15,11 @@ Rawhide:
 
 The new packages and versions are:
 
-- 389-ds-base-2.4.0-1
+- 389-ds-base-2.4.1-1
 
-Source tarballs are available for download at [Download 389-ds-base Source](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.4.0.tar.gz)
+Source tarballs are available for download at [Download 389-ds-base Source](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.4.1.tar.gz)
 
-### Highlights in 2.4.0
+### Highlights in 2.4.1
 
 - LDAP Alias Entries plugin
 - New Password Administrator feature to skip updating the target entry's password state attributes
