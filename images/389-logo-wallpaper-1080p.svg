@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1920"
+   height="1080"
+   viewBox="0 0 1920 1080"
+   id="svg4695"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="389-logo-wallpaper-1080p.svg">
+  <defs
+     id="defs4697" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="19.285714"
+     inkscape:cy="520"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1159"
+     inkscape:window-x="1920"
+     inkscape:window-y="19"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4700">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2">
+    <rect
+       style="fill:#ffffff;fill-opacity:1"
+       id="rect4804"
+       width="1928.5713"
+       height="934.28577"
+       x="-2.8571451"
+       y="151.42857" />
+  </g>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,27.637839)">
+    <rect
+       style="fill:#0c7d86;fill-opacity:1"
+       id="rect4612"
+       width="1938.2932"
+       height="814.40033"
+       x="-14.860934"
+       y="-34.838024" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:102.86300659px;line-height:125%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#0c7d86;fill-opacity:1;stroke:none"
+       x="1015.6931"
+       y="891.70978"
+       id="text7868"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="./389-sticker_3in.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         id="tspan7870"
+         x="1015.6931"
+         y="891.70978"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:102.86300659px;line-height:125%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#0c7d86;fill-opacity:1">directory server</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:405.98220825px;line-height:125%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none"
+       x="1007.8143"
+       y="750.96228"
+       id="text6693"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="./389-sticker_3in.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         id="tspan6695"
+         x="1007.8143"
+         y="750.96228"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:405.98220825px;line-height:125%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1">389</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text6689"
+       y="973.01733"
+       x="148.44513"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:77.86000824px;line-height:125%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#0c7d86;fill-opacity:1;stroke:none"
+       xml:space="preserve"
+       inkscape:export-filename="./389-sticker_3in.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:77.86000824px;line-height:125%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#0c7d86;fill-opacity:1"
+         y="973.01733"
+         x="148.44513"
+         id="tspan6691"
+         sodipodi:role="line">port389.org</tspan></text>
+  </g>
+</svg>

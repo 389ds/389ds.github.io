@@ -1,0 +1,84 @@
+
+// Represent the AST of the filter '(&(objectClass=foo)(cn=bar)(uid=baz))'
+
+digraph ODMC {
+    root [label="ns-slapd-instance", shape=record];
+
+    o_dmc [label="o=dmc", shape=record];
+    dc_example [label="dc=example,dc=com", shape=record];
+    dc_bazaar [label="dc=bazaar,dc=com", shape=record];
+
+    cn_settings [label="cn=settings", shape=record];
+    cn_hosts [label="cn=hosts", shape=record];
+    cn_suffixes [label="cn=suffixes", shape=record];
+    cn_administrators [label="cn=administrators", shape=record];
+    cn_roles [label="cn=roles", shape=record];
+
+    cn_encryption [label="cn=encryption", shape=record];
+    cn_settings_dot [label="...", shape=record];
+
+    cn_dc_example [label="dc=example,dc=com", shape=record];
+    cn_dc_bazaar [label="dc=bazaar,dc=com", shape=record];
+
+    cn_ex_settings [label="cn=settings", shape=record];
+    cn_baz_settings [label="cn=settings", shape=record];
+
+    cn_ex_settings_dot [label="...", shape=record];
+    cn_baz_settings_dot [label="...", shape=record];
+
+    cn_ma [label="cn=master-a.example.com", shape=record];
+    cn_mb [label="cn=master-b.example.com", shape=record];
+
+    cn_ma_settings [label="cn=settings", shape=record];
+    cn_mb_settings [label="cn=settings", shape=record];
+
+    cn_ma_settings_dot [label="...", shape=record];
+    cn_mb_settings_dot [label="...", shape=record];
+
+    dc_ex_dot [label="...", shape=record];
+    dc_baz_dot [label="...", shape=record];
+
+    uid_admin [label="uid=admin", shape=record];
+    cn_domain_admins [label="cn=domain admins", shape=record];
+    cn_roles_dot [label="...", shape=record];
+
+    root -> o_dmc;
+    o_dmc -> cn_settings;
+    o_dmc -> cn_hosts;
+    o_dmc -> cn_suffixes;
+    o_dmc -> cn_administrators;
+    o_dmc -> cn_roles;
+
+    cn_administrators -> uid_admin;
+    cn_roles -> cn_domain_admins;
+    cn_roles -> cn_roles_dot;
+
+    cn_settings -> cn_encryption;
+    cn_settings -> cn_settings_dot;
+
+    cn_hosts -> cn_ma;
+    cn_hosts -> cn_mb;
+
+    cn_ma -> cn_ma_settings;
+    cn_mb -> cn_mb_settings;
+    
+    cn_ma_settings -> cn_ma_settings_dot;
+    cn_mb_settings -> cn_mb_settings_dot;
+
+    cn_suffixes -> cn_dc_example;
+    cn_suffixes -> cn_dc_bazaar;
+
+    cn_dc_example -> cn_ex_settings;
+    cn_dc_bazaar -> cn_baz_settings;
+
+    cn_ex_settings -> cn_ex_settings_dot;
+    cn_baz_settings -> cn_baz_settings_dot;
+
+    root -> dc_example;
+    dc_example -> dc_ex_dot;
+
+    root -> dc_bazaar;
+    dc_bazaar -> dc_baz_dot;
+}
+
+

@@ -1,0 +1,12 @@
+// Represent the AST of the filter '(&(objectClass=foo)(cn=bar)(uid=baz))', with popularity values
+
+digraph FilterBasic {
+    root_and [label="&", shape=record];
+    uid_baz [label="uid=baz|fg 0.033|t 20", shape=record];
+    cn_bar [label="cn=bar|fg 0.093|t 30", shape=record];
+    oc_foo [label="objectClass=foo|fg 0.066|t 40", shape=record];
+    root_and -> uid_baz;
+    root_and -> cn_bar;
+    root_and -> oc_foo;
+}
+

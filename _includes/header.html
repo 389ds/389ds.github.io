@@ -1,0 +1,51 @@
+<header>
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#389ds-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="{{ site.baseurl }}/index.html">
+        <img src="{{ site.baseurl }}/images/logo-header-transparent.png" />
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="389ds-navbar">
+      <ul class="nav navbar-nav">
+        {% assign overview_page = 'docs/389ds/mission.html' %}
+        <li class="{% if page.url contains 'docs/389ds/download.html' %}active{% endif %}">
+          <a href="{{ site.baseurl }}/docs/389ds/download.html">Download</a>
+        </li>
+        <li class="{% if page.url contains 'docs/389ds/documentation.html' %}active{% endif %}">
+          <a href="{{ site.baseurl }}/docs/389ds/documentation.html">Documentation</a>
+        </li>
+        <li class="{% if page.url contains 'docs/389ds/contributing.html' %}active{% endif %}">
+          <a href="{{ site.baseurl }}/docs/389ds/contributing.html">Contributing</a>
+        </li>
+        <li class="">
+          <a href="{{ site.repository }}">View Source</a>
+        </li>
+        <li class="">
+          <a href="https://github.com/389ds/389-ds-base/issues/new" target="_blank">File a Bug</a>
+        </li>
+        <li class="">
+          <a href="{{ site.baseurl }}/docs/389ds/scripts.html">Scripts</a>
+        </li>
+        <li class="{% if page.url contains 'docs/389ds/mailing-lists.html' %}active{% endif %}">
+          <a href="{{ site.baseurl }}/docs/389ds/mailing-lists.html">Contact Us</a>
+        </li>
+      </ul>
+      <div id="search" class="navbar-right navbar-form" role="search">
+        <div class="form-group">
+          <form>
+            <input type="text" id="st-search-input" class="form-control st-search-input" placeholder="Search..."/>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+</header>

@@ -1,0 +1,23 @@
+// Represent the AST of the filter '(&(|(uid=a)(uid=b)(uid=c))(!(cn=bar))(sn=*)(objectClass=foo))'
+
+digraph FilterComplex {
+    root_and [label="&", shape=record];
+    child_or1 [label="\|", shape=record];
+    uid_a [label="uid=a", shape=record];
+    uid_b [label="uid=b", shape=record];
+    uid_c [label="uid=c", shape=record];
+    child_not1 [label="!", shape=record];
+    cn_bar [label="cn=bar", shape=record];
+    sn_pres [label="sn=*", shape=record];
+    oc_foo [label="objectClass=foo", shape=record];
+    root_and -> child_or1;
+    root_and -> child_not1;
+    root_and -> sn_pres;
+    root_and -> oc_foo;
+
+    child_or1 -> uid_a;
+    child_or1 -> uid_b;
+    child_or1 -> uid_c;
+
+    child_not1 -> cn_bar;
+}

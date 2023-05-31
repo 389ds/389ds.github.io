@@ -1,0 +1,266 @@
+---
+title: "94ldap2dns.ldif"
+---
+    #
+    ################################################################################
+    #
+    dn: cn=schema
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.1
+      NAME 'dnszonename'
+      SUP name
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.2
+      NAME 'dnsserial'
+      EQUALITY integerMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.3
+      NAME 'dnsrefresh'
+      EQUALITY integerMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.4
+      NAME 'dnsretry'
+      EQUALITY integerMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.5
+      NAME 'dnsexpire'
+      EQUALITY integerMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.6
+      NAME 'dnsminimum'
+      EQUALITY integerMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.7
+      NAME 'dnsadminmailbox'
+      SUP name
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.8
+      NAME 'dnszonemaster'
+      SUP name
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.9
+      NAME 'dnstype'
+      SUP name
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.10
+      NAME 'dnsclass'
+      SUP name
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.11
+      NAME 'dnsdomainname'
+      SUP name
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.12
+      NAME 'dnsipaddr'
+      EQUALITY caseIgnoreIA5Match
+      SUBSTR caseIgnoreIA5SubstringsMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{16}
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.13
+      NAME 'dnscipaddr'
+      EQUALITY caseIgnoreIA5Match
+      SUBSTR caseIgnoreIA5SubstringsMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{16}
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.14
+      NAME 'dnscname'
+      SUP name
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.15
+      NAME 'dnspreference'
+      EQUALITY integerMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.16
+      NAME 'dnsrr'
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.17
+      NAME 'dnsttl'
+      EQUALITY integerMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.18
+      NAME 'dnstimestamp'
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.21
+      NAME 'NIChandle'
+      EQUALITY caseIgnoreMatch
+      SUBSTR caseIgnoreSubstringsMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{16}
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.22
+      NAME 'TIShandle'
+      EQUALITY caseIgnoreMatch
+      SUBSTR caseIgnoreSubstringsMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{16}
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.23
+      NAME 'dnslocation'
+      EQUALITY caseExactIA5Match
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{2}
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.29
+      NAME 'dnssrvpriority'
+      EQUALITY integerMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.25
+      NAME 'dnssrvweight'
+      EQUALITY integerMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    attributeTypes: (
+      1.3.6.1.4.1.7222.1.4.26
+      NAME 'dnssrvport'
+      EQUALITY integerMatch
+      SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+      SINGLE-VALUE
+      )
+    #
+    ################################################################################
+    #
+    objectClasses: (
+      1.3.6.1.4.1.7222.1.4.19
+      NAME 'dnszone'
+      MUST ( objectclass $ cn )
+      MAY ( dnszonename $ dnsserial $ dnsrefresh $ dnsretry $ dnsexpire $ dnsminimum $
+    dnsadminmailbox $ dnszonemaster $ dnstype $ dnsclass $ dnsttl $ dnstimestamp $
+    owner $ NIChandle $ TIShandle   $ dnslocation )
+      )
+    #
+    ################################################################################
+    #
+    objectClasses: (
+      1.3.6.1.4.1.7222.1.4.20
+      NAME 'dnsrrset'
+      SUP dnszone
+      MUST ( objectclass $ cn )
+      MAY ( dnsdomainname $ dnsrr $ dnsclass $ dnstype $ dnsipaddr $ dnscipaddr $
+    dnscname $ dnspreference $ dnsttl $ dnstimestamp $ owner $ dnssrvpriority $
+    dnssrvweight $ dnssrvport )
+      )
+    #
+    ################################################################################
+    #
+    objectClasses: (
+      1.3.6.1.4.1.7222.1.4.24
+      NAME 'dnsloccodes'
+      MUST ( objectclass $ dnslocation )
+      MAY ( dnsipaddr $ uid $ description )
+      )
+    #
+    ################################################################################
+    #

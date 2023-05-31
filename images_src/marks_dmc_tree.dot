@@ -1,0 +1,115 @@
+digraph O_DMC {
+    root [label="Configuration Server", shape=house, style=bold];
+
+    o_dmc [label="o=dmc", shape=octagon, style=bold, fontcolor=green];
+    
+    cn_domains [label="cn=Domains", shape=record];
+    cn_administration [label="cn=Administration", shape=record];
+    dmc_repl [label="cn=DMC Network", shape=record];
+
+    # Under Domains
+    cn_hosts [label="cn=Hosts", shape=record, style=bold];
+    cn_suffixes [label="cn=Suffixes", shape=record, style=bold];
+    cn_replication [label="cn=Replication", shape=record];
+
+    # Suffix
+    suffix1 [label="cn=\"dc=example,dc=com\"", shape=record];
+    suffix2 [label="cn=\"o=ipaca\"", shape=record];
+
+    # Hosts
+    ou_domain [label="ou=example.com", shape=record];
+    cn_host1 [label="cn=mark.philadelphia.us.example.com", shape=record];
+    cn_host2 [label="cn=william.brisbane.au.example.com", shape=record];
+   
+    # Configuration
+    host_config_sync [label="cn=Config Sync", shape=record, color=blue];
+    suffix_config_sync [label="cn=Config Sync", shape=record, color=blue];
+
+    config_sync_host_attr [label="cn=host attributes", shape=ellipse, color=green];
+    config_sync_host [label="cn=host templates", shape=ellipse, color=green];
+    config_sync_suffix_attr [label="cn=suffix attributes", shape=ellipse, color=green];
+    config_sync_suffix [label="cn=suffix templates", shape=ellipse, color=green];
+    config_sync_repl_attr [label="cn=replication attributes", shape=ellipse, color=green];
+    config_sync_repl [label="cn=replication templates", shape=ellipse, color=green];
+    config_sync_plugin [label="cn=plugins", shape=ellipse, color=green];
+
+    # Administration
+    uid_admin [label="uid=admin", shape=record];
+    admin_role [label="cn=admin roles", shape=record];
+
+    # Replication
+    cn_repl_masters [label="cn=Masters", shape=record];
+    cn_repl_hubs [label="cn=Hubs", shape=record];
+    cn_repl_consumers [label="cn=Consumers", shape=record];
+    cn_repl_inst1 [label="cn=host1:uuid", shape=record];
+    cn_repl_inst2 [label="cn=host2:uuid", shape=record];
+
+    # Instances
+    cn_inst1 [label="cn=slapd-instA", shape=record];
+    cn_inst2 [label="cn=slapd-instB", shape=record];
+    cn_config_inst1 [label="cn=Config Host1(uuid)", shape=record, color=purple, style=bold];
+    cn_config_inst2 [label="cn=Config Host2(uuid)", shape=record, color=purple, style=bold];
+
+
+    cn_inst1_agmt [label="cn=agreements", shape=ellipse, color=green];
+    cn_inst2_agmt [label="cn=agreements", shape=ellipse, color=green];
+
+    dotdotdot [label="...", shape=ellipse];
+
+
+    # Root Node
+    root -> o_dmc;
+    o_dmc -> cn_domains;
+    o_dmc -> cn_administration;
+
+    # Admin Node
+    cn_administration -> uid_admin;
+    cn_administration -> admin_role;
+    cn_administration -> dmc_repl;
+    dmc_repl -> cn_config_inst1;
+    dmc_repl -> cn_config_inst2;
+
+    # Domain Node
+    cn_domains -> ou_domain
+    ou_domain -> cn_suffixes;
+    ou_domain -> cn_hosts;
+
+    # Suffixes
+    cn_suffixes -> suffix1;
+    cn_suffixes -> suffix2;
+    suffix1 -> suffix_config_sync
+    suffix1 -> cn_replication
+    suffix2 -> dotdotdot
+
+    # Hosts
+    cn_hosts -> cn_host1;
+    cn_hosts -> cn_host2;
+    cn_hosts -> host_config_sync;
+    host_config_sync -> config_sync_plugin;
+
+    # Instances
+    cn_host1 -> cn_inst1;
+    cn_host2 -> cn_inst2;
+
+
+    # Replication
+    cn_replication -> cn_repl_masters;
+    cn_replication -> cn_repl_hubs;
+    cn_replication -> cn_repl_consumers;
+    cn_repl_masters -> cn_repl_inst1;
+    cn_repl_masters -> cn_repl_inst2;
+    cn_repl_inst1 -> cn_inst1_agmt;
+    cn_repl_inst2 -> cn_inst2_agmt;
+
+    # Configuration
+    host_config_sync -> config_sync_host_attr;
+    config_sync_host_attr -> config_sync_host;
+
+    suffix_config_sync -> config_sync_suffix_attr;
+    config_sync_suffix_attr -> config_sync_suffix;
+    suffix_config_sync-> config_sync_repl_attr;
+    config_sync_repl_attr -> config_sync_repl;
+
+}
+
+

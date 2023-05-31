@@ -1,0 +1,34 @@
+digraph g {
+node [shape = record,height=.1];
+nodehdr[label = "COW B+Tree txn_id=2 "];
+subgraph c2 {
+    rank="same";
+    txn_2 [color=blue,label ="txn_2"];
+}
+subgraph c1 { 
+    rank="same";
+    node_0x60200000ff40 [color=blue,label =" {  node=0x60200000ff40 items=1 txn=2 | { <f0> | 4 | <f1> | 0 | <f2> | 0 | <f3> | 0 | <f4> | 0 | <f5> }}"]; 
+}
+subgraph c0 { 
+    rank="same";
+    node_0x60200000fe40 [label =" {  node=0x60200000fe40 items=3 txn=0 | { <f0> | 1 | <f1> | 2 | <f2> | 3 | <f3> | 0 | <f4> | 0 | <f5> }}"]; 
+}
+subgraph c0 { 
+    rank="same";
+    node_0x602000011040 [color=blue,label =" {  node=0x602000011040 items=3 txn=2 | { <f0> | 4 | <f1> | 5 | <f2> | 7 | <f3> | 0 | <f4> | 0 | <f5> }}"]; 
+}
+
+
+"txn_2" -> "node_0x60200000ff40";
+
+edge [color=blue];
+"node_0x60200000ff40":f0 -> "node_0x60200000fe40"; 
+"node_0x60200000ff40":f1 -> "node_0x602000011040"; 
+
+// Add a set of white on white edges to force horizontal direction.
+edge [color=white,weight=4,arrowhead=none,arrowtail=none];
+
+node_0x60200000fe40 -> node_0x602000011040;
+
+}
+

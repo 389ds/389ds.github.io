@@ -1,0 +1,17 @@
+{% include top.html %}
+</head>
+<body>
+  {% include header.html %}
+  <div id="page-content" class="container-fluid">
+    {{ content }}
+
+    {% unless page.no_date %}
+      <div id="date_modified">
+        Last modified on {% date_modified format:'%-d %B %Y' %}
+      </div>
+    {% endunless %}
+  </div>
+  {% include footer.html %}
+  {% include bootstrap.html %}
+</body>
+</html>

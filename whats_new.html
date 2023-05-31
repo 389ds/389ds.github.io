@@ -1,0 +1,30 @@
+---
+title: What's New on port389.org?
+layout: default
+no_date: true
+---
+
+<!--
+  If a page shouldn't appear in this list, add "no_date: true" to that page's YAML front-matter.
+-->
+<div>
+  <h2 class="text-left">Recently Updated Pages</h2>
+  <hr>
+</div>
+<div id="whats-new">
+{% for page in site.data.new_pages %}
+  {% capture current_page_date %}{{ page.date_modified | date: "%-d %B %Y" }}{% endcapture %}
+  {% if current_page_date != prev_page_date %}
+    {% unless forloop.first %}
+      </ul>
+    {% endunless %}
+    <h3>{{ current_page_date }}</h3>
+    <ul>
+    {% capture prev_page_date %}{{ current_page_date }}{% endcapture %}
+  {% endif %}
+  <li><a href="{{ site.baseurl }}{{ page.url }}.html">{{ page.title }}</a></li>
+  {% if forloop.last %}
+    </ul>
+  {% endif %}
+{% endfor %}
+</div>
