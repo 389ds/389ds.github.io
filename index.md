@@ -80,7 +80,6 @@ We have moved our IRC channel **\#389** from *freenode* to **irc.libera.chat** (
 - 2023-04-25: Released **389-ds-base [2.2.7](docs/389ds/releases/release-2-2-7.html)**
 - 2023-04-25: Released **389-ds-base [2.1.8](docs/389ds/releases/release-2-1-8.html)**
 - 2023-01-23: Released **389-ds-base [2.3.2](docs/389ds/releases/release-2-3-2.html)**
-- 2023-01-23: Released **389-ds-base [2.1.7](docs/389ds/releases/release-2-1-7.html)**
 
 - [All past release notes](docs/389ds/releases/release-notes.html)
 
