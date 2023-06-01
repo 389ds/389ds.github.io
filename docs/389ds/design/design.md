@@ -55,6 +55,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Support of In Chain matching rule](matching-rule-in-chain.html)
 -   [Alias Entries Plugin](alias-entries-design.html)
 -   [Account Policy Plugin Inactivity And Expiration](account-policy-inactivity-and-expiration-design.html)
+-   [HAProxy Connection Proxy Design](haproxy-support.html)
 
 ## 389 Directory Server 1.4.4
 
