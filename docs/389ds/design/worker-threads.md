@@ -12,9 +12,24 @@ Introduction
 ------------
 
 The current worker threads (that process the ldap operations) implementation has several flaws:
-    - need to restart the server after changing the configured number of threads
-    - contention at the global mutex and condition variable level
-    - configuring too few or too many worker threads noticeably impact the performance
+
+- need to restart the server after changing the configured number of threads
+- contention at the global mutex and condition variable level
+- configuring too few or too many worker threads noticeably impact the performance.
+
+To fix these flaws, the new implementation objectives are:
+
+- Allow to change the number of worker threads without needing to restart the server.  (keeping the current configuration attribute and cli command)
+- Fix the condition variable contention issue.
+- Reduce the impact of having too many worker threads configured
+- Provide some monitoring data.
+
+This proposal achieves that by:
+
+- Allowing to create and stop worker thread dynamically.
+- Not associating a condition variable with the global mutex but have a specific mutex and condition variable for each worker threads.
+- Waking up a worker thread only if it has something to do.
+- Providing some monitoring data.
 
 ## Current implementation synopsys
 
@@ -25,7 +40,7 @@ There is a global mutex and a global condition variable and a global queue
 - listener threads push data in in the global queue and wake up the worker threads
 - worker threads loops waiting on the global condition variable for new work
   then process it.
-- to speed up the queueing and limit the alloc/free a stack of list element is used
+- to speed up the queueing and limit the alloc/free a free list element is used
 
 ## New implementation
 
@@ -33,17 +48,21 @@ There is a global mutex and a global condition variable and a global queue
 
 ### Stacked data
 
-  In current implementation there are two stacks to handle:
-  - the work queue element
-  - the operation struct
-  and avoid freeing/allocing them every time. 
-  I proposed to:
-  - keep the operation in the thread context. (Anyway a thread only works on a single operation at a time)
+In current implementation there are two stacks to handle:
+
+- the work queue element
+- the operation struct
+  and avoid freeing/allocing them every time.
+
+I instead proposed to:
+
+- keep the operation in the thread context. (Anyway a thread only works on a single operation at a time)
   - keep a free list of element for the waiting_job list. (That cannot be more than the maximum of connections in the queue so in the worse case the free list will 3*8*64K (i.e around 3 Mb) but I wonder if we should not reduce this list size and let the listening threads sleep for a few ms if there are no more items. ( Anyway if the sleep delay is smaller than the time needed to flush the waiting job queue, no time is wasted.)
 
 ### Overload warning (flow control)
 
 A warning is logged if
+
 - The warning has not been logged since some delay (1 minute)
 - The waiting job queue size gets higher than a threshold (100*number of worker threads)
 
@@ -59,8 +78,11 @@ There is still a global mutex and also three lists:
 When pushing new job the listener threads:
 
 - Get global mutex
+
 - Loop forever:
+  
   - if waiting_threads is not empty:
+    
     - Select the first waiting thread
     - Move the thread out of waiting_threads list into the busy_threads list
     - Release global mutex
@@ -69,55 +91,68 @@ When pushing new job the listener threads:
     - Wake up that threads
     - Release Thread mutex
     - Abort the loop
-  - else if job_free_list is not empty:
+  
+  - else if jobs_free_list is not empty:
+    
     - Pick an waiting_job list element out of the free list
     - Set the job in the element
     - push the element at the end of waiting_job list
     - Release global mutex
     - Abort the loop
+  
   - else:
+    
     - Release global mutex
+    
     - if current time > last warning time + warning_delay
-       - Log a warning about working thread exhausted and waiting queue full
-       - set last warning time to current time
+      
+      - Log an user friendly warning about worker threads exhausted and waiting jobs queue full.  (maybe: ***Warning: server may be unresponsive because the threads are exhausted and too many operations have been queued.***)
+      
+      - set last warning time to current time
+    
     - Sleep 20 ms
+    
     - Get global mutex
 
-The listener threads while waiting on new work:
+The worker threads while waiting on new work:
 
 - Get the thread mutex
 - Loop forever:
-    - if conn is provided in the thread context
-       - Fill the pblock with conn, op
-       - Reset conn in thread context
-       - Release the thread mutex
-       - return CONN_FOUND_WORK_TO_DO
-    - if thread shutdown flag is set:
-       - Release the thread mutex
-       - return CONN_SHUTDOWN
+  - if conn is provided in the thread context
+    - Fill the pblock with conn, op
+    - Reset conn in thread context
     - Release the thread mutex
-    - Get the global mutex
-    - If waiting_job queue is empty
-       - Unlink thread from busy threads list
-       - Link thread at start of waiting threads list
-       - Release the global mutex
-       - Get the thread mutex
-       - Wait on the thread condition variable
-       - Loop again
-     - Move first job from waiting_job list to the job_free_list list
-       (after storing the conn in a local variable)
-     - Release the global mutex
-     - Fill the pblock with conn, op
-     - return CONN_FOUND_WORK_TO_DO
+    - return CONN_FOUND_WORK_TO_DO
+  - if thread shutdown flag is set:
+    - Release the thread mutex
+    - return CONN_SHUTDOWN
+  - Release the thread mutex
+  - Get the global mutex
+  - If waiting_job queue is empty
+    - Unlink thread from busy threads list
+    - Link thread at start of waiting threads list
+    - Release the global mutex
+    - Get the thread mutex
+    - Wait on the thread condition variable
+    - Loop again
+      - Move first job from waiting_job list to the jobs_free_list list
+        (after storing the conn in a local variable)
+      - Release the global mutex
+      - Fill the pblock with conn, op
+      - return CONN_FOUND_WORK_TO_DO
 
 ### Dynamic change of the number of threads
+
+The number of threads may be changed dynamically by changing the
+ nsslapd-threadnumber attribute in cn=config (when calling config_set_threadnumber). 
+Restart is no more needed.
 
 When changing the number threads:
 
 - if adding threads:
   - Get global mutex
   - Compute first new thread index:
-      (size of working_thread list + size of busy_thread list) +1
+      (size of working_threads list + size of busy_threads list) +1
   - For each missing threads:
     - Alloc the thread context struct
     - Init its mutex and condition variable
@@ -155,7 +190,6 @@ The following data should be displayed:
 | busy_thread high water mark | maxbusythreads | Highest number of worker threads that are processing on  jobs |
 | waiting_job size            | waitingjobs    | Size of the waiting job queue                                 |
 | waiting_job high water mark | maxwaitingjobs | Highest size of the waiting job queue                         |
-
 
 ### Test
 
@@ -277,27 +311,28 @@ the global data needed to perform the import over mdb
 
 This is a static variable "pc" in connection.c 
 
-| Field           | Usage                    |
-| --------------- | ------------------------ |
-| mutex           | The global mutex         |
-| waiting_threads | The waiting threads list |
-| busy_threads    | The busy threads list    |
-| waiting_jobs    | The work queue           |
-| shutdown        | Shutdown in progress     |
+| Field           | Usage                                                                                                                                                                                                                                 |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| mutex           | The global mutex that protect the other fields                                                                                                                                                                                        |
+| waiting_threads | The waiting threads list contains the threads that are ready to handle operations (to be able to push a job to the thread)<br/>Queue is handled in LIFO mode (for affinity)                                                           |
+| busy_threads    | The busy threads list contains the threads that are busy (to be able to flag the thread as closing when reducing the number of threads)                                                                                               |
+| waiting_jobs    | The waiting_jobs list contains the jobs (i.e connection on which activity have been detected.) that got queued when no worker thread is available<br/>Queue is handled in FIFO mode (to keep as much as possible the incomming order) |
+| jobs_free_list  | Free list for waiting_jobs queue elements (to avoid having to alloc the list items)<br/>Queue is handled in LIFO mode (for affinity)                                                                                                  |
+| shutdown        | tells that instance shutdown is in progress                                                                                                                                                                                           |
 
 #### Thread context data: tinfo_t
 
 This is the per thread context provided as argument when the thread is created
 
-| Field    | Usage                                                          |
-| -------- | -------------------------------------------------------------- |
-| q        | the queue element for that thread (data is the thread context) |
-| mutex    | The per thread mutex                                           |
-| cv       | The per thread cv                                              |
-| conn     | The work to process                                            |
-| shutdown | The flag telling to stop the thread                            |
-| idx      | The thread index (used for smnp and thread removal)            |
-| tid      | The thread id (to join the thread for thread removal           |
+| Field   | Usage                                                          |
+| ------- | -------------------------------------------------------------- |
+| q       | the queue element for that thread (data is the thread context) |
+| mutex   | The per thread mutex (protects cv,conn,closing)                |
+| cv      | The per thread cv                                              |
+| conn    | The job to process                                             |
+| closing | The flag telling to stop the thread                            |
+| idx     | The thread index (used for smnp and thread removal)            |
+| tid     | The thread id (to join the thread for thread removal           |
 
 #### Statistics data: op_thread_stats_t
 
