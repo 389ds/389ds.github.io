@@ -135,22 +135,26 @@ The worker threads while waiting on new work:
     - Get the thread mutex
     - Wait on the thread condition variable
     - Loop again
-      - Move first job from waiting_job list to the jobs_free_list list
-        (after storing the conn in a local variable)
-      - Release the global mutex
-      - Fill the pblock with conn, op
+  - else
+    - Move first job from waiting_job list to the jobs_free_list list
+      (after storing the conn in a local variable)
+    - Release the global mutex
+    - Fill the pblock with conn, op
       - return CONN_FOUND_WORK_TO_DO
 
 ### Dynamic change of the number of threads
 
 The number of threads may be changed dynamically by changing the
- nsslapd-threadnumber attribute in cn=config (when calling config_set_threadnumber). 
+ nsslapd-threadnumber attribute in cn=config (when calling config_set_threadnumber).
 Restart is no more needed.
 
 When changing the number threads:
 
 - if adding threads:
   - Get global mutex
+  - If global shutdown
+    - Release the global mutex
+    - Exit out of the function
   - Compute first new thread index:
       (size of working_threads list + size of busy_threads list) +1
   - For each missing threads:
@@ -198,23 +202,29 @@ An automatic test can be done with the following steps:
 - create an instance
 - get the monitoring results
 - check that waitingthreads+busythreads == configured number of threads
-- run pstack of server and check that number of connection_threadmain is the expected one 
+- run pstack of server and check that number of connection_threadmain is the expected one
 - increase the number of threads
 - check that waitingthreads+busythreads == configured number of threads
 - run pstack of server and check that number of connection_threadmain is the expected one
 - decrease the number of threads
 - check that waitingthreads+busythreads == configured number of threads
-- run pstack of server and check that number of connection_threadmain is the expected one
+- run pstack of server and check that number of connection_threadmain is the expected on
+
+And some manual tests that should be done at least once:
+
+- Test with 1000 workers threads and check how long it takes to get a pstack.
+  (both when the server is idle and while running a searchrate/ldclt load)
 
 ### Considered Alternatives
 
 - improving old worker thread algorithm to be able to change the number of threads dynamically. (Rejected because a prototype showed that on my laptop, when using trivial jobs that atommically increment a counter, the proposed algorithm was 6 time faster than the older)
 - Adjusting automatically the number of threads to the load. (Rejected because an hard limit is still needed to limit the resource use if an operation blocks the server for some time - and with the new algorithm useless configured threads should not have a noticeable impact (except on the virtual memory footprint)
 - while pushing job in waiting_job queue:
-  - Do not limit list size (Rejected because of the risk of exhausting 
+  - Do not limit list size (Rejected because of the risk of exhausting
      the system resources)
-  - alloc job list element (while keeping the global lock or use pre-alloced elements as in current code). Rationnal: This queuing occurs when incomming job load is higher that what the working threads can handle, so the priority is to let the worker threads picks new job as fast as possible and we can slow the listening threads.
-- Using NSPR thread / mutex / condvar or using pthreads
+  - alloc job list element (while keeping the global lock or use pre-alloced elements as in current code). Rationnal: This queuing occurs when incomming job load is higher that what the working threads can handle, so the priority is to let the worker threads picks new job as fast as possible and we can slow the listening threads. Furthermore monitoring info are there to let administrator or external healthcheck tool take the decision.
+- Using NSPR thread / mutex / condvar or using pthreads:
+  pthreads was chosen because there is less overhead and as on linux nspr relies on pthreads
 
 ---------------------------------
 
@@ -236,14 +246,14 @@ An automatic test can be done with the following steps:
 connection_wait_for_new_work(Slapi_PBlock *pb, pc_tinfo_t *tinfo)
 
 This function handles part of the "consumer" side of the algorithm
- it read the job from the tinfo "conn" field or from the waiting_job queue or wait until condition variable is waken up. 
+ it read the job from the tinfo "conn" field or from the waiting_job queue or wait until condition variable is waken up.
 
 #### add_work_q
 
 static void
 add_work_q(work_q_item *wqitem, struct Slapi_op_stack *op_stack_obj)
 
-This function handles the "producer" side of the algorithm 
+This function handles the "producer" side of the algorithm
 
 #### init_op_threads
 
@@ -255,7 +265,7 @@ Initialize the producers/consumers algorithm
 
 void op_thread_cleanup()
 
-Starts the producers/consumers shutdown procedure 
+Starts the producers/consumers shutdown procedure
 
 #### connection_post_shutdown_cleanup
 
@@ -280,8 +290,8 @@ Gather the thread statistics
 #### Lists:
 
 All the lists are doubly linked with a guard element as list head.
-allowing for fast item addition in head or tail of the queue and fast removal of an item 
-Two statistics are associated with the list head: 
+allowing for fast item addition in head or tail of the queue and fast removal of an item
+Two statistics are associated with the list head:
 
 - the list size
 - the list high water mark (i.e the maximum value of the list size)
@@ -309,7 +319,7 @@ the global data needed to perform the import over mdb
 
 #### Producers/Consumers data: pc_t
 
-This is a static variable "pc" in connection.c 
+This is a static variable "pc" in connection.c
 
 | Field           | Usage                                                                                                                                                                                                                                 |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
