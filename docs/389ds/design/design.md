@@ -37,7 +37,7 @@ If you are adding a new design document, use the [template](design-template.html
 
 ## 389 Directory Server 2.x
 
--   [Account Policy Inactivity & Expiration){account-policy-inactivity-and-expiration-design.html)
+-   [Account Policy Inactivity & Expiration](account-policy-inactivity-and-expiration-design.html)
 -   [Access Log Statistics Improvements](log-operation-stats.html)
 -   [Improve Automember Fixup Task](automember-rebuild-cleanup-design.html)
 -   [Audit Log Display Entry Attributes](audit-log-entry-attrs-design.html)
