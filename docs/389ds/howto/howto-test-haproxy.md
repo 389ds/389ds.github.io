@@ -63,6 +63,18 @@ backend ldaps_back
     server ldap1 server.example.com:636 send-proxy-v2 ssl verify required ca-file /etc/pki/tls/certs/server-cert-ca.pem
 ```
 
+You can replace the last part with this code if you want to use non-secure port, **but it's not recommended**. Always consider the security.
+
+```plaintext
+frontend ldaps_front
+    bind *:389
+    default_backend ldap_back
+
+backend ldap_back
+    balance roundrobin
+    server ldap1 server.example.com:389 send-proxy-v2
+```
+
 3. Generate the `haproxy.pem` certificate using the following steps:
 
     a. Generate the private key for the self-signed CA:
