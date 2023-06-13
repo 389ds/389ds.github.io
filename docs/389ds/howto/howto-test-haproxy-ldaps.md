@@ -1,5 +1,5 @@
 ---
-title: "Testing HAProxy with 389 DS"
+title: "Testing HAProxy with 389 DS over LDAP/LDAPS"
 ---
 
 # Testing HAProxy with 389 DS
@@ -11,6 +11,8 @@ title: "Testing HAProxy with 389 DS"
 
 A simple guide for HAProxy with LDAP configuration for testing purposes. If used in production, make sure to use valid certificates (as opposed to self-signed used in the guide).
 
+**This guide covers LDAP/LDAPS configuration only.** GSSAPI/EXTERNAL and LDAP with StartTLS may be covered later in a separate document.
+
 ## Step 1: Create Virtual Machines
 We will need to create three Fedora (i.e. F38) virtual machines for our setup:
 
@@ -20,7 +22,7 @@ We will need to create three Fedora (i.e. F38) virtual machines for our setup:
 
 Configure the hostnames and `/etc/hosts` file as needed on all these machines so they are discoverable between each other.
 
-## Step 2: Setup HAProxy Server
+## Step 2: Setup HAProxy Server with LDAPS or LDAP
 On the HAProxy server machine, perform the following steps:
 
 1. Install HAProxy:
