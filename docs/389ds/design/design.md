@@ -37,6 +37,7 @@ If you are adding a new design document, use the [template](design-template.html
 
 ## 389 Directory Server 2.x
 
+-   [Account Policy Inactivity & Expiration](account-policy-inactivity-and-expiration-design.html)
 -   [Access Log Statistics Improvements](log-operation-stats.html)
 -   [Improve Automember Fixup Task](automember-rebuild-cleanup-design.html)
 -   [Audit Log Display Entry Attributes](audit-log-entry-attrs-design.html)
@@ -56,6 +57,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [Alias Entries Plugin](alias-entries-design.html)
 -   [Account Policy Plugin Inactivity And Expiration](account-policy-inactivity-and-expiration-design.html)
 -   [HAProxy Connection Proxy Design](haproxy-support.html)
+-   [Dynamic handling of the number of worker threads](worker-threads.html)
 
 ## 389 Directory Server 1.4.4
 
