@@ -33,7 +33,7 @@ dnf install haproxy
 
 2. Configure HAProxy by editing the `/etc/haproxy/haproxy.conf` file with the following:
 
-```plaintext
+```
 global
     log 127.0.0.1 local2
     chroot /var/lib/haproxy
@@ -67,7 +67,7 @@ backend ldaps_back
 
 You can replace the last part with this code if you want to use non-secure port, **but it's not recommended**. Always consider the security.
 
-```plaintext
+```
 frontend ldaps_front
     bind *:389
     default_backend ldap_back
