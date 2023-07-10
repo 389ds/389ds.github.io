@@ -1,5 +1,5 @@
 ---
-title: "Releases/2.4.0"
+title: "Releases/2.4.1"
 ---
 
 389 Directory Server 2.4.1
