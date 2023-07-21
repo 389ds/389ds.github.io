@@ -55,15 +55,15 @@ How to resolve this issue
 -------------------------
 
 -   Select a directory server to be authoritative and write the contents of its database to an ldif file
-    -   On the master supplier:
+    -   On the supplier:
 
-            # /usr/bin/db2ldif.pl -Z EXAMPLE-COM -D 'cn=Directory Manager' -w - -n userRoot -a /tmp/master-389.ldif    
+            # /usr/bin/db2ldif.pl -Z EXAMPLE-COM -D 'cn=Directory Manager' -w - -n userRoot -a /tmp/supplier-389.ldif    
 
 Note that without the -r option it is deliberately omitting the tainted replication data which contains the bad CSNs
 
 If you have more than one suffix/db, you will have to do this for each one that the readNsState.py script reports.
 
--   On the master supplier, shutdown dirsrv so that you can reset the attribute responsible for the serial generation, and so that you can re-initialize its db from the known good ldif
+-   On the supplier, shutdown dirsrv so that you can reset the attribute responsible for the serial generation, and so that you can re-initialize its db from the known good ldif
     -   depends on the platform
 
             # service dirsrv stop    
@@ -101,12 +101,12 @@ If you have more than one suffix/db, you will have to do this for each one that 
 
 -   Import the data from the known good ldif. This will mark all the changes with CSNs that match the current time/date stamps
 
-        # chmod 644 /tmp/master-389.ldif    
-        # /usr/bin/ldif2db -Z EXAMPLE-COM -n userRoot -i /tmp/master-389.ldif    
+        # chmod 644 /tmp/supplier-389.ldif    
+        # /usr/bin/ldif2db -Z EXAMPLE-COM -n userRoot -i /tmp/supplier-389.ldif    
 
     If you have more than one suffix/db, you will have to do this for each one that the readNsState.py script reports.
 
--   Restart dirsrv on the master supplier
+-   Restart dirsrv on the supplier
     -   depends on the platform
 
             # service dirsrv start    
@@ -121,7 +121,7 @@ If you have more than one suffix/db, you will have to do this for each one that 
 
 -   When the daemon starts, it will see that it does not have an nsState and will write new CSN's to -all- of the newly imported good data with today's timestamp, we need to take that data and write -it- out to an ldif file, for use in initializing all of the other servers.
 
-        # /usr/bin/db2ldif.pl -Z EXAMPLE-COM -D 'cn=Directory Manager' -w - -n userRoot -r -a /tmp/replication-master-389.ldif    
+        # /usr/bin/db2ldif.pl -Z EXAMPLE-COM -D 'cn=Directory Manager' -w - -n userRoot -r -a /tmp/replication-supplier-389.ldif    
 
     the -r tells it to include all replica data which includes the newly blessed CSN data
 
@@ -129,7 +129,7 @@ If you have more than one suffix/db, you will have to do this for each one that 
 
 **BEGIN - REPEAT THESE STEPS ON EVERY REPLICA**
 
--   scp root@replication.master.fqdn:/tmp/replication-master-389.ldif /tmp/replication-master-389.ldif
+-   scp root@replication.supplier.fqdn:/tmp/replication-supplier-389.ldif /tmp/replication-supplier-389.ldif
 -   shutdown dirsrv
 
         # service dirsrv stop    
@@ -163,8 +163,8 @@ If you have more than one suffix/db, you will have to do this for each one that 
 
 -   Import the data from the known good ldif. This will mark all the changes with CSNs that match the current time/date stamps
 
-        # chmod 644 /tmp/replication-master-389.ldif    
-        # /usr/bin/ldif2db -Z EXAMPLE-COM -n userRoot -i /tmp/replication-master-389.ldif    
+        # chmod 644 /tmp/replication-supplier-389.ldif    
+        # /usr/bin/ldif2db -Z EXAMPLE-COM -n userRoot -i /tmp/replication-supplier-389.ldif    
 
 -   Restart dirsrv
 
@@ -183,7 +183,7 @@ If you have more than one suffix/db, you will have to do this for each one that 
 Why is this necessary?
 ----------------------
 
-Further reading for those interested in the particulars of CSN tracking or the MultiMaster Replication algorithm:
+Further reading for those interested in the particulars of CSN tracking or the Multisupplier Replication algorithm:
 
 It all starts with the Leslie Lamport paper: <http://www.stanford.edu/class/cs240/readings/lamport.pdf> "Time, Clocks, and the Ordering of Events in a Distributed System"
 

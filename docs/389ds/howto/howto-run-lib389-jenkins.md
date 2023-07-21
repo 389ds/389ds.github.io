@@ -39,7 +39,7 @@ This script install python p[ip environment, checks out a fresh copy of the Dire
 
     #
     # Jenkins script to execute the lib389 testcases located in the
-    # the Directory Server source tree (master branch)
+    # the Directory Server source tree (main branch)
     #
 
     #
@@ -83,7 +83,7 @@ This script install python p[ip environment, checks out a fresh copy of the Dire
 
     git clone https://github.com/389ds/389-ds-base.git
     cd ds
-    git checkout master
+    git checkout main
     cd ..
 
     #

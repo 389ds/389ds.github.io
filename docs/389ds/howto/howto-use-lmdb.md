@@ -14,7 +14,7 @@ Issue 4699 - PR 4716 (Aug 2021) implements an experimental feature allowing to r
 Pre-requisites
 --------------
 
-This work was integrated on Fedora master branch. (Not yet in REHL but planned for 9.1 or 9.2)
+This work was integrated on Fedora rawhide branch. (Not yet in REHL but planned for 9.1 or 9.2)
 
 You now need to install both lmdb-libs and libdb to run 389ds
 ( and lmdb-devel and libdb-devel to build 389ds )

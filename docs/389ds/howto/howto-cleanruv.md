@@ -10,7 +10,7 @@ title: "Howto: CLEANRUV"
 When to use the tasks to cleanup the RUV
 ----------------------------------------
 
-In a replicated environment, when you decommission a master, the meta-data for that master is still contained in the other servers. There are special tasks you can use to remove this meta-data. When you start up the server, you may get a warning like this in your errors log:
+In a replicated environment, when you decommission a supplier, the meta-data for that supplier is still contained in the other servers. There are special tasks you can use to remove this meta-data. When you start up the server, you may get a warning like this in your errors log:
 
     [09/Sep/2011:09:03:43 -0600] NSMMReplicationPlugin - ruv_compare_ruv: RUV [changelog max RUV] does not
      contain element [{replica 55 ldap://localhost.localdomain:9389} 4e6a27ca000000370000 4e6a27e8000000370000]
@@ -21,7 +21,7 @@ In a replicated environment, when you decommission a master, the meta-data for t
      there are obsolete elements in the database RUV, you should remove them using the CLEANRUV task.  If they    
      are not obsolete, you should check their status to see why there are no changes from those servers in the changelog.    
 
-This indicates that the database RUV (the replication meta-data) contains data for obsolete masters (they should be listed in the errors log). You can see these for yourself with ldapsearch:
+This indicates that the database RUV (the replication meta-data) contains data for obsolete suppliers (they should be listed in the errors log). You can see these for yourself with ldapsearch:
 
     # ldapsearch -xLLL -D "cn=directory manager" -W -b dc=example,dc=com \
      '(&(nsuniqueid=ffffffff-ffffffff-ffffffff-ffffffff)(objectclass=nstombstone))'
@@ -136,5 +136,5 @@ to see that the entry for the obsolete replica has been removed.
 
 If there are multiple entries you need to get rid of, just execute the ldapmodify again with each replica ID number.
 
-NOTE: **This operation does not replicate. You will have to perform this operation on all of your servers (masters, hubs, consumers).**
+NOTE: **This operation does not replicate. You will have to perform this operation on all of your servers (suppliers, hubs, consumers).**
 

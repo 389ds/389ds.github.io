@@ -42,7 +42,7 @@ Implementation
 
 Each syntax that the Directory Server supports is implemented in the form of a SLAPI plug-in. The approach to add attribute value validation is to allow a syntax plug-in to optionally register a validation callback function. When the Directory Server needs to validate a value for an attribute, it will call the validate function for the syntax used in that attributes definition. If a validation function is not registered for that syntax, then the server will just assume that the value is valid.
 
-Attribute value validation should be skipped for replicated operations. It is expected that the master receiving the original operation validated the syntax, so there is no need to perform the validation on any of the other replicas. This assumes that syntax validation is configured the same way on all replicas.
+Attribute value validation should be skipped for replicated operations. It is expected that the supplier receiving the original operation validated the syntax, so there is no need to perform the validation on any of the other replicas. This assumes that syntax validation is configured the same way on all replicas.
 
 #### Validation callback
 

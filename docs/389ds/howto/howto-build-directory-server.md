@@ -58,7 +58,7 @@ Create the BUILD and source code directories
 Switch to your branch of choice, and make code changes.  Then before you build for the first time you need to run **autogen.sh**.  Here is an example:
 
     # cd 389-ds-base
-    # git checkout 389-ds-base-1.3.8   --> this could be any branch, or skip this step to build from the *master* branch
+    # git checkout 389-ds-base-1.3.8   --> this could be any branch, or skip this step to build from the *main* branch
     # vi SOURCE_FILE
     # ./autogen.sh
 

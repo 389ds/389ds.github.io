@@ -37,24 +37,24 @@ In order to be able to send extra data from the callbacks, the replication proto
 
 #### Replication Agreement Init
 
-This callback is called when a replication agreement is created. The repl\_subtree from the agreement is read-only. The callback can allocate some private data to return. If so the callback must define a repl\_session\_plugin\_destroy\_agmt\_cb so that the private data can be freed. This private data is passed to other callback functions on a master as the void \*cookie argument.
+This callback is called when a replication agreement is created. The repl\_subtree from the agreement is read-only. The callback can allocate some private data to return. If so the callback must define a repl\_session\_plugin\_destroy\_agmt\_cb so that the private data can be freed. This private data is passed to other callback functions on a supplier as the void \*cookie argument.
 
     typedef void * (*repl_session_plugin_agmt_init_cb)(const Slapi_DN *repl_subtree);    
 
 #### Acquire Replica Callbacks
 
-The pre and post callbacks are called on the sending (master) side. The receive and reply callbacks are called on the receiving (replica) side.
+The pre and post callbacks are called on the sending (supplier) side. The receive and reply callbacks are called on the receiving (replica) side.
 
 Data can be exchanged between the sending and receiving sides using these callbacks by using the data\_guid and data parameters. The data guid is used as an identifier to confirm the data type. Your callbacks that receive data must consult the data\_guid before attempting to read the data parameter. This allows you to confirm that the same replication session plug-in is being used on both sides before making assumptions about the format of the data. The callbacks use these parameters as follows:
 
       pre - send data to replica    
-      recv - receive data from master    
-      reply - send data to master    
+      recv - receive data from supplier    
+      reply - send data to supplier    
       post - receive data from replica    
 
 The memory used by data\_guid and data should be allocated in the pre and reply callbacks. The replication plug-in is responsible for freeing this memory, so they should not be free'd in the callbacks.
 
-The return value of the callbacks should be 0 to allow replication to continue. A non-0 return value will cause the replication session to be abandoned, causing the master to go into incremental backoff mode.
+The return value of the callbacks should be 0 to allow replication to continue. A non-0 return value will cause the replication session to be abandoned, causing the supplier to go into incremental backoff mode.
 
     typedef int (*repl_session_plugin_pre_acquire_cb)(void *cookie, const Slapi_DN *repl_subtree,    
                                               int is_total, char **data_guid, struct berval **data);    

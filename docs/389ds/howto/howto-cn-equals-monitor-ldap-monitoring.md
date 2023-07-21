@@ -187,18 +187,18 @@ If you are using a load balancer or cluster address. Add the option *<loadbalanc
        </server>
      </environment>
 
-### Multi Master Environment
+### Multi Supplier Environment
 
-Shows a recommended configuration for an environment with two masters and two consumer replicas.
+Shows a recommended configuration for an environment with two suppliers and two consumer replicas.
 
      <environment>
-       <name>389 DS Masters</name>
-       <loadbalancer>clustermaster.example.com</loadbalancer>
+       <name>389 DS Suppliers</name>
+       <loadbalancer>clustersupplier.example.com</loadbalancer>
        <server>
-         <name>servermaster1.example.com</name>
+         <name>serversupplier1.example.com</name>
        </server>
        <server>
-         <name>servermaster2.example.com</name>
+         <name>serversupplier2.example.com</name>
        </server>
      </environment>
      <environment>

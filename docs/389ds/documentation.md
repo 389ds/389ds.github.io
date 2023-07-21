@@ -34,7 +34,7 @@ We maintain a number of how to guides for 389 Directory Server
 -   [How to Reset a Locked Password](howto/howto-passwordreset.html) - How to reset a password that has been locked out due to excessive failed attempts
 -   [How to Certificate Mapping](howto/howto-certmapping.html) - Map a certificate subjectDN to the user's entry when using client certificate based authentication.
 -   [How to Chain on Update](howto/howto-chainonupdate.html) - Allow read-only replicas to "follow" referrals on behalf of clients, and enabled global password policy.
--   [How to MMR](howto/howto-multimasterreplication.html) - How to configure multi-master replication without using the administration console.
+-   [How to configure multi-supplier replication](howto/howto-multisupplierreplication.html) - How to configure multi-supplier replication without using the administration console.
 -   [How to Monitor Replication](howto/howto-replicationmonitoring.html) - How to check replication without using administration console or website
 -   [How to Monitor Replication Using CLI](howto/howto-monitor-replication.html) - How to check replication using dsconf CLI
 -   [How to Dump and Restore Change Log Using CLI](howto/howto-dump-restore-changelog.html) - How to dump and restore change log using dsconf CLI
@@ -46,11 +46,11 @@ We maintain a number of how to guides for 389 Directory Server
 -   [How to Ldapsearch without line wrapping](howto/howto-unlimitedwidthldapsearch.html) - How do I set an unlimited line width for ldapsearch
 -   [How to Sizelimit and Ldapsearch](howto/howto-ldapsearchsizelimit.html) - Why do I get this error message "ldap\_search: Administrative limit exceeded"
 -   [How to Ldapsearch and attributes ](howto/howto-ldapsearchmanyattr.html) - How to count large number of attribute entries using an anonymous bind
--   [How to Secure MMR Walkthrough](howto/howto-walkthroughmultimasterssl.html) - Setting up FDS with multi-master replication, TLS/SSL and importing OpenLDAP schema
+-   [How to Secure Replication Walkthrough](howto/howto-walkthroughmultisupplierssl.html) - Setting up FDS with multi-supplier replication, TLS/SSL and importing OpenLDAP schema
 -   [How to PAM Passthru Authentication](howto/howto-pam-pass-through.html) - Setting up the PAM pass through authentication plugin
 -   [How to Use DNA Plugin](howto/howto-dna.html) - How to use Distributed Numeric Assignment to auto-generate uidNumber and gidNumber
 -   [How to Host Based Attributes](howto/howto-hostbasedattributes.html) - How to have different values for attributes on different hosts e.g. have a different login shell on certain hosts
--   [How to Clean RUVs](howto/howto-cleanruv.html) - How to get rid of obsolete masters from your replication meta-data (i.e. the database RUV)
+-   [How to Clean RUVs](howto/howto-cleanruv.html) - How to get rid of obsolete suppliers from your replication meta-data (i.e. the database RUV)
 -   [How to Copy ACIs](howto/howto-copyacis.html) - How to copy ACIs from one server to another
 -   [How to Fix Time Skew](howto/howto-fix-and-reset-time-skew.html) - When the replication CSN time skew grows too large, how to reset the CSN generator everywhere to get rid of time skew
 -   [How to Roles as Posix Groups](howto/howto-rolesasgroupsrequirements.html) - Use roles as posix groups

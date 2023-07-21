@@ -126,7 +126,7 @@ title: "CleanAllRUV Design"
        On the Replica to be removed    
            - Remove all replication agmts and config    
            - Remove Replica    
-       Add “cleanAllRUV task” to a top master replica    
+       Add “cleanAllRUV task” to a top supplier replica    
 
 ## Misc
 --------

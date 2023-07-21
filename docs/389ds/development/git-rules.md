@@ -36,7 +36,7 @@ Here is my \~/.gitcommittemplate
     Resolves: Ticket ###    
     Bug Description: description    
     Reviewed by: ???    
-    Branch: master    
+    Branch: main    
     Fix Description: description    
     Platforms tested:     <plat>
     Flag Day: no    
@@ -54,7 +54,7 @@ Create a branch for your work
 
 Always create a "topic" or "bug" branch for your work.
 
-    git checkout master # or a main release branch    
+    git checkout main # or a main release branch    
     git checkout -b ticket123 # short for git branch ticket123 ; git checkout ticket123    
     git checkout -b numericstring # a "feature" branch, not a bug fix branch    
 
@@ -63,7 +63,7 @@ This will create a new branch from the current branch (use *git branch* to show 
 Rebase changes from other developers
 ------------------------------------
 
-If you want to get updates from upstream on your working branch, first commit your changes (or use git stash if you have changes you don't yet want to commit), then use git pull or git fetch to get the changes to your local master or main release branch, then use git rebase to rebase your commits on top of the upstream.
+If you want to get updates from upstream on your working branch, first commit your changes (or use git stash if you have changes you don't yet want to commit), then use git pull or git fetch to get the changes to your local main or main release branch, then use git rebase to rebase your commits on top of the upstream.
 
 -   see what branch you're on
 
@@ -79,13 +79,13 @@ If you want to get updates from upstream on your working branch, first commit yo
         OR    
         git stash save "saved work in progress on mytopic"    
 
--   checkout the master branch or the main release branch you're working off of
+-   checkout the main branch or the main release branch you're working off of
 
-        git checkout master # or ReleaseBranch    
+        git checkout main # or ReleaseBranch    
 
 -   pull changes from upstream
 
-        git pull upstream master # or ReleaseBranch    
+        git pull upstream main # or ReleaseBranch    
         # If this doesn't pull/merge cleanly, then you have some problems with your    
         # local branch that you must resolve first    
 
@@ -93,9 +93,9 @@ If you want to get updates from upstream on your working branch, first commit yo
 
         git checkout mytopic    
 
--   rebase on top of master or ReleaseBranch
+-   rebase on top of main or ReleaseBranch
 
-        git rebase master # or ReleaseBranch    
+        git rebase main # or ReleaseBranch    
 
 -   if you used git stash, apply your stash
 
@@ -131,7 +131,7 @@ If you want to get updates from upstream on your working branch, first commit yo
 
     Also note that stashes are "global" - so if you have multiple branches, you must take care to specify the correct stash when using git stash pop or git stash apply - the stash will tell you which branch it was created on, but you must be careful not to pop it or apply it on a different branch.
 
--    Do not work on the main/master branch, unless you are staging commits to be pushed to the shared repository.
+-    Do not work on the main branch, unless you are staging commits to be pushed to the shared repository.
 
 Commit/Review Messages
 ----------------------
@@ -159,7 +159,7 @@ The rest of the commit message should contain more detailed information, such as
 
 You can add the following headers if they are relevant:
 
-    Branch: - master for trunk or specific maintenance branch - if omitted, master/trunk is assumed    
+    Branch: - main for trunk or specific maintenance branch - if omitted, main/trunk is assumed    
     Doc impact: - the impact this fix will have on project documentation    
     QA impact: - the impact this fix will have on QA    
                  (e.g. test all replication code)    
@@ -222,10 +222,10 @@ You can also use "**git rebase -i**" to "squash" or combine several commits into
 Working with Multiple Release Branches
 --------------------------------------
 
-At any given time, 389 will have one or more releases being supported, each with its own branch. For example, the 1.2.11 releases use the 389-ds-base-1.2.11 branch in git. At some point you will need to apply a patch to master and one or more of these release branches. It is still a good idea to work on a branch off of master and apply the patches in master branch, then cherry-pick your changes to the other release branches.
+At any given time, 389 will have one or more releases being supported, each with its own branch. For example, the 1.2.11 releases use the 389-ds-base-1.2.11 branch in git. At some point you will need to apply a patch to main and one or more of these release branches. It is still a good idea to work on a branch off of main and apply the patches in main branch, then cherry-pick your changes to the other release branches.
 
     git checkout -b 389-ds-base-VERSION # get the branch    
-    git cherry-pick -e -x master # assumes you have just merged your commit with master    
+    git cherry-pick -e -x main # assumes you have just merged your commit with main    
 
 OR
 
@@ -235,7 +235,7 @@ If the cherry-pick fails, you will need to fix the conflicts:
 
     git status # show which files are in conflict    
 
-cherry-pick will leave the usual \<\<\<\<\<\< ===== \>\>\>\>\>\> markers in the file showing you the changes that came from master and the changes that came from the release branch. Edit the files to fix the conflicts
+cherry-pick will leave the usual \<\<\<\<\<\< ===== \>\>\>\>\>\> markers in the file showing you the changes that came from main and the changes that came from the release branch. Edit the files to fix the conflicts
 
     git mergetool # graphical diff/edit tool    
 
@@ -246,7 +246,7 @@ OR
 Add the files to resolve the conflicts and commit
 
     git add file1 file2 .... # git add each file to tell git you fixed it    
-    git commit -c master # or COMMITID if you gave a specific commit id    
+    git commit -c main # or COMMITID if you gave a specific commit id    
 
 If you have multiple commits to cherry-pick, you'll have to do them one at a time, in order from earliest to latest:
 
@@ -260,20 +260,20 @@ Pushing Upstream
 First, make sure you are in the correct branch that you want to apply/commit to:
 
     git branch # list my current branch    
-    git checkout master # to switch to the current branch    
+    git checkout main # to switch to the current branch    
 
 Next, make sure that branch is up-to-date.
 
     git pull    
 
-If changes were pulled in, rebase your working branch off of master and resolve any conflicts.
+If changes were pulled in, rebase your working branch off of main and resolve any conflicts.
 
     git checkout <workbranch>
-    git rebase master    
+    git rebase main    
 
-Switch back to the master branch (or the remote branch you want to push to)and merge in your changes from the working branch.
+Switch back to the main branch (or the remote branch you want to push to)and merge in your changes from the working branch.
 
-    git checkout master    
+    git checkout main    
     git merge <workbranch>
 
 The merge should be clean, and no merge commit should appear when running *git log -1*. You can now push the commits to the remote repository.

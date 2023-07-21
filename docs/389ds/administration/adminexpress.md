@@ -47,7 +47,7 @@ Admin Express has an option to monitor replication status in real-time, meaning 
 Monitoring replication is set up using a simple configuration file which specifies which server to monitor and what supplier and consumer replicas to include in the status page.
 When trying to monitor replication status through Admin Express, remember two things:
 
--   The **Replication Status** page is only available for supplier servers. (It can be opened for other types of replicas; there's just no information available and has the message *The server is not a master or it has no replication agreement*.)
+-   The **Replication Status** page is only available for supplier servers. (It can be opened for other types of replicas; there's just no information available and has the message *The server is not a supplier or it has no replication agreement*.)
 -   The configuration file must be in a directory that is accessible to Administration Server.
 
 To view in-progress status of replication in Admin Express:
@@ -179,7 +179,6 @@ The styles for the **Replication Status** page are printed in the Perl script in
       print "Content-type: text/html\n\n";
       print "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2//EN\"><html>\n";
       print "<head><title>Replication Status</title>\n";
-      # print "<link type=text/css rel=stylesheet href=\"master-style.css\">\n";
       print "<style text/css>\n";
       print "Body, p, table, td, ul, li {color: #000000; font-family: Arial, Helvetica, sans-serif; font-size: 12px;}\n";
       print "A {color:blue; text-decoration: none;}\n";

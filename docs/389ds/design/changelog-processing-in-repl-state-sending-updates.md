@@ -82,7 +82,7 @@ In a situation combining the above scenarios, the decision process is:
 
 ### Special case: RID of the consumer in the current replication session
 
-If the consumer in the replication session is also a master its RID will be contained at least in the consumerRUV. If it is also in the supplier RUV the question is if it should be considered in the decision if updates should be sent. Normally a master has the latest changes applied to itself, so there would be no need to check and send updates for its RID. But there can be scenarios where this is not the case: if the consumer has been restored from an older backup the latest csn for its own RID might be older than changes available on other servers. 
+If the consumer in the replication session is also a supplier its RID will be contained at least in the consumerRUV. If it is also in the supplier RUV the question is if it should be considered in the decision if updates should be sent. Normally a supplier has the latest changes applied to itself, so there would be no need to check and send updates for its RID. But there can be scenarios where this is not the case: if the consumer has been restored from an older backup the latest csn for its own RID might be older than changes available on other servers. 
 
     NOTE: The current implementation ignores anchorCSNs based on the consumer RID. If, by chance, the anchor csn used is older than this csn, the changes will be sent, but they also ca nbe lost.
 
@@ -145,11 +145,11 @@ Once the buffer is processed and a new buffer is loaded potential changes have t
 
 The following condition holds:
 
-the consumer is locked by the current replication session, it cannot be updated by any other master at the time so the current consumer state is determined by the original consumerRUV and the changes sent to the consumer, an updated coonsumerRUV can be maintained.
+the consumer is locked by the current replication session, it cannot be updated by any other supplier at the time so the current consumer state is determined by the original consumerRUV and the changes sent to the consumer, an updated coonsumerRUV can be maintained.
 
     NOTE: there is one exception: the consumer can receive direct updates so changes for the consumerRID are not known locally.
 
-The localRUV might have changed by direct updates or by incoming rplication from other masters. The localRUV can have advanced for one or more RID it containe before the buffer processing and it can contain changes for RID(s) not known before.
+The localRUV might have changed by direct updates or by incoming rplication from other suppliers. The localRUV can have advanced for one or more RID it containe before the buffer processing and it can contain changes for RID(s) not known before.
 
 There are many scenarios which need to be handled to properly determine the next anchorcsn.
 

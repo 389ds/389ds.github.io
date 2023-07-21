@@ -26,8 +26,8 @@ digraph ODMC {
     cn_ex_settings_dot [label="...", shape=record];
     cn_baz_settings_dot [label="...", shape=record];
 
-    cn_ma [label="cn=master-a.example.com", shape=record];
-    cn_mb [label="cn=master-b.example.com", shape=record];
+    cn_ma [label="cn=supplier-a.example.com", shape=record];
+    cn_mb [label="cn=supplier-b.example.com", shape=record];
 
     cn_ma_settings [label="cn=settings", shape=record];
     cn_mb_settings [label="cn=settings", shape=record];

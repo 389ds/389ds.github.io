@@ -197,14 +197,14 @@ Open the tests you want to run (e.g. ticketxyz\_test.py)
 -   For example if you already cloned Directory Server and lib389 you may want to give a try running an existing testcase like the one for ticket 47560
 
         #!/bin/ksh    
-        export PYTHONPATH=/home/<your_login>/workspaces/tests-389/framework/lib389:/home/<your_login>/workspaces/389-master-branch/ds/dirsrvtests/tickets    
-        echo "diff /tmp/ticket47560_test.py /home/<your_login>/workspaces/389-master-branch/ds/dirsrvtests/tickets/ticket47560_test.py"    
-        diff /tmp/ticket47560_test.py /home/<your_login>/workspaces/389-master-branch/ds/dirsrvtests/tickets/ticket47560_test.py    
+        export PYTHONPATH=/home/<your_login>/workspaces/tests-389/framework/lib389:/home/<your_login>/workspaces/389-main-branch/ds/dirsrvtests/tickets    
+        echo "diff /tmp/ticket47560_test.py /home/<your_login>/workspaces/389-main-branch/ds/dirsrvtests/tickets/ticket47560_test.py"    
+        diff /tmp/ticket47560_test.py /home/<your_login>/workspaces/389-main-branch/ds/dirsrvtests/tickets/ticket47560_test.py    
         python /tmp/ticket47560_test.py    
 
     You can see that the launched test case is under /tmp/ticket47560\_test.py, this is because you need to modify it slightly for *fixture* and *prefix*. The output of the diff is
 
-        diff /tmp/ticket47560_test.py /home/<your_login>/workspaces/389-master-branch/ds/dirsrvtests/tickets/ticket47560_test.py    
+        diff /tmp/ticket47560_test.py /home/<your_login>/workspaces/389-main-branch/ds/dirsrvtests/tickets/ticket47560_test.py    
         26c26    
         < #@pytest.fixture(scope="module")    
         ---    
@@ -304,7 +304,7 @@ lib389 Design
 
 ### Repos
 
-This library is opened source and is available under <https://github.com/389ds/389-ds-base/tree/master/src/lib389>
+This library is opened source and is available under <https://github.com/389ds/389-ds-base/tree/main/src/lib389>
 
 ### Methodology
 
@@ -617,7 +617,7 @@ If it already exists a such file, it assumes it is a valid backup and returns it
 -   self.inst  : instance name (e.g. standalone for /etc/dirsrv/slapd-standalone)
 -   self.confdir : root of the instance config (e.g. /etc/dirsrv)
 -   self.dbdir: directory where is stored the database (e.g. /var/lib/dirsrv/slapd-standalone/db)
--   self.changelogdir: directory where is stored the changelog (e.g. /var/lib/dirsrv/slapd-master/changelogdb)
+-   self.changelogdir: directory where is stored the changelog (e.g. /var/lib/dirsrv/slapd-supplier/changelogdb)
 
 -   **@param** None
 -   **@return** file name of the backup
@@ -689,13 +689,13 @@ If 'changelog()' was called when configuring the first supplier replica. It is n
 
 Example:
 
-    self.master.replica.changelog()
+    self.supplier.replica.changelog()
 
     dn: cn=changelog5,cn=config
     objectClass: top
     objectClass: extensibleobject
     cn: changelog5
-    nsslapd-changelogdir: \<install\>/var/lib/dirsrv/slapd-master/changelogdb
+    nsslapd-changelogdir: \<install\>/var/lib/dirsrv/slapd-supplier/changelogdb
 
 <br>
 
@@ -771,8 +771,8 @@ or
 Create a replica entry on an existing suffix.
 
 -   **@param** suffix - dn of suffix
--   **@param** role - role of the replica REPLICAROLE_MASTER, REPLICAROLE_HUB or REPLICAROLE_CONSUMER
--   **@param** rid - number that identify the supplier replica (role=REPLICAROLE_MASTER) in the topology. For hub/consumer (role=REPLICAROLE_HUB or REPLICAROLE_CONSUMER), rid value is not used. This parameter is mandatory for supplier.
+-   **@param** role - role of the replica REPLICAROLE_SUPPLIER, REPLICAROLE_HUB or REPLICAROLE_CONSUMER
+-   **@param** rid - number that identify the supplier replica (role=REPLICAROLE_SUPPLIER) in the topology. For hub/consumer (role=REPLICAROLE_HUB or REPLICAROLE_CONSUMER), rid value is not used. This parameter is mandatory for supplier.
 -   **@param** args      - further args dict optional values. Allowed keys:
     -   legacy
     -   binddn
@@ -797,11 +797,11 @@ Delete a replica related to the provided suffix. If this replica role was REPLIC
 
 #### **enableReplication(suffix, role, [replicaId], [binddn])**
 
-Enable replication for a given suffix. If the role is REPLICAROLE\_MASTER or REPLICAROLE\_HUB, it also creates the changelog. If the entry "cn=replrepl,cn=config" (default replication manager) does not exist, it creates it.
+Enable replication for a given suffix. If the role is REPLICAROLE\_SUPPLIER or REPLICAROLE\_HUB, it also creates the changelog. If the entry "cn=replrepl,cn=config" (default replication manager) does not exist, it creates it.
 
 -   **@param** suffix - dn of suffix
--   **@param** role - role of the replica REPLICAROLE_MASTER, REPLICAROLE_HUB or REPLICAROLE_CONSUMER
--   **@param** rid - number that identify the supplier replica (role=REPLICAROLE_MASTER) in the topology. For hub/consumer (role=REPLICAROLE_HUB or REPLICAROLE_CONSUMER), rid value is not used. This parameter is mandatory for supplier.
+-   **@param** role - role of the replica REPLICAROLE_SUPPLIER, REPLICAROLE_HUB or REPLICAROLE_CONSUMER
+-   **@param** rid - number that identify the supplier replica (role=REPLICAROLE_SUPPLIER) in the topology. For hub/consumer (role=REPLICAROLE_HUB or REPLICAROLE_CONSUMER), rid value is not used. This parameter is mandatory for supplier.
 -   **@param** binddn - A replication session needs to bind with this DN to send replication updates
 -   **@return** None
 -   **@raise** ValueError - if role in invalid
@@ -899,7 +899,7 @@ Return a formatted string with the replica agreement status
 
 Example:
 
-    print topo.master.agreement.status(replica_agreement_dn)
+    print topo.supplier.agreement.status(replica_agreement_dn)
 
     Status for meTo_localhost.localdomain:50389 agmt localhost.localdomain:50389
     Update in progress: TRUE
@@ -947,9 +947,9 @@ Schedule the replication agreement
 
 Example:
 
-    topo.master.agreement.schedule(agreement_dn)          # to start the replication agreement
-    topo.master.agreement.schedule(agreement_dn, 'stop')  # to stop the replication agreement
-    topo.master.agreement.schedule(agreement_dn, '1800-1900 01234')  # to schedule the replication agreement all week days from 6PM-7PM
+    topo.supplier.agreement.schedule(agreement_dn)          # to start the replication agreement
+    topo.supplier.agreement.schedule(agreement_dn, 'stop')  # to stop the replication agreement
+    topo.supplier.agreement.schedule(agreement_dn, '1800-1900 01234')  # to schedule the replication agreement all week days from 6PM-7PM
 
 <br>
 
@@ -1061,7 +1061,7 @@ If 'agmtdn' is specified, it returns the search result entry of that replication
 
 Create a replication agreement from self to consumer and returns its DN
 
--   **@param** consumer: one of the following (consumer can be a master)
+-   **@param** consumer: one of the following (consumer can be a supplier)
     -   a DirSrv object if chaining
     -   an object with attributes: host, port, sslport, \_\_str\_\_
 
@@ -1088,7 +1088,7 @@ Create a replication agreement from self to consumer and returns its DN
 
 Example:
 
-    repl_agreement = master.agreement.create(consumer, SUFFIX, binddn=defaultProperties[REPLICATION_BIND_DN], bindpw=defaultProperties[REPLICATION_BIND_PW])
+    repl_agreement = supplier.agreement.create(consumer, SUFFIX, binddn=defaultProperties[REPLICATION_BIND_DN], bindpw=defaultProperties[REPLICATION_BIND_PW])
 
 <br>
 

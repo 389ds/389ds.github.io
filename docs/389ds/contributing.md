@@ -169,7 +169,7 @@ Also see the [Pull-Request Cheatsheet](howto/howto-do-pull-requests.html)
 
 ### Create your working branch
 
-    git checkout master
+    git checkout main
     git pull
     git checkout -b my-awesome-feature
     # Your work goes here!
@@ -268,7 +268,7 @@ Finally, send an email to the 389-devel@lists.fedoraproject.org mailing list lik
 
 ### Collaborate on the review process.
 
-We'll provide comments in the GitHub issue about the code, offering suggestions or asking questions. Finally, once we are happy and have worked with you on the review, we'll set the reviewstatus to "ack", and will merge your code to the master branch.
+We'll provide comments in the GitHub issue about the code, offering suggestions or asking questions. Finally, once we are happy and have worked with you on the review, we'll set the reviewstatus to "ack", and will merge your code to the main branch.
 
 
 Creating a new feature

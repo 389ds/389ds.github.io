@@ -14,7 +14,7 @@ Core Server Features
 
 -   Simplified replication setup
 -   Option to monitor stats about busy time, time (min/max/avg) of supplier push connection and number of updates for each replicas of replication process
--   Option for Windows Sync service to bind a secondary (and rotate to more DS) Directory Server if the first is out of service (in multi-master replication architecture)
+-   Option for Windows Sync service to bind a secondary (and rotate to more DS) Directory Server if the first is out of service (in multi-supplier replication architecture)
 
 ### IPA Needs
 

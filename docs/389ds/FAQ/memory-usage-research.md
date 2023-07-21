@@ -71,5 +71,5 @@ Issues/Leftovers
 Appendix: Non glibc approach
 ============================
 
-There is an OpenLDAP report that other memory allocator library shows better performance / less process size growth (http://highlandsun.com/hyc/malloc/). I also tested the DS linked with tcmalloc without mempool code (http://goog-perftools.sourceforge.net/doc/tcmalloc.html). The test configuration: single master - single replica; update 30MB attribute to (30MB + n \* 4KB) every 15 minutes under the constant ldclt add and search stress. Both glibc and tcmalloc increases the process size, but the growth rate is 1/5 with tcmalloc.
+There is an OpenLDAP report that other memory allocator library shows better performance / less process size growth (http://highlandsun.com/hyc/malloc/). I also tested the DS linked with tcmalloc without mempool code (http://goog-perftools.sourceforge.net/doc/tcmalloc.html). The test configuration: single supplier - single replica; update 30MB attribute to (30MB + n \* 4KB) every 15 minutes under the constant ldclt add and search stress. Both glibc and tcmalloc increases the process size, but the growth rate is 1/5 with tcmalloc.
 

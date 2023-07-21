@@ -36,7 +36,7 @@ See also <b>https://github.com/389ds/389-ds-base/issues/1256</b>
 
 ## Observation
 
-389-ds-base code: master on 2015/11/11 nearly equivalent to 389-ds-base-1.3.4.4
+389-ds-base code: main on 2015/11/11 nearly equivalent to 389-ds-base-1.3.4.4
 
 ### Order consistency
 

@@ -88,7 +88,7 @@ The most realistic solution is that a replica acting as supplier, **learns** fro
 If the supplier, does not **learns** it creates several constraints:
 
 -   supplier needs to known if the consumer implements *47490* (to not overwrite custom schema of old servers).
--   All servers in the topology are master/hub and for each replica agreement 'A' -\> 'B' it also exists 'B' -\> 'A'. In fact if an instance *learns* (unknown/extended definitions) only when it acts as a consumer, any instance must be consumer (RA toward itself) to learn remote definitions and also supplier to make the others learn its own definitions.
+-   All servers in the topology are supplier/hub and for each replica agreement 'A' -\> 'B' it also exists 'B' -\> 'A'. In fact if an instance *learns* (unknown/extended definitions) only when it acts as a consumer, any instance must be consumer (RA toward itself) to learn remote definitions and also supplier to make the others learn its own definitions.
 
 #### implementation consideration
 

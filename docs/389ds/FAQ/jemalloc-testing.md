@@ -41,7 +41,7 @@ Loading the jemalloc library
         # restart-dirsrv
 
 - Testing with 100k entry database
-- DS Verison 1.3.5 (master branch 7/15/2015)
+- DS Verison 1.3.5 (main branch 7/15/2015)
 - OS:  Fedora 20 - Linux localhost.localdomain 3.19.8-100.fc20.x86_64
 - Default Allocator:  glibc-2.18-19.fc20.x86_64
 

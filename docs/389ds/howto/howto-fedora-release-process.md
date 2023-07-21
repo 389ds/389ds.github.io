@@ -58,7 +58,7 @@ git push access - you will need to be a member of the git389 group in FAS
 
 -   Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and trac bugs. Leave the hash for coverity/misc updates.
 
-**Fedora** - Dist-Git - master branch for Rawhide
+**Fedora** - Dist-Git - rawhide branch for Rawhide
 --------------------------------------------
 
 -   **git checkout rawhide** (on same fedpkg clone)

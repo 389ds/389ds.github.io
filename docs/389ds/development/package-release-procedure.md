@@ -58,9 +58,9 @@ This will create a subdirectory called *pkgname*. fedpkg uses git under the cove
 <a name="add-files"></a>Edit/Add Files
 --------------
 
-Usually changes will apply to multiple branches (e.g. a new release on master/F18/F17). It's best to work in the *master* branch, then merge or cherry-pick your changes to other branches.
+Usually changes will apply to multiple branches (e.g. a new release on rawhide/F18/F17). It's best to work in the *rawhide* branch, then merge or cherry-pick your changes to other branches.
 
--   fedpkg switch-branch master \<- make sure you are on master branch
+-   fedpkg switch-branch rawhide \<- make sure you are on rawhide branch
 -   edit the 389-ds-base\*.sh & 389-ds-base.spec file and change the version
 -   the file *packagename*-git-local.sh can be used to generate the official source tarball - see [Create\_the\_source\_tarball](release-procedure.html#create-tarball)
     -   for example:
@@ -163,19 +163,19 @@ Here is a very simple sequence of operations:
 
     fedpkg clone 389-ds-base
     cd 389-ds-base
-    fedpkg switch-branch master
+    fedpkg switch-branch rawhide
     vi 389* # edit Version, Release, add %changelog
     fedpkg new-source /path/to/389-ds-base-VERSION.tar.bz2
     fedpkg clog
     fedpkg verrel
     git commit -a -F clog
     fedpkg switch-branch f18
-    git cherry-pick -x master
+    git cherry-pick -x rawhide
     fedpkg switch-branch f17
     git cherry-pick -x f18
     git push --dry-run
     git push
-    fedpkg switch-branch master
+    fedpkg switch-branch rawhide
     fedpkg build --nowait
     fedpkg switch-branch f18
     fedpkg build --nowait

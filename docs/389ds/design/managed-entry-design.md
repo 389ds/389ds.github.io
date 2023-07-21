@@ -44,7 +44,7 @@ The definition entry must be located in **cn=config** beneath the managed entry 
 
 The template entry is used to determine what a particular managed entry contains. The template entry is a combination of static attribute/value pairs and mapped attributes. The static attribute/value pairs are used as-is when creating a new managed entry. The mapped attributes are used to define attributes where the value(s) in the managed entry come from an attribute in the origin entry.
 
-The template entry can be located anywhere in the DIT since the definition entry has a pointer to it. It is recommended that the template entry be located in the replicated tree if replication is being used. This ensures that all masters are using the same template.
+The template entry can be located anywhere in the DIT since the definition entry has a pointer to it. It is recommended that the template entry be located in the replicated tree if replication is being used. This ensures that all suppliers are using the same template.
 
 The template entry can not simply look like a managed entry with substitution variables. This approach would cause problems due to schema and syntax validation (such as an attribute using the INTEGER syntax, which would not allow a substitution variable to be used as it's value). The approach taken is to use some special configuration attributes to define the template. Here is an example template entry:
 
@@ -134,10 +134,10 @@ If the client is moving an entry into the scope of the managed entry configurati
 Replication
 -----------
 
-The plug-in will not operate on replicated operations. This means that each master should be configured identically in terms of the managed entry plug-in. Each master will make the proper changes to the managed entry when an associated entry is modified directly by a client. All of these changes will then be replicated to the other masters. Here is an example scenario of how this works:
+The plug-in will not operate on replicated operations. This means that each supplier should be configured identically in terms of the managed entry plug-in. Each supplier will make the proper changes to the managed entry when an associated entry is modified directly by a client. All of these changes will then be replicated to the other suppliers. Here is an example scenario of how this works:
 
-1.  LDAP client adds user **A** to master **1**. The Managed Entry plug-in on master **1** adds a managed group entry **A**.
-2.  Master **1** replicates user **A** to master **2**.
-3.  Master **2** does *not* invoke the Managed Entry plug-in for the replicated add of user **A**.
-4.  Master **1** replicates managed group entry **A** to master **2**.
+1.  LDAP client adds user **A** to supplier **1**. The Managed Entry plug-in on supplier **1** adds a managed group entry **A**.
+2.  supplier **1** replicates user **A** to supplier **2**.
+3.  supplier **2** does *not* invoke the Managed Entry plug-in for the replicated add of user **A**.
+4.  supplier **1** replicates managed group entry **A** to supplier **2**.
 

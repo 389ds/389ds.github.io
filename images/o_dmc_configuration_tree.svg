@@ -137,7 +137,7 @@
 <!-- cn_ma -->
 <g id="node18" class="node"><title>cn_ma</title>
 <polygon fill="none" stroke="black" points="185.5,-149 185.5,-185 348.5,-185 348.5,-149 185.5,-149"/>
-<text text-anchor="middle" x="267" y="-163.3" font-family="Times,serif" font-size="14.00">cn=master&#45;a.example.com</text>
+<text text-anchor="middle" x="267" y="-163.3" font-family="Times,serif" font-size="14.00">cn=supplier&#45;a.example.com</text>
 </g>
 <!-- cn_hosts&#45;&gt;cn_ma -->
 <g id="edge12" class="edge"><title>cn_hosts&#45;&gt;cn_ma</title>
@@ -147,7 +147,7 @@
 <!-- cn_mb -->
 <g id="node19" class="node"><title>cn_mb</title>
 <polygon fill="none" stroke="black" points="367,-149 367,-185 531,-185 531,-149 367,-149"/>
-<text text-anchor="middle" x="449" y="-163.3" font-family="Times,serif" font-size="14.00">cn=master&#45;b.example.com</text>
+<text text-anchor="middle" x="449" y="-163.3" font-family="Times,serif" font-size="14.00">cn=supplier&#45;b.example.com</text>
 </g>
 <!-- cn_hosts&#45;&gt;cn_mb -->
 <g id="edge13" class="edge"><title>cn_hosts&#45;&gt;cn_mb</title>

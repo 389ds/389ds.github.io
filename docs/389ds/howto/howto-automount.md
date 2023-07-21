@@ -52,18 +52,18 @@ Test from the command line that you can mount the /home directory. This helps el
 
 The schema is now shipped with Directory Server Core as 60autofs.ldif
 
-### Creating auto.master
+### Creating auto.supplier
 
-Now that we have our schema loaded we can now create our auto.master ou (Organizational Unit).
+Now that we have our schema loaded we can now create our auto.supplier ou (Organizational Unit).
 
-    dn: ou=auto.master,dc=example,dc=com
-    ou: auto.master
+    dn: ou=auto.supplier,dc=example,dc=com
+    ou: auto.supplier
     objectClass: top
     objectClass: automountMap
 
-Now create a automount entry under auto.master for /home
+Now create a automount entry under auto.supplier for /home
 
-    dn: cn=/home,ou=auto.master,dc=example,dc=com
+    dn: cn=/home,ou=auto.supplier,dc=example,dc=com
     objectClass: automount
     cn: /home
     automountInformation: ldap:ds.example.com:ou=auto.home,dc=example,dc=com

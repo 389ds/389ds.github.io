@@ -57,7 +57,7 @@ To implement this solution, the following things need to happen:
         dnszonename: foobar.com
         dnsclass: IN
         dnstype: SOA
-        dnszonemaster: tim.foobar.com
+        dnszonesupplier: tim.foobar.com
         dnsadminmailbox: tim.foobar.com
         dnsminimum: 3600
         objectClass: dnszone
