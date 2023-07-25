@@ -93,11 +93,6 @@ We maintain a number of how to guides for 389 Directory Server
 
 -   [Performance diagnostic](development/performance-diagnostic.html) - Diagnose how well the server behaves
 
-#### DNS
-
--   [How to BIND](howto/howto-bind.html)
-
-
 #### Web/Console
 
 -   [How to Apache](howto/howto-apache.html)
@@ -149,6 +144,7 @@ These are potentially outdated or incorrect for the current DS version.
 -   [How to Migrate to 389](howto/howto-migratetoldap.html)
 -   [How to Migrate from openLdap](howto/howto-openldapmigration.html)
 -   [How to openLdap Integration](howto/howto-openldapintegration.html)
+-   [How to BIND](howto/howto-bind.html)
 
 ### FAQ and tech docs
 

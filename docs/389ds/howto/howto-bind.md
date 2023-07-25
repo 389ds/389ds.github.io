@@ -10,6 +10,8 @@ title: "Howto:BIND"
 Introduction
 ------------
 
+The instructions below are outdated.
+
 Getting BIND to directly talk to LDAP can be the stuff of nightmares.
 
 Rather I describe a compromise which works as follows:
@@ -57,7 +59,7 @@ To implement this solution, the following things need to happen:
         dnszonename: foobar.com
         dnsclass: IN
         dnstype: SOA
-        dnszonesupplier: tim.foobar.com
+        dnszonemaster: tim.foobar.com
         dnsadminmailbox: tim.foobar.com
         dnsminimum: 3600
         objectClass: dnszone

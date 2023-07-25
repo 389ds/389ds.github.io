@@ -90,7 +90,7 @@ When a server receives range from another server, it will store it in it's local
 
 This method is unsupported (and disabled at compile time) in the current DNA code. For the reasoning behind this decision, please see the [DNA Plug-in Proposal](dna-plugin-proposal.html) page.
 
-The old way of supporting DNA with MMR was accomplished is by essentially dividing a single contiguous range into smaller ranges by using an interval. Let's assume that you want to split a range of 1-300 across three suppliers. You would configure the plug-in on all three supplier instances like so:
+The old way of supporting DNA with MMR was accomplished is by essentially dividing a single contiguous range into smaller ranges by using an interval. Let's assume that you want to split a range of 1-300 across three suppliers. You would configure the plug-in on all three-supplier instances like so:
 
 -   Supplier 1
     -   dnaNextVal = 1

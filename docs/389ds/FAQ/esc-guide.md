@@ -27,7 +27,7 @@ The Dogtag Certificate System creates, manages, renews, and deletes certificates
 -   The Data Recovery Manager (DRM), which archives and recovers keys.
 -   The Online Certificate Status Manager, which stores lists of revoked certificates for client applications to use to check if a certificate is valid.
 -   The Token Processing System (TPS), which interacts with smart cards to generate and store keys and certificates for a specific user.
--   The Token Key Service (TKS), which generates and stores supplier keys used by the TPS.
+-   The Token Key Service (TKS), which generates and stores master keys used by the TPS.
 
 End users can use security tokens, which are also called smart cards, to store user certificates used for applications such as single sign-on access and client authentication. End users are issued the tokens containing certificates and keys required for signing, encryption, and other cryptographic functions. To use the tokens, the TPS must be able to recognize and communicate with them. The tokens have to be <span class="emphasis">*enrolled*, the process of formatting tokens with keys and certificates and adding them to the Certificate System. Smart Card Manager provides the user interface for end entities to enroll tokens and to communicate with the TPS. Smart Card Manager provides the conduit through which TPS communicates with each token over a secure HTTP channel (HTTPS).
 

@@ -233,14 +233,14 @@ Concurrent state changes
 
 There are many operations which lead to state changes in a SVA, they can be applied in any combination and order and on a wide range of suppliers.
 
-To determine the correct behaviour all combinations in a two supplier topology are considered. If more suppliers are involved the variety increases, but in URP there will always be only the resolution of a current state with a state change received via replication.
+To determine the correct behaviour all combinations in a two-supplier topology are considered. If more suppliers are involved the variety increases, but in URP there will always be only the resolution of a current state with a state change received via replication.
 
 So systematically all combinations involving two suppliers are investigated, for the test setup an extended topology with three suppliers and one consumer is used to verify consistency and expected states and values
 
-Two supplier topology
+Two-supplier topology
 -------------------
 
-The following table lists all the combinations of state changes in two supplier topology, each state change has to be executed with the potential operations to achieve this state change. It is assumed that the CSN of the state change on supplier 1 is always lower than that on supplier 2. This is also the reason that the table contains the full combinations since (--\>S0,--\>S1) and (--\>S1,--\>S0) are not symmetric.
+The following table lists all the combinations of state changes in two-supplier topology, each state change has to be executed with the potential operations to achieve this state change. It is assumed that the CSN of the state change on supplier 1 is always lower than that on supplier 2. This is also the reason that the table contains the full combinations since (--\>S0,--\>S1) and (--\>S1,--\>S0) are not symmetric.
 
 ### Attribute state: S0
 
@@ -264,10 +264,10 @@ The operations to create the state changes are different, but results should be 
 
 The operations to create the state changes are different, but results should be as in table for S0
 
-Three supplier topology
+Three-supplier topology
 ---------------------
 
-Although with more than two suppliers the update resolution procedure should sequentially applied and result in the same state resolution existing bugs show that this is not the case with the current implementation. This chapter will handle all scenarios with 3 suppliers, this also allows all three different state changes applied in parallel. An extension to more than three supplier should not be necessary. In the tests a consumer should be added to the topology, it serves as a reference where the modifications are applied in the csn order.
+Although with more than two suppliers the update resolution procedure should sequentially applied and result in the same state resolution existing bugs show that this is not the case with the current implementation. This chapter will handle all scenarios with 3 suppliers, this also allows all three different state changes applied in parallel. An extension to more than three suppliers should not be necessary. In the tests a consumer should be added to the topology, it serves as a reference where the modifications are applied in the csn order.
 
 |Test|Supplier 1|Supplier2|Supplier3|Resulting state|Resulting value|Pending value|
 |----|--------|-------|-------|---------------|---------------|-------------|
@@ -331,10 +331,10 @@ Basic tests
 Pathological tests
 ------------------
 
-Two supplier tests
+Two-supplier tests
 ----------------
 
-Three supplier tests
+Three-supplier tests
 ------------------
 
 Redesign of update resolution for single valued attributes

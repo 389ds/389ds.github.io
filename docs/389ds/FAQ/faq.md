@@ -119,7 +119,7 @@ Since the break up of iPlanet, the products have followed different development 
 
 ### How does the 389 multi-supplier replication work?
 
-389 replication uses a push model. A replication supplier is a server that pushes updates to other servers. A supplier is a supplier that can receive update requests from clients. A hub is a supplier that receives update requests from other replication suppliers and pushes updates to other replicas.
+389 replication uses a push model. A replication supplier is a server that pushes updates to other servers. A supplier is an LDAP server that can receive update requests from clients. A hub is an LDAP server that receives update requests from other replication suppliers and pushes updates to other replicas.
 
 With multi-supplier replication, a supplier is both a replication supplier and a replication consumer. Each supplier can be updated at the same time and send its changes to the other suppliers and replicas. If conflicts occur, the conflict resolution algorithm will resolve them, and if that is not possible, the conflicts are flagged for viewing by the administrator.
 

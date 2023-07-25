@@ -51,7 +51,7 @@ Example:
 
     ID space defined as 1000-9999
     Supplier 1 owns 1001-3000 (1001-2900 allocated)
-    Msster 2 owns 3001-7000 (3001-3200 allocated)
+    Supplier 2 owns 3001-7000 (3001-3200 allocated)
     Supplier 3 owns 7001-10000 (7001-8000 allocated)
     -
     Supplier 3 goes offline
