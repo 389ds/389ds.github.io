@@ -8,7 +8,7 @@ title: "History"
 Introduction
 ------------
 
-The Directory Server project dates back to 1996, when Netscape hired the inventor of LDAP, Tim Howes, and his colleagues such as Mark Smith and Gordon Good from the University of Michigan. In 1999 AOL acquired Netscape and formed the iPlanet Alliance with Sun to jointly develop Netscape servers. From 1999 to 2001 the Netscape Directory Server team worked with Sun's Directory Server team, and later the Innosoft Directory Server (IDDS) team, in the U.S. in Santa Clara, CA and Austin, TX and in Grenoble, France on Directory Server and related products such as Meta Directory and Directory Access Router. The iPlanet alliance ended in October 2001, and Sun and Netscape forked the code base. From 2001 to 2004 the Netscape Directory Server team invested heavily on performance and multimaster replication. In December 2004, the Netscape Directory Server was acquired by Red Hat.
+The Directory Server project dates back to 1996, when Netscape hired the inventor of LDAP, Tim Howes, and his colleagues such as Mark Smith and Gordon Good from the University of Michigan. In 1999 AOL acquired Netscape and formed the iPlanet Alliance with Sun to jointly develop Netscape servers. From 1999 to 2001 the Netscape Directory Server team worked with Sun's Directory Server team, and later the Innosoft Directory Server (IDDS) team, in the U.S. in Santa Clara, CA and Austin, TX and in Grenoble, France on Directory Server and related products such as Meta Directory and Directory Access Router. The iPlanet alliance ended in October 2001, and Sun and Netscape forked the code base. From 2001 to 2004 the Netscape Directory Server team invested heavily on performance and multisupplier replication. In December 2004, the Netscape Directory Server was acquired by Red Hat.
 
 In the late 1990s, as Linux started to gain acceptance in companies, Netscape Directory Server was the first Netscape server to be officially released on Linux. In 2001 there was an effort at AOL's Strategic Business Solutions unit to improve Netscape server performance on Red Hat Linux. The team has a long history with Linux.
 
@@ -17,7 +17,7 @@ Feature History
 
 ### Features Present in 2001
 
--   Multi-Master Replication (2-way)
+-   Multi-Supplier Replication (2-way)
 -   Multiple, Disjoint Database backends (independent import, export, etc.)
 -   Access control mechanism - in-tree (with data); advanced features (userattr); macro ACIs; proxy ACIs
 -   SSLv3/TLSv1 - LDAP startTLS operation
@@ -41,7 +41,7 @@ Feature History
 
 ### Features added in Netscape DS 6.2 (2003)
 
--   Multi-Master Replication (4-way)
+-   Multi-Supplier Replication (4-way)
 -   Password Policy - per-user, per-subtree
 -   Upgrade to Berkeley DB 4.1
 -   Org Chart application
@@ -61,7 +61,7 @@ Feature History
 ### Features added in Fedora DS 7.1 (June 1, 2005 - first open source release)
 
 -   Windows Sync
--   Multi-Master Replication - WAN improvements, fractional replication (attributes), replica init from database backup
+-   Multi-Supplier Replication - WAN improvements, fractional replication (attributes), replica init from database backup
 -   Password Change operation
 -   Console UI support for Get Effective Rights
 -   RPM packaging
@@ -92,7 +92,7 @@ Feature History
 
 -   [Automatically maintained memberOf attribute](design/memberof-plugin.html)
 -   [Server-side LDAPI support (LDAP over a UNIX domain socket)](FAQ/ldapi-and-autobind.html)
--   [Distributed Numeric Assignment (for auto-incrementing uid/gid across multi-master replication)](design/dna-plugin.html)
+-   [Distributed Numeric Assignment (for auto-incrementing uid/gid across multi-supplier replication)](design/dna-plugin.html)
     -   Note that this feature is already in Fedora DS 1.1 but it is not documented
 -   [Server to Server connection improvements (startTLS, SASL, Kerberos)](design/server-to-server-conn.html)
 -   [Get Effective Rights for non-present attributes](design/get-effective-rights-for-non-present-attributes.html)

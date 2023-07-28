@@ -84,7 +84,7 @@ A command line script will be provided named fixup-linkedattrs.pl that creates a
 
 ### Replication
 
-Multi-master replication will be handled by having each master be responsible for updating the managed attributes. This will require the linked attribute pairs to be defined the same on all masters and fractional replication to be setup to exclude the managed attributes. This is the same approach that is used with the memberOf plug-in.
+Multi-supplier replication will be handled by having each supplier be responsible for updating the managed attributes. This will require the linked attribute pairs to be defined the same on all suppliers and fractional replication to be setup to exclude the managed attributes. This is the same approach that is used with the memberOf plug-in.
 
 Implementation
 --------------

@@ -43,7 +43,7 @@ To ease the restriction, 2 changes are proposed:
 2.  introducing changelog encryption.
 
 1.  Replicating unhashed password could be a potential security issue. To prevent it, recommend to use secure replication -- SSL, TLS, or SASL.
-2.  Storing clear text passwords in change log is a potential vulnerability, as well. Please note that the change (1) does not create the risk. The unhashed password is logged on the server in which the password is updated even before the change (1) is made. This patch replicates it to the other servers and log it on the other masters' changelog. That's said, the password is now logged in multiple changelogs instead of one. But, regardless of the number of servers, it would be safer to have a method to keep any clear passwords hidden. To implement it, changelog encryption is introduced. It works in the same way as the attribute encryption does. That is, the server certificate is required to be installed on the server. Then, configure the changelog. Stop the server, and add "nsslapd-encryptionalgorithm: AES" or "nsslapd-encryptionalgorithm: 3DES" to the changelog entry. The current supported encryption algorithms are AES and 3DES.
+2.  Storing clear text passwords in change log is a potential vulnerability, as well. Please note that the change (1) does not create the risk. The unhashed password is logged on the server in which the password is updated even before the change (1) is made. This patch replicates it to the other servers and log it on the other suppliers' changelog. That's said, the password is now logged in multiple changelogs instead of one. But, regardless of the number of servers, it would be safer to have a method to keep any clear passwords hidden. To implement it, changelog encryption is introduced. It works in the same way as the attribute encryption does. That is, the server certificate is required to be installed on the server. Then, configure the changelog. Stop the server, and add "nsslapd-encryptionalgorithm: AES" or "nsslapd-encryptionalgorithm: 3DES" to the changelog entry. The current supported encryption algorithms are AES and 3DES.
 
         dn: cn=changelog5,cn=config
         objectClass: top
@@ -71,27 +71,27 @@ Before renewing the server certificate, export the changelog(s) to ldif file(s).
     1. Preparation
     1-1. Install 3 servers with at least 2 backend databases to replicate.
        e.g., suffix "dc=example,dc=com", "dc=test,dc=com"
-    1-2. Setup SSL on Master servers.
-    1-3. Setup Master 1 <--> Master 2
+    1-2. Setup SSL on Supplier servers.
+    1-3. Setup Supplier 1 <--> Supplier 2
                    |
                    v
                Read only replica
-    1-4. Stop Master servers and set nsslapd-encryptionalgorithm.  The allowed value is AES or 3DES.
+    1-4. Stop Supplier servers and set nsslapd-encryptionalgorithm.  The allowed value is AES or 3DES.
        dn: cn=changelog5,cn=config
        [...]`
        nsslapd-encryptionalgorithm: AES
-    1-5. Restart Master servers, and initialize replicas on each agreement on Master 1.
-    1-6. Verify the replication topology is correctly set up by adding at least one entry to each backend on Master servers.
-    1-7. Dump Master servers' changelog to confirm the changelogs are encrypted.
+    1-5. Restart Supplier servers, and initialize replicas on each agreement on Supplier 1.
+    1-6. Verify the replication topology is correctly set up by adding at least one entry to each backend on Supplier servers.
+    1-7. Dump Supplier servers' changelog to confirm the changelogs are encrypted.
          One changelog per replica; 
          If you set up replicas on 2 backends, e.g., dc=example,dc=com and dc=test,dc=com, there are 2 changelog db files.
-         # dbscan -f /var/lib/dirsrv/slapd-master[12]/changelogdb/[...].db4
+         # dbscan -f /var/lib/dirsrv/slapd-supplier[12]/changelogdb/[...].db4
     1-8. Run some modification ops.  E.g.,
-       $ infadd -p `<Master 1 port>` -s "dc=example,dc=com" -u "cn=directory manager" -w <password>
-       $ infadd -p `<Master 2 port>` -s "dc=test,dc=com" -u "cn=directory manager" -w <password>
+       $ infadd -p `<Supplier 1 port>` -s "dc=example,dc=com" -u "cn=directory manager" -w <password>
+       $ infadd -p `<Supplier 2 port>` -s "dc=test,dc=com" -u "cn=directory manager" -w <password>
 
     2. Update changelog encryption along with the Certificate renewal
-    2-1. Export changelog db on Master servers.
+    2-1. Export changelog db on Supplier servers.
        $ ldapmodify [...]
        dn: cn=replica,cn=dc\3Dexample\2Cdc\3Dcom,cn=mapping tree,cn=config
        changetype: modify
@@ -104,12 +104,12 @@ Before renewing the server certificate, export the changelog(s) to ldif file(s).
        add: nsds5Task
        nsds5Task: CL2LDIF
 
-       Monitor the error log /var/log/dirsrv/slapd-master[12]/errors to check the export is successfully finished.
+       Monitor the error log /var/log/dirsrv/slapd-supplier[12]/errors to check the export is successfully finished.
        [...] NSMMReplicationPlugin - Beginning changelog export of replica "5af4cd84-1dd211b2-b4b8f8dd-b6310000"
        [...] NSMMReplicationPlugin - Finished changelog export of replica "5af4cd84-1dd211b2-b4b8f8dd-b6310000"
-    2-2. Check the exported changelog file on Master servers (one ldif file per changelog db).
-       # ls /var/lib/dirsrv/slapd-master[12]/changelogdb/*.ldif
-       /var/lib/dirsrv/slapd-master[12]/changelogdb/[...].ldif
+    2-2. Check the exported changelog file on Supplier servers (one ldif file per changelog db).
+       # ls /var/lib/dirsrv/slapd-supplier[12]/changelogdb/*.ldif
+       /var/lib/dirsrv/slapd-supplier[12]/changelogdb/[...].ldif
        Changes in each changelog is base64 encoded.  E.g.,
        changetype: add
        replgen: 4d2b599c000000010000
@@ -156,7 +156,7 @@ Before renewing the server certificate, export the changelog(s) to ldif file(s).
          nsSymmetricKey:: LrKrvjtihBJA8G5aBohkABd2pUyM7iwn2EO1Y7QpU7iJhHDsfV+j12prQBp3
           [...]
     2-5. Renew the server certificate
-    2-6. Stop Master servers and set nsslapd-encryptionalgorithm.  The allowed value is AES or 3DES.
+    2-6. Stop Supplier servers and set nsslapd-encryptionalgorithm.  The allowed value is AES or 3DES.
        dn: cn=changelog5,cn=config
        [...]
        nsslapd-encryptionalgorithm: AES
@@ -173,10 +173,10 @@ Before renewing the server certificate, export the changelog(s) to ldif file(s).
        add: nsds5Task
        nsds5Task: LDIF2CL
 
-       Monitor the error log /var/log/dirsrv/slapd-master[12]/errors to check the import is successfully finished.
+       Monitor the error log /var/log/dirsrv/slapd-supplier[12]/errors to check the import is successfully finished.
        [...] NSMMReplicationPlugin - Beginning changelog import of replica "5af4cd82-1dd211b2-b4b8f8dd-b6310000"
        [...] NSMMReplicationPlugin - Finished changelog import of replica "5af4cd82-1dd211b2-b4b8f8dd-b6310000"
-    2-8. For testing, modify something on the both masters and check the change is replicated to the replicas.
+    2-8. For testing, modify something on the both suppliers and check the change is replicated to the replicas.
 
 Related Bug
 ===========

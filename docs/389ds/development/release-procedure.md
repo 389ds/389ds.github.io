@@ -37,7 +37,7 @@ Get the Source
 -   cd ds (or admin or whatever)
 -   git checkout *branch* e.g. git checkout 389-ds-base-1.2.11
     -   A 389-ds-base release will almost always be done off of a branch
-    -   Other packages (admin, adminutil, etc.) usually do not use branches, use master instead
+    -   Other packages (admin, adminutil, etc.) usually do not use branches, use main instead
     -   If you do not yet have a branch:
         -   Use git log etc. to find your branch point
         -   git checkout -b *new branch name* *commithashofbranchpoint*
@@ -50,7 +50,7 @@ Bump the Version and Tag the Source
 
 -   git checkout *branch*
     -   389-ds-base (ds) - all work should be done on the release branch (see above)
-    -   other projects - just use master branch
+    -   other projects - just use main branch
 
 ### Official Release
 
@@ -75,7 +75,7 @@ Bump the Version and Tag the Source
 
 ### Pre-Release (alpha, rc, other pre-rel)
 
-For 389-ds-base (ds), the active tree (master branch) should **always** be in the pre-release state - anyone pulling the tree using the tag HEAD or git fetch/pull should always see a pre-release tree. The only way to get an officially released source code tree is to pull from an official release tag. Other branches will be in the pre-release state until an official release.
+For 389-ds-base (ds), the active tree (main branch) should **always** be in the pre-release state - anyone pulling the tree using the tag HEAD or git fetch/pull should always see a pre-release tree. The only way to get an officially released source code tree is to pull from an official release tag. Other branches will be in the pre-release state until an official release.
 
 To move to the next pre-release:
 
@@ -102,12 +102,12 @@ Tag the Release
 ---------------
 
 -   tag the release
-    -   git rebase, checkout master, and merge if necessary - see [GIT Rules](git-rules.html)
+    -   git rebase, checkout main, and merge if necessary - see [GIT Rules](git-rules.html)
     -   389-ds-base - apply the tag on the main branch (e.g. 389-ds-base-1.2.11) you are working on, not on a private side branch
 
             git checkout 389-ds-base-1.2.11
 
-    -   389 other projects - just use master
+    -   389 other projects - just use main
 
             git tag 389-ds-base-1.2.3.1
 
@@ -139,7 +139,7 @@ Create the source tarball
 Start from a TAG (PACKAGE-VERSION) which was created using the above tagging procedure.
 
 -   git checkout *branchname* --> the branch you are going to create the release from
--   git checkout master --> for 389-admin, adminutil, etc.
+-   git checkout main --> for 389-admin, adminutil, etc.
 -   git pull origin --> get the latest changes and tags
 -   git archive --prefix=TAG/ TAG \| bzip2 \> /path/to/TAG.tar.bz2
     -   TAG is in the form PACKAGENAME-VERSION e.g. 389-ds-base-1.2.11.1 or 389-admin-1.1.40

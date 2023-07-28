@@ -161,7 +161,7 @@ If you are running on Fedora 24 or rawhide, and NO address issues occur, you may
 # References
 ------------
 
-- [Address Sanitizer Github](https://github.com/google/sanitizers/tree/master/address-sanitizer)
+- [Address Sanitizer Github](https://github.com/google/sanitizers/)
 
 # Author
 --------

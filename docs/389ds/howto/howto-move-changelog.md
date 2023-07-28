@@ -80,7 +80,7 @@ Test Scenario
 =============
 
 -   Install 389 v1.2.6.
--   Configure single master - single replica.
+-   Configure single supplier - single replica.
 -   Check changelogdir.
 
         # ls -l /var/lib/dirsrv/slapd-ID/changelogdb/    
@@ -95,7 +95,7 @@ Test Scenario
         -rw-------. 1 user group 10485760 Sep  7 14:26 log.0000000001    
 
 -   Add/modify/delete entries and check the operations are replicated to the consumer.
--   Shutdown the master.
+-   Shutdown the supplier.
 
         #service dirsrv stop    
 
@@ -153,10 +153,10 @@ The changelog db is now a part of the main backend database. The backing up util
                                         -- the server is up   --> back up fails with this error:    
                                               [...] - db2archive: pre-backup-plugin failed (1).    
                                               [...] - ERROR: Standalone db2bak is not supported \    
-                                              when a multimaster replication enabled server is coexisting.    
+                                              when a multisupplier replication enabled server is coexisting.    
                                               Please use db2bak.pl, instead.    
 
-To back up the database while the server is up, task version of the back up utility (db2bak.pl or Console) needs to be used. The standalone utility db2bak can be used either when the server is down or when the the server is not a master.
+To back up the database while the server is up, task version of the back up utility (db2bak.pl or Console) needs to be used. The standalone utility db2bak can be used either when the server is down or when the the server is not a supplier.
 
 Transactions
 ============

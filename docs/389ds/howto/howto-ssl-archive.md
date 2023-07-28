@@ -41,7 +41,7 @@ Basic Information
     WARNING:
     These scripts are only recommended for use in single server applications
     in testing environments.  They are not suitable for generating multiple
-    server certs for multi-master replicated servers.  They are not suitable
+    server certs for multi-supplier replicated servers.  They are not suitable
     for production use.
     Please use an actual Certificate Authority (CA) instead.
 
@@ -138,12 +138,12 @@ Note the above step is only needed if you want to backup your server key and cer
 
 ### Exporting the certs for use with other apps
 
-Now that you have your server cert, client applications will need to be able to verify that cert when connecting to the server. In order to do that, the TLS/SSL client must have the CA cert to verify that the cert presented by the TLS/SSL server is valid. This includes server to server communication such as replication. The TLS/SSL roles are opposite the master/slave roles. The master pushes changes to the slave. So in this instance, the slave is the TLS/SSL server, and the master is the TLS/SSL client.
+Now that you have your server cert, client applications will need to be able to verify that cert when connecting to the server. In order to do that, the TLS/SSL client must have the CA cert to verify that the cert presented by the TLS/SSL server is valid. This includes server to server communication such as replication. The TLS/SSL roles are opposite the supplier/consumer roles. The supplier pushes changes to the slave. So in this instance, the slave is the TLS/SSL server, and the supplier is the TLS/SSL client.
 
 -   In order to be an TLS/SSL server, the slave must have a server cert/key and CA cert.
--   In order to be an TLS/SSL client, the master must have just the CA cert.
+-   In order to be an TLS/SSL client, the supplier must have just the CA cert.
 
-You can use certutil on the master to make a cert for the slave, using the commands below on the master. Then, use pk12util to export the slave cert/key, then take that pk12 file to the slave and use pk12util to import it (and use certutil to import the CA cert).
+You can use certutil on the supplier to make a cert for the slave, using the commands below on the supplier. Then, use pk12util to export the slave cert/key, then take that pk12 file to the slave and use pk12util to import it (and use certutil to import the CA cert).
 
 #### Create and Export a Replication Consumer cert
 

@@ -236,15 +236,15 @@ Replication Tests
 ds/dirsrvtests/tests/tickets/ticket47536_test.py
 
       Set up 2way MMR:
-        master_1 ----- startTLS -----> master_2
-        master_1 <-- TLS_clientAuth -- master_2
+        supplier_1 ----- startTLS -----> supplier_2
+        supplier_1 <-- TLS_clientAuth -- supplier_2
 
       Check CA cert, Server-Cert and Key are retrieved as PEM from cert db
       when the server is started.  First, the file names are not specified
       and the default names derived from the cert nicknames.  Next, the
       file names are specified in the encryption config entries.
 
-      Each time add 5 entries to master 1 and 2 and check they are replicated.
+      Each time add 5 entries to supplier 1 and 2 and check they are replicated.
 
 CRL (Not Implemented Yet!!)
 ===========================

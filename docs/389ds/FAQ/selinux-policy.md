@@ -75,7 +75,7 @@ When the service command is used, **ldap-agent** will use **/etc/dirsrv/config/l
 
 #### Port Access
 
-The subagent does not listen on any ports itself. The sub-agent simply communicates with the snmpd master agent, which accesses the ports itself.
+The subagent does not listen on any ports itself. The sub-agent simply communicates with the snmpd main agent, which accesses the ports itself.
 
 #### Path Access
 

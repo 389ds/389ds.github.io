@@ -10,7 +10,7 @@ title: "Monitor Replication Design Page"
 Overview
 ========
 
-We should be able to monitor multi-master replication topologies, its lag times and other agreement parameters. It should include even complex situations with chains of different instances where M1 -> M2 -> M3 but M1 is not replicated directly to M3.
+We should be able to monitor multi-supplier replication topologies, its lag times and other agreement parameters. It should include even complex situations with chains of different instances where M1 -> M2 -> M3 but M1 is not replicated directly to M3.
 
 This document is concentrated on describing the logic behind the replication report generation.
 

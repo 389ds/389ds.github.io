@@ -227,7 +227,7 @@ Each Admin/HTTP Server will have a config file that it will use to know how to t
 -   Replication overview 
 -   Configure/deploy replication across all registered servers in a single proceedure
     -   Select "instances"
-    -   Specify instance role (master, hub, consumer)
+    -   Specify instance role (supplier, hub, consumer)
     -   Specify suffix
     -   Define other configurations(fractional, attributes to strip/ignore, protocol timeouts, etc)
     -   Define Authentication(method + protocol)

@@ -8,14 +8,14 @@ title: "Replication Convergence Improvement"
 Overview
 --------
 
-In a busy MMR environment where multiple masters are being updated at the same time the replication sessions stay open for a very long time.  This causes the other masters to wait before they can send their updates.  This causes lopsided replication convergence.  When entries are added to the MMR environment, but on different masters, it can take a very different amount of time for each entry to be seen on all the replicas.  It can get as high as hours until an update is replicated to a different replica.
+In a busy MMR environment where multiple suppliers are being updated at the same time the replication sessions stay open for a very long time.  This causes the other suppliers to wait before they can send their updates.  This causes lopsided replication convergence.  When entries are added to the MMR environment, but on different suppliers, it can take a very different amount of time for each entry to be seen on all the replicas.  It can get as high as hours until an update is replicated to a different replica.
 
-A new configuration setting was added (nsds5ReplicaReleaseTimeout) to the replication configuration entry.  This setting defines how long a replication master should send updates before it yields its replication session.  This allows other replication masters to update this replica.  Here an example involving three Multimaster Replication Servers, that we will call them Master A, Master B, and Master C.  So when Master A tries to acquire Master B to send it updates, and Master B is already being updated by Master C, this triggers Master B to send a control back to Master C telling it that other masters would like to update this replica and we should stop the current replication session after the number of seconds defined in nsds5ReplicaReleaseTimeout.  So Master C will continue sending updates for the amount of time specified in the "release timeout", then it will "yield" its current session so Master A can finally acquire Master B.  This allows for a much more even distribution of replication updates.
+A new configuration setting was added (nsds5ReplicaReleaseTimeout) to the replication configuration entry.  This setting defines how long a replication supplier should send updates before it yields its replication session.  This allows other replication suppliers to update this replica.  Here an example involving three Multisupplier Replication Servers, that we will call them Supplier A, Supplier B, and Supplier C.  So when Supplier A tries to acquire Supplier B to send it updates, and Supplier B is already being updated by Supplier C, this triggers Supplier B to send a control back to Supplier C telling it that other suppliers would like to update this replica and we should stop the current replication session after the number of seconds defined in nsds5ReplicaReleaseTimeout.  So Supplier C will continue sending updates for the amount of time specified in the "release timeout", then it will "yield" its current session so Supplier A can finally acquire Supplier B.  This allows for a much more even distribution of replication updates.
 
 Use Cases
 ---------
 
-This new feature will benefit MMR deployments where there are 2 or more masters, and each master receives updates at the same time.
+This new feature will benefit MMR deployments where there are 2 or more suppliers, and each supplier receives updates at the same time.
 
 Design
 ------
@@ -32,7 +32,7 @@ The new configuration attribute can be set using ldapmodify, and the change take
 Major configuration options and enablement
 ------------------------------------------
 
-The new configuration attribute is:  **nsds5ReplicaReleaseTimeout**, and it accepts any value of zero or higher.  This value represents a timeout in seconds.  This attribute is set in each replica mapping tree entry.  It should be set on Masters and Hubs - there is no need to set this on consumers.  Setting the timeout to zero is the same as disabling the timeout feature.  Below is an example of setting a timeout.
+The new configuration attribute is:  **nsds5ReplicaReleaseTimeout**, and it accepts any value of zero or higher.  This value represents a timeout in seconds.  This attribute is set in each replica mapping tree entry.  It should be set on Suppliers and Hubs - there is no need to set this on consumers.  Setting the timeout to zero is the same as disabling the timeout feature.  Below is an example of setting a timeout.
 
     dn: cn=replica,cn=dc\3Dexample\2Cdc\3Dcom,cn=mapping tree,cn=config
     changetype: modify

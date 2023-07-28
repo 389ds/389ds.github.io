@@ -96,7 +96,7 @@ Keyring is a shared repository, so it will contains <u>all</u> the NSS passwords
 The <i>keyname</i> must differentiate each individual instance. So the <i>keyname</i> has the format: &lt;<i>fixed name</i>&gt;&lt;<i>instance_serverid</i>&gt;&lt;<i>info_type</i>&gt;, where 
 
 - <i>fixed name</i> is <u>Internal (Software) Token</u> that is the <b>token_name</b> of the NSS default slot. The <b>token_name</b>(dbTokenDescription) used during <b>slapd_nss_init/slapd_pk11_configurePKCS11</b>.
-- <i>instance_serverid</i> is <u>serverID</u>  (e.g. 'master1')
+- <i>instance_serverid</i> is <u>serverID</u>  (e.g. 'supplier1')
 - <i>info_type</i> is <u>password</u> meaning this key retrieves a password related to instance_serverid
 
 

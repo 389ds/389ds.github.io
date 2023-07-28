@@ -10,6 +10,8 @@ title: "Howto:BIND"
 Introduction
 ------------
 
+The instructions below are outdated.
+
 Getting BIND to directly talk to LDAP can be the stuff of nightmares.
 
 Rather I describe a compromise which works as follows:

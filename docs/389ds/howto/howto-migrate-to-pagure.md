@@ -127,7 +127,7 @@ You need to do a git clone of your projects ticket repo and create the default t
     $ vi templates/default.md  -->  Write your Markdown template!
     $ git add templates/default.md
     $ git commit -m "Add a default template for tickets"
-    $ git push origin master
+    $ git push origin main
     
 
 <br>
@@ -1271,7 +1271,7 @@ sss_tools
 
 **version**
 
-master 
+main 
 
 1.14.2 
 

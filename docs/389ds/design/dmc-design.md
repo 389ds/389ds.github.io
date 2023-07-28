@@ -258,7 +258,7 @@ Instance config attributes are mostly what is found in the top entry cn=config, 
 #### cn=Replication Sync Configurations,ou=Configuration,o=dmc
 
     dn: cn=replica template,ou=Replication Sync Configurations,ou=Configuration,o=dmc
-    description: Configuration for all the masters for example.com
+    description: Configuration for all the suppliers for example.com
     objectClass: top
     objectClass: dmcConfig
     cn: replica template

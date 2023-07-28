@@ -10,12 +10,12 @@ title: "Update resolution for single valued attributes"
 Problem description
 ===================
 
-In multimaster replication updates can be applied to an entry on different masters concurrently ( at the same time) where concurrent means an update on one master is done before the update from an other master is received. Even conflicting or contradictory changes can happen These situations are handled by the update resolution protocol (URP). It tries to achieve two goals:
+In multisupplier replication updates can be applied to an entry on different suppliers concurrently ( at the same time) where concurrent means an update on one supplier is done before the update from an other supplier is received. Even conflicting or contradictory changes can happen These situations are handled by the update resolution protocol (URP). It tries to achieve two goals:
 
 **GOAL 1: After the modifications are replicated the entries are consistent on all servers in the topology**
-**GOAL 2: The final state is the same as if the modifications would have been applied on a single master in the order given by the CSNs associated with the modification.**
+**GOAL 2: The final state is the same as if the modifications would have been applied on a single supplier in the order given by the CSNs associated with the modification.**
 
-This cannot be achieved for single valued attributes (SVA) in all scenarios, even in very simple scenarios. Example1: an entry has no value of a SVA, concurrently on master1 a value V1 is added and on master2 a value of V2 is added. After replication of these two mods the entry would have two values for SVA. In the single master model the second modification would be rejected. Example2: modrdn
+This cannot be achieved for single valued attributes (SVA) in all scenarios, even in very simple scenarios. Example1: an entry has no value of a SVA, concurrently on supplier1 a value V1 is added and on supplier2 a value of V2 is added. After replication of these two mods the entry would have two values for SVA. In the single supplier model the second modification would be rejected. Example2: modrdn
 
 So there is a need for additional rules in URP for single valued attributes, the current design implements the following rules:
 
@@ -217,10 +217,10 @@ Pending values
 The basic rules say that modrdn has precedence over modify operations and that the latest change should win. So there is a specific scenario when an attribute is no longer distinguished and a modification was rejected at the time it was distinguished.
 
     Example: Attribute is in state S0    
-    On master1 there is a state change (t0, S0->S2, v0)    
-    On master2 there is a state change (t1, S0->S1, v1)    
+    On supplier1 there is a state change (t0, S0->S2, v0)    
+    On supplier2 there is a state change (t1, S0->S1, v1)    
     t0,t1 concurrent, t1>t0, after replication attribute is in state S2 with value v0    
-    On master1 there is a state change (t2, S2->S1), this would result in v0, but v1 was applied later and v0 is no longer distinguished, so v1 could become the current value.    
+    On supplier1 there is a state change (t2, S2->S1), this would result in v0, but v1 was applied later and v0 is no longer distinguished, so v1 could become the current value.    
 
 To handle scenarios like this the attribute keeps a value which should be applied because of Rule1, but cannot because of Rule2 as a pending value. Note: It is sufficient to identify the scenarios in the concurrent state changes which could and should lead to pending values and extend the scenarios to make the attribute undistinguished
 
@@ -231,20 +231,20 @@ DISCUSSION TOPIC: Do we need to handle pending values at all ? Assume a mod of a
 Concurrent state changes
 ========================
 
-There are many operations which lead to state changes in a SVA, they can be applied in any combination and order and on a wide range of masters.
+There are many operations which lead to state changes in a SVA, they can be applied in any combination and order and on a wide range of suppliers.
 
-To determine the correct behaviour all combinations in a two master topology are considered. If more masters are involved the variety increases, but in URP there will always be only the resolution of a current state with a state change received via replication.
+To determine the correct behaviour all combinations in a two-supplier topology are considered. If more suppliers are involved the variety increases, but in URP there will always be only the resolution of a current state with a state change received via replication.
 
-So systematically all combinations involving two masters are investigated, for the test setup an extended topology with three masters and one consumer is used to verify consistency and expected states and values
+So systematically all combinations involving two suppliers are investigated, for the test setup an extended topology with three suppliers and one consumer is used to verify consistency and expected states and values
 
-Two master topology
+Two-supplier topology
 -------------------
 
-The following table lists all the combinations of state changes in two master topology, each state change has to be executed with the potential operations to achieve this state change. It is assumed that the CSN of the state change on master 1 is always lower than that on master 2. This is also the reason that the table contains the full combinations since (--\>S0,--\>S1) and (--\>S1,--\>S0) are not symmetric.
+The following table lists all the combinations of state changes in two-supplier topology, each state change has to be executed with the potential operations to achieve this state change. It is assumed that the CSN of the state change on supplier 1 is always lower than that on supplier 2. This is also the reason that the table contains the full combinations since (--\>S0,--\>S1) and (--\>S1,--\>S0) are not symmetric.
 
 ### Attribute state: S0
 
-|Master 1|Master2|Resulting state|Resulting value|Pending value|
+|Supplier 1|Supplier2|Resulting state|Resulting value|Pending value|
 |--------|-------|---------------|---------------|-------------|
 |--\> S0|--\> S0|S0|-|-|
 |--\> S0|--\> S1(v1)|S1|v1|-|
@@ -264,12 +264,12 @@ The operations to create the state changes are different, but results should be 
 
 The operations to create the state changes are different, but results should be as in table for S0
 
-Three master topology
+Three-supplier topology
 ---------------------
 
-Although with more than two masters the update resolution procedure should sequentially applied and result in the same state resolution existing bugs show that this is not the case with the current implementation. This chapter will handle all scenarios with 3 masters, this also allows all three different state changes applied in parallel. An extension to more than three master should not be necessary. In the tests a consumer should be added to the topology, it serves as a reference where the modifications are applied in the csn order.
+Although with more than two suppliers the update resolution procedure should sequentially applied and result in the same state resolution existing bugs show that this is not the case with the current implementation. This chapter will handle all scenarios with 3 suppliers, this also allows all three different state changes applied in parallel. An extension to more than three suppliers should not be necessary. In the tests a consumer should be added to the topology, it serves as a reference where the modifications are applied in the csn order.
 
-|Test|Master 1|Master2|Master3|Resulting state|Resulting value|Pending value|
+|Test|Supplier 1|Supplier2|Supplier3|Resulting state|Resulting value|Pending value|
 |----|--------|-------|-------|---------------|---------------|-------------|
 |1|--\> S0|--\> S0|--\> S0|S0|-|-|
 |2|--\> S0|--\> S0|--\> S1(v3)|S1|v3|-|
@@ -281,7 +281,7 @@ Although with more than two masters the update resolution procedure should seque
 |8|--\> S0|--\> S2(v2)|--\> S1(v3)|S2|v2|v3|
 |9|--\> S0|--\> S2(v2)|--\> S2(v3)|S2|v3|-|
 
-|Test|Master 1|Master2|Master3|Resulting state|Resulting value|Pending value|
+|Test|Supplier 1|Supplier2|Supplier3|Resulting state|Resulting value|Pending value|
 |----|--------|-------|-------|---------------|---------------|-------------|
 |10|--\> S1(v1)|--\> S0|--\> S0|S0|-|-|
 |11|--\> S1(v1)|--\> S0|--\> S1(v3)|S1|v3|-|
@@ -293,7 +293,7 @@ Although with more than two masters the update resolution procedure should seque
 |17|--\> S1(v1)|--\> S2(v2)|--\> S1(v3)|S0|v2|v3|
 |18|--\> S1(v1)|--\> S2(v2)|--\> S2(v3)|S0|v3|-|
 
-|Test|Master 1|Master2|Master3|Resulting state|Resulting value|Pending value|
+|Test|Supplier 1|Supplier2|Supplier3|Resulting state|Resulting value|Pending value|
 |----|--------|-------|-------|---------------|---------------|-------------|
 |19|--\> S2(v1)|--\> S0|--\> S0|S2|v1|Pend. Delete?|
 |20|--\> S2(v1)|--\> S0|--\> S1(v3)|S2|v1|v3|
@@ -311,10 +311,10 @@ Test setup
 Concurrent state changes
 ------------------------
 
-Usually replication is very fast and performing updates concurrently on different masters before the changes are replicated cannot be guaranteed. So common test setup is:
+Usually replication is very fast and performing updates concurrently on different Suppliers before the changes are replicated cannot be guaranteed. So common test setup is:
 
     Check consistency of entry on all servers in the topology    
-    Pause replication between masters    
+    Pause replication between suppliers    
     Apply changes to different servers    
     Re-enable replication    
     Wait for replication convergence    
@@ -323,7 +323,7 @@ Usually replication is very fast and performing updates concurrently on differen
 Test topology
 -------------
 
-To perform the tests out lined above, a topology of three masters and on consumer is used. This allows to apply all the independent state changes and if replication to consumers is not disabled the consumer will perform update resolution exactly for changes applied exactly in csn order
+To perform the tests out lined above, a topology of three suppliers and on consumer is used. This allows to apply all the independent state changes and if replication to consumers is not disabled the consumer will perform update resolution exactly for changes applied exactly in csn order
 
 Basic tests
 -----------
@@ -331,10 +331,10 @@ Basic tests
 Pathological tests
 ------------------
 
-Two master tests
+Two-supplier tests
 ----------------
 
-Three master tests
+Three-supplier tests
 ------------------
 
 Redesign of update resolution for single valued attributes

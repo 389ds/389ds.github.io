@@ -24,7 +24,7 @@ The basic usage of the DNA plug-in is as follows. Let's assume that we want the 
 
 As you can see, the design allows one some flexibility in being able to override the management of the value range, but it can't totally prevent you from shooting yourself in the foot. The DNA plug-in will check if a value within the range has been used outside of the scope of the plug-in before assigning it. When it detects this, it just skips to the next value. This will prevent problems most of the time, but there is still a window where the DNA plug-in sees that a particular value is available, but another operation manually uses that value immediately after the check. There is also no easy way for the DNA plug-in to prevent one from manually using a value that has already been assigned (with via the DNA plug-in, or manually).
 
-The take-home lesson here is that you should probably avoid manually specifying values that are within the configured managed range. The main use of manually specifying a value within the managed range is for replicated values from another master.
+The take-home lesson here is that you should probably avoid manually specifying values that are within the configured managed range. The main use of manually specifying a value within the managed range is for replicated values from another supplier.
 
 ### Scoped Range Behavior
 
@@ -58,17 +58,17 @@ The above range will apply to both posixAccount and posixGroup entries. The posi
 
 When the magic value is specified for multiple attributes from the same range, a single value from the range will be assigned to all of the attributes. If you want separate values to be assigned from the same multi-attribute range, you will have to do a separate modify operation to add the magic value to each attribute you want a new value for.
 
-### Usage with Multi-Master Replication
+### Usage with Multi-Supplier Replication
 
-The DNA plug-in is designed such that you can guarantee uniqueness among a range across multiple master Directory Server instances when you are using multi-master replication.
+The DNA plug-in is designed such that you can guarantee uniqueness among a range across multiple supplier Directory Server instances when you are using multi-supplier replication.
 
 #### Shared Config Method
 
-The way that DNA supports multi-master replication is to simply assign a separate range to each master. This guarantees uniqueness, but it leaves the problem of being able to exhaust the values on a single master while still having plenty of values left on the other masters. If value allocation is not evenly distributed across all masters, then new value allocation will start being refused by the masters who have exhausted their local range. This would then require administrator action to manually redistribute the values evenly amount the masters.
+The way that DNA supports multi-supplier replication is to simply assign a separate range to each supplier. This guarantees uniqueness, but it leaves the problem of being able to exhaust the values on a single supplier while still having plenty of values left on the other suppliers. If value allocation is not evenly distributed across all suppliers, then new value allocation will start being refused by the suppliers who have exhausted their local range. This would then require administrator action to manually redistribute the values evenly amount the suppliers.
 
-To solve the problem of exhausted ranges, a set of shared configuration entries is used to facilitate transferring ranges automatically between masters when needed. When a master exhausts it's local range, it finds out what other servers service this range and how many values each server has available. It can then ask the server with the most values available to transfer a portion of it's range.
+To solve the problem of exhausted ranges, a set of shared configuration entries is used to facilitate transferring ranges automatically between suppliers when needed. When a supplier exhausts it's local range, it finds out what other servers service this range and how many values each server has available. It can then ask the server with the most values available to transfer a portion of it's range.
 
-The way the shared configuration entries work is that each master sets the dnaSharedCfgDN in it's range configuration entry to point to a container entry in the replicated tree. Each master will then create an entry under this container entry that it automatically maintains. This shared entry contains the server hostname and port numbers as well as how many unallocated values it has remaining. Here is an example entry:
+The way the shared configuration entries work is that each supplier sets the dnaSharedCfgDN in it's range configuration entry to point to a container entry in the replicated tree. Each supplier will then create an entry under this container entry that it automatically maintains. This shared entry contains the server hostname and port numbers as well as how many unallocated values it has remaining. Here is an example entry:
 
     dn: dnaHostname=ldap1.example.com+dnaPortNum=389,cn=Accounts,ou=Ranges,dc=example,dc=com
     objectClass: extensibleObject
@@ -90,24 +90,24 @@ When a server receives range from another server, it will store it in it's local
 
 This method is unsupported (and disabled at compile time) in the current DNA code. For the reasoning behind this decision, please see the [DNA Plug-in Proposal](dna-plugin-proposal.html) page.
 
-The old way of supporting DNA with MMR was accomplished is by essentially dividing a single contiguous range into smaller ranges by using an interval. Let's assume that you want to split a range of 1-300 across three masters. You would configure the plug-in on all three master instances like so:
+The old way of supporting DNA with MMR was accomplished is by essentially dividing a single contiguous range into smaller ranges by using an interval. Let's assume that you want to split a range of 1-300 across three suppliers. You would configure the plug-in on all three-supplier instances like so:
 
--   Master 1
+-   Supplier 1
     -   dnaNextVal = 1
     -   dnaMaxVal = 300
     -   dnaInterval = 3
--   Master 2
+-   Supplier 2
     -   dnaNextVal = 2
     -   dnaMaxVal = 300
     -   dnaInterval = 3
--   Master 3
+-   Supplier 3
     -   dnaNextVal = 3
     -   dnaMaxVal = 300
     -   dnaInterval = 3
 
-This would result in Master 1 assigning the values of "1,4,7,10,etc.", Master 2 with values of "2,5,8,11,etc.", and Master 3 with values of "3,6,9,12,etc.". You can basically accomplish the same thing by allocating 1-100 to Master 1, 101 - 200 to Master 2, and 201-300 to Master 3. The numeric values assigned by each master would just be a bit different.
+This would result in Supplier 1 assigning the values of "1,4,7,10,etc.", Supplier 2 with values of "2,5,8,11,etc.", and Supplier 3 with values of "3,6,9,12,etc.". You can basically accomplish the same thing by allocating 1-100 to Supplier 1, 101 - 200 to Supplier 2, and 201-300 to Supplier 3. The numeric values assigned by each supplier would just be a bit different.
 
-The general idea here was to try to avoid gaps in the values, but that is making a big assumption that the allocation of values is evenly distributed across masters. This is very likely a false assumption to make in the majority of cases as new entry creation is likely to be most common on a single server at a particular geographical location. It is likely easier to simply assign a different range to each master as you can guarantee that there are only gaps between each master's configured range. This approach is also easier to deal with when adding a new master instance to the mix as you just need to allocate some unused range instead of modifying the interval on all masters.
+The general idea here was to try to avoid gaps in the values, but that is making a big assumption that the allocation of values is evenly distributed across suppliers. This is very likely a false assumption to make in the majority of cases as new entry creation is likely to be most common on a single server at a particular geographical location. It is likely easier to simply assign a different range to each supplier as you can guarantee that there are only gaps between each supplier's configured range. This approach is also easier to deal with when adding a new supplier instance to the mix as you just need to allocate some unused range instead of modifying the interval on all suppliers.
 
 It should be noted that interval support is not compiled into the DNA plug-in by default. If you want to build the DNA plug-in with interval support for some reason, set DNA\_ENABLE\_MACRO=1 when compiling the plug-in.
 
@@ -133,7 +133,7 @@ All entries beneath the main DNA plug-in configuration entry are assumed to be D
 
 ### Sample Configuration
 
-These two sample configuration entries enable automatic generation of uidNumber and gidNumber attributes for posixAccount entries. This configuration is setup as it would be for a multi-master replication environment.
+These two sample configuration entries enable automatic generation of uidNumber and gidNumber attributes for posixAccount entries. This configuration is setup as it would be for a multi-supplier replication environment.
 
     dn: cn=Account UIDs,cn=Distributed Numeric Assignment Plugin,cn=plugins,cn=config
     objectClass: top

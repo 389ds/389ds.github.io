@@ -17,7 +17,7 @@ It can be installed with:
 
     sudo emerge -atv net-nds/389-ds-base
 
-If you wish to install our git-master branch for testing purposes:
+If you wish to install our git-main branch for testing purposes:
 
     sudo emerge -atv =net-nds/389-ds-base-9999
 

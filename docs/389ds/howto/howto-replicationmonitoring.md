@@ -9,7 +9,7 @@ title: "Howto:ReplicationMonitoring"
 
 ### Introduction
 
-Ok, so you have Multi-Master-Replication set up and working, perhaps using the mmr.pl script as described in <Howto:MultiMasterReplication> . It is useful to be able to monitor replication from a bash environment, allowing you to:
+Ok, so you have Multi-Supplier-Replication set up and working, perhaps using the mmr.pl script as described in <Howto:MultiSupplierReplication> . It is useful to be able to monitor replication from a bash environment, allowing you to:
 
 -   Perform custom actions if replication fails, possibly alerting you.
 -   Provide a custom web page tailored to your environment showing replication status.

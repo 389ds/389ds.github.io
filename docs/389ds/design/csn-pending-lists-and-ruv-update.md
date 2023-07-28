@@ -6,7 +6,7 @@ title: "CSN Pending Lists and RUV update"
 ----------------
 
 # Introduction
-The RUV (replication update vector) maintains for every master replica (identified by the replicaID) in the replication topology the largest CSN (change sequence number) it has seen that originated at that replica. In a replication session the supplier compares its own RUV with the RUV of the consumer and decides if there are changes to be sent. At the end the RUV of the consumer is updated and is used as staribg point in a new replication session.
+The RUV (replication update vector) maintains for every supplier replica (identified by the replicaID) in the replication topology the largest CSN (change sequence number) it has seen that originated at that replica. In a replication session the supplier compares its own RUV with the RUV of the consumer and decides if there are changes to be sent. At the end the RUV of the consumer is updated and is used as staribg point in a new replication session.
 
 # Problem:
 Therefor it is crucial that the menchanism of applying updates to the local database, updating the local RUV and sendin changes (and so updating the consumer RUV) are synchronized and no changes will be lost. Zhis is managed by maintaining a CSN pending list:

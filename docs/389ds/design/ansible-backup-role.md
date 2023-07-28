@@ -295,4 +295,4 @@ Authors
 =======
 
 Simon Pichugin (@droideck)
-Big parts of README.md and basic Ansible logic is taken from https://github.com/freeipa/ansible-freeipa/tree/master/roles/ipabackup
+Big parts of README.md and basic Ansible logic is taken from https://github.com/freeipa/ansible-freeipa/ and it's ipabackup role.

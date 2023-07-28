@@ -108,7 +108,7 @@ The replication session is looking like this
       [03/May/2017:14:13:50.641528452 +0200] conn=5 op=0 RESULT err=0 tag=97 nentries=0 etime=0 dn="cn=replrepl,cn=config"
       ...
       # Acquire the exclusive access of the consumer replica
-      [03/May/2017:14:13:55.136953488 +0200] conn=5 op=8 EXT oid="2.16.840.1.113730.3.5.12" name="replication-multimaster-extop"
+      [03/May/2017:14:13:55.136953488 +0200] conn=5 op=8 EXT oid="2.16.840.1.113730.3.5.12" name="replication-multisupplier-extop"
       [03/May/2017:14:13:55.325003375 +0200] conn=5 op=8 RESULT err=0 tag=120 nentries=0 etime=0
       ...
       # Suppliers sends that update
@@ -116,7 +116,7 @@ The replication session is looking like this
       [03/May/2017:14:13:58.157064443 +0200] conn=5 op=14 RESULT err=0 tag=105 nentries=0 etime=1 csn=5909c984000200020000
       ...
       # Release the exclusive access to the consumer replica
-      [03/May/2017:14:28:16.098754565 +0200] conn=5 op=21 EXT oid="2.16.840.1.113730.3.5.5" name="replication-multimaster-extop"
+      [03/May/2017:14:28:16.098754565 +0200] conn=5 op=21 EXT oid="2.16.840.1.113730.3.5.5" name="replication-multisupplier-extop"
       [03/May/2017:14:28:16.115133835 +0200] conn=5 op=21 RESULT err=0 tag=120 nentries=0 etime=0
 
 

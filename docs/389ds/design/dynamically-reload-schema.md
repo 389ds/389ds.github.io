@@ -281,7 +281,7 @@ Notes
 -   The schema file reload task is a local operation. In the MMR environment, the updated schema won't be replicated. Thus, to execute the schema file reload in the MMR environment, the following steps would be needed.
 
         1. stop the replication    
-        2. run the schema file update task on each master and replica server    
+        2. run the schema file update task on each supplier and replica server    
         3. resume the replication    
 
 -   When the task happens to fail, the ldapmodify command-line does not return any errors:

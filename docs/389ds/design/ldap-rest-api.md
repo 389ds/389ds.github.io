@@ -288,7 +288,7 @@ If you are using apache you should use
 
 If you are configuring rest389 with freeipa, you must use constrained delegation. Consider that we want to use rest389 on our a 389 instance that is not part of the IPA domain
 
-    master: ipamaster.example.com
+    supplier: ipasupplier.example.com
     389 server: ds.example.com
     389 principal: ldap/ds.example.com
 
@@ -296,9 +296,9 @@ First, we need to make the keytab for the rest389 service
 
     ipa service-add HTTP/ds.example.com
 
-Next we need to extra the keytab to the master.
+Next we need to extra the keytab to the supplier.
 
-    ipa-getkeytab -s ipamaster.example.com -k /etc/httpd/http.keytab HTTP/ds.example.com
+    ipa-getkeytab -s ipasupplier.example.com -k /etc/httpd/http.keytab HTTP/ds.example.com
 
 We add the service delegation rules
 
@@ -385,7 +385,7 @@ Example
     {
         'dn': DN
         'ReplicaRoot': SUFFIX
-        'ReplicaRole': master, hub, consumer
+        'ReplicaRole': supplier, hub, consumer
         'ReplicaType': 2
         'ReplicaFlags': 1
         'ReplicaID': 1
@@ -412,10 +412,10 @@ Example
     -----------------------------------------------------
     {
         'action': 'promote/demote'
-        'newrole': 'master, hub, consumer'
-        'rid': 'newrid'  # Only for promotion to master
-        'binddn': DN  # Only for promotion to master
-        'newrole': 'master, hub, consumer'
+        'newrole': 'supplier, hub, consumer'
+        'rid': 'newrid'  # Only for promotion to supplier
+        'binddn': DN  # Only for promotion to supplier
+        'newrole': 'supplier, hub, consumer'
     }
 
 <a name="replagmt"></a>

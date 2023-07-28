@@ -242,7 +242,7 @@ The search form, `/usr/share/dirsrv/dsgw/config/searchString.html`, really contr
 
 An advanced search has different matching rule options, meaning that it can allow different ways to identify an entry which matches the search parameters (like an entry which contains the string, sounds like the string phonetically, or exactly matches the string). An advanced search can also look for different attributes within an entry, like a first name or phone number, while a standard search only looks for the common name (<em class="parameter">`cn`</em>).
 
--   The master frameset (`/usr/share/dirsrv/dsgw/config/csearch.html`)
+-   The supplier frameset (`/usr/share/dirsrv/dsgw/config/csearch.html`)
 -   The search type, such as **People** or **Groups** (`/usr/share/dirsrv/dsgw/config/csearchType.html`)
 -   The search base, the Directory Server suffix (`/usr/share/dirsrv/dsgw/config/csearchBase.html`)
 -   The entry attributes which can be searched (`/usr/share/dirsrv/dsgw/config/csearchAttr.html`); these can be extended to include other attributes

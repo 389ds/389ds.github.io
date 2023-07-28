@@ -15,7 +15,7 @@ The MemberOf Plugin configuration can now be stored in a shared configuration en
 Use Cases
 ---------
 
-Use replication to handle plugin configuration consistency on a network.  This is very useful for large deployments, because if the plugin configuration is replicated you only need to update the configuration on a master replication server, and the change will replicate to all the other servers.  This makes plugin management in a replicated environment much easier.
+Use replication to handle plugin configuration consistency on a network.  This is very useful for large deployments, because if the plugin configuration is replicated you only need to update the configuration on a supplier replication server, and the change will replicate to all the other servers.  This makes plugin management in a replicated environment much easier.
 
 
 #### Example

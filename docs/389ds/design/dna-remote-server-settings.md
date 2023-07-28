@@ -10,12 +10,12 @@ title: "DNA Remote Server Settings"
 Overview
 --------
 
-When a server using the DNA plugin in a multimaster environment attempts to get a new range from a server listed in the "Shared Server Config" list, but there is no direct replication agreement to that shared server, then the plugin fails to get the requested range of new values. This is because the plugin uses the bind information/credentials from the agreement to authenticate and retrieve the new range from that remote replica server. Now, you explicitly set remote server bind information(bind DN + password, bind method, etc), for a server that is outside of the immediate replication environment.
+When a server using the DNA plugin in a multisupplier environment attempts to get a new range from a server listed in the "Shared Server Config" list, but there is no direct replication agreement to that shared server, then the plugin fails to get the requested range of new values. This is because the plugin uses the bind information/credentials from the agreement to authenticate and retrieve the new range from that remote replica server. Now, you explicitly set remote server bind information(bind DN + password, bind method, etc), for a server that is outside of the immediate replication environment.
 
 Use Cases
 ---------
 
-Circular MMR is a situation where everything is in sync, but each master does not aware of all the other replicas/masters in the environment.
+Circular MMR is a situation where everything is in sync, but each supplier does not aware of all the other replicas/suppliers in the environment.
 
 Design
 ------

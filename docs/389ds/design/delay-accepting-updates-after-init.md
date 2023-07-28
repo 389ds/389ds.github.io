@@ -10,10 +10,10 @@ title: "Delay accepting updates after initialization"
 Problem
 =======
 
-If a master is initialized from an ldif or backup or from another master and there exist changes for the local replicaID on some server with csns greater 
+If a supplier is initialized from an ldif or backup or from another supplier and there exist changes for the local replicaID on some server with csns greater 
 than what was contained in the initialization data the following problem can happen.
 
-If the initialized master accepts a direct update it will create a csn highere than changes it has not yet received from the other servers.
+If the initialized supplier accepts a direct update it will create a csn highere than changes it has not yet received from the other servers.
 The outstanding changes will be lost. 
 
 A detailled problem description is in the referenced tickets #47986 and #48976
@@ -36,8 +36,8 @@ Exceptions
 ==========
 The rejections of updates is too strict in some situations and should not be set
 
-## Single master topologies
-If there is only one master it should always start to accept updates. It is possible that on a read only
+## Single supplier topologies
+If there is only one supplier it should always start to accept updates. It is possible that on a read only
 consumer there are more advanced changes for the local RID, but the consumers will not be able to replicate back.
 So the server should accept updates, but stop replicating to these consumers until they are reinitialized 
 
@@ -82,7 +82,7 @@ Autodetection if server is up to date
 =====================================
 
 A mechanism and function which was developped for cleanallruv can be reused. In cleanallruv there is the option to detect if all
-servers are in sync before cleaning a specific RID. An extended operation is sent to the reachable consumers/masters to get their 
+servers are in sync before cleaning a specific RID. An extended operation is sent to the reachable consumers/suppliers to get their 
 greatest CSN for the given replica ID. 
 When this csn is retrieved the local replica will regulariliy compare its local maxCSN and once it is equal to that csn it can start to
 accept updates again.

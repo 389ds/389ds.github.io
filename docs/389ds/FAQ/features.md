@@ -15,9 +15,9 @@ title: "Features"
 
 Provides a simple way of breaking down your directory data to simplify the implementation of replication and chaining in your directory service. Import into one suffix without affecting the other suffixes.
 
-### Multi-master replication
+### Multi-supplier replication
 
-For our Directory Server, multi-master means the ability to write to two or more masters at the same time, with automatic conflict resolution, as opposed to just having one master at a time with hot failover. This feature provides a highly available directory service for both read and write operations. Multi-master replication can be combined with simple and cascading replication scenarios to provide a highly flexible and scalable replication environment. You can also use fractional replication to restrict the attributes that are replicated (e.g. if you don't want certain data to be present on a replica).
+For our Directory Server, multi-supplier means the ability to write to two or more suppliers at the same time, with automatic conflict resolution, as opposed to just having one supplier at a time with hot failover. This feature provides a highly available directory service for both read and write operations. Multi-supplier replication can be combined with simple and cascading replication scenarios to provide a highly flexible and scalable replication environment. You can also use fractional replication to restrict the attributes that are replicated (e.g. if you don't want certain data to be present on a replica).
 
 ### Microsoft Windows Synchronization
 

@@ -38,7 +38,7 @@ digraph O_DMC {
     admin_role [label="cn=admin roles", shape=record];
 
     # Replication
-    cn_repl_masters [label="cn=Masters", shape=record];
+    cn_repl_suppliers [label="cn=suppliers", shape=record];
     cn_repl_hubs [label="cn=Hubs", shape=record];
     cn_repl_consumers [label="cn=Consumers", shape=record];
     cn_repl_inst1 [label="cn=host1:uuid", shape=record];
@@ -93,11 +93,11 @@ digraph O_DMC {
 
 
     # Replication
-    cn_replication -> cn_repl_masters;
+    cn_replication -> cn_repl_suppliers;
     cn_replication -> cn_repl_hubs;
     cn_replication -> cn_repl_consumers;
-    cn_repl_masters -> cn_repl_inst1;
-    cn_repl_masters -> cn_repl_inst2;
+    cn_repl_suppliers -> cn_repl_inst1;
+    cn_repl_suppliers -> cn_repl_inst2;
     cn_repl_inst1 -> cn_inst1_agmt;
     cn_repl_inst2 -> cn_inst2_agmt;
 

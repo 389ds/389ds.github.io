@@ -169,13 +169,13 @@
 <polygon fill="none" stroke="black" points="439,-221 439,-257 539,-257 539,-221 439,-221"/>
 <text text-anchor="middle" x="489" y="-235.3" font-family="Times,serif" font-size="14.00">cn=Replication</text>
 </g>
-<!-- cn_repl_masters -->
-<g id="node25" class="node"><title>cn_repl_masters</title>
+<!-- cn_repl_suppliers -->
+<g id="node25" class="node"><title>cn_repl_suppliers</title>
 <polygon fill="none" stroke="black" points="402.5,-147 402.5,-183 483.5,-183 483.5,-147 402.5,-147"/>
-<text text-anchor="middle" x="443" y="-161.3" font-family="Times,serif" font-size="14.00">cn=Masters</text>
+<text text-anchor="middle" x="443" y="-161.3" font-family="Times,serif" font-size="14.00">cn=suppliers</text>
 </g>
-<!-- cn_replication&#45;&gt;cn_repl_masters -->
-<g id="edge23" class="edge"><title>cn_replication&#45;&gt;cn_repl_masters</title>
+<!-- cn_replication&#45;&gt;cn_repl_suppliers -->
+<g id="edge23" class="edge"><title>cn_replication&#45;&gt;cn_repl_suppliers</title>
 <path fill="none" stroke="black" d="M478.099,-220.937C472.566,-212.277 465.727,-201.573 459.56,-191.921"/>
 <polygon fill="black" stroke="black" points="462.476,-189.983 454.143,-183.441 456.577,-193.752 462.476,-189.983"/>
 </g>
@@ -329,8 +329,8 @@
 <polygon fill="none" stroke="black" points="395.5,-73 395.5,-109 490.5,-109 490.5,-73 395.5,-73"/>
 <text text-anchor="middle" x="443" y="-87.3" font-family="Times,serif" font-size="14.00">cn=host1:uuid</text>
 </g>
-<!-- cn_repl_masters&#45;&gt;cn_repl_inst1 -->
-<g id="edge26" class="edge"><title>cn_repl_masters&#45;&gt;cn_repl_inst1</title>
+<!-- cn_repl_suppliers&#45;&gt;cn_repl_inst1 -->
+<g id="edge26" class="edge"><title>cn_repl_suppliers&#45;&gt;cn_repl_inst1</title>
 <path fill="none" stroke="black" d="M443,-146.937C443,-138.807 443,-128.876 443,-119.705"/>
 <polygon fill="black" stroke="black" points="446.5,-119.441 443,-109.441 439.5,-119.441 446.5,-119.441"/>
 </g>
@@ -339,8 +339,8 @@
 <polygon fill="none" stroke="black" points="525.5,-73 525.5,-109 620.5,-109 620.5,-73 525.5,-73"/>
 <text text-anchor="middle" x="573" y="-87.3" font-family="Times,serif" font-size="14.00">cn=host2:uuid</text>
 </g>
-<!-- cn_repl_masters&#45;&gt;cn_repl_inst2 -->
-<g id="edge27" class="edge"><title>cn_repl_masters&#45;&gt;cn_repl_inst2</title>
+<!-- cn_repl_suppliers&#45;&gt;cn_repl_inst2 -->
+<g id="edge27" class="edge"><title>cn_repl_suppliers&#45;&gt;cn_repl_inst2</title>
 <path fill="none" stroke="black" d="M473.808,-146.937C491.568,-137.101 514.09,-124.627 533.182,-114.053"/>
 <polygon fill="black" stroke="black" points="534.91,-117.097 541.962,-109.19 531.519,-110.973 534.91,-117.097"/>
 </g>

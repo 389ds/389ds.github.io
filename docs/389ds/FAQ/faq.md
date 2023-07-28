@@ -57,7 +57,7 @@ LDIF is the LDAP Data Interchange Format. LDIF is an ASCII format that is used t
 
 ### What do I get with 389?
 
-You get a secure, highly scalable, robust LDAP server. This includes multi-master replication and all of the features you'd expect from an enterprise-ready LDAP server. You get a graphical management console that you can use not only for user/group/role/account management, but also for all aspects of server management, from backup/restore/import/export, replication, database/suffix creation, access control, to server monitoring, metrics gathering, and logs. You also get an Admin Server, our http engine which provides several web applications, such as a phonebook, a graphical org chart, an admin express management page, and a replication monitoring page.
+You get a secure, highly scalable, robust LDAP server. This includes multi-supplier replication and all of the features you'd expect from an enterprise-ready LDAP server. You get a graphical management console that you can use not only for user/group/role/account management, but also for all aspects of server management, from backup/restore/import/export, replication, database/suffix creation, access control, to server monitoring, metrics gathering, and logs. You also get an Admin Server, our http engine which provides several web applications, such as a phonebook, a graphical org chart, an admin express management page, and a replication monitoring page.
 
 ### What are the main features?
 
@@ -117,17 +117,17 @@ See [History](../FAQ/history.html) for a history of Netscape, iPlanet, and Sun D
 
 Since the break up of iPlanet, the products have followed different development paths. However, much of the behavior and configuration are still the same: the configuration backend, schema, monitoring, management tools, etc. There are a couple of significant differences which you need to be aware of. Sun DS 5.2 changed the replication protocol, so you cannot do Sun DS 5.2 style replication with 389. However, Sun DS 5.2 has a legacy replication mode with which they are able to replicate to their 5.1 and 5.0 servers. This replication mode works with 389. You can use Sun DS 5.2 as a replication hub - it can replicate with newer versions of Sun/Oracle DS on one side, and replicate with RHDS on the other side. Also, Sun DS 5.2 has a different database format, so database files cannot be shared between the two servers. You must export your data to LDIF then import into 389. There are several other differences but they mostly don't affect interoperability. Please refer to the Sun DS documentation for more information.
 
-### How does the 389 multi-master replication work?
+### How does the 389 multi-supplier replication work?
 
-389 replication uses a push model. A replication supplier is a server that pushes updates to other servers. A master is a supplier that can receive update requests from clients. A hub is a supplier that receives update requests from other replication suppliers and pushes updates to other replicas.
+389 replication uses a push model. A replication supplier is a server that pushes updates to other servers. A supplier is an LDAP server that can receive update requests from clients. A hub is an LDAP server that receives update requests from other replication suppliers and pushes updates to other replicas.
 
-With multi-master replication, a master is both a replication supplier and a replication consumer. Each master can be updated at the same time and send its changes to the other masters and replicas. If conflicts occur, the conflict resolution algorithm will resolve them, and if that is not possible, the conflicts are flagged for viewing by the administrator.
+With multi-supplier replication, a supplier is both a replication supplier and a replication consumer. Each supplier can be updated at the same time and send its changes to the other suppliers and replicas. If conflicts occur, the conflict resolution algorithm will resolve them, and if that is not possible, the conflicts are flagged for viewing by the administrator.
 
-Each modification is assigned a Change State Number (CSN) which uniquely identifies the modification. Part of the CSN is a timestamp, and part is the identifier of the master on which the change originated. The conflict resolution algorithm usually processes the changes such that the "last one wins" based on the timestamp, but there are many corner cases which require special handling (for example, if an entry is removed from one master and at the same time a child entry is added to that entry on another master). Deleted entries are converted to tombstones and are kept around in case some of their state information is needed for conflict resolution. Deleted values are kept around for similar reasons. These tombstone values are reaped at configurable intervals and can be kept around for as long or as short a period of time as needed.
+Each modification is assigned a Change State Number (CSN) which uniquely identifies the modification. Part of the CSN is a timestamp, and part is the identifier of the supplier on which the change originated. The conflict resolution algorithm usually processes the changes such that the "last one wins" based on the timestamp, but there are many corner cases which require special handling (for example, if an entry is removed from one supplier and at the same time a child entry is added to that entry on another supplier). Deleted entries are converted to tombstones and are kept around in case some of their state information is needed for conflict resolution. Deleted values are kept around for similar reasons. These tombstone values are reaped at configurable intervals and can be kept around for as long or as short a period of time as needed.
 
 Each entry is assigned a globally unique identifier which stays with the entry throughout its lifetime. This identifier is more reliable for uniquely identifying the entry than the Distinguished Name (DN) which may change via modrdn operations. Thus each entry can be uniquely identified throughout the entire replication topology.
 
-Each supplier must also be configured with a changelog. This is a special database that "buffers" incoming updates and is used to send those updates to the consumers (which may be other masters). The old entries in the changelog are reaped at configurable intervals as is the old state information it is associated with, as specified above.
+Each supplier must also be configured with a changelog. This is a special database that "buffers" incoming updates and is used to send those updates to the consumers (which may be other suppliers). The old entries in the changelog are reaped at configurable intervals as is the old state information it is associated with, as specified above.
 
 ### Does replication inter-operate with Netscape/iPlanet/Sun Directory Server?
 
@@ -135,7 +135,7 @@ Each supplier must also be configured with a changelog. This is a special databa
 -   Sun DS 5.2 and later: Yes - Sun DS 5.2 will replicate with 389 using its legacy replication mode. You can use Sun DS 5.2 as a replication hub to replicate 389 with newer versions of Sun/Oracle DS.
 -   Netscape DS 4.x: There is a Legacy Replication Plug-in that must be configured and enabled. Additionally, 389 can only act as a consumer for Legacy replication, so you can't have a 4.x server as a consumer for a 389 supplier. Finally, this mode is only intended to be used for migration purposes, not long term.
 
-### But isn't multi-master replication considered harmful?
+### But isn't multi-supplier replication considered harmful?
 
 Specifically, how do you respond to <http://www.watersprings.org/pub/id/draft-zeilenga-ldup-harmful-02.txt> ? The short answer is that 389 lets you decide what level of data integrity you require and gives you the tools to manage your data integrity. The long answer is [here](mmrconsideredharmful.html)
 
@@ -147,7 +147,7 @@ Replication (described above) gives administrators the ability to provide no sin
 
 -   Certificate System
     -   Uses 389 to maintain its actual database of issued certificates.
-    -   Makes use of multi-master replication to provide high availability access to the certificate store.
+    -   Makes use of multi-supplier replication to provide high availability access to the certificate store.
     -   Utilizes DS internally to manage groups of users permitted to interact with privileged features of CS.
     -   Maintains the current installed network topology of CS and all its installed subsystems on a given host with DS.
     -   Can publish issued certificates to a company wide DS directory.
@@ -316,7 +316,7 @@ There are two ways to do this. The first way is to write a Data Interoperability
 
 ### How can I manage LDAP Schema ?
 
-The schema is now stored as a collection of LDIF files and the schema definitions are in the format described in RFC 2252. This change means that it is now easier to use the same LDAP tools to search and modify the schema rather than having to manually edit config files. It also means that the schema can now be included with replication. So now schema changes only need to occur at a master and they will be replicated down to all the consumers. Under each server instance config directory is a schema directory. The files in this directory are loaded in numeric order. If you want to add new schema, just add the file (in RFC 2252 LDIF format) to this directory, and give it an appropriate number at the beginning. Since schema are loaded in order, the new file must be loaded *after* (i.e. have a higher number) than any schema files which define attributes or objectclasses used by the new file. Schema can also be added over LDAP by adding attributeTypes or objectClasses to the subSchemaSubEntry (which is usually cn=schema). These new schema are placed in the schema file 99user.ldif, and are made available for replication.
+The schema is now stored as a collection of LDIF files and the schema definitions are in the format described in RFC 2252. This change means that it is now easier to use the same LDAP tools to search and modify the schema rather than having to manually edit config files. It also means that the schema can now be included with replication. So now schema changes only need to occur at a supplier and they will be replicated down to all the consumers. Under each server instance config directory is a schema directory. The files in this directory are loaded in numeric order. If you want to add new schema, just add the file (in RFC 2252 LDIF format) to this directory, and give it an appropriate number at the beginning. Since schema are loaded in order, the new file must be loaded *after* (i.e. have a higher number) than any schema files which define attributes or objectclasses used by the new file. Schema can also be added over LDAP by adding attributeTypes or objectClasses to the subSchemaSubEntry (which is usually cn=schema). These new schema are placed in the schema file 99user.ldif, and are made available for replication.
 
 ### Converting an OpenSSL certificate for use with Directory Server
 

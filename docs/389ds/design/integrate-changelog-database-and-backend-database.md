@@ -10,7 +10,7 @@ title: "Integrate changelog and backen database"
 Motivation
 ==========
 
-On masters and hubs the multimaster replication plugin maintains a changelog database containing the changes to be
+On suppliers and hubs the multisupplier replication plugin maintains a changelog database containing the changes to be
 replayed to other servers. Historically this was a  separate databse environment, but with the need to write the changelog
 in the same transaction as the change operation it was changed to use the main database environment.
 
@@ -40,7 +40,7 @@ Currently the changelog configuration is stored in the following entry:
      cn: changelog5
      objectClass: top
      objectClass: nsChangelogConfig
-     nsslapd-changelogdir: /var/lib/dirsrv/slapd-master2/changelogdb
+     nsslapd-changelogdir: /var/lib/dirsrv/slapd-supplier2/changelogdb
 
 where the changelogdir is the only required attribute. Additional configuration attributes are:
 
@@ -87,7 +87,7 @@ The change to the new handling and location should be smooth and without require
 For new installations no cn=changelog5 entry is created and the creation of a replica will set default values
 for changelog related attributes. The new admin gui will support this.
 
-If an existing instance is upgraded the following action will be done during startup when multimaster_replication_start() is called.
+If an existing instance is upgraded the following action will be done during startup when multisupplier_replication_start() is called.
 
     check if cn=changelog5,cn=config exist
         if not done
@@ -116,7 +116,7 @@ Changelog Database Access
 As long as the changelog database was maintained independedently from the main database a complex mechanism was
 implemented to ensure that the database environment does not go away while the changelog was used. With the new method
 the changelog db file is part of the main database and we can rely on the plugin dependency and the order of startup and shutdown:
-the multimaster replication plugin will start after the database plugin and close earlier.
+the multisupplier replication plugin will start after the database plugin and close earlier.
 
 This chapter will handle all the accessors of the changelog and the scenarios where the changelog can become unavailable.
 

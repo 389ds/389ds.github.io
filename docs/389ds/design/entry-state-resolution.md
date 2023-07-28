@@ -10,18 +10,18 @@ title: "Entry State Resolution"
 Background
 ----------
 
-In Multimaster replication clients can modify the same entry on different masters simultaneously. To keep the entries consistent across a replication topology the 'single master model' is used. Each operation gets a timestamp (or change sequence number, CSN) and the final state of the entry has to be equivalent to the result when the operations would have been applied in the order of the CSNs on a single master.
+In Multisupplier replication clients can modify the same entry on different suppliers simultaneously. To keep the entries consistent across a replication topology the 'single supplier model' is used. Each operation gets a timestamp (or change sequence number, CSN) and the final state of the entry has to be equivalent to the result when the operations would have been applied in the order of the CSNs on a single supplier.
 
 But in a real works deployment the operations can arrive out of csn order and entry state resolution has to ensure that on each server the final state is consistent. To achieve this it can be necessary to keep deleted values and their CSN for state resolution. Two examples demonstrate why it is needed.
 
 Example 1:
 
     The entry has an attribute a with values u,v,w.    
-    On one Master (M1) the following operations are done:    
+    On one supplier (M1) the following operations are done:    
     T1: delete: v    
     T2: add:  v    
 
-    On master M2, the following op is done before T1 and T2 are received    
+    On supplier M2, the following op is done before T1 and T2 are received    
     T3: delete v.    
     If T3 is replayed to M1, the operations are applied in order and the result is a = {u,w}.    
     When M2 receives T1, it is ignored because v is already deleted.    
@@ -29,7 +29,7 @@ Example 1:
 
 Example 2:
 
-    There are three masters M1, M2, M3. Consider the entry     
+    There are three suppliers M1, M2, M3. Consider the entry     
     dn: cn=u    
     cn = {u,v,w}   
  
@@ -90,10 +90,10 @@ Before proceeding, here is a quick recall of terminology, the different types of
     dn: cn=x    
     description: aaa    
     description: bbb    
-    If you do on master1 at time t1:    
+    If you do on supplier1 at time t1:    
     add: description    
     description: ccc    
-    and on master 2 at time t2>t1    
+    and on supplier 2 at time t2>t1    
     delete: description    
     description: aaa    
     description: bbb    
@@ -109,11 +109,11 @@ This chapter will investigate what needs to be done to achieve both goals.
 
 **Digression1:** what is different with urp ?
 
-What is the difference for entry state resolution if it is done on the primary master (operation is from an ldapclient) or on a consumer (operation is via replication connection),noted as URP ?
+What is the difference for entry state resolution if it is done on the primary supplier (operation is from an ldapclient) or on a consumer (operation is via replication connection),noted as URP ?
 
  There are two differences:
 
--    On a primary master the operation csn: OPcsn is generated to be newer than any csn this master has ever seen , so there is no need to check if any value Vdcsn or Vuscn >     OP csn exists.    
+-    On a primary supplier the operation csn: OPcsn is generated to be newer than any csn this supplier has ever seen , so there is no need to check if any value Vdcsn or Vuscn >     OP csn exists.    
     
 -    The operation is verified not to violate the protocol, so it is impossible to delete a non existing value or to add an existing value, this can be used in deciding how present/deleted valuesets will be handled    
 
@@ -196,25 +196,25 @@ But there is one exception which makes it more complicated: the single valued at
     sv: A
 
  where cn is multivalued and sv denotes a single valued attribute.
- Assume at time t0 on master A a modrdn operation takes place:
+ Assume at time t0 on supplier A a modrdn operation takes place:
 
     dn: cn=xxx
     changetype: modrdn
     newrdn: sv=A
     deleteoldrdn: 0
  
- At time t1 on master B a modify operation changes sv
+ At time t1 on supplier B a modify operation changes sv
 
     dn: cn=xxx
     changetype: modify
     replace: sv
     sv: B
  
-In a single master model the second operation would fail because cn=xxx no longer identifies an entry.
-But the operation has been accepted by master B and acknowledged to the client and replication has to deal with the situation.
+In a single supplier model the second operation would fail because cn=xxx no longer identifies an entry.
+But the operation has been accepted by supplier B and acknowledged to the client and replication has to deal with the situation.
 And what should happen if the rdn of teh entry is changed again, eg:
 
-At time t2 on master A a modrdn operation is performed:
+At time t2 on supplier A a modrdn operation is performed:
 
     dn: sv=A
     changetype: modrdn
@@ -367,7 +367,7 @@ First the potential states an attribut can have are listed, then the operations 
 The required test cases will the cross product of all states with all operations although not all combinations will apply.
  not all potential states are easily to realize, the actions to reach a state have to be included
 
-NOTE: only valid operations will be considered, invalid ldap operations eg, deleting a nonexisting value or adding several values to a single valued attribute should be rejected on the primary master
+NOTE: only valid operations will be considered, invalid ldap operations eg, deleting a nonexisting value or adding several values to a single valued attribute should be rejected on the primary supplier
 
 Single valued attributes
 ------------------------

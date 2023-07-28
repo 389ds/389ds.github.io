@@ -151,7 +151,7 @@ Using this script we can setup complex replication instances(that are fully conf
 
     ds/dirsrvtests/create_test.py
 
-    ./create_test.py -t|--ticket <ticket number> | -s|--suite <suite name> [ i|--instances <number of standalone instances> [ -m|--masters <number of masters> -h|--hubs <number of hubs> -c|--consumers <number of consumers> ] -o|--outputfile ]
+    ./create_test.py -t|--ticket <ticket number> | -s|--suite <suite name> [ i|--instances <number of standalone instances> [ -m|--suppliers <number of suppliers> -h|--hubs <number of hubs> -c|--consumers <number of consumers> ] -o|--outputfile ]
 
 Currently the script will create a "replication" setup, or a standalone setup (no replication).  When using the "**-o\|--outputfile**" option be sure to use _Here is an example of both:
 
@@ -170,15 +170,15 @@ Currently the script will create a "replication" setup, or a standalone setup (n
         --> Creates a script named:  ticket33333_test.py
             This script creates four standalone instances
 
-    ./create_test.py --ticket 33333 --master 2
+    ./create_test.py --ticket 33333 --suppliers 2
 
         --> Creates a script named:  ticket33333_test.py
-            This script creates two replication master instances, and initializes them
+            This script creates two replication supplier instances, and initializes them
 
-    ./create_test.py --ticket 33333 --master 2 --hubs 2 --consumers 10
+    ./create_test.py --ticket 33333 --suppliers 2 --hubs 2 --consumers 10
 
         --> Creates a script named:  ticket33333_test.py
-            This script creates two replication master instances, two replication hubs, and ten consumers.  Replication is fully initialized across all the servers
+            This script creates two replication supplier instances, two replication hubs, and ten consumers.  Replication is fully initialized across all the servers
 
     ./create_test.py --suite memberOf_plugin
         --> Creates a "suite" test named:  memberOf_plugin_test.py
@@ -188,7 +188,7 @@ Currently the script will create a "replication" setup, or a standalone setup (n
 
 If setting up a complex replication test, the script structures the deployment in a cascading fashion:
 
-                 master1  <=>  master2
+                 supplier1  <=>  supplier2
 
                        hub1  hub2
 
@@ -361,7 +361,7 @@ After the instance is created, you can enable it for replication and set up a re
 
 - Enable replication
 
-      standalone.enableReplication(suffix=DEFAULT_SUFFIX, role=REPLICAROLE_MASTER, replicaId=REPLICAID_MASTER_1)
+      standalone.enableReplication(suffix=DEFAULT_SUFFIX, role=REPLICAROLE_SUPPLIER, replicaId=REPLICAID_SUPPLIER_1)
 
 - Set up replication agreement properties
 
@@ -373,16 +373,16 @@ After the instance is created, you can enable it for replication and set up a re
 
 - Create the agreement
 
-      repl_agreement = standalone.agreement.create(suffix=DEFAULT_SUFFIX, host=master2.host, port=master2.port, properties=properties)
+      repl_agreement = standalone.agreement.create(suffix=DEFAULT_SUFFIX, host=supplier2.host, port=supplier2.port, properties=properties)
 
-    - "**master2**" refers to another, already created, DirSrv instance(like "*standalone*")
+    - "**supplier2**" refers to another, already created, DirSrv instance(like "*standalone*")
     - "**repl_agreement**" is the "DN" of the newly created agreement - this DN is needed later to do certain tasks
 
 - Initialize the agreement, wait for it complete, and test that replication is really working
 
-      standalone.agreement.init(DEFAULT_SUFFIX, HOST_MASTER_2, PORT_MASTER_2)
+      standalone.agreement.init(DEFAULT_SUFFIX, HOST_SUPPLIER_2, PORT_SUPPLIER_2)
       standalone.waitForReplInit(repl_agreement)
-      if not standalone.testReplication(DEFAULT_SUFFIX, master2):
+      if not standalone.testReplication(DEFAULT_SUFFIX, supplier2):
           # Error
           assert False
 

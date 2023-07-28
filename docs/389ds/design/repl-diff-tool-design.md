@@ -18,11 +18,11 @@ Since "*online mode *" is run on live servers technically they will never be in 
 ## Design
 ---------------
 
-So the tools sees the two replicas as a "Master" and a "Replica", but it could really just be "ReplicaA" and "ReplicaB".  So when the tool finds a problem it reports what Master has, and what Replica has.
+So the tools sees the two replicas as a "Supplier" and a "Replica", but it could really just be "ReplicaA" and "ReplicaB".  So when the tool finds a problem it reports what Supplier has, and what Replica has.
 
 The "lag" algorithm looks at the state information in each entry using the **nscpentryWSI** attribute.  When evaluating an attribute value inconsistency the tool will take the most recent csn timestamp from the state information (it checks vucsn, vdcsn, mdcsn, and adcsn).  This timestamp is then subtracted from the time the tool was started to determine if the inconsistency is within the lag allowance.
 
-The entry gathering is done using a search with the "paged result control" to bring in 500 entries at a time until all the entries are returned and processed.  The batch processing works as follows.  Each entry from the Master entries is checked if it exists in the Replica entries.  If they both exist in this page result group, then they are compared.  Any remaining entries without matches on either side (temporarily missing entries), are rolled into the next paged result set.  After all the paged result searches complete any "temporarily missing" entries become "definitely missing" entries and are listed in the final report.
+The entry gathering is done using a search with the "paged result control" to bring in 500 entries at a time until all the entries are returned and processed.  The batch processing works as follows.  Each entry from the Supplier entries is checked if it exists in the Replica entries.  If they both exist in this page result group, then they are compared.  Any remaining entries without matches on either side (temporarily missing entries), are rolled into the next paged result set.  After all the paged result searches complete any "temporarily missing" entries become "definitely missing" entries and are listed in the final report.
 
 
 
@@ -43,8 +43,8 @@ Options:
                         The Bind DN (REQUIRED)
   -w BINDPW, --bindpw BINDPW
                         The Bind password (REQUIRED)
-  -m MURL, --master_url MURL
-                        The LDAP URL for the Master server (REQUIRED)
+  -m MURL, --supplier_url MURL
+                        The LDAP URL for the Supplier server (REQUIRED)
   -r RURL, --replica_url RURL
                         The LDAP URL for the Replica server (REQUIRED)
   -b SUFFIX, --basedn SUFFIX
@@ -60,7 +60,7 @@ Options:
   -p PAGESIZE, --pagesize PAGESIZE
                         The paged result grouping size (default 500 entries)
   -M MLDIF, --mldif MLDIF
-                        Master LDIF file (offline mode)
+                        Supplier LDIF file (offline mode)
   -R RLDIF, --rldif RLDIF
                         Replica LDIF file (offline mode)
 
@@ -140,7 +140,7 @@ Performing online report...
 Database RUV's
 =====================================================
 
-Master RUV:
+Supplier RUV:
   {replica 1 ldap://localhost.localdomain:389} 58e53b92000200010000 58e6ab46000000010000
   {replica 2 ldap://localhost.localdomain:5555} 58e53baa000000020000 58e69d7e000000020000
   {replicageneration} 58e53b7a000000010000
@@ -154,21 +154,21 @@ Replica RUV:
 Entry Counts
 =====================================================
 
-Master:  12
+Supplier:  12
 Replica: 10
 
 
 Tombstones
 =====================================================
 
-Master:  10
+Supplier:  10
 Replica: 10
 
 
 Conflict Entries
 =====================================================
 
-Master Conflict Entries: 2
+Supplier Conflict Entries: 2
 
  - nsuniqueid=48177227-2ab611e7-afcb801a-ecef6d49+uid=steve038,dc=example,dc=com
     - Conflict:   namingConflict (add) uid=steve038,dc=example,dc=com
@@ -197,7 +197,7 @@ Replica Conflict Entries: 2
 Missing Entries
 =====================================================
 
-  Entries missing on Master:
+  Entries missing on Supplier:
    - uid=bbrown850,dc=example,dc=com (Created on Replica at: Wed Apr 12 14:43:24 2017)
    - uid=asmith993,dc=example,dc=com (Created on Replica at: Wed Apr 12 14:43:24 2017)
    - uid=breynolds994,dc=example,dc=com (Created on Replica at: Wed Apr 12 14:43:24 2017)
@@ -207,11 +207,11 @@ Missing Entries
    - uid=akinder422,dc=example,dc=com (Created on Replica at: Wed Apr 12 14:43:24 2017)
 
   Entries missing on Replica:
-   - uid=hrose803,dc=example,dc=com (Created on Master at: Wed Apr 12 14:43:24 2017)
-   - uid=adugan870,dc=example,dc=com (Created on Master at: Wed Apr 12 14:43:24 2017)
-   - uid=hrose75,dc=example,dc=com (Created on Master at: Wed Apr 12 14:43:24 2017)
-   - uid=hsholl122,dc=example,dc=com (Created on Master at: Wed Apr 12 14:43:24 2017)
-   - uid=hrose280,dc=example,dc=com (Created on Master at: Wed Apr 12 14:43:24 2017)
+   - uid=hrose803,dc=example,dc=com (Created on Supplier at: Wed Apr 12 14:43:24 2017)
+   - uid=adugan870,dc=example,dc=com (Created on Supplier at: Wed Apr 12 14:43:24 2017)
+   - uid=hrose75,dc=example,dc=com (Created on Supplier at: Wed Apr 12 14:43:24 2017)
+   - uid=hsholl122,dc=example,dc=com (Created on Supplier at: Wed Apr 12 14:43:24 2017)
+   - uid=hrose280,dc=example,dc=com (Created on Supplier at: Wed Apr 12 14:43:24 2017)
 
 
 Entry Inconsistencies
@@ -221,17 +221,17 @@ cn=group2,dc=example,dc=com
 ---------------------------
 Replica missing attribute "objectclass":
 
- - Master's State Info: objectClass;vucsn-58e53baa000000020000: top
+ - Supplier's State Info: objectClass;vucsn-58e53baa000000020000: top
  - Date: Wed Apr  5 14:47:06 2017
 
- - Master's State Info: objectClass;vucsn-58e53baa000000020000: groupofuniquenames
+ - Supplier's State Info: objectClass;vucsn-58e53baa000000020000: groupofuniquenames
  - Date: Wed Apr  5 14:47:06 2017
 
 
 uid=bmullen463,dc=example,dc=com
 --------------------------------
  - Attribute 'cn' is different:
-      Master:
+      Supplier:
         - State Info: cn;adcsn-58ee5357000000010000;vucsn-58ee5357000000010000: Brad Mulleny
         - Date:       Wed Apr 12 12:18:31 2017
 
@@ -241,7 +241,7 @@ uid=bmullen463,dc=example,dc=com
 cn=group1,dc=example,dc=com
 ---------------------------
  - Attribute 'cn' is different:
-      Master:
+      Supplier:
         - State Info: cn;vucsn-58e53baa000000020000;mdcsn-58e53baa000000020000: My value
         - Date:       Wed Apr  5 14:47:06 2017
 
@@ -253,7 +253,7 @@ cn=group1,dc=example,dc=com
         - Date:       Fri Apr  7 14:56:30 2017
 
  - Attribute 'description' is different:
-      Master:
+      Supplier:
         - State Info: description;vucsn-58e53bd9000000020000: okay
         - Date:       Wed Apr  5 14:47:53 2017
 
