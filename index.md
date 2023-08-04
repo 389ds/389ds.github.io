@@ -72,16 +72,14 @@ We have moved our IRC channel **\#389** from *freenode* to **irc.libera.chat** (
 <br>
 
 <!-- Try to keep this list under 10 releases  -->
+- 2023-08-04: Released **389-ds-base [2.4.3](docs/389ds/releases/release-2-4-3.html)**
+- 2023-08-04:: Released **389-ds-base [2.3.6](docs/389ds/releases/release-2-3-6.html)**
+- 2023-08-04:: Released **389-ds-base [2.2.9](docs/389ds/releases/release-2-2-9.html)**
 - 2023-07-10: Released **389-ds-base [2.4.2](docs/389ds/releases/release-2-4-2.html)**
 - 2023-07-10: Released **389-ds-base [2.3.5](docs/389ds/releases/release-2-3-5.html)**
 - 2023-05-18: Released **389-ds-base [2.4.1](docs/389ds/releases/release-2-4-1.html)**
 - 2023-05-18: Released **389-ds-base [2.3.4](docs/389ds/releases/release-2-3-4.html)**
 - 2023-05-18: Released **389-ds-base [2.2.8](docs/389ds/releases/release-2-2-8.html)**
-- 2023-04-25: Released **389-ds-base [2.4.0](docs/389ds/releases/release-2-4-0.html)**
-- 2023-04-25: Released **389-ds-base [2.3.3](docs/389ds/releases/release-2-3-3.html)**
-- 2023-04-25: Released **389-ds-base [2.2.7](docs/389ds/releases/release-2-2-7.html)**
-- 2023-04-25: Released **389-ds-base [2.1.8](docs/389ds/releases/release-2-1-8.html)**
-- 2023-01-23: Released **389-ds-base [2.3.2](docs/389ds/releases/release-2-3-2.html)**
 
 - [All past release notes](docs/389ds/releases/release-notes.html)
 
