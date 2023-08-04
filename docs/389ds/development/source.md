@@ -25,6 +25,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-2.4.3.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.4.3.tar.gz)|389-ds-base.git|389-ds-base-2.4.3|[Building](building.html)|78e9a9fe6efbb27aaed1ad0d442c3c6df072ce60f1a38bb0c557b0a069091539097ad91709a7d7de63b79c1e49492d18b32299f71bf24c71c6a42c15724d3fae|
 |[389-ds-base-2.4.2.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.4.2.tar.gz)|389-ds-base.git|389-ds-base-2.4.2|[Building](building.html)|ffaab71739b8a08f377b00e30d3b10f430ead8ab5c04e0a7e6d1fa4364764e083474d0eb8277fd02c367d533623d41b7d3c5e5ecab5fd3471d8f49709e2ae264|
 |[389-ds-base-2.4.1.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.4.1.tar.gz)|389-ds-base.git|389-ds-base-2.4.1|[Building](building.html)|c9168b10c5c5e58e2bd2ff6744c88757f0fbb0c1bd3f82ecbe59cdd927c790682cb5f264dd27ab7be719fe3a2a09a16a31e29b024356443ec1b2797eb93557fc|
 |[389-ds-base-2.4.0.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.4.0.tar.gz)|389-ds-base.git|389-ds-base-2.4.0|[Building](building.html)|2bcfe9fcc41a48639d88109d530334b80ecfd6d7bf640c565bea843206b387a616d5a1a330b801439783467810a092e0027f7dff43755696e66eea9f6c06057c|
@@ -33,6 +34,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-2.3.6.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.3.6.tar.gz)|389-ds-base.git|389-ds-base-2.3.6|[Building](building.html)|34bf09d9a66b66617145ad47ae0aca26d1e564fd02f4946d6e7beded2bf6c2a88b6cde230d6d9ec5f307d359d3dc063bfac7a3d589b598811b56c052a1a79955|
 |[389-ds-base-2.3.5.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.3.5.tar.gz)|389-ds-base.git|389-ds-base-2.3.5|[Building](building.html)|916e8d64c215c18f7c4a0ad73b74f7eb85ec8b14897cee0ff19661261822f9c7bffa5ce1c5da2891b461b424fca039318b6f5df86c559040cc6e017788df65df|
 |[389-ds-base-2.3.4.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.3.4.tar.gz)|389-ds-base.git|389-ds-base-2.3.4|[Building](building.html)|c6c986c1facc868f0f841505e2b27ae5252cfaf74fd3888247db264bf61d1029e074525d33750694deb30ae00dd64f2c7a1c5d00a3b351c55b5f9e068cb205a8|
 |[389-ds-base-2.3.3.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.3.3.tar.gz)|389-ds-base.git|389-ds-base-2.3.3|[Building](building.html)|d9e305ef11998b6ac96b70f03e0ae595d8d36b6fdbb7736d5aaa2ae12dfc3e378f9bc1ba72a9d8a312a88e478fcceb241e228548787dde89bc36212c6ebd374b|
@@ -44,6 +46,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-2.2.9.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.2.9.tar.gz)|389-ds-base.git|389-ds-base-2.2.9|[Building](building.html)|dbaec071a1ae2c7519b1bf47a73c576625b443f0832abf8017e1fc6492a6e236a15a4968bb512239e76decf974f78e9d098af810fb49d0767363afaf84981f45|
 |[389-ds-base-2.2.8.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.2.8.tar.gz)|389-ds-base.git|389-ds-base-2.2.8|[Building](building.html)|ee73212337e726ae1f82c6a5c0e8aa9f7fee2f9e698f087a1370740dfeee699974366f9e23794ed0166a1a5ae4e9bba21ee01a06121d6626b1b20800dbadc197|
 |[389-ds-base-2.2.7.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.2.7.tar.gz)|389-ds-base.git|389-ds-base-2.2.7|[Building](building.html)|31b6f9cbc6135bab81869f610cf4793811cb288065bccce835b00977d49af6be67e19ae70e5f7e0aca5bd8e275e3b7f3b62de9c6d5310a7f908e4876e81fe377|
 |[389-ds-base-2.2.6.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.2.6.tar.gz)|389-ds-base.git|389-ds-base-2.2.6|[Building](building.html)|f3193e8b446e7e318f800bf608906104ec315b0e80d37a16e5d0f6ded443bc4d4638299788ce82ad5381a2446657ee7b8e03085f89fb1a9071b1d3fdc30b8829|
