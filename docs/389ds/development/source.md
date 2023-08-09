@@ -34,6 +34,7 @@ The source code was produced by first doing a git clone to get the repository, t
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-2.3.7.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.3.7.tar.gz)|389-ds-base.git|389-ds-base-2.3.7|[Building](building.html)|1e0d2a903c6c22739a0dd9d8b6b6baf57a33508337c665ffc66b5d3660d9dc132d01f6dfa77b82ef9f24c3d0eb1ba77253365b90d4f17e3ac4f594cdbde8fe07|
 |[389-ds-base-2.3.6.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.3.6.tar.gz)|389-ds-base.git|389-ds-base-2.3.6|[Building](building.html)|34bf09d9a66b66617145ad47ae0aca26d1e564fd02f4946d6e7beded2bf6c2a88b6cde230d6d9ec5f307d359d3dc063bfac7a3d589b598811b56c052a1a79955|
 |[389-ds-base-2.3.5.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.3.5.tar.gz)|389-ds-base.git|389-ds-base-2.3.5|[Building](building.html)|916e8d64c215c18f7c4a0ad73b74f7eb85ec8b14897cee0ff19661261822f9c7bffa5ce1c5da2891b461b424fca039318b6f5df86c559040cc6e017788df65df|
 |[389-ds-base-2.3.4.tar.bz2](https://github.com/389ds/389-ds-base/archive/389-ds-base-2.3.4.tar.gz)|389-ds-base.git|389-ds-base-2.3.4|[Building](building.html)|c6c986c1facc868f0f841505e2b27ae5252cfaf74fd3888247db264bf61d1029e074525d33750694deb30ae00dd64f2c7a1c5d00a3b351c55b5f9e068cb205a8|
