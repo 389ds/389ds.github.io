@@ -31,9 +31,7 @@ git push access - you will need to be a member of the git389 group in FAS
     fedpkg clone 389-ds-base
 
 
-### Do the Upstream Release
-
-**DS** - checkout the source, add the fixes, set the version, tag it, and archive it
+### **DS** - checkout the source, add the fixes, set the version, tag it, and archive it
 
     mkdir /home/source/ds389; cd /home/source/ds389
     git clone git@github.com:389ds/389-ds-base.git
@@ -62,7 +60,7 @@ git push access - you will need to be a member of the git389 group in FAS
 
 - Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and github issues. Leave the hash for coverity/misc updates.
 
-#### **Fedora** - Dist-Git - rawhide branch for Rawhide
+### **Fedora** - Dist-Git - rawhide branch for Rawhide
 
     git checkout rawhide  (on same fedpkg clone)
 
