@@ -60,9 +60,9 @@ git push access - you will need to be a member of the git389 group in FAS
 
 - Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and github issues. Leave the hash for coverity/misc updates.
 
-### **Fedora** - Dist-Git - rawhide branch for Rawhide
+### **Fedora** - Dist-Git - New release
 
-    git checkout rawhide  (on same fedpkg clone)
+    git checkout rawhide  (or f39, f38, ...)
 
 - Go back to the source directory, which should be uncleaned after the tarball creation 
 
@@ -124,10 +124,23 @@ git push access - you will need to be a member of the git389 group in FAS
 
         fedpkg --release fxx build --nowait
 
-- An email will be sent from Koji telling you if the build was successful
+- An email will be sent from Koji telling you if the build was successful, or can just monitor the build link
+
+- Do **fedpkg update** for each branch you did a build for.  This will submit this build to "bohdi" for the final Fedora release
+
+        fedpkg update
+        
+- And edit as follows:
+
+        type=bugfix
+        request=testing
+        bugs= <leave blank if there are no “Fedora OS” specific bugs included in the release>
+        autokarma=True
+        stable_karma=1
+        unstable_karma=-1
 
 
-### **Fedora** - Dist-Git - **patch** on top of Rawhide
+### **Fedora** - Dist-Git Option 2 - Test build with patches
 
 Let assume rawhide branch contains some fixes that are partial (or broken) and you want to do a rawhide build with a crafted list of patches
 
@@ -204,101 +217,7 @@ Let assume rawhide branch contains some fixes that are partial (or broken) and y
 - You are **done** (no fedpkg update, no release note, no mail)
 
 
-### **Fedora** - Dist-Git - Clone it, and update the specfile
-
-You may check existing versions in [fedoraproject](https://src.fedoraproject.org/rpms/389-ds-base)
-
-    mkdir /fedora; cd /fedora
-    fedpkg clone 389-ds-base
-    cd 389-ds-base
-
-- First copy the contents of the edited **cl-info** file
-
-- Go back to the source directory, which should be uncleaned after the tarball creation 
-
-        cd /home/source/ds389/389-ds-base
-
-- Update Fedora spec file with Rust packages data 
-
-        DS_SPECFILE=/fedora/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust
-
-- Go back to Fedora repo directory 
-
-        cd /fedora/389-ds-base
-
-- Run **git diff** and check that spec file has only "License:" field changes and 'Provides:  bundled(crate(*' replacements and the rest was not touched by the script
-
-- Edit the spec file **/fedora/389-ds-base/389-ds-base.spec**
-
-- Read the instructions around 'License:' field and remove the comments accordingly
-
-- Change the version in the spec file.  Make sure the **release** field is set back to **1: %{?relprefix}1%{?prerel}%{?dist}**
-
-- Goto the **changelog** section
-
-- Add the header line:
-
-        * Tue Jul 17 2018 Mark Reynolds <mreynolds@redhat.com> - 1.4.3.36-1
-
-- Then copy in the contents of **cl-info** underneath the header
-
-        kinit your_id@FEDORAPROJECT.ORG
-
-- Verify changes to spec file is producing the correct version
-
-        fedpkg verrel
-
-- Add new source files (tar ball created by git archive cmd from above, and always include **jemalloc**)
-
-        fedpkg new-sources /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2 /home/source/ds389/jemalloc-5.1.0.tar.bz2
-    
-- Another option is just **uploading** the recent tarball 
-
-        fedpkg upload /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2
-
-- Should show the "sources" and ".gitignore" are staged
-
-        git status 
-
-- Remove useless tarballs from **sources** file
-- Create srpm
-
-        fedpkg srpm
-
-- Do scratch build (for faster building you can select just a single architecture by using "**-\\\-arches=x86_64**")
-
-        fedpkg scratch-build --srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm  --arches=x86_64
-
-- Create clog file, commit nad push changes
-
-        fedpkg clog
-        git commit -a -F clog
-        git push origin BRANCH
-
-- Do the official Koji build, and update bodhi
-
-        fedpkg build --nowait
-
-- An email will be sent from Koji telling you if the build was successful
-
-- Once builds are done, and you received an email, run:
-
-        fedpkg update
-    
-- And edit as follows:
-
-        type=bugfix
-        request=testing
-        bugs= <leave blank if there are no “Fedora OS” specific bugs included in the release>
-        autokarma=True
-        stable_karma=1
-        unstable_karma=-1
-
--   Do **fedpkg update** for each branch you did a build for.  This will submit this build to "bohdi" for the final Fedora release
-
-        fedpkg update
-
-### **DS** - push the updates and the tag
+### **DS** - Push the updates and the tag
 
 NOTE: Do not push the tags until you are sure the builds were successful! Once you push a tag, you cannot change it - if you need to make a change to fix a build problem, you will essentially have to repeat all of the steps again, since this will involve a new source version.
 
@@ -339,3 +258,4 @@ NOTE: Do not git push -\\\-tags - you may inadvertently push tags you did not in
     - <389-users@lists.fedoraproject.org>
 
 -   Done!
+
