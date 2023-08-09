@@ -34,7 +34,6 @@ git push access - you will need to be a member of the git389 group in FAS
 ### Do the Upstream Release
 
 **DS** - checkout the source, add the fixes, set the version, tag it, and archive it
---------------------------------------------------------------------------------
 
     mkdir /home/source/ds389; cd /home/source/ds389
     git clone git@github.com:389ds/389-ds-base.git
@@ -55,14 +54,15 @@ git push access - you will need to be a member of the git389 group in FAS
 
         rm -rf src/cockpit/389-console/dist src/cockpit/389-console/cockpit_dist
 
-        TAG=389-ds-base-1.3.9.1 ; git tag $TAG** ; git archive --prefix=$TAG $TAG | bzip2 > $TAG.tar.bz2 ; git log --oneline 389-ds-base-1.3.9.0.. > /tmp/cl-info
-        TAG=389-ds-base-2.2.8 ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.2.7.. > /tmp/cl-info
-        TAG=389-ds-base-2.3.3 ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.3.2.. > /tmp/cl-info
+        TAG=389-ds-base-1.3.9.1  ; git tag $TAG ; git archive --prefix=$TAG $TAG | bzip2 > $TAG.tar.bz2 ; git log --oneline 389-ds-base-1.3.9.0.. > /tmp/cl-info
+        TAG=389-ds-base-1.4.3.39 ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-1.4.3.38.. > /tmp/cl-info
+        TAG=389-ds-base-2.2.10   ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.2.9.. > /tmp/cl-info
+        TAG=389-ds-base-2.3.8    ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.3.7.. > /tmp/cl-info
+        TAG=389-ds-base-2.4.7    ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.4.6.. > /tmp/cl-info
 
 - Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and github issues. Leave the hash for coverity/misc updates.
 
-**Fedora** - Dist-Git - rawhide branch for Rawhide
---------------------------------------------
+#### **Fedora** - Dist-Git - rawhide branch for Rawhide
 
     git checkout rawhide  (on same fedpkg clone)
 
@@ -73,6 +73,10 @@ git push access - you will need to be a member of the git389 group in FAS
 - Update Fedora spec file with Rust packages data 
 
         DS_SPECFILE=/home/mareynol/source/FEDORA/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust
+        
+    - On 1.4.3:
+
+            FEDORA_SPECFILE=/home/mareynol/source/FEDORA/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust-on-fedora
 
 - Go back to Fedora repo directory 
 
@@ -100,7 +104,7 @@ git push access - you will need to be a member of the git389 group in FAS
 
 - Create a “*.src.rpm” file
      
-        fedpkg --release fxx srpm** 
+        fedpkg --release fxx srpm
 
 - Do a scratch build to m ake sure ewfverything is working
 
@@ -125,8 +129,7 @@ git push access - you will need to be a member of the git389 group in FAS
 - An email will be sent from Koji telling you if the build was successful
 
 
-**Fedora** - Dist-Git - **patch** on top of Rawhide
---------------------------------------------
+### **Fedora** - Dist-Git - **patch** on top of Rawhide
 
 Let assume rawhide branch contains some fixes that are partial (or broken) and you want to do a rawhide build with a crafted list of patches
 
@@ -172,7 +175,7 @@ Let assume rawhide branch contains some fixes that are partial (or broken) and y
         ...
         ...
 
-        $ git add <all patches>
+        $ git add <all patch files>
     
 - edit the *source* file to keep only the right one
 
@@ -203,8 +206,7 @@ Let assume rawhide branch contains some fixes that are partial (or broken) and y
 - You are **done** (no fedpkg update, no release note, no mail)
 
 
-**Fedora** - Dist-Git - Clone it, and update the specfile
---------------------------------------------
+### **Fedora** - Dist-Git - Clone it, and update the specfile
 
 You may check existing versions in [fedoraproject](https://src.fedoraproject.org/rpms/389-ds-base)
 
@@ -238,7 +240,7 @@ You may check existing versions in [fedoraproject](https://src.fedoraproject.org
 
 - Add the header line:
 
-        * Tue Jul 17 2018 Mark Reynolds \<mreynolds@redhat.com\> - 1.4.1.6-1
+        * Tue Jul 17 2018 Mark Reynolds <mreynolds@redhat.com> - 1.4.3.36-1
 
 - Then copy in the contents of **cl-info** underneath the header
 
@@ -267,7 +269,7 @@ You may check existing versions in [fedoraproject](https://src.fedoraproject.org
 
 - Do scratch build (for faster building you can select just a single architecture by using "**-\\\-arches=x86_64**")
 
-        fedpkg scratch-build --srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm**  --arches=x86_64
+        fedpkg scratch-build --srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm  --arches=x86_64
 
 - Create clog file, commit nad push changes
 
@@ -298,8 +300,7 @@ You may check existing versions in [fedoraproject](https://src.fedoraproject.org
 
         fedpkg update
 
-DS - push the updates and the tag
----------------------------------
+### **DS** - push the updates and the tag
 
 NOTE: Do not push the tags until you are sure the builds were successful! Once you push a tag, you cannot change it - if you need to make a change to fix a build problem, you will essentially have to repeat all of the steps again, since this will involve a new source version.
 
@@ -310,8 +311,7 @@ NOTE: Do not git push -\\\-tags - you may inadvertently push tags you did not in
     git push origin refs/tags/389-ds-base-2.2.2
 
 
-Update The Wiki (internal use only)
-------------------------------------
+### Update The Wiki (internal use only)
 
 -   Checkout the wiki source code
 
