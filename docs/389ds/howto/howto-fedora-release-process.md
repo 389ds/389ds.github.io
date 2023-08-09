@@ -37,11 +37,8 @@ git push access - you will need to be a member of the git389 group in FAS
 --------------------------------------------------------------------------------
 
     mkdir /home/source/ds389; cd /home/source/ds389
-
     git clone git@github.com:389ds/389-ds-base.git
-
     cd 389-ds-base
-
     git checkout 389-ds-base-x.x
 
 - Commit any fixes that have not yet been applied
@@ -50,17 +47,17 @@ git push access - you will need to be a member of the git389 group in FAS
 
 - Update **VERSION.sh** and set the new version string
 
-    git commit -a -m “Bump version to <new version>"
+        git commit -a -m “Bump version to <new version>"
 
 - All commits must be done before **git tag**! Otherwise you might need to use **git tag -f \$TAG**
 
 - Generate the source tarball, and changelog file (used for updating the specfile's changelog and the wiki release notes)
 
-    rm -rf src/cockpit/389-console/dist src/cockpit/389-console/cockpit_dist
+        rm -rf src/cockpit/389-console/dist src/cockpit/389-console/cockpit_dist
 
-    TAG=389-ds-base-1.3.9.1 ; git tag $TAG** ; git archive --prefix=$TAG $TAG | bzip2 > $TAG.tar.bz2 ; git log --oneline 389-ds-base-1.3.9.0.. > /tmp/cl-info
-    TAG=389-ds-base-2.2.8 ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.2.7.. > /tmp/cl-info
-    TAG=389-ds-base-2.3.3 ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.3.2.. > /tmp/cl-info
+        TAG=389-ds-base-1.3.9.1 ; git tag $TAG** ; git archive --prefix=$TAG $TAG | bzip2 > $TAG.tar.bz2 ; git log --oneline 389-ds-base-1.3.9.0.. > /tmp/cl-info
+        TAG=389-ds-base-2.2.8 ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.2.7.. > /tmp/cl-info
+        TAG=389-ds-base-2.3.3 ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.3.2.. > /tmp/cl-info
 
 - Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and github issues. Leave the hash for coverity/misc updates.
 
@@ -71,15 +68,15 @@ git push access - you will need to be a member of the git389 group in FAS
 
 - Go back to the source directory, which should be uncleaned after the tarball creation 
 
-    cd /home/source/ds389/389-ds-base
+        cd /home/source/ds389/389-ds-base
 
 - Update Fedora spec file with Rust packages data 
 
-    DS_SPECFILE=/home/mareynol/source/FEDORA/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust
+        DS_SPECFILE=/home/mareynol/source/FEDORA/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust
 
 - Go back to Fedora repo directory 
 
-    cd /fedora/389-ds-base
+        cd /fedora/389-ds-base
 
 - Run **git diff** and check that spec file has only "License:" field changes and 'Provides:  bundled(crate(*' replacements and the rest was not touched by the script
 
@@ -89,15 +86,13 @@ git push access - you will need to be a member of the git389 group in FAS
 
 - Edit **389-ds-base.spec** with version/changelog (see paragraph below)
 
-    kinit your_id@FEDORAPROJECT.ORG
-
-    fedpkg verrel
-
-    fedpkg new-sources /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2 /home/source/ds389/jemalloc-5.1.0.tar.bz2
+        kinit your_id@FEDORAPROJECT.ORG
+        fedpkg verrel
+        fedpkg new-sources /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2 /home/source/ds389/jemalloc-5.1.0.tar.bz2
     
 - Add tar ball created by git archive cmd from above, and always include **jemalloc**. Another option is just **uploading** the recent tarball 
 
-    fedpkg upload /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2**
+        fedpkg upload /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2**
 
 - **git status** - Should show the "sources" and ".gitignore" are staged
 
@@ -105,27 +100,27 @@ git push access - you will need to be a member of the git389 group in FAS
 
 - Create a “*.src.rpm” file
      
-    fedpkg --release fxx srpm** 
+        fedpkg --release fxx srpm** 
 
 - Do a scratch build to m ake sure ewfverything is working
 
-    fedpkg --release fxx scratch-build --srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm --arches=x86_64
+        fedpkg --release fxx scratch-build --srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm --arches=x86_64
 
 - If the build is successful generatea clog (change log file)
 
-    fedpkg clog
+        fedpkg clog
 
 - Commit the changes
 
-    git commit -a -F clog
+        git commit -a -F clog
 
 - Push the changes
 
-    git push origin rawhide
+        git push origin rawhide
 
 - Do the official Koji build, and update bodhi
 
-    fedpkg --release fxx build --nowait
+        fedpkg --release fxx build --nowait
 
 - An email will be sent from Koji telling you if the build was successful
 
@@ -137,9 +132,9 @@ Let assume rawhide branch contains some fixes that are partial (or broken) and y
 
 - Prepare the source with selected list of patches on top of **2.0.4** for example
 
-    git clone git@github.com:389ds/389-ds-base.git
-    cd 389-ds-base
-    git checkout -b upstream_2.0.4_plus_db_suffix
+        git clone git@github.com:389ds/389-ds-base.git
+        cd 389-ds-base
+        git checkout -b upstream_2.0.4_plus_db_suffix
 
 - Rebase on **Bump version to 2.0.4.3** and apply the patches
 
@@ -147,21 +142,23 @@ Let assume rawhide branch contains some fixes that are partial (or broken) and y
 
 - On fedpkg
 
-    fedpkg clone 389-ds-base
-    cd 389-ds-base
+        fedpkg clone 389-ds-base
+        cd 389-ds-base
     
 - Upload the source tarball (should not be necessary as it was already done): 
 
-    fedpkg upload <source>/389-ds-base-2.0.4.tar.bz2
+        fedpkg upload <source>/389-ds-base-2.0.4.tar.bz2
     
 - Go back to the source directory (see above), which should be uncleaned after the tarball creation
 - Copy the patches from the source tree (taking care of the numbering)
 - Update Fedora spec file with Rust packages data 
 
-    DS_SPECFILE=\<fedpkg\>/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust
+        DS_SPECFILE=\<fedpkg\>/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust
 
 - Edit spec file to add the patches
 
+        ...
+        ...
         Source0:          https://releases.pagure.org/389-ds-base/%{name}-%{version}%{?prerel}.tar.bz2
         # 389-ds-git.sh should be used to generate the source tarball from git
         Source1:          %{name}-git.sh
@@ -172,34 +169,36 @@ Let assume rawhide branch contains some fixes that are partial (or broken) and y
         
         +Patch0:           0000-Issue-db_suffix.patch
         +Patch1:           0001-Issue-foo.patch
+        ...
+        ...
 
-    git add <all patches>
+        $ git add <all patches>
     
 - edit the *source* file to keep only the right one
 
 - Verify changes to spec file is producing the correct version
 
-    fedpkg verrel
+        fedpkg verrel
 
 - Check the patches applied correctly
 
-    fedpkg prep
+        fedpkg prep
 
 - Remove useless tarballs from **sources** file
 - Create srpm file
 
-    fedpkg srpm
+        fedpkg srpm
 
 - Do scratch build. commit and push changes
 
-    fedpkg scratch-build --srpm=389-ds-base-2.0.4-3.xxxxx.src.rpm** **--arches=x86_64
-    fedpkg clog
-    git commit -a -F clog
-    git push origin rawhide
+        fedpkg scratch-build --srpm=389-ds-base-2.0.4-3.xxxxx.src.rpm** **--arches=x86_64
+        fedpkg clog
+        git commit -a -F clog
+        git push origin rawhide
 
 - Do the official Koji build, and update bodhi
 
-    fedpkg build --nowait
+        fedpkg build --nowait
 
 - You are **done** (no fedpkg update, no release note, no mail)
 
@@ -217,15 +216,15 @@ You may check existing versions in [fedoraproject](https://src.fedoraproject.org
 
 - Go back to the source directory, which should be uncleaned after the tarball creation 
 
-    cd /home/source/ds389/389-ds-base
+        cd /home/source/ds389/389-ds-base
 
 - Update Fedora spec file with Rust packages data 
 
-    DS_SPECFILE=/fedora/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust
+        DS_SPECFILE=/fedora/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust
 
 - Go back to Fedora repo directory 
 
-    cd /fedora/389-ds-base
+        cd /fedora/389-ds-base
 
 - Run **git diff** and check that spec file has only "License:" field changes and 'Provides:  bundled(crate(*' replacements and the rest was not touched by the script
 
@@ -239,52 +238,52 @@ You may check existing versions in [fedoraproject](https://src.fedoraproject.org
 
 - Add the header line:
 
-    * Tue Jul 17 2018 Mark Reynolds \<mreynolds@redhat.com\> - 1.4.1.6-1
+        * Tue Jul 17 2018 Mark Reynolds \<mreynolds@redhat.com\> - 1.4.1.6-1
 
 - Then copy in the contents of **cl-info** underneath the header
 
-    kinit your_id@FEDORAPROJECT.ORG
+        kinit your_id@FEDORAPROJECT.ORG
 
 - Verify changes to spec file is producing the correct version
 
-    fedpkg verrel
+        fedpkg verrel
 
 - Add new source files (tar ball created by git archive cmd from above, and always include **jemalloc**)
 
-    fedpkg new-sources /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2 /home/source/ds389/jemalloc-5.1.0.tar.bz2
+        fedpkg new-sources /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2 /home/source/ds389/jemalloc-5.1.0.tar.bz2
     
 - Another option is just **uploading** the recent tarball 
 
-    fedpkg upload /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2
+        fedpkg upload /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2
 
 - Should show the "sources" and ".gitignore" are staged
 
-    git status 
+        git status 
 
 - Remove useless tarballs from **sources** file
 - Create srpm
 
-    fedpkg srpm
+        fedpkg srpm
 
 - Do scratch build (for faster building you can select just a single architecture by using "**-\\\-arches=x86_64**")
 
-    fedpkg scratch-build --srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm**  --arches=x86_64
+        fedpkg scratch-build --srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm**  --arches=x86_64
 
 - Create clog file, commit nad push changes
 
-    fedpkg clog
-    git commit -a -F clog
-    git push origin BRANCH
+        fedpkg clog
+        git commit -a -F clog
+        git push origin BRANCH
 
 - Do the official Koji build, and update bodhi
 
-    fedpkg build --nowait
+        fedpkg build --nowait
 
 - An email will be sent from Koji telling you if the build was successful
 
 - Once builds are done, and you received an email, run:
 
-    fedpkg update
+        fedpkg update
     
 - And edit as follows:
 
@@ -297,7 +296,7 @@ You may check existing versions in [fedoraproject](https://src.fedoraproject.org
 
 -   Do **fedpkg update** for each branch you did a build for.  This will submit this build to "bohdi" for the final Fedora release
 
-    fedpkg update
+        fedpkg update
 
 DS - push the updates and the tag
 ---------------------------------
@@ -314,7 +313,9 @@ NOTE: Do not git push -\\\-tags - you may inadvertently push tags you did not in
 Update The Wiki (internal use only)
 ------------------------------------
 
--   Upload the source tarball to GitHub <https://github.com/389ds/389-ds-base/releases/new>
+-   Checkout the wiki source code
+
+        git clone git@github.com:389ds/389ds.github.io.git
 
 -   Create a release note under the following directory (follow the previous release note as a template)
 
