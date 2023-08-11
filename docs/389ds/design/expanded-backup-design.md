@@ -22,7 +22,7 @@ These are the files that are archived during a backup (db2bak)
 - /etc/dirsrv/slapd-YOUR_INSTANCE/pwdfile.txt
 - /etc/dirsrv/slapd-YOUR_INSTANCE/certmap.conf
 - /etc/dirsrv/slapd-YOUR_INSTANCE/slapd-collations.conf
-- /etc/dirsrv/slapd-YOUR_INSTANCE/schmea/*
+- /etc/dirsrv/slapd-YOUR_INSTANCE/schema/*
 
 These files are placed in the backup directory as follows:
 
@@ -33,7 +33,7 @@ These files are placed in the backup directory as follows:
 - /backup_dir/config_files/pwdfile.txt
 - /backup_dir/config_files/certmap.conf
 - /backup_dir/config_files/slapd-collations.conf
-- /backup_dir/config_files/schmea/*
+- /backup_dir/config_files/schema/*
 
 
 Major configuration options and enablement
