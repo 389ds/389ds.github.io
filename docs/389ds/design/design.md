@@ -35,17 +35,24 @@ If you are adding a new design document, use the [template](design-template.html
 
 -   [Ansible DS](ansible-ds.html)
 
+## 389 Directory Server 2.3
+
+-   Rust by default in 2.3
+-   [Security Audit Log](security-audit-log-design.html)
+-   [Expanded Backup](expanded-backup-design.html)
+-   [Alias Entries Plugin](alias-entries-design.html)
+-   [HAProxy Connection Proxy Design](haproxy-support.html)   --> might only land in 2.4
+-   [Dynamic handling of the number of worker threads](worker-threads.html)
+-   [Store Case-Sensitive DN in Entry](store-case-sensitive-dn-design.html)
+-   [Audit Log Display Entry Attributes](audit-log-entry-attrs-design.html)
+
 ## 389 Directory Server 2.x
 
 -   [Account Policy Inactivity & Expiration](account-policy-inactivity-and-expiration-design.html)
 -   [Access Log Statistics Improvements](log-operation-stats.html)
 -   [Improve Automember Fixup Task](automember-rebuild-cleanup-design.html)
--   [Audit Log Display Entry Attributes](audit-log-entry-attrs-design.html)
--   [Store Case-Sensitive DN in Entry](store-case-sensitive-dn-design.html)
--   [Security Audit Log](security-audit-log-design.html)
 -   [Slapi_memberof](slapi-memberof.html)
 -   [Connection Table Multi List](connection-table-lists.html)
--   Rust by default in 2.3
 -   Pluggable Backend --> move to LMDB
 -   [OTP Password Policy](otp-password-policy.html)
 -   [LDAPI DN Rewritter](ldapi-auto-auth-dn-design.html)
@@ -54,10 +61,7 @@ If you are adding a new design document, use the [template](design-template.html
 -   [DB Locks Monitoring](dblocks-monitoring.html)
 -   [Global Counters Contention](global-counters-contention.html)
 -   [Support of In Chain matching rule](matching-rule-in-chain.html)
--   [Alias Entries Plugin](alias-entries-design.html)
 -   [Account Policy Plugin Inactivity And Expiration](account-policy-inactivity-and-expiration-design.html)
--   [HAProxy Connection Proxy Design](haproxy-support.html)
--   [Dynamic handling of the number of worker threads](worker-threads.html)
 
 ## 389 Directory Server 1.4.4
 
