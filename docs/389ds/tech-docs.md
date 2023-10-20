@@ -50,6 +50,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [Troubleshoot CleanAllRUV Task](FAQ/troubleshoot-cleanallruv.html)
 -   [Change Log Trimming and Management](FAQ/changelog-trimming.html)
 -   [Password Policy Response Controls](design/password-controls.html)
+-   [FAQ about BerkeleyDB backend deprecation and using LMDB backend](FAQ/Berkeley-DB-deprecation.html)
 
 <br><a name="web-apps"></a>
 
