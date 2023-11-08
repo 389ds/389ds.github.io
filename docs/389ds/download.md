@@ -85,26 +85,6 @@ yum module install 389-directory-server:stable/default
 
 </details>
 
-### RHEL 6, RHEL 7, CentOS 6, CentOS 7 (ds 1.3.x)
-
-**NOTE**: Use the 389-ds-base package from your base distribution.  389-ds-base is part of RHEL and CentOS now.  The copr repositories are discontinued.
-
-For the admin server and console parts, you must first install EPEL from <https://fedoraproject.org/wiki/EPEL>.
-
-Then you can install 389-ds-base and get all of the core directory server, admin server, and console components as per the directions below.
-
-- Install just DS (recommended)
-```
-yum install 389-ds-base
-setup-ds.pl
-```
-
-- Install the server and the admin server/java console
-```
-yum install 389-ds-base 389-admin 389-ds-console 389-admin-console
-setup-ds-admin.pl
-```
-
 #### Upgrade an existing system:
 
 Do a system upgrade as advised by your vendor. That's it!
