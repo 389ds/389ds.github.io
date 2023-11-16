@@ -11,7 +11,7 @@ Fedora packages are available on Rawhide (f39)
 
 Rawhide:
 
-<https://koji.fedoraproject.org/koji/taskinfo?taskID=109071568>
+<https://koji.fedoraproject.org/koji/taskinfo?taskID=109084544>
 
 The new packages and versions are:
 
