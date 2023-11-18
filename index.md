@@ -61,10 +61,10 @@ If you're new to the project you should start with our [getting started](docs/38
     For more see our [Features](docs/389ds/FAQ/features.html) and [third party plugin](docs/389ds/third-party.html) pages.
 
 ## Community
+To get in touch with us, you can try to reach us on **IRC** at **\#389** on **irc.libera.chat** or on one of our [mailing lists](docs/389ds/mailing-lists.html).
 
-To get in touch with us, you can reach us on slack at #team-ldap or on one of our [mailing lists](docs/389ds/mailing-lists.html).
-
-
+## News
+We have moved our IRC channel **\#389** from *freenode* to **irc.libera.chat** (irc://irc.libera.chat/389)
 <br>
 
 <!-- Try to keep this list under 10 releases  -->
