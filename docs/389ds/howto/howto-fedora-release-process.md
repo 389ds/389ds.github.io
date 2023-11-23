@@ -4,97 +4,110 @@ title: "Fedora Release Process"
 
 # Fedora Release Process
 ------------------------
-
 {% include toc.md %}
-
 
 ### Prerequisites
 
-You will need a FAS account at <https://admin.fedoraproject.org/accounts/user/new>
+- A FAS account at https://accounts.fedoraproject.org/
+	- You will need to create an ssh key pair and upload your public key in order to push updates
 
-- You will need to create an ssh key pair and upload your public key
-- You will need your ssh key in order to push updates to the 389 git repo
-- You will need a Fedora cert (\~/.fedora.cert) - when you get your FAS account, it should prompt you to get a cert
+- You will need to be a member of the following groups
+	- https://accounts.fedoraproject.org/group/git389/
+		+ Contact a sponsor for access
+	- https://accounts.fedoraproject.org/group/packager/
+		* See https://docs.fedoraproject.org/en-US/package-maintainers/Joining_the_Package_Maintainers/ for access
+    - https://src.fedoraproject.org/rpms/389-ds-base
+        * Contact a member for access
 
-git push access - you will need to be a member of the git389 group in FAS
 
-- Requires a FAS account
-- <https://admin.fedoraproject.org/accounts/group/view/git389>
-- Request access, then bug a 389 developer to add you
+#### **DS** = 389-ds-base source code repo
 
-#### **DS** = the 389 source code SCM
-
+    mkdir -p /home/$USER/source/ds389; cd /home/$USER/source/ds389
     git clone git@github.com:389ds/389-ds-base.git
 
-#### **Fedora** = the 389-ds-base dist-git repo which contains the specfile
+#### **Fedora** = 389-ds-base dist-git repo which contains the specfile
 
+    mkdir -p /home/$USER/source/fedora; cd /home/$USER/source/fedora
     fedpkg clone 389-ds-base
 
+### **DS - Using an existing branch**
 
-### **DS** - checkout the source, add the fixes, set the version, tag it, and archive it
+- Checkout the source
 
-    mkdir /home/source/ds389; cd /home/source/ds389
-    git clone git@github.com:389ds/389-ds-base.git
-    cd 389-ds-base
-    git checkout 389-ds-base-x.x
+      cd /home/$USER/source/ds389/389-ds-base
+      git checkout 389-ds-base-2.4
 
 - Commit any fixes that have not yet been applied
-
-- Do a **git log** to make sure all the commits are done!
-
 - Update **VERSION.sh** and set the new version string
 
-        git commit -a -m “Bump version to <new version>"
+      git commit -a -m “Bump version to 2.4.4"
 
-- All commits must be done before **git tag**! Otherwise you might need to use **git tag -f \$TAG**
 
-- Generate the source tarball, and changelog file (used for updating the specfile's changelog and the wiki release notes)
+- Apply tag / Generate the source tarball / Generate changelog file
 
         rm -rf src/cockpit/389-console/dist src/cockpit/389-console/cockpit_dist
 
         TAG=389-ds-base-1.3.9.1  ; git tag $TAG ; git archive --prefix=$TAG $TAG | bzip2 > $TAG.tar.bz2 ; git log --oneline 389-ds-base-1.3.9.0.. > /tmp/cl-info
-        TAG=389-ds-base-1.4.3.39 ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-1.4.3.38.. > /tmp/cl-info
-        TAG=389-ds-base-2.2.10   ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.2.9.. > /tmp/cl-info
-        TAG=389-ds-base-2.3.8    ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.3.7.. > /tmp/cl-info
-        TAG=389-ds-base-2.4.7    ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.4.6.. > /tmp/cl-info
+        TAG=389-ds-base-2.4.4    ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.4.3.. > /tmp/cl-info
 
-- Edit the **/tmp/cl-info** file. Remove the hash prefix value for all bugzilla and github issues. Leave the hash for coverity/misc updates.
+- Notes:
+	- Changelog file (**/tmp/cl-info**) is used for updating the specfile changelog section and release notes. Remove the hash prefix value for all bugzilla and github issues. Leave the hash for coverity/misc updates.
+	- All commits must be done before **git tag**, otherwise you might need to use **git tag -f \$TAG**
+	- Dont forget the revision range notation
+
 
 ### **Fedora** - Dist-Git - New release
+In general, when we do a new build, we push changes to rawhide first, so that the development branch has the newest bits, then to active Fedora releases ( f39, f40)
 
-    git checkout rawhide  (or f39, f38, ...)
+- Checkout the source
 
-- Go back to the source directory, which should be uncleaned after the tarball creation 
+        cd /home/$USER/source/fedora/389-ds-base
+        git checkout f39
 
-        cd /home/source/ds389/389-ds-base
+- Go back to the DS source directory, which should be uncleaned after the tarball creation
+
+        cd /home/$USER/source/ds389/389-ds-base
 
 - Update Fedora spec file with Rust packages data 
 
-        DS_SPECFILE=/home/mareynol/source/FEDORA/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust
+        DS_SPECFILE=/home/$USER/source/fedora/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust
         
     - On 1.4.3:
 
-            FEDORA_SPECFILE=/home/mareynol/source/FEDORA/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust-on-fedora
+                FEDORA_SPECFILE=/home/$USER/source/fedora/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust-on-fedora
 
 - Go back to Fedora repo directory 
 
-        cd /fedora/389-ds-base
+        cd /home/$USER/source/fedora/389-ds-base
 
 - Run **git diff** and check that spec file has only "License:" field changes and 'Provides:  bundled(crate(*' replacements and the rest was not touched by the script
 
-- Edit the spec file **/fedora/389-ds-base/389-ds-base.spec**
+- Update spec file
 
-- Read the instructions around 'License:' field and remove the comments accordingly
+	- Read the instructions around 'License:' field and remove the comments accordingly
 
-- Edit **389-ds-base.spec** with version/changelog (see paragraph below)
+	- Update version
 
-        kinit your_id@FEDORAPROJECT.ORG
+	- Update new changelog entry header (Paste the line generated)
+                
+                cd /home/$USER/source/ds389/389-ds-base
+                git log -n 1 --pretty=format:'* %ad %an <%ae> - 2.4.4' --date=format:"%a %b %d %Y"
+                cd /home/$USER/source/fedora/389-ds-base
+
+
+	- Update new changelog entry commits from the changelog (/tmp/cl-info), paste from clipboard into spec file
+
+			sed 's/^[^ ]*/-/' /tmp/cl-info | xclip
+
+- Config kerb / Confirm version / Upload tar file
+
+        kinit <FAS_USERNAME>@FEDORAPROJECT.ORG
         fedpkg verrel
-        fedpkg new-sources /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2 /home/source/ds389/jemalloc-5.1.0.tar.bz2
-    
-- Add tar ball created by git archive cmd from above, and always include **jemalloc**. Another option is just **uploading** the recent tarball 
+        fedpkg new-sources /home/$USER/source/ds389/389-ds-base/389-ds-base-2.4.4.tar.bz2  /home/$USER/source/ds389/389-ds-base/jemalloc-5.3.0.tar.bz2
 
-        fedpkg upload /home/source/ds389/389-ds-base-1.4.1.6.tar.bz2**
+- Add tar ball created by git archive cmd from above, and always include **jemalloc**. Another option is just **uploading** the recent tarball (lookaside cache)
+
+        fedpkg upload /home/$USER/source/ds389/389-ds-base/389-ds-base-2.4.4.tar.bz2**
 
 - **git status** - Should show the "sources" and ".gitignore" are staged
 
@@ -102,13 +115,13 @@ git push access - you will need to be a member of the git389 group in FAS
 
 - Create a “*.src.rpm” file
      
-        fedpkg --release fxx srpm
+        fedpkg --release f39 srpm
 
-- Do a scratch build to m ake sure ewfverything is working
+- Do a scratch build to make sure everything is working
 
-        fedpkg --release fxx scratch-build --srpm=389-ds-base-1.4.0.12-1.xxxxx.src.rpm --arches=x86_64
+        fedpkg --release f39 scratch-build --srpm=389-ds-base-2.4.4-1.fc39.src.rpm --arches=x86_64
 
-- If the build is successful generatea clog (change log file)
+- If the build is successful generate a clog (change log file)
 
         fedpkg clog
 
@@ -118,15 +131,15 @@ git push access - you will need to be a member of the git389 group in FAS
 
 - Push the changes
 
-        git push origin rawhide
+        git push origin f39
 
-- Do the official Koji build, and update bodhi
+- Do the official Koji build, save the resulting URL for later
 
-        fedpkg --release fxx build --nowait
+        fedpkg --release f39 build --nowait
 
 - An email will be sent from Koji telling you if the build was successful, or can just monitor the build link
 
-- Do **fedpkg update** for each branch you did a build for.  This will submit this build to "bohdi" for the final Fedora release
+- Do **fedpkg update** for each branch you did a build for.  This will submit this build to "bohdi" for the final Fedora release. Save the resulting URL for later
 
         fedpkg update
         
@@ -134,7 +147,7 @@ git push access - you will need to be a member of the git389 group in FAS
 
         type=bugfix
         request=testing
-        bugs= <leave blank if there are no “Fedora OS” specific bugs included in the release>
+        bugs= <leave blank if there are no “Fedora OS” specific bugs included in the release>
         autokarma=True
         stable_karma=1
         unstable_karma=-1
@@ -223,32 +236,36 @@ NOTE: Do not push the tags until you are sure the builds were successful! Once y
 
 NOTE: Do not git push -\\\-tags - you may inadvertently push tags you did not intend - push tags specifically by name
 
-    cd /home/source/ds389/ds
-    git push origin 389-ds-base-2.2
-    git push origin refs/tags/389-ds-base-2.2.2
+        cd /home/source/ds389/ds
+        git push origin 389-ds-base-2.2
+        git push origin refs/tags/389-ds-base-2.2.2
 
 
 ### Update The Wiki (internal use only)
 
+I found ghostwriter useful for displayig the markdown file changes.
+
 -   Checkout the wiki source code
 
+        mkdir -p /home/$USER/source/dswiki; cd /home/$USER/source/dswiki
         git clone git@github.com:389ds/389ds.github.io.git
 
 -   Create a release note under the following directory (follow the previous release note as a template)
 
-        /SOURCE/docs/389ds/releases/
+        /home/$USER/source/dswiki/389ds.github.io/docs/389ds/releases/release-2-4-4.md
 
 -   Update the main page under the **News** Section.  Keep the number of releases under 10 - we do not want to crowd the homepage.
 
-        /SOURCE/index.md
+        /home/$USER/source/dswiki/389ds.github.io/index.md
 
 -   Update the "release notes" page with the new release note
 
-        /SOURCE/docs/389ds/releases/release-notes.md
+        /home/$USER/source/dswiki/389ds.github.io/docs/389ds/releases/release-notes.md
 
 -   Update the sources page
 
-        /SOURCE/docs/389ds/development/source.md
+        sha512sum 389-ds-base-2.4.4.tar.gz
+        /home/$USER/source/dswiki/389ds.github.io/docs/389ds/development/source.md
 
 -   Push your updates
 
