@@ -45,10 +45,10 @@ title: "Fedora Release Process"
 
 - Apply tag / Generate the source tarball / Generate changelog file
 
-		rm -rf src/cockpit/389-console/dist src/cockpit/389-console/cockpit_dist
+        rm -rf src/cockpit/389-console/dist src/cockpit/389-console/cockpit_dist
 
-		TAG=389-ds-base-1.3.9.1  ; git tag $TAG ; git archive --prefix=$TAG $TAG | bzip2 > $TAG.tar.bz2 ; git log --oneline 389-ds-base-1.3.9.0.. > /tmp/cl-info
-		TAG=389-ds-base-2.4.4    ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.4.3.. > /tmp/cl-info
+        TAG=389-ds-base-1.3.9.1  ; git tag $TAG ; git archive --prefix=$TAG $TAG | bzip2 > $TAG.tar.bz2 ; git log --oneline 389-ds-base-1.3.9.0.. > /tmp/cl-info
+        TAG=389-ds-base-2.4.4    ; git tag $TAG ; export TAG ; SKIP_AUDIT_CI=1 make -f rpm.mk dist-bz2 ; git log --oneline 389-ds-base-2.4.3.. > /tmp/cl-info
 
 - Notes:
 	- Changelog file (**/tmp/cl-info**) is used for updating the specfile changelog section and release notes. Remove the hash prefix value for all bugzilla and github issues. Leave the hash for coverity/misc updates.
@@ -61,8 +61,8 @@ In general, when we do a new build, we push changes to rawhide first, so that th
 
 - Checkout the source
 
-		cd /home/$USER/source/fedora/389-ds-base
-		git checkout f39
+        cd /home/$USER/source/fedora/389-ds-base
+        git checkout f39
 
 - Go back to the DS source directory, which should be uncleaned after the tarball creation
 
@@ -74,7 +74,7 @@ In general, when we do a new build, we push changes to rawhide first, so that th
         
     - On 1.4.3:
 
-			FEDORA_SPECFILE=/home/$USER/source/fedora/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust-on-fedora
+                FEDORA_SPECFILE=/home/$USER/source/fedora/389-ds-base/389-ds-base.spec make -f rpm.mk bundle-rust-on-fedora
 
 - Go back to Fedora repo directory 
 
@@ -89,10 +89,10 @@ In general, when we do a new build, we push changes to rawhide first, so that th
 	- Update version
 
 	- Update new changelog entry header (Paste the line generated)
-
-			cd /home/$USER/source/ds389/389-ds-base
-			git log -n 1 --pretty=format:'* %ad %an <%ae> - 2.4.4' --date=format:"%a %b %d %Y"
-			cd /home/$USER/source/fedora/389-ds-base
+                
+                cd /home/$USER/source/ds389/389-ds-base
+                git log -n 1 --pretty=format:'* %ad %an <%ae> - 2.4.4' --date=format:"%a %b %d %Y"
+                cd /home/$USER/source/fedora/389-ds-base
 
 
 	- Update new changelog entry commits from the changelog (/tmp/cl-info), paste from clipboard into spec file
@@ -101,7 +101,7 @@ In general, when we do a new build, we push changes to rawhide first, so that th
 
 - Config kerb / Confirm version / Upload tar file
 
-		kinit <FAS_USERNAME>@FEDORAPROJECT.ORG
+        kinit <FAS_USERNAME>@FEDORAPROJECT.ORG
         fedpkg verrel
         fedpkg new-sources /home/$USER/source/ds389/389-ds-base/389-ds-base-2.4.4.tar.bz2  /home/$USER/source/ds389/389-ds-base/jemalloc-5.3.0.tar.bz2
 
