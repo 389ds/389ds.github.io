@@ -120,7 +120,7 @@ backend ldap_back
     f. Finally, create the `haproxy.pem`:
 
     ```bash
-    cat server.key server.crt > haproxy.pem
+    cat server.key ca.crt server.crt > haproxy.pem
     ```
 
 ## Step 3: Configure 389 DS Client
