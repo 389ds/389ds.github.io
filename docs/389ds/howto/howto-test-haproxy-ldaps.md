@@ -14,7 +14,7 @@ A simple guide for HAProxy with LDAP configuration for testing purposes. If used
 **This guide covers LDAP/LDAPS configuration only.** GSSAPI/EXTERNAL and LDAP with StartTLS may be covered later in a separate document.
 
 ## Step 1: Create Virtual Machines
-We will need to create three Fedora (i.e. F38) virtual machines for our setup:
+We will need to create three Fedora (i.e. F38) virtual machines for our setup. You can use another distribution, but carefully check the HAProxy configuration to see if it supports all of the mentioned features.
 
 1. HAProxy server: `haproxy.example.com`
 2. 389 DS client: `client.example.com`
@@ -68,7 +68,7 @@ backend ldaps_back
 You can replace the last part with this code if you want to use non-secure port, **but it's not recommended**. Always consider the security.
 
 ```
-frontend ldaps_front
+frontend ldap_front
     bind *:389
     default_backend ldap_back
 
@@ -76,6 +76,8 @@ backend ldap_back
     balance roundrobin
     server ldap1 server.example.com:389 send-proxy-v2
 ```
+
+For human-readable proxy headers (version 1), use `send-proxy` instead of `send-proxy-v2`.
 
 3. Generate the `haproxy.pem` certificate using the following steps:
 
@@ -117,21 +119,24 @@ backend ldap_back
 
     This signs the CSR using the self-signed CA's private key and certificate, producing a signed certificate.
 
-    f. Finally, create the `haproxy.pem`:
+    f. Finally, create  `haproxy.pem` and `haproxy_client.pem`:
 
     ```bash
-    cat server.key ca.crt server.crt > haproxy.pem
+    cat server.key server.crt > haproxy.pem
+    cat server.key ca.crt server.crt > haproxy_client.pem
     ```
+
+    It is done this way because the client needs to verify the full certificate chain.
 
 ## Step 3: Configure 389 DS Client
 On the Client machine, perform the following steps:
 
-1. Copy the `haproxy.pem` certificate to the client machine to `/etc/pki/tls/certs/`:
+1. Copy the `haproxy_client.pem` certificate to the client machine to `/etc/pki/tls/certs/`:
 
 2. Edit the `/etc/openldap/ldap.conf` file to include this line:
 
 ```
-TLS_CACERT      /etc/pki/tls/certs/haproxy.pem
+TLS_CACERT      /etc/pki/tls/certs/haproxy_client.pem
 ```
 
 ## Step 4: Configure 389 DS Server
@@ -146,7 +151,7 @@ On the Server machine, perform the following steps:
 ## Step 5: Final Steps on HAProxy Machine
 Back on the HAProxy machine, perform the following steps:
 
-1. Run `setenforce 0` to disable SELinux for testing purposes only:
+1. Run `setenforce 0` to disable SELinux **for testing purposes only**:
 
 ```bash
 setenforce 0
@@ -166,3 +171,9 @@ ldapsearch -H ldaps://haproxy.example.com:636 -D "cn=directory manager" -W -s ba
 ```
 
 This should connect to the 389 DS server and the server should log the correct client IP address.
+
+And if you used non-secure port configuration, you can use the next command:
+
+```bash
+ldapsearch -H ldap://haproxy.example.com:389 -D "cn=directory manager" -W -s base -b ""
+```
