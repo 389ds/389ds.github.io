@@ -7,7 +7,7 @@ title: "Releases/2.4.5"
 
 The 389 Directory Server team is proud to announce 389-ds-base version 2.4.5
 
-Fedora packages are available on Fedora 40 and Rawhide.
+Fedora packages are available on Fedora 39 and Rawhide.
 
 Fedora 39:
 
