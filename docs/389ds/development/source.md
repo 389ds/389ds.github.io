@@ -21,6 +21,12 @@ The source code was produced by first doing a git clone to get the repository, t
 
     git archive --prefix=PKGNAME/ TAG | bzip2 > PKGNAME.tar.bz2
     
+### 389 Directory Server 3.0
+
+|Source tarball|git module|git tag|More Info|SHA512SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-3.0.1.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.0.1/389-ds-base-3.0.1.tar.bz2)|389-ds-base.git|389-ds-base-3.0.1|[Building](building.html)|56b9df51e1753f77659c417b90c6aa452e6066b91623e3e5a70955d263c40bb6d7541cc86e93e27eb7a6430f6e0edd75c15970126b989f448a37299369a2dbe2|
+
 ### 389 Directory Server 2.4
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
