@@ -27,12 +27,11 @@ Source tarballs are available for download at [GitHub Releases page](https://git
 
 - Lightning Memory-Mapped Database Manager (LMDB) is now used by default when creating new instances instead of
 Berkeley Database that is deprecated (but still usable)
-For more informations, see: https://www.port389.org/docs/389ds/FAQ/Berkeley-DB-deprecation.html
+For more informations, see: [FAQ about BerkeleyDB backend deprecation and using LMDB backend](../FAQ/Berkeley-DB-deprecation.html)
 - The fact of using lmdb instead of Berkeley DB may greatly change the server dynamic so we decided
 to change the major version but in practice for instances that are still using Berkeley database,
 it is only a minor update.
-- Includes all changes of 389-ds-base-2.4.5
-- Bug fixes
+- Enhancements and Bug fixes
 
 ### Installation and Upgrade
 
