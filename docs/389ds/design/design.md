@@ -36,6 +36,7 @@ If you are adding a new design document, use the [template](design-template.html
 ## Ansible
 
 - [Ansible DS](ansible-ds.html)
+- [Replication Monitoring With Ansible](ansible-replication-monitoring-design.html)
 
 
 ## 389 Directory Server 3.1
@@ -47,6 +48,7 @@ If you are adding a new design document, use the [template](design-template.html
 - [Online certificates refresh](online-certificate-refresh.html)
 - [CLI Encryption Module Management](cli-encryption-module-design.html)
 - [Fine grain operation timing](fine-grain-operation-timing.html)
+- [Replication Lag Report Design - Tech Preview](replication-lag-report-design.md)
 
 ## 389 Directory Server 3.0
 
