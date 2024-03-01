@@ -35,6 +35,10 @@ If you are adding a new design document, use the [template](design-template.html
 
 -   [Ansible DS](ansible-ds.html)
 
+## 389 Directory Server 3.0
+
+-   [MFA Operation Note For Auditing](mfa-operation-note-design.html)
+
 ## 389 Directory Server 2.3
 
 -   Rust by default in 2.3

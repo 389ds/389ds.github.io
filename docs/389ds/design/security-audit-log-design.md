@@ -78,7 +78,7 @@ Authentication.Authorization
         conn_id: '',
         op_id: '',
         dn: '',
-        bind_method: 'SIMPLE, SASL/GSSAPI, SASL/DIGEST-MD5, SSLCLIENTAUTH',
+        bind_method: 'SIMPLE, SIMPLE/MFA, SASL/GSSAPI, SASL/DIGEST-MD5, SSLCLIENTAUTH',
         root_dn: true/false,
         msg: 'INVALID_PASSWORD, NO_SUCH_ENTRY, ACCOUNT_LOCKED, CERT_MAP_FAILED'
     }
