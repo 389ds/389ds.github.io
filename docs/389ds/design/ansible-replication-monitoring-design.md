@@ -14,7 +14,7 @@ title: "Replication Monitoring With Ansible"
 
 | Version | Date       | Description of Change |
 |---------|------------|-----------------------|
-| 0.1     | 02-15-2024 | First MVP version     |
+| 0.1     | 03-01-2024 | First MVP version     |
 
 ## Introduction
 
@@ -32,7 +32,7 @@ Key components include:
 
 - **Ansible Inventory (`inventory/inventory.yml`):** Specifies hosts and variables for the staging and production environment.
 - **Roles (`Replication-Monitoring`):** Encapsulates tasks for data gathering, analysis, and reporting.
-- **Playbooks (`monitor-replication.yml`, `cleanup-environment.yml`, etc.):** Provide role examples with different combinations of parameters and states.
+- **Playbooks (`monitor-replication.yml`, `cleanup-environment.yml`, etc.):** Provide role examples with different combinations of parameters.
 
 ## System Architecture
 
@@ -102,7 +102,6 @@ A simple playbook example that gathers data from 389 DS servers and generates a 
 
   roles:
   - role: Replication-Monitoring
-    state: present
 ```
 
 Example playbook to run create a Replication monitoring report and clean up all temporary data afterwards:
@@ -118,7 +117,6 @@ Example playbook to run create a Replication monitoring report and clean up all 
 
   roles:
   - role: Replication-Monitoring
-    state: present
 ```
 
 Example playbook to clean up all temporary data:
@@ -129,7 +127,6 @@ Example playbook to clean up all temporary data:
 
   roles:
   - role: Replication-Monitoring
-    state: absent
 ```
 
 Example playbook to clean up all temporary data and the results from the results_dir:
@@ -143,7 +140,6 @@ Example playbook to clean up all temporary data and the results from the results
 
   roles:
   - role: Replication-Monitoring
-    state: absent
 ```
 
 ## Molecule Testing
@@ -157,6 +153,15 @@ The project is configured with Ansible Molecule for testing using Docker. To run
 
 The tests simulate a multi-instance DS environment, validating the role syntax, execution, and that output is present and not empty.
 
+## Future Improvements
+
+The final goal for the Ansible Role will be to use the data to provide feedback to tools like Event Driven Ansible (EDA) or Insights Remediations.
+For that, the result should provide facts that can later be used for managing the systems and/or notifying the administrator about the possible performance issue.
+
+Other features for consideration:
+- Modules instead of Python scripts: Move the existing scripts to Ansible Modules for the role to use.
+- Security Enhancements: Implement secure handling of sensitive inventory data using mechanisms like Ansible Vault and provide an option and documentation to configure SSH communication.
+- Version Control: Manage different 389 DS versions to accommodate variations in log formats.
 
 Authors
 =======
