@@ -38,6 +38,7 @@ If you are adding a new design document, use the [template](design-template.html
 ## 389 Directory Server 3.0
 
 -   [MFA Operation Note For Auditing](mfa-operation-note-design.html)
+-   [Audit JSON Logging](audit-json-logging-design.html)
 
 ## 389 Directory Server 2.3
 
