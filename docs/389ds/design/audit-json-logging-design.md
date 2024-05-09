@@ -35,7 +35,7 @@ JSON Design
            {
              op: add/replace/delete,
              attr: "cn",
-             value: "name",
+             values: [value, value, ...],
            },
         ],
         modrdn: {
