@@ -12,7 +12,7 @@ title: "Howto: CertMapping"
 
 The latter is just an additional step to ensure the user's identity.
 
-The [Using Certificate Based Authentication](http://docs.redhat.com/docs/en-US/Red_Hat_Directory_Server/9.0/html/Administration_Guide/Managing_SSL-Using_Certificate_Based_Authentication.html) document describes the basic information about what the certmap.conf file is and how it works. NOTE: For DNComps and FilterComps, the "dc" attribute is supported in addition to the cn, ou, o, c, l, st, e, and mail attributes listed in the document. NOTE: The directory server uses "mail" instead of "e" and will automatically map uses of "e" to "mail" when "e" is specified in the subjectDN, DNComps, or FilterComps.
+The [Using Certificate Based Authentication](https://access.redhat.com/documentation/fr-fr/red_hat_directory_server/11/html/administration_guide/using-based_client_authentication) document describes the basic information about what the certmap.conf file is and how it works. NOTE: For DNComps and FilterComps, the "dc" attribute is supported in addition to the cn, ou, o, c, l, st, e, and mail attributes listed in the document. NOTE: The directory server uses "mail" instead of "e" and will automatically map uses of "e" to "mail" when "e" is specified in the subjectDN, DNComps, or FilterComps.
 
 For example: I have a directory for my company Example, Inc.. The root suffix for my users is dc=example,dc=com, and my entry for Joe User looks like this:
 
