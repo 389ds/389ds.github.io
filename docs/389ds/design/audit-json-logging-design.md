@@ -18,29 +18,35 @@ JSON Design
 ```
 [
     {
-        date: <strftime output>
+        date: <strftime output - customizable>
+        time: <local time - same as original audit log time format>
         target_dn: DN,
         bind_dn: DN,
-        client: IP_ADDRESS,
-        haproxy: IP_ADDRESS,
+        client_ip: IP_ADDRESS,
+        server_ip: IP_ADDRESS
         conn_id: ####,
         op_id: ####,
         result: ##,
-        add: {
-            "attr1": [value, value, ...],
-            "attr2": [value, value, ...],
+        id_list: [
+            {
+                attr: value
+            },
+        }
+        add: "objectclass: top/nobjectclass: person\n...",
+        delete: {
+            dn: DN
         },
-        delete: DN,
         modify: [
-           {
-             op: add/replace/delete,
-             attr: "cn",
-             values: [value, value, ...],
-           },
+            {
+                op: add/replace/delete,
+                attr: "cn",
+                values: [value, value, ...],
+            },
         ],
         modrdn: {
             deleteOldRdn: True/False,
-            newRdn: "cn=mark",
+            newrdn: "cn=mark",
+            newsuperior: "ou=other,dc=example,dc=com"
         }
     },
     {
@@ -55,10 +61,10 @@ Configuration
 Add a new configuration setting for audit logging under **cn=config**
 
 ```
-nsslapd-auditlog-json-format: on/off
+nsslapd-auditlog-json-format: default | json | json-pretty
 ```
 
-For now set this to "off", but in a next major release it should be set to "on" by default.
+For now set this to "default", but in a next major release it should be set to "json" by default.
 
 When switching to a new logging format the current log will be rotated
 
