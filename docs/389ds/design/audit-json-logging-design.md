@@ -18,8 +18,8 @@ JSON Design
 ```
 [
     {
-        date: <strftime output - customizable>
-        time: <local time - same as original audit log time format>
+        local_time: <strftime output - customizable>
+        gm_time: <gm time - uses a fixed format of **%FT%TZ**>
         target_dn: DN,
         bind_dn: DN,
         client_ip: IP_ADDRESS,
@@ -58,7 +58,7 @@ JSON Design
 Configuration
 ------------------------
 
-Add a new configuration setting for audit logging under **cn=config**
+Added a new configuration setting for audit/auditfail logging under **cn=config**
 
 ```
 nsslapd-auditlog-json-format: default | json | json-pretty
@@ -66,9 +66,9 @@ nsslapd-auditlog-json-format: default | json | json-pretty
 
 For now set this to "default", but in a next major release it should be set to "json" by default.
 
-When switching to a new logging format the current log will be rotated
+When switching to a new logging format the current log will be rotated.
 
-You can also adjust the time format using strftime conversion specifications.  The default would be **%FT%TZ**
+You can also customize the "local_time" format using strftime conversion specifications.  The default would be **%FT%TZ**
 
     nsslapd-auditlog-time-format: {strftime specs}
 
