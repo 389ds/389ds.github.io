@@ -4,9 +4,92 @@ title: "Old Release Notes"
 
 # Old Release Notes
 -----------------
--   [389 Directory Server 1.2.11.X is discontinued soon](end-1-2-11.html) *(October 23, 2014)*
--   [389 Directory Server 1.3.x](release-1-3-x-archive.html) *(January 23, 2023)*
--   [389 Directory Password Synchronization](release-passsync-1-1-5.html) *(June 3, 2013)*
--   [389 Directory Server Gateway 1.1.10](release-1-1-10.html) *(March 13, 2013)*
+- [389 Directory Server 2.3.1](release-2-3-1.html) *(November 18, 2022)*
+- [389 Directory Server 2.2.4](release-2-2-4.html) *(November 18, 2022)*
+- [389 Directory Server 2.1.6](release-2-1-6.html) *(November 18, 2022)*
+- [389 Directory Server 2.0.17](release-2-0-17.html) *(November 18, 2022)*
+- [389 Directory Server 2.2.3](release-2-2-3.html) *(September 1, 2022)*
+- [389 Directory Server 2.3.0](release-2-3-0.html) *(September 1, 2022)*
+- [389 Directory Server 2.1.5](release-2-1-5.html) *(August 23, 2022)*
+- [389 Directory Server 2.1.4](release-2-1-4.html) *(July 28, 2022)*
+- [389 Directory Server 2.2.2](release-2-2-2.html) *(July 5, 2022)*
+- [389 Directory Server 2.1.3](release-2-1-3.html) *(July 5, 2022)*
+- [389 Directory Server 2.0.16](release-2-0-16.html) *(July 5, 2022)*
+- [389 Directory Server 2.1.1](release-2-1-1.html) *(March 23, 2022)*
+- [389 Directory Server 2.0.15](release-2-0-15.html) *(March 23, 2022)*
+- [389 Directory Server 2.1.0](release-2-1-0.html) *(Feb 2, 2022)*
+- [389 Directory Server 2.0.14](release-2-0-14.html) *(Jan 28, 2022)*
+- [389 Directory Server 2.0.13](release-2-0-13.html) *(Jan 24, 2022)*
+- [389 Directory Server 2.0.12](release-2-0-12.html) *(Dec 16, 2021)*
+- [389 Directory Server 2.0.11](release-2-0-11.html) *(Nov 22, 2021)*
+- [389 Directory Server 2.0.10](release-2-0-10.html) *(Sep 20, 2021)*
+- [389 Directory Server 2.0.9](release-2-0-9.html) *(Aug 30, 2021)*
+- [389 Directory Server 2.0.8](release-2-0-8.html) *(Aug 23, 2021)*
+- [389 Directory Server 2.0.7](release-2-0-7.html) *(Jul 15, 2021)*
+- [389 Directory Server 2.0.6](release-2-0-6.html) *(Jun 24, 2021)*
+- [389 Directory Server 2.0.5](release-2-0-5.html) *(May 30, 2021)*
+- [389 Directory Server 1.4.3.23](release-1-4-3-23.html) *(May 14, 2021)*
+- [389 Directory Server 2.0.4](release-2-0-4.html) *(Apr 07, 2021)*
+- [389 Directory Server 2.0.3](release-2-0-3.html) *(Feb 12, 2021)*
+- [389 Directory Server 1.4.3.22](release-1-4-3-22.html) *(Mar 19, 2021)*
+- [389 Directory Server 1.4.3.21](release-1-4-3-21.html) *(Mar 05, 2021)*
+- [389 Directory Server 1.4.3.20](release-1-4-3-20.html) *(Feb 12, 2021)*
+- [389 Directory Server 1.4.3.19](release-1-4-3-19.html) *(Feb 11, 2021)*
+- [389 Directory Server 1.4.3.18](release-1-4-3-18.html) *(Jan 15, 2021)*
+- [389 Directory Server 2.0.2](release-2-0-2.html) *(Jan 14, 2021)*
+- [389 Directory Server 1.4.3.17](release-1-4-3-17.html) *(Nov 30, 2020)*
+- [389 Directory Server 1.4.3.16](release-1-4-3-16.html) *(Nov 13, 2020)*
+- [389 Directory Server 2.0.1](release-2-0-1.html) *(Nov 3, 2020)*
+- [389 Directory Server 1.4.5.0](release-1-4-5-0.html) *(Oct 28, 2020)*
+- [389 Directory Server 1.4.3.15](release-1-4-3-15.html) *(Oct 28, 2020)*
+- [389 Directory Server 1.4.3.14](release-1-4-3-14.html) *(Oct 26, 2020)*
+- [389 Directory Server 1.4.3.13](release-1-4-3-13.html) *(Oct 5, 2020)*
+- [389 Directory Server 1.4.3.12](release-1-4-3-12.html) *(July 31, 2020)*
+- [389 Directory Server 1.4.3.11](release-1-4-3-11.html) *(July 8, 2020)*
+- [389 Directory Server 1.4.2.16](release-1-4-2-16.html) *(July 8, 2020)*
+- [389 Directory Server 1.4.3.10](release-1-4-3-10.html) *(June 15, 2020)*
+- [389 Directory Server 1.4.2.15](release-1-4-2-15.html) *(June 15, 2020)*
+- [389 Directory Server 1.4.3.9](release-1-4-3-9.html) *(May 29, 2020)*
+- [389 Directory Server 1.4.2.14](release-1-4-2-14.html) *(May 29, 2020)*
+- [389 Directory Server 1.4.3.8](release-1-4-3-8.html) *(May 8, 2020)*
+- [389 Directory Server 1.4.2.13](release-1-4-2-13.html) *(May 8, 2020)*
+- [389 Directory Server 1.4.3.7](release-1-4-3-7.html) *(Apr 22, 2020)*
+- [389 Directory Server 1.4.3.6](release-1-4-3-6.html) *(Apr 17, 2020)*
+- [389 Directory Server 1.4.2.12](release-1-4-2-12.html) *(Apr 17, 2020)*
+- [389 Directory Server 1.4.3.5](release-1-4-3-5.html) *(Apr 1, 2020)*
+- [389 Directory Server 1.4.2.11](release-1-4-2-11.html) *(Apr 1, 2020)*
+- [389 Directory Server 1.4.2.10](release-1-4-2-10.html) *(Mar 26, 2020)*
+- [389 Directory Server 1.4.3.4](release-1-4-3-4.html) *(Mar 16, 2020)*
+- [389 Directory Server 1.4.2.9](release-1-4-2-9.html) *(Mar 16, 2020)*
+- [389 Directory Server 1.4.3.3](release-1-4-3-3.html) *(Feb 13, 2020)*
+- [389 Directory Server 1.4.2.8](release-1-4-2-8.html) *(Feb 13, 2020)*
+- [389 Directory Server 1.4.2.7](release-1-4-2-7.html) *(Jan 23, 2020)*
+- [389 Directory Server 1.4.3.2](release-1-4-3-2.html) *(Jan 23, 2020)*
+- [389 Directory Server 1.4.3.1](release-1-4-3-1.html) *(Jan 13, 2020)*
+- [389 Directory Server 1.4.2.6](release-1-4-2-6.html) *(Jan 13, 2020)*
+- [389 Directory Server 1.4.2.5](release-1-4-2-5.html) *(Dec 6, 2019)*
+- [389 Directory Server 1.4.2.4](release-1-4-2-4.html) *(Nov 14, 2019)*
+- [389 Directory Server 1.4.2.2](release-1-4-2-2.html) *(September 26, 2019)*
+- [389 Directory Server 1.4.2.1](release-1-4-2-1.html) *(September 17, 2019)*
+- [389 Directory Server 1.3.x Archive](release-1-4-4-archive.html) *(January 23, 2023)*
+- [389 Directory Server 1.3.x Archive](release-1-4-2-archive.html) *(January 23, 2023)*
+- [389 Directory Server 1.3.x Archive](release-1-3-x-archive.html) *(January 23, 2023)*
+- [389-console 1.1.19](release-console-1.1.19.html) *(October 18, 2018)*
+- [python-lib389 1.0.4](release-lib389-1-0-4.html) *(Jun 23, 2017)*
+- [389-admin 1.1.46](release-admin-1-1-46.html) *(November 2, 2016)*
+- [389 DS Console 1.2.16](release-ds-console-1-2-16.html) *(October 19 2016)*
+- [389 Admin Server and Console](release-admin-1-1-45-and-console-pkgs.html) *(October 14 2016)*
+- [389 Directory Password Synchronization](release-passsync-1-1-7.html) *(September 30 2016)*
+- [389 Admin Server / Console for EPEL 6](release-epel6.html) *(July 25, 2016)*
+- [Svrcore 4.1.2](release-svrcore-4.1.2.html) *(May 9, 2016)*
+- [389 Windows Console 1.1.15](release-windows-console-1-1-15.html) *(September 11, 2015)*
+- [389 Admin Server 1.1.42](release-admin-1-1-42.html) *(June 12, 2015)*
+- [389 Console 1.1.9](release-console-1-1-9.html) *(March 9, 2015)*
+- [389 Admin Server 1.1.38](release-admin-1-1-38.html) *(March 9, 2015)*
+- [389 Directory Password Synchronization](release-passsync-1-1-6.html) *(January 28 2015)*
+- [389 Directory Server 1.2.11.X is discontinued soon](end-1-2-11.html) *(October 23, 2014)*
+- [389 Directory Server 1.3.x](release-1-3-x-archive.html) *(January 23, 2023)*
+- [389 Directory Password Synchronization](release-passsync-1-1-5.html) *(June 3, 2013)*
+- [389 Directory Server Gateway 1.1.10](release-1-1-10.html) *(March 13, 2013)*
 
 
