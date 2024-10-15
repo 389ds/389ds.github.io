@@ -37,11 +37,16 @@ If you are adding a new design document, use the [template](design-template.html
 
 - [Ansible DS](ansible-ds.html)
 
+
 ## 389 Directory Server 3.0
 
 - Berkeley Database Deprecation (LMDB database is used by default) and [its impact](../FAQ/Berkeley-DB-deprecation.html)
 - [MFA Operation Note For Auditing](mfa-operation-note-design.html)
 - [Audit JSON Logging](audit-json-logging-design.html)
+
+## 389 Directory Server 2.6
+
+- [Deferred updates in memberof plugin](deferred-memberof-update.html)
 
 ## 389 Directory Server 2.5
 
