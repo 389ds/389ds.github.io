@@ -41,6 +41,7 @@ If you are adding a new design document, use the [template](design-template.html
 ## 389 Directory Server 3.1
 
 - [Session Tracking Control client - replication](session-identifier-clients.html)
+- [Replication Lag Report Design](replication-lag-report-design.md)
 
 ## 389 Directory Server 3.0
 
