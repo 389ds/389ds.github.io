@@ -34,6 +34,7 @@ If you are adding a new design document, use the [template](design-template.html
 ## Ansible
 
 -   [Ansible DS](ansible-ds.html)
+-   [Replication Lag Report Design](replication-lag-report-design.md)
 -   [Replication Monitoring With Ansible](ansible-replication-monitoring-design.html)
 
 ## 389 Directory Server 2.3
