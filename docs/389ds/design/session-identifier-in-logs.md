@@ -2,7 +2,10 @@
 title: "Support of session identifier in logs"
 ---
 
+
 # Support of session identifier in logs
+
+{% include toc.md %}
 
 ## Overview
 --------
@@ -106,7 +109,7 @@ In short the solution
 - it is logged in access log (buffered)
 - it logs a **truncated** (15 chars) of **sessionTrackingIdentifier**
 - **sessionTrackingIdentifier** must only contain printable US-ASCII chars
-- only the last control (**one*) will be taken into account
+- only the last control (**one** control) will be taken into account
 - it **does not** log *sessionSourceIp* and *sessionSourceName* as the source ip is logged in connection information.
 - it **does not** log of *formatOID*
 
@@ -123,15 +126,6 @@ During *get_ldapmessage_controls* (called by each frontend operation), if the co
 *parse_session_tracking_control* extract all the fields of the control. Except *sessionTrackingIdentifier* all fields are ignored. It test that  first 15th chars of *sessionTrackingIdentifier* are printable. Copy them to a string and store the string in the pblock->pb_intop->pb_session_tracking_id. When logging the result (*log_result*) it appends "sid=%s" with pblock->pb_intop->pb_session_tracking_id.
 
 
-The control is parsed but
-
-When the RFE is enabled, memberof plugin creates **a pipe** (*deferred_list*) into its configuration structure and **spawn a dedicated thread** (*deferred update thread*) that will consume what will be written in the pipe. If at startup of the thread, the attribute *memberOfNeedFixup* is set to 'true' then the thread launch a **fixup** task before processing any other update.
-
-Before entering its main loop, the deferred update thread updates the memberof plugin configuration entry and set *memberOfNeedFixup: true*. So if the server would terminate unexpectedly it will run fixup at restart
-
-If the RFE is disabled, no pipe nor dedicated deferred update thread is spawn
-
-
 #### data structure
 
 To support the control a new string *pb_session_tracking_id* is added to the pblock
@@ -143,7 +137,8 @@ To support the control a new string *pb_session_tracking_id* is added to the pbl
     /* For password policy control */
     int pb_pwpolicy_ctrl;
 
-    char *pb_session_tracking_id; /* For session tracking control */
+    char *pb_session_tracking_id; /* For session tracking control */ <---- ADDED
+
     int pb_paged_results_index;  /* stash SLAPI_PAGED_RESULTS_INDEX */
     ...
     } slapi_pblock_intop;
