@@ -43,6 +43,7 @@ If you are adding a new design document, use the [template](design-template.html
 - Berkeley Database Deprecation (LMDB database is used by default) and [its impact](../FAQ/Berkeley-DB-deprecation.html)
 - [MFA Operation Note For Auditing](mfa-operation-note-design.html)
 - [Audit JSON Logging](audit-json-logging-design.html)
+- [Session Tracking Control](session-identifier-in-logs.html)
 
 ## 389 Directory Server 2.6
 
