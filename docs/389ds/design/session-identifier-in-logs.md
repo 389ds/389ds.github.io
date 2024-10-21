@@ -119,12 +119,27 @@ In short the solution
 ### Implementation
 ------------
 
+#### impacted functions
+
 The control LDAP_CONTROL_X_SESSION_TRACKING is registered (init_controls) for all type of operations.
 
-During *get_ldapmessage_controls* (called by each frontend operation), if the control is present (*slapi_control_present*) in an operation then it *parse_session_tracking_control*. *parse_session_tracking_control* is a new function that parse the ber (returned by *slapi_control_present*).
+During *get_ldapmessage_controls* (called by each frontend operation), if the control is present (*slapi_control_present*) in an operation and the LDAP client is allowed (see 'Access control') to use such control then it *parse_session_tracking_control*. *parse_session_tracking_control* is a new function that parse the ber (returned by *slapi_control_present*).
 
-*parse_session_tracking_control* extract all the fields of the control. Except *sessionTrackingIdentifier* all fields are ignored. It test that  first 15th chars of *sessionTrackingIdentifier* are printable. Copy them to a string and store the string in the pblock->pb_intop->pb_session_tracking_id. When logging the result (*log_result*) it appends "sid=%s" with pblock->pb_intop->pb_session_tracking_id.
+*parse_session_tracking_control* extract all the fields of the control. Except *sessionTrackingIdentifier* all fields are ignored. It test that  first 15th chars of *sessionTrackingIdentifier* are printable. Copy them to a string and store the string in the pblock->pb_intop->pb_session_tracking_id. When logging the result (*log_result*) it appends "**sid**=%s" with pblock->pb_intop->pb_session_tracking_id. "**sid**=" stands for **S**ession **ID**entifier.
 
+#### Access control
+
+Because the LDAP client can fill the access log with extra strings, the use of this control is restricted to authenticated users. This is enforced with this acl
+
+```
+dn: oid=1.3.6.1.4.1.21008.108.63.1,cn=features,cn=config
+objectClass: top
+objectClass: directoryServerFeature
+oid: 1.3.6.1.4.1.21008.108.63.1
+cn: Session Tracking Control
+aci: (targetattr != "aci")(version 3.0; acl "Session Tracking Control"; 
+ allow (read,search) userdn = "ldap:///all";)
+```
 
 #### data structure
 
