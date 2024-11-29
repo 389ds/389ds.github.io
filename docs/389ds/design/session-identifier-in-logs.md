@@ -58,48 +58,16 @@ In addition the LDAP client can provide several controls, mostly to track variou
     "15.0.180.201 hostname=my_laptop.example.com 1.3.6.1.4.1.21008.108.63.1.2=STID_MULTI_54321"
 ```
 
+#### How it is logged
 
-#### Option 1 - full session string / append
-
-This option appends the session strings (after keyword '**sid=**') to the RESULT of the operation. The drawback it can be a very long and reduce the readingness of the access logs.
-
-```
-[17/Oct/2024:17:21:51.930944766 +0200] conn=2 op=7 SRCH base="dc=example,dc=com" scope=2 filter="(objectClass=*)" attrs="distinguishedName"
-[17/Oct/2024:17:21:51.931113128 +0200] conn=2 op=7 RESULT err=0 tag=101 nentries=1 wtime=0.000189515 optime=0.000171470 etime=0.000358345 notes=U,P details="Partially Unindexed Filter,Paged Search" pr_idx=0 pr_cookie=-1 sid="15.0.180.201 hostname=my_laptop.example.com 1.3.6.1.4.1.21008.108.63.1.19=STID_12345"
-```
-
-#### Option 2 - full session string / inserted
-
-This option insert the session strings in between the operation record and the result record.
-
-```
-[17/Oct/2024:17:21:51.930944766 +0200] conn=2 op=7 SRCH base="dc=example,dc=com" scope=2 filter="(objectClass=*)" attrs="distinguishedName"
-[17/Oct/2024:17:21:51.931000000 +0200] conn=2 op=7 SESSION "15.0.180.201 hostname=my_laptop.example.com 1.3.6.1.4.1.21008.108.63.1.19=STID_12345"
-[17/Oct/2024:17:21:51.931000000 +0200] conn=2 op=7 SESSION "15.0.180.201 hostname=my_laptop.example.com 1.3.6.1.4.1.21008.108.63.1.2=STID_MULTI_54321"
-[17/Oct/2024:17:21:51.931113028 +0200] conn=2 op=7 RESULT err=0 tag=101 nentries=1 wtime=0.000189515 optime=0.000171470 etime=0.000358345 notes=U,P details="Partially Unindexed Filter,Paged Search" pr_idx=0 pr_cookie=-1
-```
-
-#### Option 3 - short session string / append
-
-This option appends only the *sessionTrackingIdentifier* (after keyword '**sid=**') to the RESULT of the operation. If *sessionTrackingIdentifier* is short then it does not reduce the readingness of the access logs.
+The session control is logged this way
 
 ```
 [17/Oct/2024:17:21:51.930944766 +0200] conn=2 op=7 SRCH base="dc=example,dc=com" scope=2 filter="(objectClass=*)" attrs="distinguishedName"
 [17/Oct/2024:17:21:51.931113128 +0200] conn=2 op=7 RESULT err=0 tag=101 nentries=1 wtime=0.000189515 optime=0.000171470 etime=0.000358345 notes=U,P details="Partially Unindexed Filter,Paged Search" pr_idx=0 pr_cookie=-1 sid="STID_12345"
 ```
 
-#### Option 4 - short session string / inserted
-
-This option insert the *sessionTrackingIdentifier* strings in between the operation record and the result record.
-
-```
-[17/Oct/2024:17:21:51.930944766 +0200] conn=2 op=7 SRCH base="dc=example,dc=com" scope=2 filter="(objectClass=*)" attrs="distinguishedName"
-[17/Oct/2024:17:21:51.931000000 +0200] conn=2 op=7 SESSION "STID_12345"
-[17/Oct/2024:17:21:51.931000000 +0200] conn=2 op=7 SESSION "STID_MULTI_54321"
-[17/Oct/2024:17:21:51.931113028 +0200] conn=2 op=7 RESULT err=0 tag=101 nentries=1 wtime=0.000189515 optime=0.000171470 etime=0.000358345 notes=U,P details="Partially Unindexed Filter,Paged Search" pr_idx=0 pr_cookie=-1
-```
-
-#### Justifications of choice Option 3
+#### Justifications
 
 The known applications that are willing to use this logging ability are around Identity management (389ds replication, Freeipa, sssd, pki, krb5...). The initial needs are related to debug, support and performance monitoring. The size of the information to log is limited and can fit in *sessionTrackingIdentifier*. Because it is limited there is no need to support multiple control. In order to reduce the amount of data to log and the contention it can create, it is better to log a single record (RESULT) and a truncated *sessionTrackingIdentifier*. It is append to the result similarly to the Page Result control.
 
@@ -108,10 +76,54 @@ In short the solution
 - it **appends** the identifier to the **RESULT**
 - it is logged in access log (buffered)
 - it logs a **truncated** (15 chars) of **sessionTrackingIdentifier**
-- **sessionTrackingIdentifier** must only contain printable US-ASCII chars
+- **sessionTrackingIdentifier** is escaped before printing it. So that not printable char '\r' (i.e. CR 0x13) is displayed '\13'.
 - only the last control (**one** control) will be taken into account
 - it **does not** log *sessionSourceIp* and *sessionSourceName* as the source ip is logged in connection information.
 - it **does not** log of *formatOID*
+
+
+#### Others alternatives
+
+
+##### Alternative 1 - full session string / append
+
+This alternative appends the session strings (after keyword '**sid=**') to the RESULT of the operation. The drawback it can be a very long and reduce the readingness of the access logs.
+
+```
+[17/Oct/2024:17:21:51.930944766 +0200] conn=2 op=7 SRCH base="dc=example,dc=com" scope=2 filter="(objectClass=*)" attrs="distinguishedName"
+[17/Oct/2024:17:21:51.931113128 +0200] conn=2 op=7 RESULT err=0 tag=101 nentries=1 wtime=0.000189515 optime=0.000171470 etime=0.000358345 notes=U,P details="Partially Unindexed Filter,Paged Search" pr_idx=0 pr_cookie=-1 sid="15.0.180.201 hostname=my_laptop.example.com 1.3.6.1.4.1.21008.108.63.1.19=STID_12345"
+```
+
+##### Alternative 2 - full session string / inserted
+
+This alternative insert the session strings in between the operation record and the result record.
+
+```
+[17/Oct/2024:17:21:51.930944766 +0200] conn=2 op=7 SRCH base="dc=example,dc=com" scope=2 filter="(objectClass=*)" attrs="distinguishedName"
+[17/Oct/2024:17:21:51.931000000 +0200] conn=2 op=7 SESSION "15.0.180.201 hostname=my_laptop.example.com 1.3.6.1.4.1.21008.108.63.1.19=STID_12345"
+[17/Oct/2024:17:21:51.931000000 +0200] conn=2 op=7 SESSION "15.0.180.201 hostname=my_laptop.example.com 1.3.6.1.4.1.21008.108.63.1.2=STID_MULTI_54321"
+[17/Oct/2024:17:21:51.931113028 +0200] conn=2 op=7 RESULT err=0 tag=101 nentries=1 wtime=0.000189515 optime=0.000171470 etime=0.000358345 notes=U,P details="Partially Unindexed Filter,Paged Search" pr_idx=0 pr_cookie=-1
+```
+
+##### Alternative 3 - short session string / append
+
+This alternative appends only the *sessionTrackingIdentifier* (after keyword '**sid=**') to the RESULT of the operation. If *sessionTrackingIdentifier* is short then it does not reduce the readingness of the access logs.
+
+```
+[17/Oct/2024:17:21:51.930944766 +0200] conn=2 op=7 SRCH base="dc=example,dc=com" scope=2 filter="(objectClass=*)" attrs="distinguishedName"
+[17/Oct/2024:17:21:51.931113128 +0200] conn=2 op=7 RESULT err=0 tag=101 nentries=1 wtime=0.000189515 optime=0.000171470 etime=0.000358345 notes=U,P details="Partially Unindexed Filter,Paged Search" pr_idx=0 pr_cookie=-1 sid="STID_12345"
+```
+
+##### Alternative 4 - short session string / inserted
+
+This alternative insert the *sessionTrackingIdentifier* strings in between the operation record and the result record.
+
+```
+[17/Oct/2024:17:21:51.930944766 +0200] conn=2 op=7 SRCH base="dc=example,dc=com" scope=2 filter="(objectClass=*)" attrs="distinguishedName"
+[17/Oct/2024:17:21:51.931000000 +0200] conn=2 op=7 SESSION "STID_12345"
+[17/Oct/2024:17:21:51.931000000 +0200] conn=2 op=7 SESSION "STID_MULTI_54321"
+[17/Oct/2024:17:21:51.931113028 +0200] conn=2 op=7 RESULT err=0 tag=101 nentries=1 wtime=0.000189515 optime=0.000171470 etime=0.000358345 notes=U,P details="Partially Unindexed Filter,Paged Search" pr_idx=0 pr_cookie=-1
+```
 
 
 
@@ -158,6 +170,38 @@ To support the control a new string *pb_session_tracking_id* is added to the pbl
     ...
     } slapi_pblock_intop;
 ```
+
+## Test
+------------------------
+
+### Client application in python
+
+In python it can be tested with
+
+```
+   from ldap.controls.sessiontrack import SessionTrackingControl, SESSION_TRACKING_CONTROL_OID
+   from  ldap.extop import ExtendedRequest
+
+   st_ctrl = SessionTrackingControl(
+      '10.1.2.3'
+      'localhost.localdomain',
+      SESSION_TRACKING_CONTROL_OID + '.1.2.3.4',
+      'debugID 123456'
+    )
+
+    extop = ExtendedRequest(requestName = SESSION_TRACKING_CONTROL_OID, requestValue=None)
+    (oid_response, res) = topology_st.standalone.extop_s(extop, serverctrls=[st_ctrl])
+
+```
+
+```
+[17/Oct/2024:17:21:51.930944766 +0200] conn=2 op=7 SRCH base="dc=example,dc=com" scope=2 filter="(objectClass=*)" attrs="distinguishedName"
+[17/Oct/2024:17:21:51.931113128 +0200] conn=2 op=7 RESULT err=0 tag=101 nentries=1 wtime=0.000189515 optime=0.000171470 etime=0.000358345 notes=U,P details="Partially Unindexed Filter,Paged Search" pr_idx=0 pr_cookie=-1 sid="debugID 123456"
+```
+
+### Client application in 'C'
+
+TBD
 
 ## Configuration
 ------------------------
