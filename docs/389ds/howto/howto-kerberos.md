@@ -10,7 +10,7 @@ title: "Howto:Kerberos"
 Read Me First
 -------------
 
-Please refer to <https://access.redhat.com/site/documentation/en-US/Red_Hat_Directory_Server/9.0/html/Administration_Guide/SASL.html> and <https://access.redhat.com/site/documentation/en-US/Red_Hat_Directory_Server/9.0/html/Administration_Guide/Configuring_Kerberos.html> before continuing.
+Please refer to <https://docs.redhat.com/en/documentation/red_hat_directory_server/11/html/administration_guide/sasl> and <https://docs.redhat.com/en/documentation/red_hat_directory_server/11/html/administration_guide/configuring_kerberos> before continuing.
 
 How do I configure 389 to use SASL and GSSAPI to authenticate against a local Kerberos realm?
 ---------------------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ Consult your system documentation for Kerberos configuration, usually the file /
 Keys
 ----
 
-First, make sure that you have created a kerosene principal *ldap/FQDN* or *ldap/FQDN@REALM*. If you do not specify the *@REALM* part, it will use the default value from your krb5.conf (which must be the same on all clients and servers).
+First, make sure that you have created a Kerberos principal *ldap/FQDN* or *ldap/FQDN@REALM*. If you do not specify the *@REALM* part, it will use the default value from your krb5.conf (which must be the same on all clients and servers).
 
     kadmin -q "add_principal -randkey  ldap/FQDN@REALM"    
 
@@ -82,11 +82,11 @@ Copy ldap.keytab to the directory server machine and change mode and ownership a
 Maps
 ----
 
-The directory server already has some default SASL/GSSAPI maps as described in <https://access.redhat.com/site/documentation/en-US/Red_Hat_Directory_Server/9.0/html/Administration_Guide/SASL.html>. So you might not have to do anything to get identity mapping working.
+The directory server already has some default SASL/GSSAPI maps as described in the [Administrator's Guide](https://docs.redhat.com/en/documentation/red_hat_directory_server/11/html/administration_guide/sasl). So you might not have to do anything to get identity mapping working.
 
 However, if you want/need to do your own mapping, see below.
 
-Let's assume your entry in the DS has the DN "dn: uid=uid,o=realm.edu", and assume your Kerberos realm is *REALM.EDU*. Then, the map would be something like this (as seen in "Managing SASL" in the [Administrator's Guide](https://access.redhat.com/site/documentation/en-US/Red_Hat_Directory_Server/9.0/html/Administration_Guide/SASL.html)):
+Let's assume your entry in the DS has the DN "dn: uid=uid,o=realm.edu", and assume your Kerberos realm is *REALM.EDU*. Then, the map would be something like this (as seen in the [Administrator's Guide](https://docs.redhat.com/en/documentation/red_hat_directory_server/11/html/administration_guide/sasl)):
 
     dn: cn=mapname,cn=mapping,cn=sasl,cn=config    
     objectclass: top    
@@ -103,5 +103,5 @@ This assumes the Kerberos principal name being sent to the DS is in the form "us
 
 where myorg and tld correspond to your domain and top level domain.
 
-You can use a regex of the form \([^/]+\)/\(.+\) to map kerosene principals with an instance, like service/fqdn or user/admin. For example if you want to map all services from hostname.domain to the uid=hostname.domain,ou=hosts,dc=domain you can use [\^/]+/\(.+\) and a map base of uid=\\1,ou=hosts,dc=domain or you might want to map all principals with an admin instance to uid=user,ou=Managers,dc=domain so you'll use \([^/]+\)/admin and a mapbase of uid=\\1,ou=Managers,dc=domain.
+You can use a regex of the form \([^/]+\)/\(.+\) to map Kerberos principals with an instance, like service/fqdn or user/admin. For example if you want to map all services from hostname.domain to the uid=hostname.domain,ou=hosts,dc=domain you can use [\^/]+/\(.+\) and a map base of uid=\\1,ou=hosts,dc=domain or you might want to map all principals with an admin instance to uid=user,ou=Managers,dc=domain so you'll use \([^/]+\)/admin and a mapbase of uid=\\1,ou=Managers,dc=domain.
 
