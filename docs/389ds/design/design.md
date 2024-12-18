@@ -44,6 +44,7 @@ If you are adding a new design document, use the [template](design-template.html
 - [MFA Operation Note For Auditing](mfa-operation-note-design.html)
 - [Audit JSON Logging](audit-json-logging-design.html)
 - [Session Tracking Control](session-identifier-in-logs.html)
+- [Configurable Number of Iterations for PBKDF2](configurable_pbkdf2_iterations.html)
 
 ## 389 Directory Server 2.6
 
