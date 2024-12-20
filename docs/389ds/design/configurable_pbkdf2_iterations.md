@@ -31,6 +31,8 @@ PBKDF2 (Password-Based Key Derivation Function 2) is a key stretching algorithm 
        MAY ( nsslapd-pwdPBKDF2NumIterations ) )
    ```
 
+   The objectClass is given to (and intended for) `cn=PBKDF2-*,cn=Password Storage Schemes,cn=plugins,cn=config` entries.
+
 ### Implementation Details
 
 #### Default and Limits
