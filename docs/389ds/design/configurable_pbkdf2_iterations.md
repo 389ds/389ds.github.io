@@ -36,10 +36,7 @@ PBKDF2 (Password-Based Key Derivation Function 2) is a key stretching algorithm 
 ### Implementation Details
 
 #### Default and Limits
-- **Default Iterations by Algorithm**:
-  - PBKDF2-SHA1: 70,000 (fastest, needs more iterations)
-  - PBKDF2-SHA256: 30,000 (balanced)
-  - PBKDF2-SHA512: 10,000 (slowest, fewer iterations needed)
+- **Default Iterations**: 100,000  
 - **Minimum Iterations**: 10,000  
 - **Maximum Iterations**: 10,000,000
 
@@ -48,10 +45,10 @@ These defaults and limits ensure a baseline security level and guard against ext
 #### Rust Implementation
 - **Atomic Storage**:
   ```rust
-  static PBKDF2_ROUNDS: AtomicUsize = AtomicUsize::new(DEFAULT_PBKDF2_SHA1_ROUNDS);
-  static PBKDF2_ROUNDS_SHA1: AtomicUsize = AtomicUsize::new(DEFAULT_PBKDF2_SHA1_ROUNDS);
-  static PBKDF2_ROUNDS_SHA256: AtomicUsize = AtomicUsize::new(DEFAULT_PBKDF2_SHA256_ROUNDS);
-  static PBKDF2_ROUNDS_SHA512: AtomicUsize = AtomicUsize::new(DEFAULT_PBKDF2_SHA512_ROUNDS);
+  static PBKDF2_ROUNDS: AtomicUsize = AtomicUsize::new(DEFAULT_PBKDF2_ROUNDS);
+  static PBKDF2_ROUNDS_SHA1: AtomicUsize = AtomicUsize::new(DEFAULT_PBKDF2_ROUNDS);
+  static PBKDF2_ROUNDS_SHA256: AtomicUsize = AtomicUsize::new(DEFAULT_PBKDF2_ROUNDS);
+  static PBKDF2_ROUNDS_SHA512: AtomicUsize = AtomicUsize::new(DEFAULT_PBKDF2_ROUNDS);
   ```
 
   Each variant (SHA-1, SHA-256, SHA-512) can have its iteration count stored atomically for thread-safe access.
@@ -88,7 +85,7 @@ These defaults and limits ensure a baseline security level and guard against ext
 - **CLI Interface (dsconf)**:
   ```bash
   dsconf instance plugin pwstorage-scheme pbkdf2-sha512 get-num-iterations
-  dsconf instance plugin pwstorage-scheme pbkdf2-sha256 set-num-iterations 15000
+  dsconf instance plugin pwstorage-scheme pbkdf2-sha256 set-num-iterations 150000
   dsctl instance restart  # Changes take effect after restart
   ```
 - **Web UI**:
