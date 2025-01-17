@@ -64,7 +64,7 @@ Finally, it will be necessary for to enhance the Netscape/Mozilla LDAP SDK and a
 UI Support
 ----------
 
-GSS-API authentication will have some associated configuration data (specify the kerosene realm and enable/disable for example). This configuration will be supported in the Java Administration console.
+GSS-API authentication will have some associated configuration data (specify the Kerberos realm and enable/disable for example). This configuration will be supported in the Java Administration console.
 
 Interoperability Testing
 ========================
