@@ -4,6 +4,11 @@ title: "Old Release Notes"
 
 # Old Release Notes
 -----------------
+- [389 Directory Server 2.4.5](release-2-4-5.html)* *(January 15, 2024)*
+- [389 Directory Server 2.4.4](release-2-4-4.html)* *(November 15, 2023)*
+- [389 Directory Server 2.3.7](release-2-3-7.html)* *(August 9, 2023)*
+- [389 Directory Server 2.4.3](release-2-4-3.html)* *(August 4, 2023)*
+- [389 Directory Server 2.3.6](release-2-3-6.html)* *(August 4, 2023)*
 - [389 Directory Server 2.3.1](release-2-3-1.html) *(November 18, 2022)*
 - [389 Directory Server 2.2.4](release-2-2-4.html) *(November 18, 2022)*
 - [389 Directory Server 2.1.6](release-2-1-6.html) *(November 18, 2022)*

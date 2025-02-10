@@ -21,21 +21,31 @@ The source code is produced by GitHub Release action: <https://github.com/389ds/
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-3.1.2.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.1.2/389-ds-base-3.1.2.tar.bz2)|389-ds-base.git|389-ds-base-3.1.2|[Building](building.html)|13f86f61b7da6380de6731f56e2bfae00e969d48acdff024f78ed6d9cff1474e5c8d1c25269031aa2466642482f55ed7b72d3844ec588b824aeb9c0ad79aab1d|
 |[389-ds-base-3.1.1.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.1.1/389-ds-base-3.1.1.tar.bz2)|389-ds-base.git|389-ds-base-3.1.1|[Building](building.html)|c6aa0aba9779bd4ed6768f140d255474bc5e02455e37db6e8273740e9be81ac90bcab4ea97e117af573cb1d3f56ddd59d063b7715d99261ebf2d497c2801bc41|
 
 ### 389 Directory Server 3.0
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-3.0.6.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.0.6/389-ds-base-3.0.6.tar.bz2)|389-ds-base.git|389-ds-base-3.0.6|[Building](building.html)|9091da9229f20446357fd713f4177a885faa3fb4f83fc7806bdd0590f959dd02e6ebb8bb4e573b19537efeb3cef96f43eedab565b98b2d155055ea579f09b474|
+|[389-ds-base-3.0.5.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.0.5/389-ds-base-3.0.5.tar.bz2)|389-ds-base.git|389-ds-base-3.0.5|[Building](building.html)|3f62e98779dcc6e3997846e6303622a76e34c6f290c4967ba54b708a9d3ac85216e96e88f744e7fda18133a509d4f7c18969b3836b88359a10886fb1182c3d1b|
 |[389-ds-base-3.0.4.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.0.4/389-ds-base-3.0.4.tar.bz2)|389-ds-base.git|389-ds-base-3.0.4|[Building](building.html)|45ef03d288fc3c1e7a24474393fe769deb52413f57aa1517b71882fb4be653eeae041911d55e60b82079922e7995c55bb0653d3f1ea0a83622e84d6411c863fe|
 |[389-ds-base-3.0.3.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.0.3/389-ds-base-3.0.3.tar.bz2)|389-ds-base.git|389-ds-base-3.0.3|[Building](building.html)|f9e5432d8acc7701c9455cb7b561ff6dd67a8e2f9d0340f47cf17b8a3558aa02dab7319d139a23e8f89682c2521c9c6852a097b702228785dda37cb03d2c9310|
 |[389-ds-base-3.0.2.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.0.2/389-ds-base-3.0.2.tar.bz2)|389-ds-base.git|389-ds-base-3.0.2|[Building](building.html)|e17ebc39a256848b6f7e601be3df7dafa38b1148f9b4112824f242839ad6bd9f0472dfb5518b1868ceb3b24a48f232ab3099f3176d31713281ec1f926bdacf88|
 |[389-ds-base-3.0.1.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.0.1/389-ds-base-3.0.1.tar.bz2)|389-ds-base.git|389-ds-base-3.0.1|[Building](building.html)|56b9df51e1753f77659c417b90c6aa452e6066b91623e3e5a70955d263c40bb6d7541cc86e93e27eb7a6430f6e0edd75c15970126b989f448a37299369a2dbe2|
 
+### 389 Directory Server 2.6
+
+|Source tarball|git module|git tag|More Info|SHA512SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-2.6.1.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-2.6.1/389-ds-base-2.6.1.tar.bz2)|389-ds-base.git|389-ds-base-2.6.1|[Building](building.html)|98e4f5da43e77708fd88f51c39b7375caf1101df9387677266232aaacbe49a2f2657075d7539809936bedf5dc114cc0200406ade2617616c1687f6783bf95e16|
+
 ### 389 Directory Server 2.5
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-2.5.3.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-2.5.3/389-ds-base-2.5.3.tar.bz2)|389-ds-base.git|389-ds-base-2.5.3|[Building](building.html)|d699a0d540619b689c8c36f2a01fcb1d6a295f695ac4053bf103bea7977aeb5a7ed5ca4d4a35f9337b41d46cf8b41db20996da8646e7b773475c3c7b1b3d650e|
 |[389-ds-base-2.5.2.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-2.5.2/389-ds-base-2.5.2.tar.bz2)|389-ds-base.git|389-ds-base-2.5.2|[Building](building.html)|20c4208c165b9a2778293f8e3111c9713775d2488e1a5adecaa5a49381768d371ba696a504f5bdac4c513579944f86111f0033818c75b7dd95f7212f7a2f1b47|
 |[389-ds-base-2.5.1.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-2.5.1/389-ds-base-2.5.1.tar.bz2)|389-ds-base.git|389-ds-base-2.5.1|[Building](building.html)|bb3c9b4f08787deccc70a653520438b386f8b45d69ab3a755ed67c6b2896fb1727a8710643e042d68af5126b3183ee6cd501816f476541566bad0727c99de36c|
 
