@@ -131,11 +131,6 @@ Below shows all the possible JSON keys, but only applicable information will be 
 
 The **key** is a unique id for each connection which avoids issues with server restarts where the connection id counter gets reset.  This allows for accurately tracking individual connections.
 
-Most events will have the expected key/values, while the RESULT operations will be very verbose: ip address, bind dn, etc
-All event operations will also include things like the client & server IP addresse,the bind dn, etc.
-
-This is up for debate, but I don't think we need all the client info in every log event.  I think it is most useful in just the RESULT event.
-
 
 Configuration
 ------------------------
@@ -157,7 +152,7 @@ You can also customize the "local_time" format using strftime conversion specifi
 Examples
 -----------------------
 
-#### Add
+### Add
 
 ```
     {
@@ -438,7 +433,6 @@ Examples
         "sn"
       ]
     }
-
     {
       "local_time":"2025-02-10T14:29:09.497639220 -0500",
       "operation":"RESULT",
@@ -731,7 +725,7 @@ Examples
     }
 ```
 
-#### Unindexed search
+### Unindexed search
 
 ```
     {
