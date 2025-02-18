@@ -145,7 +145,7 @@ For now set this to "default", but in a next major release it should be set to "
 
 When switching to a new logging format the current log will be rotated.
 
-You can also customize the "local_time" format using strftime conversion specifications.  The default would be **%FT%TZ**
+You can also customize the "local_time" format using strftime conversion specifications.  The default would be **%FT%T**
 
     nsslapd-accesslog-time-format: {strftime specs}
     
