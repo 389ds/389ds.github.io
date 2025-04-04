@@ -19,7 +19,7 @@ JSON Design
 [
     {
         local_time: <strftime output - customizable>
-        gm_time: <gm time - uses a fixed format of **%FT%TZ**>
+        gm_time: <gm time - uses a fixed format of:  %FT%TZ >
         target_dn: DN,
         bind_dn: DN,
         client_ip: IP_ADDRESS,
@@ -68,7 +68,7 @@ For now set this to "default", but in a next major release it should be set to "
 
 When switching to a new logging format the current log will be rotated.
 
-You can also customize the "local_time" format using strftime conversion specifications.  The default would be **%FT%TZ**
+You can also customize the "local_time" format using strftime conversion specifications.  The default would be: **%FT%TZ**
 
     nsslapd-auditlog-time-format: {strftime specs}
 
