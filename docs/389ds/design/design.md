@@ -37,6 +37,9 @@ If you are adding a new design document, use the [template](design-template.html
 
 - [Ansible DS](ansible-ds.html)
 
+## 389 Directory Server 3.1
+
+- [Session Tracking Control client - replication](session-identifier-clients.html)
 
 ## 389 Directory Server 3.0
 
@@ -45,7 +48,7 @@ If you are adding a new design document, use the [template](design-template.html
 - [Access log JSON logging](accesslog-json-design.html)
 - [Audit log JSON Logging](audit-json-logging-design.html)
 - [Error log JSON Logging](error-json-logging-design.html)
-- [Session Tracking Control](session-identifier-in-logs.html)
+- [Session Tracking Control server](session-identifier-in-logs.html)
 - [Log settings via dsconf](dsconf-logging-design.html)
 - [Configurable Number of Iterations for PBKDF2](configurable_pbkdf2_iterations.html)
 
