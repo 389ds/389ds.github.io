@@ -131,77 +131,44 @@ struct _entry_vattr
 
 #### slapi_entry_dup()
 
-
-
     1.  ec = slapi_entry_alloc();
         - 4 mallocs
-
+    
     2.  slapi_entry_init(ec, NULL, NULL);
         - 1 malloc
-
+    
     3.  slapi_sdn_copy(slapi_entry_get_sdn_const(e), &ec->e_sdn);
         - 3 mallocs
-
+    
     4.  slapi_srdn_copy(slapi_entry_get_srdn_const(e), &ec->e_srdn);
         - 5 frees
         - 1 malloc
         - 3 array mallocs (malloc * rdn's)
-
+    
     5.  ec->e_dncsnset = csnset_dup(e->e_dncsnset);
         - 1 malloc per CSN in set
-
+    
     6.  ec->e_maxcsn = csn_dup(e->e_maxcsn);
         - 1 malloc
-
+    
     7.  if (e->e_uniqueid != NULL) { ec->e_uniqueid = slapi_ch_strdup(e->e_uniqueid); }
         - 1 malloc
-
+    
     8.  for (a = e->e_attrs; a != NULL; a = a->a_next) { Slapi_Attr *newattr = slapi_attr_dup(a); }
         - per attribute: 
             - 2 mallocs
             - 4 mallocs per value
             - 1 free (potentially in value sorting)
-
-
+    
+    
     9.  for (a = e->e_deleted_attrs; a != NULL; a = a->a_next) { Slapi_Attr *newattr = slapi_attr_dup(a); }
         - same as above
         - per attribute: 
             - 2 mallocs
             - 4 mallocs per value
             - 1 free (potentially in value sorting)
-
+    
     10. for (aiep = attrs_in_extension; aiep && aiep->ext_type; aiep++) { aiep->ext_copy(e, ec); }
         - 1 malloc
-    
-
 
 20 mallocs + 150-200 mallocs for attribute dupping
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

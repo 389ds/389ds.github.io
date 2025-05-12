@@ -38,25 +38,25 @@ So the idea is to behaves as of now except when flushing the backentry from entr
 - Sort the preserved entry array (lighest entry first)
 
 - While cache is full, walk the lru from older to newer entry
-
+  
   - if the entry weight is higer than the lightest entry in preserved array
-
+    
     - Move back the lightest entry in preserved array to head of lru
-
+    
     - Insert the current entry in the preserved array
-
+      
       (hifting the entry before insertion slot from 1 slot)
-
+    
     - continue walking the lru queue from previous entry
-
+  
   - remove the entry from the cache
 
 - While cache is full start to iterate on preserved entries from lighest to heaviest
-
+  
   - move back the entry in lru then remove it from the cache
 
 - Continue iterating on preserved entries until there is no more
-
+  
   - move back the entry in lru
 
 - Detach the removed entries from lru queue and return the list of removed entries
@@ -116,7 +116,7 @@ Time is get using: clock\_gettime(CLOCK\_MONOTONIC, struct timespec \*tp)
 
 | Function                                                                 | Impact                                                                                                                                                                                                                                                                                                                                                                                               |
 |:------------------------------------------------------------------------ |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| id2entry                                                                 | compute time difference from start of function until the CACHE\_ADD callend of function and store it in the returned back-entry                                                                                                                                                                                                                                                                     |
+| id2entry                                                                 | compute time difference from start of function until the CACHE\_ADD callend of function and store it in the returned back-entry                                                                                                                                                                                                                                                                      |
 | uint64\_t get\_time\_delta(struct timespec \* starttime, int multiplier) |                                                                                                                                                                                                                                                                                                                                                                                                      |
 | entrycache\_add\_int                                                     | Add entry weight to cache total weight                                                                                                                                                                                                                                                                                                                                                               |
 | entrycache\_replace                                                      | Propagate old entry weight to new entry                                                                                                                                                                                                                                                                                                                                                              |
@@ -163,16 +163,21 @@ but the behavior will be more predictibale (i.e. easier to describe to the custo
 
 ### Using a compsite weight
 
-Storing both the loading time and the number of members in the backentry
-and using them to compute the weight
+The test showed that when testing with 6K members groups the noise created by the CPU context switch was high enough so that some large group still got evicted.
+I finanly ends up with a composite weight:
+weight = elapsed_time * mulpiplier
+multipler = log²(elapsed_time) if is greater than 9 else it is 1
+
+With such weight, the test is now passing systematically. 
 
 ## Alternatives
 
 | Alternative                                                        | Rejection reason                                                                                                                                                                                                                 |
 |:------------------------------------------------------------------ |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Have 2 LRU lists                                                   | More complex than proposed implementation                                                                                                                                                                                        |
-| Have  weight thrshold                                              | Tests shows that it pretty hard to determine the right value (even using a ratio from average entry weight)                                                                                                                      |
+| Have  weight thrshold                                              | Tests shows that it pretty hard to determine the right value (even using a ratio from average entry weight) Results where unreliable     |
 | Flags Large group entry                                            | Determining that we are handling a large group is not so easy and once again we will be in trouble if too many large group entries are stored in the cache                                                                       |
 | Using getrusage(RUSAGE\_THREAD, \&usage) instead of clock\_gettime | Although it provides more accurate data, getrusage is 10 times more costly than clock\_gettime.                                                                                                                                  |
 | Should we compute the variance and use it for the decision ?       | checking if w \> a+y\*v would allow to preserve x% of the entries but it seems an overhead especially since we need to compute a square root to do that. maybe checking w2 \> a2\+y\*v2 will do something but I am not convinced |
 | Use the number of members as weight instead of the loading time.   | That is something to test. Anyway it should not change much the code (only the weight computation and the threshold default limit)                                                                                               |
+| Build an array of preserved entries in entrycache_flush. Taking the first n entries in LRU queue and sorting them then walking the lru from its tail and insert the costly entry in the array if neeeded. At the end put back the remainding entries in the head of LRU| Moving the entries has some drawbackand some entries that should be eveicted are no more evicted (i.e in practice more than n entries get preserved |
