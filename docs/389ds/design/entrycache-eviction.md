@@ -6,68 +6,60 @@ Computing the acl involving large groups is costly. So we had better keep them i
 
 - creating acl cache for large group is costly a group is evicted out of the acl if its entry pointer changed. (i.e that the group was removed from the entry cache then reloaded)
 
-- If values are not already sorted,  the time spent to sort the membership values is significant.
+- If values are not already sorted, the time spent to sort the membership values is significant.
 
 A way to improvie thing is to try to keep the large group entries in the entry cache as long as possible.
 
-## How to change things ?
+## Original LRU algorithm
 
-My first idea is to keep all entry whose loading time is higher than a configurable factor of the average loading time. (if the entry is long to load we want to try to keep it)
-We can store (in the backentry) the time needed to compute an entry when reading it if not in the cache (and probably also when adding it in the cache too)
- (Simply by getting current time when getting the original backentry then
-   just before replacing it.)
-and compute statistics like the average time (by keeping the number of entry (which is already done) and the total time of all the entries that are in the cache)
-and determine a threshold (tunable ?) about when we keep an entry in  the cache
-IMHO a 100 or 1000 factor will do .
-Comparing average time to entry time has an advantage:
-big group entries get naturally evicted if too many of them are in the cache (because in such case, the average building time will then increase until some of the protected entry are no more protected from eviction)
+The LRU is handled through a single doubly linked list (null terminated) anchored in the cache struct
+<img src="../../../images/entry_cache_lru_old.svg">
 
-But after the first tests I discovered that it is pretty hard to determine the right value for the threshold. So the idea evolved:
-Still computing weight from the loading time in microseconds I still compute the average loading time because it is an interresting statistics in monitoring tools
+- Newly added entries are added at the head of the list
+- Entries get evicted, startingfrom the tail of the queue until the queue resources respect the configured number of entries and/or memory size
 
-There is no more any configurable threshold: it is replaced by a configurable number of entries.
+## New LRU algorithm
 
-Keeping a separate array of preserved entries is complicated and would imply to greatly modify he cache code (every time we add/remove an entry from the LRU we will also have to check if it is preserved and handle things differently
+<img src="../../../images/entry_cache_lru.svg">
 
-So the idea is to behaves as of now except when flushing the backentry from entrycache:
+Because neither simply skipping the entry to preserve nor using a temporary array provided reliable results,
+the implemented version finally implements 2 queues (doubly linked circular list with an immutable anchor element in the cache struct:
 
-- Start to allocate a preserved entry array if is is not  already done
+`struct backcommon c\_lrus[LRU\_REGULAR]
+ struct backcommon c\_lrus[LRU\_PRESERVED]`
 
-- Populate it with the first (i.e the newest) entries of the lru (and remove these entries from the lru)
+The regular queue is handled similarly to the orinal one:
 
-- Sort the preserved entry array (lighest entry first)
+- Newly added entries are added at the head of the list
+- Entries get evicted from the tail of the queue until the queue resources respect the configured number of entries and/or memory size
+- The preserved queue is ordered by increasing entry weight and the weight of its head element is higher of equal than any elements of the regular queue
 
-- While cache is full, walk the lru from older to newer entry
-  
-  - if the entry weight is higer than the lightest entry in preserved array
-    
-    - Move back the lightest entry in preserved array to head of lru
-    
-    - Insert the current entry in the preserved array
-      
-      (hifting the entry before insertion slot from 1 slot)
-    
-    - continue walking the lru queue from previous entry
-  
-  - remove the entry from the cache
+The LRU eviction algorithm is:
 
-- While cache is full start to iterate on preserved entries from lighest to heaviest
-  
-  - move back the entry in lru then remove it from the cache
+- Remove extra entries in preserved list (occur the number of preserved configurable limit decreased) and put them back at head of the regular list.
+- Walk the Regular list to evict entries as it was origionally done
+- while cache is still full, evict first entry from preserved list and merge it to the evicted entries list
+- detach the evicted entries list (and transform it to a NULL terminated list)
 
-- Continue iterating on preserved entries until there is no more
-  
-  - move back the entry in lru
+Code is a bit more complex than what I hoped because we have to determine in which queue an entry must be added and removed and we must also propagate the cache type when addind/removing the entries (because we cannot access the weight in the backdn)
 
-- Detach the removed entries from lru queue and return the list of removed entries
-  With this algorythm we avoid the complexity and the cost of handling two lru queues
-  when acquiring/releasing entries
-  Prefetching the newest entries and putting the preserved entries back in the head of the queue ensures that entries in the queue are either the newest ones or the more costly. but there is still the cost of building the array which is n*log(n)
+- entry is added in PRESERVED queue (at the right position so that the list is sorted by increasing weight):
+
+  - if there is an avaliable slot and the entry has a non zero weight
+
+  - its weight is higher than the first entry in the preserved list (in this case the first entry in preserved list is put back in the head or the regular queue)
+    else entry is added in REGULAR queue
+
+- Entry is removed from PRESERVED queue
+
+  - if the number of preserved entries is > 0 and the entry weight is higher than first preserved entry
+
+  - if the weight are the same then the preserved list is walked to determine if the entry to remove belong to that list or not
 
 ## Other remarks
 
-* Should we propagate the time from old entry to new entry in cache\_replace ?
-  It is a bit inaccurate (especillay if lots of values are added/removed) but it still better than nothing. Usually only a fezw members are added/deleted from a large group and propagating its weight would avoid to have to recompute it twice
+Should we propagate the time from old entry to new entry in cache\_replace ?
+It is a bit inaccurate (especillay if lots of values are added/removed) but it still better than nothing. Usually only a fezw members are added/deleted from a large group and propagating its weight would avoid to have to recompute it twice
 
 ## New config parameters
 
@@ -80,16 +72,15 @@ New parameters in the backend config entry
 
 ## Internal Data changes
 
-| Struct         | field name               | Description                                                                                                                                                             |
-|:-------------- |:------------------------ |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| backentry      | ep\_weight               | Entry weight (load time in microseconds)                                                                                                                                |
-| cache          | weight(\*)(\**)          | Weight of all entries in the cache                                                                                                                                      |
-| cache          | nehw(\*)                 | Number of entries having weight \> 0                                                                                                                                    |
-| cache          | c\_stats(\*)             | cache\_stats statistics                                                                                                                                                 |
-| cache          | c\_inst                  | ldbm\_instance struct (to access the config parameters)                                                                                                                 |
-| ldbm\_instance | cache\_weight\_threshold | nsslapd-cache-weight-threshold value: Ratio used to determine which entries are preserved by the lru                                                                    |
-| ldbm\_instance | cache\_debug\_pattern    | nsslapd-cache-debug-pattern  value (may be NULL): Regular expression used to log INFO messages in error log when adding/removing entries in cache (if their dn matches) |
-| ldbm\_instance | cache\_debug\_re         | Compiled version of cache\_debug\_pattern                                                                                                                               |
+| Struct         | field name                | Description                                                                                                                                                             |
+|:-------------- |:------------------------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| backentry      | ep\_weight                | Entry weight (load time in microseconds)                                                                                                                                |
+| cache          | c\_stats(\*)              | cache\_stats statistics                                                                                                                                                 |
+| cache          | c\_lrus[2]                | LRU queues anchor                                                                                                                                                       |
+| cache          | c\_inst                   | ldbm\_instance struct (to access the config parameters)                                                                                                                 |
+| ldbm\_instance | cache\_preserved\_entries | number of entries to preserve                                                                                                                                           |
+| ldbm\_instance | cache\_debug\_pattern     | nsslapd-cache-debug-pattern  value (may be NULL): Regular expression used to log INFO messages in error log when adding/removing entries in cache (if their dn matches) |
+| ldbm\_instance | cache\_debug\_re          | Compiled version of cache\_debug\_pattern                                                                                                                               |
 
 (\*) All statistics fields of struct cache are moved in new cache\_stats struct
 
@@ -124,6 +115,8 @@ Time is get using: clock\_gettime(CLOCK\_MONOTONIC, struct timespec \*tp)
 | entrycache\_flush                                                        | Although the algorithm principle is the same, the function must be rewritten because the queue handling is different. Entries whose weight is above the limit are not removed so the invariant that all entries after the current one are removed from the cache is no longer true. Removed entries are now unlink from the lru queue and added in a freelist queue (that is returned to the caller) |
 | cache\_init                                                              | should store the ldbminfo in the cache to retrieve the config parameter                                                                                                                                                                                                                                                                                                                              |
 
+Note: much more functions are imapcted in third version to beable to handle the two queues typically lru_delete/lru_add and the functions that call them
+
 ## Other impacts
 
 Should improve the debug log and monitored data.
@@ -138,28 +131,8 @@ Should improve the debug log and monitored data.
 
 ### monitoring
 
-* Adding average load time (in microseconds)  in cn=monitor,...
+* Adding average load time (in microseconds) in cn=monitor,...
 * Group cache monitored statistics in a struct
-
-## Potential futur improvment
-
-### Preserving a definite numbers of entries
-
-If we want to preserve a given number N of entries
-A way to do that wolud be to build a preserved entry sorted array while flushing the entrycache
-Keeping the N entries with the highest weight
-If the cache is still full when hitting the head of the lru queue,
-  then starts evicting entries in the preserved table (starting with the smaller weight)
-then link the remainging preserved entries back to the head of the lru queue.
- so they will not be checked again soon.
-Note: avoiding to preserve the array outside of the lock will simpplify things
- Otherwise keeping the table consistent when removing an entry will be a pain:
-  if we do not accept the risk of evicting entries that are with higher weight than the preserved one,
-  we will then have to search the whole LRU queue to find the entry with the highest weight
-   (to put in in the preserved entries table)
-
-This will probably be slower than the initial proposal (because of the cost of building the array)
-but the behavior will be more predictibale (i.e. easier to describe to the customers)
 
 ### Using a compsite weight
 
@@ -168,16 +141,102 @@ I finanly ends up with a composite weight:
 weight = elapsed_time * mulpiplier
 multipler = log²(elapsed_time) if is greater than 9 else it is 1
 
-With such weight, the test is now passing systematically. 
+With such weight, the test is now passing systematically.
 
 ## Alternatives
 
-| Alternative                                                        | Rejection reason                                                                                                                                                                                                                 |
-|:------------------------------------------------------------------ |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Have 2 LRU lists                                                   | More complex than proposed implementation                                                                                                                                                                                        |
-| Have  weight thrshold                                              | Tests shows that it pretty hard to determine the right value (even using a ratio from average entry weight) Results where unreliable     |
-| Flags Large group entry                                            | Determining that we are handling a large group is not so easy and once again we will be in trouble if too many large group entries are stored in the cache                                                                       |
-| Using getrusage(RUSAGE\_THREAD, \&usage) instead of clock\_gettime | Although it provides more accurate data, getrusage is 10 times more costly than clock\_gettime.                                                                                                                                  |
-| Should we compute the variance and use it for the decision ?       | checking if w \> a+y\*v would allow to preserve x% of the entries but it seems an overhead especially since we need to compute a square root to do that. maybe checking w2 \> a2\+y\*v2 will do something but I am not convinced |
-| Use the number of members as weight instead of the loading time.   | That is something to test. Anyway it should not change much the code (only the weight computation and the threshold default limit)                                                                                               |
-| Build an array of preserved entries in entrycache_flush. Taking the first n entries in LRU queue and sorting them then walking the lru from its tail and insert the costly entry in the array if neeeded. At the end put back the remainding entries in the head of LRU| Moving the entries has some drawbackand some entries that should be eveicted are no more evicted (i.e in practice more than n entries get preserved |
+### Alternatives rejected after testing them
+
+These alternatives have been implemented and rejected because of the tests results:
+
+#### LRU eviction algorithm version 1
+
+##### Implementation
+
+Entry weight is the elapsed time (in microseconds) while loading the entry in the cache.
+Have a configurable factor
+While evicting the entries from the cache keep all entry whose loading time is higher than the configurable factor multiplied by the average loading time. (The idea behind that is that if the entry is long to load we want to try to keep it)
+We can store (in the backentry) the time needed to compute an entry when reading it if not in the cache (and probably also when adding it in the cache too)
+(Simply by getting current time when getting the original backentry then just before replacing it.) and compute statistics like the average time (by keeping the number of entry (which is already done) and the total time of all the entries that are in the cache) and determine a threshold (tunable ?) about when we keep an entry in the cache
+IMHO a 100 or 1000 factor will do .
+Comparing average time to entry time has an advantage: big group entries get naturally evicted if too many of them are in the cache (because in such case, the average building time will then increase until some of the protected entry are no more protected from eviction)
+
+##### Rejection cause:
+
+But after the first tests I discovered that it is pretty hard to determine the right value for the threshold to get reliable results. The value is between 1.2 and 1.5
+
+#### LRU eviction algorithm version 2
+
+##### Implementation
+
+While evicting the entries:
+
+- build an array of preserved entries.
+
+  - Taking the first n entries in LRU queue walking the LRU queue from its head.
+  - Sorting them
+
+- while walking the entry to evict (stating from the queue tail):
+
+  - insert the costly entry in the array if neeeded.
+    At the end put back the remainding entries in the head of LRU (which tend to sort the LRU queue by putting the hight weight around the head (and avoid trying to evict them)
+
+    ##### Rejection reason
+
+    Behavior is more predictable than first version but moving the entries has some drawback:
+
+- some entries that should be eveicted are no more evicted (i.e in practice more than n entries get preserved
+
+  #### Weight computation version 1
+
+  ##### Implementation
+
+  My first trials were done using the elapsed time while loading the entry in micro seconds as weight
+
+  ##### Rejection reason
+
+  Noise caused by the cpu context switch makes too many regular entry having higher load time than the large groups
+
+  ### Alternatives considered but rejected
+
+  Some other alternatives has been rejected without being impmlemented
+
+  ##### Use a flag instead of a weight
+
+  ##### Implementation
+
+  Having a flag for large groups in the backentry and simply skip them.
+
+  ##### Rejection reason
+
+  Cannot prioritize which group will be preserved (between two large groups) and could get in trouble if there are two many large groups. (no more spaces for regular entries)
+
+  #### Using getrusage instead of clock_gettime
+
+  ##### Implementation
+
+  Using getrusage(RUSAGE\_THREAD, \&usage) instead of clock\_gettime
+
+  ##### Rejection reason
+
+  Although it provides more accurate data and limit the cpu context switch noise, getrusage is 10 times more costly than clock\_gettime.
+
+  #### Using weight variance to decide if evicting the entry
+
+  ##### Implementation
+
+  checking if w \> a+y\*v would allow to preserve x% of the entries
+
+  ##### Rejection reason
+
+  it seems an overhead especially since we need to compute a square root to do that. maybe checking w2 \> a2\+y\*v2 will do something but I am not convinced
+
+  #### Using number of members as weight
+
+  ##### Implementation
+
+  Use the number of members as weight instead of the loading time.
+
+  ##### Rejection reason
+
+  We may perhaps also preserve some other complex entries

@@ -1,0 +1,29 @@
+// Represent the entry cache LRU queues
+
+digraph EntryCache {
+
+    cache [shape=none, margin=0, label=<
+        <table border="1" cellborder="0" cellspacing="0" cellpadding="4">
+            <tr><td><b>cache</b></td></tr>
+            <tr> <td PORT="lru_head" bgcolor="#EEEEEE" align="left">c_lruhead</td> </tr>
+            <tr> <td PORT="lru_tail" align="left">c_lrutail</td> </tr>
+        </table>>];
+
+
+subgraph cluster_LRUQueue {
+    label = "LRU Queue\n(sorted by incomming order)";
+    node [shape=record];
+    backentryr1 [label="backentry HEAD"]
+    backentryr2 [label="backentry ..."]
+    backentryr3 [label="backentry TAIL"]
+
+    backentryr1 -> backentryr2[label="lru_next"] 
+    backentryr2 -> backentryr3[label="lru_next"] 
+    backentryr3 -> backentryr2[label="lru_prev"] 
+    backentryr2 -> backentryr1[label="lru_prev"] 
+}
+    cache:lru_head -> backentryr1[label="lru_next"] 
+    cache:lru_tail -> backentryr3[label="lru_prev"] 
+}
+
+
