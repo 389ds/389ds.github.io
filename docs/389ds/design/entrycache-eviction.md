@@ -240,3 +240,13 @@ While evicting the entries:
   ##### Rejection reason
 
   We may perhaps also preserve some other complex entries
+  
+#### Pinning group entries by their dn
+
+  ##### Implementation
+  Have a parameter holding a list of DN and never put the entries having these dn 
+  in the LRU (or skip these DN while evicting entries)
+
+  ##### Rejection reason
+  - Comparing DNs may slow things especially if the list contains more than a few dns
+  - Admin have to explicitly specifies the groups list
