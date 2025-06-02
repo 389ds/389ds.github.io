@@ -201,7 +201,7 @@ In python it can be tested with
 
 ### Client application in 'C'
 
-TBD
+In order to track a client session, it is recommended that the client application logs (in its log) an identifier and send the identifier, to the server, within the session tracking control.  The client application should create a unique identifier (appropriate to debug) and log this unique identifier in the log. To create the session tracking control an example is in [create_sessiontracking_ctrl](https://github.com/389ds/389-ds-base/blob/main/ldap/servers/slapd/control.c#L170) function. The server only use the session_tracking_id so it is useless to define the others fields of the control. The control **must not** be critical. 
 
 ## Configuration
 ------------------------
