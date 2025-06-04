@@ -12,6 +12,8 @@ IMAGES= \
 	 ../images/cow_btree_3.svg \
 	 ../images/ansible_1.svg \
 	 ../images/ansible_2.svg \
+	 ../images/entry_cache_lru.svg \
+	 ../images/entry_cache_lru_old.svg \
      $(END)
 
 

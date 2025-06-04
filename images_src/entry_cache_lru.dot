@@ -1,0 +1,50 @@
+// Represent the entry cache LRU queues
+
+digraph EntryCache {
+
+    cache [shape=none, margin=0, label=<
+        <table border="1" cellborder="0" cellspacing="0" cellpadding="4">
+            <tr><td><b>cache</b></td></tr>
+            <tr> <td PORT="c_stats" bgcolor="#EEEEEE" align="left">c_stats</td> </tr>
+            <tr> <td PORT="LRU_REGULAR"  align="left">c_lrus[LRU_REGULAR]</td> </tr>
+            <tr> <td PORT="LRU_PRESERVED" bgcolor="#EEEEEE" align="left">c_lrus[LRU_PRESERVED]</td> </tr>
+            <tr> <td PORT="c_nbpreserved"  align="left">c_nbpreserved</td> </tr>
+        </table>>];
+
+subgraph cluster_RegularLRUQueue {
+    label = "Regular LRU Queue\n(sorted by incomming order)";
+    node [shape=record];
+    backentryr1 [label="backentry HEAD"]
+    backentryr2 [label="backentry ..."]
+    backentryr3 [label="backentry TAIL"]
+
+    backentryr1 -> backentryr2[label="lru_next"] 
+    backentryr2 -> backentryr3[label="lru_next"] 
+    backentryr3 -> backentryr2[label="lru_prev"] 
+    backentryr2 -> backentryr1[label="lru_prev"] 
+}
+
+subgraph cluster_PreservedLRUQueue {
+    label = "Protected LRU Queue\n(sorted by increasing weight)";
+    node [shape=record];
+    backentryp1 [shape=record, label="backentry HEAD"]
+    backentryp2 [shape=record, label="backentry ..."]
+    backentryp3 [shape=record, label="backentry TAIL"]
+
+    backentryp1 -> backentryp2[label="lru_next"] 
+    backentryp2 -> backentryp3[label="lru_next"] 
+    backentryp3 -> backentryp2[label="lru_prev"] 
+    backentryp2 -> backentryp1[label="lru_prev"] 
+}
+
+
+    backentryr3 -> cache:LRU_REGULAR[label="lru_next"] 
+    backentryr1 -> cache:LRU_REGULAR[label="lru_prev"] 
+    cache:LRU_REGULAR -> backentryr1[label="lru_next"] 
+    cache:LRU_REGULAR -> backentryr3[label="lru_prev"] 
+
+    cache:LRU_PRESERVED -> backentryp3[label="lru_prev"] 
+    cache:LRU_PRESERVED -> backentryp1[label="lru_next"] 
+    backentryp1 -> cache:LRU_PRESERVED[label="lru_prev"] 
+    backentryp3 -> cache:LRU_PRESERVED[label="lru_next"] 
+}

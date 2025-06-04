@@ -40,6 +40,7 @@ If you are adding a new design document, use the [template](design-template.html
 ## 389 Directory Server 3.1
 
 - [Session Tracking Control client - replication](session-identifier-clients.html)
+- [Entry cache improvement - limit large groups eviction](entrycache-eviction.html)
 
 ## 389 Directory Server 3.0
 
