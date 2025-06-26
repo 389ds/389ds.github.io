@@ -21,6 +21,7 @@ The source code is produced by GitHub Release action: <https://github.com/389ds/
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-3.1.3.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.1.3/389-ds-base-3.1.3.tar.bz2)|389-ds-base.git|389-ds-base-3.1.3|[Building](building.html)|bd15c29dba5209ed828a2534e51fd000fdd5d32862fd07ea73339e73489b3c79f1991c91592c75dbb67384c696a03c82378f156bbea594e2e17421c95ca4c6be|
 |[389-ds-base-3.1.2.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.1.2/389-ds-base-3.1.2.tar.bz2)|389-ds-base.git|389-ds-base-3.1.2|[Building](building.html)|13f86f61b7da6380de6731f56e2bfae00e969d48acdff024f78ed6d9cff1474e5c8d1c25269031aa2466642482f55ed7b72d3844ec588b824aeb9c0ad79aab1d|
 |[389-ds-base-3.1.1.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.1.1/389-ds-base-3.1.1.tar.bz2)|389-ds-base.git|389-ds-base-3.1.1|[Building](building.html)|c6aa0aba9779bd4ed6768f140d255474bc5e02455e37db6e8273740e9be81ac90bcab4ea97e117af573cb1d3f56ddd59d063b7715d99261ebf2d497c2801bc41|
 
@@ -35,10 +36,17 @@ The source code is produced by GitHub Release action: <https://github.com/389ds/
 |[389-ds-base-3.0.2.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.0.2/389-ds-base-3.0.2.tar.bz2)|389-ds-base.git|389-ds-base-3.0.2|[Building](building.html)|e17ebc39a256848b6f7e601be3df7dafa38b1148f9b4112824f242839ad6bd9f0472dfb5518b1868ceb3b24a48f232ab3099f3176d31713281ec1f926bdacf88|
 |[389-ds-base-3.0.1.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.0.1/389-ds-base-3.0.1.tar.bz2)|389-ds-base.git|389-ds-base-3.0.1|[Building](building.html)|56b9df51e1753f77659c417b90c6aa452e6066b91623e3e5a70955d263c40bb6d7541cc86e93e27eb7a6430f6e0edd75c15970126b989f448a37299369a2dbe2|
 
+### 389 Directory Server 2.7
+
+|Source tarball|git module|git tag|More Info|SHA512SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-2.7.0.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-2.7.0/389-ds-base-2.7.0.tar.bz2)|389-ds-base.git|389-ds-base-2.7.0|[Building](building.html)|3aa6ea8b2c59c6188ede25a0c027fc32153d5276857699bc43368db1cb747fea09edeff326186d30fda30fe0a98574625ae0907d99065d1868b169256de1b035|
+
 ### 389 Directory Server 2.6
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
 |--------------|----------|-------|---------|-------|
+|[389-ds-base-2.6.2.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-2.6.2/389-ds-base-2.6.2.tar.bz2)|389-ds-base.git|389-ds-base-2.6.2|[Building](building.html)|18bf20f279879e84f9a3a3e5b0fb4a3d96157c5dcc32d9cb15ca5de29d4cb96b9ba69b098428bb98efa1fe4518089696cadebf1c2f5c0f749001863ebd2361c9|
 |[389-ds-base-2.6.1.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-2.6.1/389-ds-base-2.6.1.tar.bz2)|389-ds-base.git|389-ds-base-2.6.1|[Building](building.html)|98e4f5da43e77708fd88f51c39b7375caf1101df9387677266232aaacbe49a2f2657075d7539809936bedf5dc114cc0200406ade2617616c1687f6783bf95e16|
 
 ### 389 Directory Server 2.5
