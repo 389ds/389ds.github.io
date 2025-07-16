@@ -71,6 +71,7 @@ We maintain a number of how to guides for 389 Directory Server
 -   [How to Inactivate Accounts using nsAccountLock](howto/howto-account-inactivation.html)
 -   [How to use LMDB](howto/howto-use-lmdb.html)
 -   [How to deploy 389 DS on OpenShift](howto/howto-deploy-389ds-on-openshift.html)
+-   [How to migrate 389 DS database from BerkeleyDB to lmdb](howto/howto-migrate-bdb-to-lmdb.html)
 
 #### Operating System
 
