@@ -106,3 +106,6 @@ Note: This is for current versions of 389 on linux - for nsslapd-distribution-pl
     -   add an internal configuration parameter so that local acis are not used if the associated backend is off line
 -   Directory Manager updates will not chain and will affect the read-only replica. **Do not use Directory Manager** to make changes to read only replicas.''' Instead, create an administrative user that exists in the chained area.
 
+### Further Information
+
+Here is a followup [document](howto-chain-pwpolicy.html) that explains exactly how to setup the password policy configuration to chain password policy attributes
