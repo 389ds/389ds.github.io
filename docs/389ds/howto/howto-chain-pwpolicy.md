@@ -5,6 +5,8 @@ title: "How To Chain Password Policy In Replication"
 # How To Chain Password Policy In Replication
 ----------------
 
+{% include toc.md %}
+
 ## Overview
 
 This page is just a followup to the [chain-on-update doc](https://www.port389.org/docs/389ds/howto/howto-chainonupdate.html), and this page shows exactly how to configure the server to chain & replicate password policy state attributes. As a recap, this feature is used when you have a read-only consumer that needs to keep account lockout failures in sync with other replicas. The following describes the exact configuration you need to get this working correctly.
