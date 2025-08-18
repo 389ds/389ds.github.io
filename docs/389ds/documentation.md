@@ -34,6 +34,7 @@ We maintain a number of how to guides for 389 Directory Server
 -   [How to Reset a Locked Password](howto/howto-passwordreset.html) - How to reset a password that has been locked out due to excessive failed attempts
 -   [How to Certificate Mapping](howto/howto-certmapping.html) - Map a certificate subjectDN to the user's entry when using client certificate based authentication.
 -   [How to Chain on Update](howto/howto-chainonupdate.html) - Allow read-only replicas to "follow" referrals on behalf of clients, and enabled global password policy.
+-   [How to Chain Password Policy](howto/howto-chain-pwpolicy.html) - Allow password policy/account lockout to work with read-only replicas (followup to chain-on-update doc)
 -   [How to configure multi-supplier replication](howto/howto-multisupplierreplication.html) - How to configure multi-supplier replication without using the administration console.
 -   [How to Monitor Replication](howto/howto-replicationmonitoring.html) - How to check replication without using administration console or website
 -   [How to Monitor Replication Using CLI](howto/howto-monitor-replication.html) - How to check replication using dsconf CLI
