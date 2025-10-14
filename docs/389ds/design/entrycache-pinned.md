@@ -12,21 +12,20 @@ A way to improvie thing is to try to keep the large group entries in the entry c
 
 ## Changes
 
-   * The main idea is to add a list holding a configured number of entries having the highest weight (based upon load time and group size)
-that pin the entries instead of storing them in the LRU where they could be evicted.
-   * Handling a new flag in the entries for PINNED entries to avoid looking in pinned entries list for not pinned entries
-   * Refactor the monitoring data to use a struct instead of lots of paramaters
-   * Expose average entry load time (in microseconds) and pinned-entry metrics in cache monitoring output.
+- The main idea is to add a list holding a configured number of entries having the highest weight (based upon load time and group size)
+  that pin the entries instead of storing them in the LRU where they could be evicted.
+- Handling a new flag in the entries for PINNED entries to avoid looking in pinned entries list for not pinned entries
+- Refactor the monitoring data to use a struct instead of lots of paramaters
+- Expose average entry load time (in microseconds) and pinned-entry metrics in cache monitoring output.
 
 ## New config parameters
 
 New parameters in the backend config entry
 
-| Parameter                       | Type         | Default value | Description                                                                                                               | Comments |
-|:------------------------------- |:------------ |:------------- |:------------------------------------------------------------------------------------------------------------------------- | ------- |
+| Parameter                       | Type         | Default value | Description                                                                                                               | Comments                                                                                                  |
+|:------------------------------- |:------------ |:------------- |:------------------------------------------------------------------------------------------------------------------------- |:--------------------------------------------------------------------------------------------------------- |
 | nsslapd-cache-preserved-entries | Integer >= 0 | 10            | Number of entries that are preserved from eviction                                                                        | Should stay reasonably small because pinned entries consume memory that cannot be used for something else |
-| nsslapd-cache-debug-pattern     | String       | NULL          | Debug feature allowing to log INFO message when an entry whose dn matches the value is added/removed from the entry cache | Intended for the CI tests and not really usefull for the users |
-
+| nsslapd-cache-debug-pattern     | String       | NULL          | Debug feature allowing to log INFO message when an entry whose dn matches the value is added/removed from the entry cache | Intended for the CI tests and not really usefull for the users                                            |
 
 ## Internal Data changes
 
@@ -60,6 +59,7 @@ New parameters in the backend config entry
 | uint64\_t nehw      | current \# entries having weight in cache |
 
 ## Test
+
 dirsrvtests/tests/suites/features/entrycache_eviction_test.py verifying pinned-entry caching and eviction thresholds.
 
 ## Alternatives
@@ -173,8 +173,11 @@ While evicting the entries:
 - Admin have to explicitly specifies the groups list
 
 #### Handling pinned entries within the LRU
+
 ##### Implementation
+
 Embedding the handling of the pinned entries within the LRU code as originally intented
 
 ##### Rejection reason
+
 Would make more difficult the replacement of LRU by something more efficient like ARC
