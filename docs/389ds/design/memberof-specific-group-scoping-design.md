@@ -31,7 +31,9 @@ This is implemented by passing a new *entry_info C struct*, that contains the gr
 Behavior
 --------
 
-The specific group constraints are strict.  If you specify one specific group to include, then all other groups in the DIT will be excluded, regardless of their location. If it's not found by the "specific group" filters, then it's not updated. Similarly for excluding specific groups, if the group is not by the exclude filters, then it gets updated. It might not make sense to use both include and exclude specific group filters simultaneously. Instead, choose one approach that best fits your needs. 
+The specific group constraints are strict.  If you specify one specific group to include, then all other groups in the DIT will be excluded, regardless of their location. If it's not found by the "specific group" filters, then it's not updated. Similarly for excluding specific groups, if the group does not match any of the exclude filters, then it gets updated. It might not make sense to use both include and exclude specific group filters simultaneously. Instead, choose one approach that best fits your needs.
+
+NOTE - If you have a strong understanding of LDAP search filters you can technically create a single complex "include" filter to covers all the include/exclude cases, but this can be complicated/confusing and not a requirement.
 
 Major configuration options and enablement
 ------------------------------------------
@@ -48,7 +50,7 @@ The "entry_info" struct in memberof.c
 There are three new multi-valued configuration attributes that can be set in: **cn=MemberOf Plugin,cn=plugins,cn=config**:
    
     - memberOfSpecificGroupFilter: <LDAP search filter>
-    - memberOfsExcludeSpecificGroupFilter: <LDAP search filter>
+    - memberOfExcludeSpecificGroupFilter: <LDAP search filter>
     - memberOfSpecificGroupOC: <objectclass name>
 
 For example
@@ -66,13 +68,21 @@ For example
     
 CLI usage
 
+You can replace all current values by using **set**, or you can add/delete individual values using **add-attr** and **del-attr**
+
     dsconf slapd-INSTANCE plugin memberof set --specific-group-filter=(cn=group)
     dsconf slapd-INSTANCE plugin memberof set --exclude-specific-group-filter=(cn=isolated group)
+    dsconf slapd-INSTANCE plugin memberof set --specific-group-oc groupOfUniquenames customGroupObjClass
+
+    dsconf slapd-INSTANCE plugin memberof add-attr --specific-group-filter=(cn=group2)
+    dsconf slapd-INSTANCE plugin memberof del-attr --exclude-specific-group-filter=(cn=isolated group2)
+
 
 Origin
 -------------
 
 <https://github.com/389ds/389-ds-base/issues/7035>
+<https://github.com/389ds/389-ds-base/issues/7041>
 
 Author
 ------
