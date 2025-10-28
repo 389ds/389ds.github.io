@@ -1,4 +1,10 @@
+---
+title: "Improving the entry cache eviction"
+---
+
 # Improving the entry cache eviction
+
+{% include toc.md %}
 
 ## Why changing things ?
 
