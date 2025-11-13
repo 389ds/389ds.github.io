@@ -74,7 +74,62 @@ dynamicListAttr: member
 
 - **dynamicListObjectclass** specifies the objectclass that an entry must have to be considered a dynamic entry
 - **dynamicListUrlAttr** specifies the attribute in the dynamic entry that contains the LDAP URI
-- **dynamicListAttr** specifies the attribute that will contain the DN of the entries that match the LDAP URI. This attribute stores the DN of an entry, so the attribute configured **MUST** have a DN syntax. Note - this can be bypassed by requesting an attribute in the LDAP URI (See Example section)
+- **dynamicListAttr** specifies the attribute that will contain the DN of the entries that match the LDAP URI. This attribute stores the DN of an entry, so the attribute configured **MUST** have a DN syntax. Note - this can be bypassed by requesting an attribute in the LDAP URI (See Examples section)
+
+You can also use a *shared config entry* with this plugin.  The benefit here is that the configuration will replicate to all the servers for easier management.
+
+    nsslapd-pluginConfigArea: cn=dynamic lists config,dc=example,dc=com
+    
+CLI Usage
+---------
+
+Here are the core options in the CLI
+```
+usage: dsconf instance [-v] [-j] plugin dynamic-lists [-h] {show,enable,disable,status,set,config-entry} ...
+
+positional arguments:
+  {show,enable,disable,status,set,config-entry}
+                        action
+    show                Displays the plugin configuration
+    enable              Enables the plugin
+    disable             Disables the plugin
+    status              Displays the plugin status
+    set                 Edit the plugin settings
+    config-entry        Manage the config entry
+```
+
+Here are the "set" options
+
+```
+usage: dsconf [-v] [-j] instance plugin dynamic-lists set [-h] [--objectclass OBJECTCLASS] [--url-attr URL_ATTR]
+                                                          [--list-attr LIST_ATTR] [--config-entry CONFIG_ENTRY]
+options:
+  -v, --verbose         Display verbose operation tracing during command execution
+  -j, --json            Return result in JSON object
+  -h, --help            show this help message and exit
+  --objectclass OBJECTCLASS
+                        Specifies the objectclass to identify entry that has a dynamic list (dynamicListObjectclass)
+  --url-attr URL_ATTR   Specifies the attribute that contains the URL of the dynamic list (dynamicListUrlAttr)
+  --list-attr LIST_ATTR
+                        Specifies the attribute used to store the values of the dynamic list. The attribute must have a DN syntax
+                        (dynamicListAttr)
+  --config-entry CONFIG_ENTRY
+                        The value to set as nsslapd-pluginConfigArea
+```
+
+And finally here are the config-entry options
+
+```
+usage: dsconf [-v] [-j] instance plugin dynamic-lists config-entry [-h] {add,set,show,delete} ...
+
+positional arguments:
+  {add,set,show,delete}
+                        action
+    add                 Add the config entry
+    set                 Edit the config entry
+    show                Display the config entry
+    delete              Delete the config entry and remove the reference in the plugin entry
+```
 
 Examples
 --------
