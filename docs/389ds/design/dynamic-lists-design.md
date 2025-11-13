@@ -13,7 +13,7 @@ Dynamic lists are designed to perform an internal search to build up an entries 
 Design
 ------
 
-This feature is implemented as a preoperation entry plugin. When returning the result to the client, if entry matches the dynamic list parameters (it has the objectclass and URL attribute), it will perform an internal search using the LDAP URI to find the content to populate the resulting entry with:
+This feature is implemented as a preoperation entry plugin. When returning the result to the client, if the entry matches the dynamic list parameters (it has the objectclass and URL attribute), it will perform an internal search using the LDAP URI to find the content to populate the resulting entry with:
 
 ```
 #0  dynamic_lists_pre_entry (pb=0x50800051c020) at ldap/servers/plugins/dynamic_lists/dynamic_lists.c:162
@@ -50,7 +50,7 @@ As previously mentioned you can override what attribute/content is added to the 
 
     ldap:///ou=people,dc=example,dc=com?mail?one?(&(objectclass=posixAccount)(uid=*))
     
-Here we set **mail** as the requested attribute.  The plugin will take the "mail" attribute and value and add it the resulting entry.  Note, the attribute specified in the plugin configuration (dynamicListAttribute) is now bypassed and will **not** be written to the dynamic entry.  See the Example section to see how this looks.
+Here we set **mail** as the requested attribute.  The plugin will take the "mail" attribute and value and add it the resulting entry.  Note, the attribute specified in the plugin configuration (*dynamicListAttribute*) is now bypassed and will **not** be written to the dynamic entry.  See the Example section to see how this looks.
 
 Major configuration options and enablement
 ------------------------------------------
@@ -82,6 +82,9 @@ Examples
 Here are some different configurations and how it will impact the search
 
 ### Example 1 - Standard configuration
+
+Plugin configuration
+
 ```
 dynamicListObjectclass: groupOfUrls
 dynamicListUrlAttr: memberUrl
@@ -102,7 +105,8 @@ The search
 ```
 $ ldapsearch -xLLL -H ldap://localhost:389 -D "cn=directory manager" -w PASSWORD -b "dc=example,dc=com" cn=my_dynamic_group
 dn: cn=my_dynamic_group,ou=groups,dc=example,dc=com
-...
+objectclass: top
+objectclass: groupOfUrls
 memberUrl: ldap:///ou=people,dc=example,dc=com??sub?(uid=*)
 member: uid=mreynolds,ou=people,dc=example,dc=com
 member: uid=tbordaz,ou=people,dc=example,dc=com
@@ -115,13 +119,15 @@ No matter what attribute is configured it is always populated with the DN of the
 
 ### Example 2 - Request a special attribute "employeeNumber"
 
+Plugin configuration (same as the last example)
+
 ```
 dynamicListObjectclass: groupOfUrls
 dynamicListUrlAttr: memberUrl
 dynamicListAttr: member
 ```
 
-Dynamic entry that uses an attribute "employeeNumber" in the URL which triggers **dynamicListAttr** to be ignored. While the LDAP standard allows for multiple attributes to be requested in an LDAP Url the plugin only looks at the first requested attribute.  All other requested attributes are ignored.
+A dynamic entry that uses an attribute "employeeNumber" in the URL causes **dynamicListAttr** to be ignored. While the LDAP standard allows for multiple attributes to be requested in an LDAP Url the plugin only looks at the first requested attribute.  All other requested attributes are ignored.
 
 ```
 cn=dynamic_employee_group,ou=groups,dc=example,dc=com
@@ -135,7 +141,8 @@ The search
 ```
 $ ldapsearch -xLLL -H ldap://localhost:389 -D "cn=directory manager" -w PASSWORD -b "dc=example,dc=com" cn=dynamic_employee_group
 dn: cn=dynamic_employee_group,ou=groups,dc=example,dc=com
-...
+objectclass: top
+objectclass: groupOfUrls
 memberUrl: ldap:///ou=people,dc=example,dc=com?employeeNumber?sub?(&(objectclass=posixAccount)(uid=*))
 employeeNumber: 1001
 employeeNumber: 628
@@ -147,6 +154,7 @@ Origin
 -------------
 
 [1] <https://github.com/389ds/389-ds-base/issues/1793>
+<br>
 [2] <https://github.com/389ds/389-ds-base/issues/82>
 
 Author
