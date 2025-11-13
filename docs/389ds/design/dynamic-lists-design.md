@@ -80,6 +80,8 @@ You can also use a *shared config entry* with this plugin.  The benefit here is 
 
     nsslapd-pluginConfigArea: cn=dynamic lists config,dc=example,dc=com
     
+It is important to note that all configuration changes require *restarting* the server. This was done in favor of performance so the server does not have to take any mutex locks to protect the configuration settings. 
+    
 CLI Usage
 ---------
 
