@@ -52,6 +52,8 @@ As previously mentioned you can override what attribute/content is added to the 
     
 Here we set **mail** as the requested attribute.  The plugin will take the "mail" attribute and value and add it the resulting entry.  Note, the attribute specified in the plugin configuration (*dynamicListAttribute*) is now bypassed and will **not** be written to the dynamic entry.  See the Example section to see how this looks.
 
+WARNING - you can not use a search filter to check what the dynamic content will be because the content is not added until we are already returning the entry to the client. The search filter must match the entry before the content is added.
+
 Major configuration options and enablement
 ------------------------------------------
 
@@ -206,6 +208,36 @@ employeeNumber: 628
 ```
 
 So this search looks at each matching entry and extracts the employeeNumber attribute value and uses that to populate the dynamic entry.  So the LDAP Url controls how the dynamic content is built.  The plugin configuration mainly just specifies the criteria for what is a dynamic entry.
+
+### Example 3 - Multiple LDAP URLs
+
+If the schema allows it the *dynamicListUrlAttr* attribute could be multi-valued and you can use multiple LDAP urls to build the dynamic content
+
+```
+cn=dynamic_group,ou=groups,dc=example,dc=com
+objectclass: top
+objectclass: groupOfUrls
+memberUrl: ldap:///ou=people,dc=example,dc=com??sub?(&(objectclass=posixAccount)(uid=*))
+memberUrl: ldap:///ou=external_people,dc=example,dc=com??sub?(&(objectclass=posixAccount)(uid=*))
+```
+
+The search
+
+```
+$ ldapsearch -xLLL -H ldap://localhost:389 -D "cn=directory manager" -w PASSWORD -b "dc=example,dc=com" cn=dynamic_employee_group
+dn: cn=dynamic_group,ou=groups,dc=example,dc=com
+objectclass: top
+objectclass: groupOfUrls
+memberUrl: ldap:///ou=people,dc=example,dc=com?employeeNumber?sub?(&(objectclass=posixAccount)(uid=*))
+memberUrl: ldap:///ou=external_people,dc=example,dc=com??sub?(&(objectclass=posixAccount)(uid=*))
+member: uid=mreynolds,ou=people,dc=example,dc=com
+member: uid=tbordaz,ou=people,dc=example,dc=com
+member: uid=spichugi,ou=people,dc=example,dc=com
+member: uid=progier,ou=people,dc=example,dc=com
+member: uid=jchapman,ou=people,dc=example,dc=com
+member: uid=msmith,ou=external_people,dc=example,dc=com
+member: uid=lkrispenz,ou=external_people,dc=example,dc=com
+```
 
 Origin
 -------------
