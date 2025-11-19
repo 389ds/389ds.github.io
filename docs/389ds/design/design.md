@@ -43,6 +43,7 @@ If you are adding a new design document, use the [template](design-template.html
 - [MemberOf Plugin Specific Group Scoping](memberof-specific-group-scoping-design.html)
 - [Entry cache pinned entries - limit large groups eviction](entrycache-pinned.html)
 - [Dynamic Lists plugin](dynamic-lists-design.html)
+- [Online certificates refresh](online-certificate-refresh.html)
 
 ## 389 Directory Server 3.0
 
