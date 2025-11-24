@@ -88,6 +88,7 @@ We maintain a number of how to guides for 389 Directory Server
 
 -   [Address Sanitizer Testing](howto/howto-addresssanitizer.html) - Using Address Saniziter to find and correct issues.
 -   [How to Fedora Release](howto/howto-fedora-release-process.html) - The Fedora release process
+-   [How to lib389 PyPI Release](howto/howto-lib389-pypi-release.html) - Release lib389 to PyPI
 -   [How to Write a Wiki Page](howto/howto-write-wiki-page.html)
 -   [How to Do Pull-Requests in GitHub](howto/howto-do-pull-requests.html)
 
