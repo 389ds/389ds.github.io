@@ -15,8 +15,8 @@ Ok - just go to [Download](../download.html)
 Deployment/Installation Guide
 -----------------------------
 
--   [Deployment Guide](https://access.redhat.com/site/documentation/en-US/Red_Hat_Directory_Server/9.0/html/Deployment_Guide/index.html) - planning your new directory server deployment
--   [Installation Guide](https://access.redhat.com/site/documentation/en-US/Red_Hat_Directory_Server/9.0/html/Installation_Guide/index.html) - step-by-step instructions for installation, upgrade, and migration
+-   [Deployment Guide](https://access.redhat.com/sites/default/files/attachments/red_hat_directory_server-9.0-deployment_guide-en-us_0.pdf) - planning your new directory server deployment
+-   [Installation Guide](https://access.redhat.com/sites/default/files/attachments/red_hat_directory_server-9.0-installation_guide-en-us_0.pdf) - step-by-step instructions for installation, upgrade, and migration
 
 The manual is for Red Hat Directory Server, and some of the information is different for 389. The differences are described below.
 
