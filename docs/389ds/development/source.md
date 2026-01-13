@@ -17,6 +17,12 @@ The idm-console-framework is not under 389/ it is at **git://git@pagure.io/idm-c
 
 The source code is produced by GitHub Release action: <https://github.com/389ds/389-ds-base/blob/main/.github/workflows/release.yml>
 
+### 389 Directory Server 3.2
+
+|Source tarball|git module|git tag|More Info|SHA256SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-3.2.0.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.2.0/389-ds-base-3.2.0.tar.bz2)|389-ds-base.git|389-ds-base-3.2.0|[Building](building.html)|[389-ds-base-3.1.3.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.1.3/389-ds-base-3.1.3.tar.bz2)|389-ds-base.git|389-ds-base-3.1.3|[Building](building.html)|bd15c29dba5209ed828a2534e51fd000fdd5d32862|
+
 ### 389 Directory Server 3.1
 
 |Source tarball|git module|git tag|More Info|SHA512SUM|
@@ -35,6 +41,13 @@ The source code is produced by GitHub Release action: <https://github.com/389ds/
 |[389-ds-base-3.0.3.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.0.3/389-ds-base-3.0.3.tar.bz2)|389-ds-base.git|389-ds-base-3.0.3|[Building](building.html)|f9e5432d8acc7701c9455cb7b561ff6dd67a8e2f9d0340f47cf17b8a3558aa02dab7319d139a23e8f89682c2521c9c6852a097b702228785dda37cb03d2c9310|
 |[389-ds-base-3.0.2.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.0.2/389-ds-base-3.0.2.tar.bz2)|389-ds-base.git|389-ds-base-3.0.2|[Building](building.html)|e17ebc39a256848b6f7e601be3df7dafa38b1148f9b4112824f242839ad6bd9f0472dfb5518b1868ceb3b24a48f232ab3099f3176d31713281ec1f926bdacf88|
 |[389-ds-base-3.0.1.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-3.0.1/389-ds-base-3.0.1.tar.bz2)|389-ds-base.git|389-ds-base-3.0.1|[Building](building.html)|56b9df51e1753f77659c417b90c6aa452e6066b91623e3e5a70955d263c40bb6d7541cc86e93e27eb7a6430f6e0edd75c15970126b989f448a37299369a2dbe2|
+
+### 389 Directory Server 2.8
+
+|Source tarball|git module|git tag|More Info|SHA256SUM|
+|--------------|----------|-------|---------|-------|
+|[389-ds-base-2.8.0.tar.bz2](https://github.com/389ds/389-ds-base/releases/download/389-ds-base-2.8.0/389-ds-base-2.8.0.tar.bz2)|389-ds-base.git|389-ds-base-2.8.0|[Building](building.html)|82da95b0e959967ac818b55268826434773ee95793e1f36bc79c7dba717990ae|
+
 
 ### 389 Directory Server 2.7
 
