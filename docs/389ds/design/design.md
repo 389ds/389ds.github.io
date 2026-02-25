@@ -37,6 +37,7 @@ If you are adding a new design document, use the [template](design-template.html
 
 - [Ansible DS](ansible-ds.html)
 
+
 ## 389 Directory Server 3.1
 
 - [Session Tracking Control client - replication](session-identifier-clients.html)
@@ -44,6 +45,7 @@ If you are adding a new design document, use the [template](design-template.html
 - [Entry cache pinned entries - limit large groups eviction](entrycache-pinned.html)
 - [Dynamic Lists plugin](dynamic-lists-design.html)
 - [Online certificates refresh](online-certificate-refresh.html)
+- [CLI Encryption Module Management](cli-encryption-module.design.html)
 
 ## 389 Directory Server 3.0
 
