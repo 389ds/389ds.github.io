@@ -46,6 +46,7 @@ If you are adding a new design document, use the [template](design-template.html
 - [Dynamic Lists plugin](dynamic-lists-design.html)
 - [Online certificates refresh](online-certificate-refresh.html)
 - [CLI Encryption Module Management](cli-encryption-module-design.html)
+- [Fine grain operation timing](fine-grain-operation-timing.html)
 
 ## 389 Directory Server 3.0
 
