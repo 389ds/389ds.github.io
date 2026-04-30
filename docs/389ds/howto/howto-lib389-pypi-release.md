@@ -8,9 +8,10 @@ title: "How to lib389 PyPI Release"
 
 ### Important Notes
 
-- lib389 should be released **AFTER** the Fedora release process is complete
-- lib389 version **MUST** match the 389-ds-base version that was released to Fedora
-- Ideally, release lib389 in the same state it was released in Fedora packages
+- **Release order:** GitHub release -> Fedora Rawhide build -> **then** lib389 PyPI. Publishing lib389 before the GH release exists, or before Fedora Rawhide has been built from that GH release tarball, breaks the guarantee that `pip install lib389` and `dnf install 389-ds-base` ship the same `src/lib389/` bytes.
+- lib389 should be released **AFTER** the Fedora Rawhide build has landed (you do not need to wait for Bodhi to reach stable on the older Fedora branches).
+- lib389 version **MUST** match the 389-ds-base version of the GitHub release / Fedora Rawhide build.
+- Ideally, release lib389 from the same source tree state that produced the GH release tarball — see the *DS - GitHub release* step in [Fedora Release Process](howto-fedora-release-process.html).
 
 ### Prerequisites
 
