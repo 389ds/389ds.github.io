@@ -8,16 +8,16 @@ title: "Shadow Account Fix-up Task"
 Overview
 --------
 
-When updating userPassword in RHDS, the shadowLastChange attribute is automatically generated. This behavior aligns with RFC 2307 and was implemented in [Shawdow Account Support](https://www.port389.org/docs/389ds/design/shadow-account-support.html).  AIX systems validate the presence of **shadowLastChange** when both **shadowMin** and **shadowMax** are set, but in databases migrated from ODSEE if **shadowLastChange** is not present then AIX authentication fails.  There needs to be a shadow account fix-up task so that after a database import **shadowlastChange" attribute can be added/updated. There is also an issue where shadowLastUpdate might have an incorrect value because it was manually set in ODSEE. So *shadowLastCahnge* could be missing or have a stale/incorrect value.
+When updating userPassword in RHDS, the shadowLastChange attribute is automatically generated. This behavior aligns with RFC 2307 and was implemented in [Shawdow Account Support](https://www.port389.org/docs/389ds/design/shadow-account-support.html). AIX systems validate the presence of **shadowLastChange** when both **shadowMin** and **shadowMax** are set, but in databases migrated from ODSEE if **shadowLastChange** is not present then AIX authentication fails. There needs to be a shadow account fix-up task so that after a database import the **shadowlastChange** attribute can be added/updated. There is also an issue where *shadowLastChange* might have an incorrect value because it was manually set. So *shadowLastChange* could be missing, or it could have a stale/incorrect value.
 
 Design
 ----------------------------------
 
-The fixup task takes a suffix/subtree and searches for all entries that have objectclass **shadowAccount**. If the entry does not have **shadowLastChange** present, then it adds it. If the value is determined to be stale, or out-of-date, it regenerates the values based off of **passwordExpirationtime** operational attribute.
+The fixup task takes a suffix/subtree and searches for all entries that have objectclass **shadowAccount**. If the entry does not have **shadowLastChange** present, then it adds it. If the value is determined to be stale, or out-of-date, it regenerates the value based off of **passwordExpirationtime** operational attribute.
 
-The way the value is determined to be *stale* is to look at *passwordExpirationtime* value, minus the password policy passwordMaxage value, and compare that to the current value of *shadowLastChnage*. If they are different then the task resets the value to:  (passwordExpirationtime - maxAge) / SECONDS-PER-DAY   ---> the **ShadowLastChange" value is the number of *days* since January 1, 1970 (epoch). So when we build out the value is needs to be in *days* not *seconds*.
+The way the value is determined to be *stale* is to look at *passwordExpirationtime* value, minus the password policy passwordMaxage value, convert it to days, and compare that to the current value of *shadowLastChange*. If they are different then the task resets the value to:  (passwordExpirationtime - maxAge) / SECONDS-PER-DAY   ---> the **ShadowLastChange" value is the number of *days* since January 1, 1970 (epoch). So when we build out the value it needs to be in *days* not *seconds*.
 
-Implementation
+CLI Implementation
 --------------
 
 ```
@@ -43,6 +43,23 @@ Examples:
 # dsconf localhost pwpolicy fixup-shadow dc=example,dc=com --force
 
 ```
+
+Task Entry
+-------------
+
+The task is created under
+
+    cn=fixup shadow attributes,cn=tasks,cn=config
+
+Task entry looks like
+
+    dn: cn=my fixup task,cn=fixup shadow attributes,cn=tasks,cn=config
+    objectclass: top
+    objectclass: extensibleObject
+    cn: my fixup task
+    suffix: ou=people,dc=example,dc=com
+    force: off
+
 
 Origin
 -------------
