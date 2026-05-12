@@ -103,3 +103,6 @@ If it does, it retrieves password policy and fills the shadowAttributes as follo
 Tickets
 =======
 * Ticket [\#548](https://github.com/389ds/389-ds-base/issues/548) - RFE: Allow AD password sync to update shadowLastChange
+* Ticket [\#7464 - Fixup task](https://github.com/389ds/389-ds-base/issues/7464)
+
+
