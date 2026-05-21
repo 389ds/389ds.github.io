@@ -50,6 +50,7 @@ If you are adding a new design document, use the [template](design-template.html
 - [Fine grain operation timing](fine-grain-operation-timing.html)
 - [Replication Lag Report Design - Tech Preview](replication-lag-report-design.md)
 - [Shadow Account Fix-up Task](shadow-fixup-design.html)
+- [Maximum Controls Per Operaton](max-ctrls-per-op-design.html)
 
 ## 389 Directory Server 3.0
 
