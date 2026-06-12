@@ -57,9 +57,10 @@ The cache is split into 64 shards. Each shard runs the eviction algorithm
 independently over its own hash table and its own lock, so reads on
 different shards run in parallel and a writer on one shard blocks readers
 only on that shard. Shards are selected by key hash, not by worker thread.
-The shard index comes from the low bits of the key's hash, which leaves the
-high bits free for hashbrown's SIMD tag. The shard struct is padded to 128
-bytes so neighbouring locks do not share a cache line. Layout:
+The shard index comes from the middle bits of the key's hash, which leaves the
+low bits free for hashbrown's bucket index and the high bits for its SIMD tag.
+The shard struct is padded to 128 bytes so neighbouring locks do not share
+a cache line. Layout:
 
 ```rust
 struct S3FifoShard {
@@ -189,12 +190,15 @@ s3fifo      4880.70 s   (1:21:20)
 S3-FIFO finishes 12.4% sooner than the concread run on the same suite.
 
 The recent multithreaded (on 16-vCPU VM) memberOf cascade run mainly tests
-the steady-state lookup path and shard contention. The size sweep did not change
-the direction of the result: across the small (4 MiB), fit (14.5 MiB), and
-large (64 MiB) cache sizes, with 16, 32, and 64 threads, S3-FIFO stayed
-about 11% to 13% ahead on ops/s, with lower p95 in the same runs.
+the steady-state lookup path and shard contention. Four variants ran
+back-to-back on one VM and one build: cache disabled, concread as shipped,
+concread with quiesce tuning (reader quiesce off, a dedicated quiesce
+thread, a shorter look-back), and S3-FIFO. The size sweep did not change
+the direction of the result: across the small (1.05 MB), fit (1.55 MB), and
+large (6.87 MB) cache sizes, with 16, 32, and 64 threads, S3-FIFO stayed
+about 12% to 21% ahead on ops/s, with lower p95 in the same runs.
 
-The generated benchmark dataset was about 100,200 entries, or about 15 MiB
+The generated benchmark dataset was about 10,220 entries, or about 1.7 MB
 using the same 150~168-byte planning estimate (which is generous) as
 the cache-size knob.
 
@@ -203,36 +207,53 @@ mainly a warm-cache lookup-path comparison:
 
 ```
 cache size        threads        ops/s vs concread             p95 vs concread
-small (4 MiB)     16 / 32 / 64   +11.5% / +12.6% / +11.4%     -11.0% / -12.8% / -15.0%
-fit (14.5 MiB)    16 / 32 / 64   +12.2% / +11.6% / +11.3%     -12.5% / -13.2% / -13.2%
-large (64 MiB)    16 / 32 / 64   +12.7% / +11.8% / +12.7%     -12.8% / -12.4% / -12.7%
+small (1.05 MB)   16 / 32 / 64   +12.8% / +13.6% / +11.7%     -13.9% / -14.0% / -11.7%
+fit (1.55 MB)     16 / 32 / 64   +16.8% / +15.1% / +18.4%     -36.1% / -14.3% / -18.1%
+large (6.87 MB)   16 / 32 / 64   +14.3% / +21.0% / +13.5%     -28.6% / -16.0% / -11.7%
 ```
 
-For p95, negative means lower latency.
+For p95, negative means lower latency. In every cell the slowest S3-FIFO
+repetition beats the fastest concread repetition. S3-FIFO also beats the
+cache-disabled baseline in all nine cells; concread is slower than no cache
+in eight of nine. The quiesce-tuned concread stays inside the as-shipped
+concread's spread on this workload.
 
 The hot-DN server test is the weak server-level shape for hash sharding.
 It is not a pure single-key cache benchmark; the measured run still had a small
 stable cache working set. Across small, fit, and large at 16, 32, and 64
-threads, S3-FIFO stayed within about 3.4% of concread either way:
+threads:
 
 ```
 cache size        threads        ops/s vs concread
-small (4 MiB)     16 / 32 / 64   +1.1% / +3.4% / +2.3%
-fit (14.5 MiB)    16 / 32 / 64   -3.1% / -0.9% / -0.3%
-large (64 MiB)    16 / 32 / 64   -2.1% / +1.1% / +3.1%
+small (1.05 MB)   16 / 32 / 64   -1.1% / -14.2% / -5.2%
+fit (1.55 MB)     16 / 32 / 64   -0.2% / -2.9% / -2.1%
+large (6.87 MB)   16 / 32 / 64   -6.3% / -2.0% / +4.6%
 ```
+
+Per-rep spread on this test reaches 12-15%, so most cells overlap. The
+-14.2% cell is the noisiest one: concread's five reps span 904 to 1049
+ops/s against S3-FIFO's 847 to 966, so the medians exaggerate a gap the
+distributions mostly share. The cache-disabled baseline lands in the same
+band as both caches, so this stays a bounded weak case rather than a clear
+win or loss.
 
 The Criterion capacity sweep is supporting data for the cache hot path, not the
 primary evidence. At 124,830 entries, which roughly corresponds to the 20 MiB default
 using the 168-byte planning estimate, S3-FIFO remained ahead of the isolated
-ARCache comparator on the threaded runs:
+ARCache comparator on the threaded runs.
 
 ```
 workload          threads 16 / 64   s3fifo vs isolated ARCache comparator
-Zipf 1.3          16 / 64           6.62x / 6.15x
-scan              16 / 64           7.52x / 4.77x
-memberOf cascade  16 / 64           13.14x / 8.09x
+Zipf 1.3          16 / 64           2.96x / 2.27x
+scan              16 / 64           11.95x / 5.52x
+memberOf cascade  16 / 64           18.10x / 7.59x
 ```
+
+Applying the quiesce tuning to the comparator helps it but does not change
+the ordering: S3-FIFO stays 2.1x to 11.3x ahead on the same cells.
+One-thread runs narrow the gap further, and the tuned comparator can edge
+ahead under single-threaded eviction pressure and on a single-hot-key
+microbenchmark; the threaded multi-DN shapes above are the NDN target case.
 
 Major Configuration Options and Enablement
 ------------------------------------------
