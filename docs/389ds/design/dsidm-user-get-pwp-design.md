@@ -156,24 +156,6 @@ The policy entry `cn` value uses LDAP-escaped DN fragments (for example
 `cn=nsPwPolicyEntry_user,uid\3Dsteve,...`). The implementation URL-decodes the
 suffix after the prefix to obtain the policy target DN.
 
-### Logic flow
-
-```mermaid
-flowchart TD
-    A[dsidm user get-pwp selector] --> B[Resolve user DN via user type + basedn]
-    B --> C[Read user entry with operational attrs]
-    C --> D{pwdpolicysubentry present?}
-    D -->|No| E[Global Policy]
-    D -->|Yes| F[Load policy entry]
-    F --> G{Valid passwordpolicy entry?}
-    G -->|No| H[Error: policy not found]
-    G -->|Yes| I[Classify user vs subtree from cn]
-    I --> J[Build local effective attrs]
-    E --> K[Build global effective attrs from cn=config]
-    J --> L[Format text or JSON report]
-    K --> L
-```
-
 **Global policy output** — enumerate all password policy attributes from
 `PwPolicyManager.arg_to_attr`, plus global-only configuration attributes
 (`passwordisglobalpolicy`, `nsslapd-pwpolicy-local`, `nsslapd-allow-hashed-passwords`,
