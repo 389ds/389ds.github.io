@@ -97,8 +97,6 @@ global effective settings (general, expiration, lockout, syntax, TPR, and relate
 - **User not found** — non-zero exit, clear message (`User "<selector>" was not found`).
 - **Broken policy reference** — user entry references a missing policy DN; non-zero
   exit with message that the assigned policy could not be found.
-- **Insufficient access** — LDAP `INSUFFICIENT_ACCESS`; no partial policy report
-  is emitted (same bind/ACI model as other `dsidm` read commands).
 
 Design
 ------
@@ -133,12 +131,6 @@ Implementation entry points:
 
 - CLI handler: `src/lib389/lib389/cli_idm/user.py` — `get_pwp()`
 - Core logic: `src/lib389/lib389/pwpolicy.py` — `PwPolicyManager.get_effective_policy()`
-
-### Schema
-
-No new schema, object classes, or attributes. The command reads existing
-password policy attributes and the operational attribute `pwdpolicysubentry` on
-the user entry.
 
 ### Policy type resolution
 
@@ -222,8 +214,7 @@ Policy type labels are always **`Global Policy`**, **`User Policy`**, or
   (`pytest.mark.tier1`)
 
 Cases covered include global, subtree, and user policies; precedence; syntax
-inheritance on/off; JSON parity; not-found user; broken policy reference; and
-ACL denial without information leak.
+inheritance on/off; JSON parity; not-found user; and broken policy reference.
 
 Major configuration options and enablement
 ------------------------------------------
@@ -241,24 +232,13 @@ Password policy behavior depends on existing server configuration:
 
 There is no configuration option to enable or disable `get-pwp` itself.
 
-External Impact
----------------
-
-| Component | Impact |
-|-----------|--------|
-| **389-ds-base (ns-slapd)** | None — read-only client feature |
-| **lib389 / python3-lib389** | New `dsidm user get-pwp` subcommand; extended `PwPolicyManager` API |
-| **Cockpit 389 DS** | None required; UI continues to manage policies via existing APIs |
-| **dsconf** | Complementary — `dsconf pwpolicy` / `dsconf localpwp` for configuration; `dsidm user get-pwp` for per-user effective view |
-| **Documentation** | Wiki design (this page); `src/lib389/README.md` usage summary |
-| **Downstream packaging** | Updated `python3-lib389` / `389-ds-base` RPMs ship the command |
-
 Origin
 -------------
 
-https://github.com/389ds/389-ds-base/issues/7505
+<https://github.com/389ds/389-ds-base/issues/7505>
 
 Author
 ------
 
 <mreynolds@redhat.com>
+
