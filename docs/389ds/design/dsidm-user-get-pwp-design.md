@@ -122,15 +122,24 @@ dsidm -j <instance> ... user get-pwp <selector>
 | Argument | Description |
 |----------|-------------|
 | `instance` | Instance name or LDAP URL (same as all `dsidm` commands) |
-| `-b / --basedn` | Search base; defaults per `dsidm` |
+| `-b / --basedn` | Base DN suffix; defaults per `dsidm` |
 | `selector` | User identifier (typically `uid` for posix users), same resolution as `user get` |
 | `--user-type` | `posix` (default), `basic`, `service`, or `traditional` |
+| `--parent-dn` | Override the default DIT location of the user entry |
 | `-j / --json` | Structured JSON output |
 
 Implementation entry points:
 
 - CLI handler: `src/lib389/lib389/cli_idm/user.py` — `get_pwp()`
 - Core logic: `src/lib389/lib389/pwpolicy.py` — `PwPolicyManager.get_effective_policy()`
+
+#### Usage examples
+
+    # dsidm slapd-instance -b "dc=example,dc=com" user get-pwp "mreynolds"
+
+    # dsidm slapd-instance -b "dc=example,dc=com" user get-pwp "jsmith" --user-type=basic
+
+    # dsidm slapd-instance -b "dc=example,dc=com" user get-pwp "mchesterfield" --parent-dn="ou=legacy accounts,dc=example,dc=com"
 
 ### Policy type resolution
 
