@@ -52,6 +52,7 @@ If you are adding a new design document, use the [template](design-template.html
 - [Shadow Account Fix-up Task](shadow-fixup-design.html)
 - [Maximum Controls Per Operaton](max-ctrls-per-op-design.html)
 - [dsidm Get Effective Password Policy Design](dsidm-user-get-pwp-design.html)
+- [Server log async compression and deleteion design](log-async-compress-delete-design.html)
 
 ## 389 Directory Server 3.0
 
