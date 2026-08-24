@@ -178,6 +178,46 @@ Also see the [Pull-Request Cheatsheet](howto/howto-do-pull-requests.html)
 
 When you first start, it's a good idea to ask for advice along the way. We are happy to check your code in a git branch or patch as your progress. We want to help your code improve and be a good submission.
 
+### Write a CI test
+
+In almost all cases a CI test can written for your work. You can either extend an existing test/file, or write an entire new test file. To help with this process there is a script to help create new empty test file or extend an existing one `dirsrvtests/create_test.py`
+
+```
+389-ds-base/dirsrvtests$ ./create_test.py --help
+usage: create_test.py [-h] [-t TICKET] [-s SUITE] [-i INSTANCES] [-m SUPPLIERS] [-b HUBS] [-c CONSUMERS] [-o FILENAME] [-u] [-C COPYRIGHT]
+
+options:
+  -h, --help            show this help message and exit
+  -t, --ticket TICKET   The name of the ticket/issue to include in the script name: 'ticket_<TEXT INPUT>_test.py'
+  -s, --suite SUITE     Name for the test: '<TEXT INPUT>_test.py'
+  -i, --instances INSTANCES
+                        Number of instances needed in the test
+  -m, --suppliers SUPPLIERS
+                        Number of replication suppliers needed in the test
+  -b, --hubs HUBS       Number of replication hubs needed in the test
+  -c, --consumers CONSUMERS
+                        Number of replication consumers needed in the test
+  -o, --filename FILENAME
+                        Custom test script file name
+  -u, --uuid            Display a test case uuid to used for new test functions in script
+  -C, --copyright COPYRIGHT
+                        Add a copyright section in the beginning of the file
+
+```
+
+If you are extending an existing test, aka adding a new test function, you need to use a UUID in the doc string for your new test function(s).  You can generated this UUID by running this command:
+
+```
+./create_test.py --uuid
+8be15ea9-2145-48c3-83eb-a96bc619aeb5
+```
+
+For test examples please checkout the tests under **389-ds-base/dirsrvtests/tests/suites/**. After writing your test please place it in the appropriate directory (or new directory) under *389-ds-base/dirsrvtests/tests/suites/*.
+
+**Warning**
+
+While the lib389 python library is using python-ldap under the hood please do NOT directly use python-ldap in your test.  Do NOT use the operation functions like "add_s", "modify_s", etc. and for objects like "Entry".  In lib389 we use wrapper classes based around DSLdapObject, or DSLdapObjects found in **389-ds-base/src/lib389/lib389/_mapped_object.py**.  For almost every entry type there is a specific DSLdapObject for it. See the various objects under *389-ds-base/src/lib389/lib389/* The reason for this is that if python-ldap ever changes, or if we use a different ldap library, then we can apply the necessary changes in one place (DSLdapObject).
+
 ### Getting the patch ready
 
 When you have finished your code, you have had it pre-reviewed, it's time to get the patch ready.
