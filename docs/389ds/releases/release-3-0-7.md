@@ -1,0 +1,434 @@
+---
+title: "Releases/3.0.7"
+---
+
+389 Directory Server 3.0.7
+--------------------------
+
+The 389 Directory Server team is proud to announce 389-ds-base version 3.0.7.
+
+The new package and version is:
+
+- 389-ds-base-3.0.7
+
+Source tarball: [GitHub Releases](https://github.com/389ds/389-ds-base/releases/tag/389-ds-base-3.0.7)
+
+### Highlights in 3.0.7
+
+- Security fixes for [CVE-2025-14905](https://access.redhat.com/security/cve/CVE-2025-14905), [CVE-2025-2487](https://access.redhat.com/security/cve/CVE-2025-2487), [CVE-2026-11770](https://access.redhat.com/security/cve/CVE-2026-11770), [CVE-2026-18355](https://access.redhat.com/security/cve/CVE-2026-18355), [CVE-2026-18453](https://access.redhat.com/security/cve/CVE-2026-18453), [CVE-2026-18922](https://access.redhat.com/security/cve/CVE-2026-18922), [CVE-2026-19843](https://access.redhat.com/security/cve/CVE-2026-19843), [CVE-2026-76560](https://access.redhat.com/security/cve/CVE-2026-76560), [CVE-2026-9064](https://access.redhat.com/security/cve/CVE-2026-9064).
+- Prevent silent entry loss during LMDB bulk import and improve replication total initialization on high-latency storage.
+- Strengthen PBKDF2 validation, deferred MemberOf updates, range searches, and online reindex safety.
+- Reduce log-compression lock contention and improve password policy, cache autotuning, and CLI diagnostics.
+
+See [Download](https://www.port389.org/docs/389ds/download.html) for package installation and [Install Guide](https://www.port389.org/docs/389ds/howto/howto-install-389.html) for setup.
+
+Changelog between 389-ds-base-3.0.6 and 389-ds-base-3.0.7:
+
+- Bump version to 3.0.7
+- Security fix for [CVE-2026-76560](https://access.redhat.com/security/cve/CVE-2026-76560)
+- Security fix for [CVE-2026-19843](https://access.redhat.com/security/cve/CVE-2026-19843)
+- Issue [7041](https://github.com/389ds/389-ds-base/issues/7041) - Add WebUI test for group member management [#7111](https://github.com/389ds/389-ds-base/pull/7111)
+- Security fix for [CVE-2026-18922](https://access.redhat.com/security/cve/CVE-2026-18922)
+- Security fix for [CVE-2026-18453](https://access.redhat.com/security/cve/CVE-2026-18453)
+- Security fix for [CVE-2026-18355](https://access.redhat.com/security/cve/CVE-2026-18355)
+- Issue [7808](https://github.com/389ds/389-ds-base/issues/7808) - CI - harden online\_import\_nosync\_test [#7809](https://github.com/389ds/389-ds-base/pull/7809)
+- Issue [7611](https://github.com/389ds/389-ds-base/issues/7611) - PBKDF2 password verification should reject invalid iteration counts [#7632](https://github.com/389ds/389-ds-base/pull/7632) [#7812](https://github.com/389ds/389-ds-base/pull/7812)
+- [Backport 389-ds-base-3.0] Update rust-dependencies [#7799](https://github.com/389ds/389-ds-base/pull/7799)
+- Issue [7595](https://github.com/389ds/389-ds-base/issues/7595) - Remove the nightly dedup gate and fix dispatched test runs
+- Fix expiration time check [#7718](https://github.com/389ds/389-ds-base/pull/7718)
+- Issue [7774](https://github.com/389ds/389-ds-base/issues/7774) - Add backport action [#7775](https://github.com/389ds/389-ds-base/pull/7775)
+- Issue [7770](https://github.com/389ds/389-ds-base/issues/7770) - Testimony failure in test\_cleanruv\_extop\_security.py [#7771](https://github.com/389ds/389-ds-base/pull/7771)
+- [CVE-2026-11770](https://access.redhat.com/security/cve/CVE-2026-11770) - Fix StartReplicationRequest auth gate response format
+- Security fix for [CVE-2026-11770](https://access.redhat.com/security/cve/CVE-2026-11770)
+- Issue [3082](https://github.com/389ds/389-ds-base/issues/3082) - Add test389.topologies compatibility shim for backports [#7725](https://github.com/389ds/389-ds-base/pull/7725)
+- Issue [7595](https://github.com/389ds/389-ds-base/issues/7595) - Skip redundant CI runs to relieve the Actions queue [#7749](https://github.com/389ds/389-ds-base/pull/7749)
+- Issue [7760](https://github.com/389ds/389-ds-base/issues/7760) - CI - harden dsconf\_task\_test.py
+- Issue [4701](https://github.com/389ds/389-ds-base/issues/4701) - Fix UAF when excluding attrs from retro changelog [#7730](https://github.com/389ds/389-ds-base/pull/7730)
+- Issue [7723](https://github.com/389ds/389-ds-base/issues/7723) - Range search returns an empty result when its start key is removed [#7724](https://github.com/389ds/389-ds-base/pull/7724)
+- Issue [7639](https://github.com/389ds/389-ds-base/issues/7639) - Move log compression outside of global write lock
+- Issue [7631](https://github.com/389ds/389-ds-base/issues/7631) - Don't install bpftrace by default [#7726](https://github.com/389ds/389-ds-base/pull/7726)
+- Issue [7735](https://github.com/389ds/389-ds-base/issues/7735) - Heap overflow when parsing objectclass superior [#7736](https://github.com/389ds/389-ds-base/pull/7736)
+- Issue [7733](https://github.com/389ds/389-ds-base/issues/7733) - Typo about nsuniqueid in tombstone\_to\_conflict [#7734](https://github.com/389ds/389-ds-base/pull/7734)
+- Issue [7707](https://github.com/389ds/389-ds-base/issues/7707) - lib389: set nsDS5ReplicaBindDNGroup before ensure\_agreement() in join\_supplier/hub/consumer [#7708](https://github.com/389ds/389-ds-base/pull/7708)
+- Issue [7711](https://github.com/389ds/389-ds-base/issues/7711) - Fix typo in accountpolicy --login-history-size help text [#7713](https://github.com/389ds/389-ds-base/pull/7713)
+- Issue [7688](https://github.com/389ds/389-ds-base/issues/7688) - BUG - partial address leak in sso token [#7689](https://github.com/389ds/389-ds-base/pull/7689)
+- Issue [7705](https://github.com/389ds/389-ds-base/issues/7705) - With memberOfEntryScope set, deferred memberOf skips MODIFY operations [#7706](https://github.com/389ds/389-ds-base/pull/7706)
+- Issue [7698](https://github.com/389ds/389-ds-base/issues/7698) - Fix silent entry loss in LMDB bulk import waiter handling [#7699](https://github.com/389ds/389-ds-base/pull/7699)
+- Issue [7666](https://github.com/389ds/389-ds-base/issues/7666) - Replication performance degradation during total init on high-latency storage [#7667](https://github.com/389ds/389-ds-base/pull/7667)
+- Issue [7201](https://github.com/389ds/389-ds-base/issues/7201) - Syscall overhead in LMDB import writer thread [#7204](https://github.com/389ds/389-ds-base/pull/7204)
+- Issue [7645](https://github.com/389ds/389-ds-base/issues/7645) - Add runtime LeakSanitizer leak check [#7646](https://github.com/389ds/389-ds-base/pull/7646)
+- Issue [7714](https://github.com/389ds/389-ds-base/issues/7714) - UI - sass import rules are deprecated
+- Issue [7658](https://github.com/389ds/389-ds-base/issues/7658) - Heap Buffer Overflow in sasl\_io\_recv() via Padded SASL UNBIND
+- Issue [7710](https://github.com/389ds/389-ds-base/issues/7710) - MemberOf deferred update - Use condvar instead of sleep loop
+- Issue [7637](https://github.com/389ds/389-ds-base/issues/7637) - UI - Using Arrow Keys in New Object Wizard Resulted in DOM Reload
+- Issue [7578](https://github.com/389ds/389-ds-base/issues/7578) - schema - attribute refcount is not maintained properly
+- Issue [7605](https://github.com/389ds/389-ds-base/issues/7605) - Harden CI test ports against ephemeral allocation [#7692](https://github.com/389ds/389-ds-base/pull/7692)
+- Issue [7528](https://github.com/389ds/389-ds-base/issues/7528) - Retry the CI image pull instead of failing the job [#7691](https://github.com/389ds/389-ds-base/pull/7691)
+- Backport Issue [7519](https://github.com/389ds/389-ds-base/issues/7519) — ignore obsolete entrydn when entryrdn is in use [#7657](https://github.com/389ds/389-ds-base/pull/7657)
+- Issue [7460](https://github.com/389ds/389-ds-base/issues/7460) - MOD\_REPLACE on groups/link attributes modifies overlap targets [#7461](https://github.com/389ds/389-ds-base/pull/7461)
+- Issue [7505](https://github.com/389ds/389-ds-base/issues/7505) - RFE - CLI - add feature to determine which password policy applies to a user
+- Issue [7670](https://github.com/389ds/389-ds-base/issues/7670) - BDB range searches intermittently fail with err=1 under write load [#7671](https://github.com/389ds/389-ds-base/pull/7671)
+- Issue [7108](https://github.com/389ds/389-ds-base/issues/7108) - Fix shutdown crash in entry cache destruction [#7163](https://github.com/389ds/389-ds-base/pull/7163)
+- Issue [7284](https://github.com/389ds/389-ds-base/issues/7284) - Creating local password policy succeeds with incorrect passwordInHistory value [#7662](https://github.com/389ds/389-ds-base/pull/7662)
+- Issue [7284](https://github.com/389ds/389-ds-base/issues/7284) - Automated test for creating local password policy with incorrect passwordInHistory value [#7608](https://github.com/389ds/389-ds-base/pull/7608)
+- Issue [7200](https://github.com/389ds/389-ds-base/issues/7200) - repl-agmt create doesn't set some parameters [#7663](https://github.com/389ds/389-ds-base/pull/7663)
+- Issue [7573](https://github.com/389ds/389-ds-base/issues/7573) - Post-import cache autotuning does not recompute entry cache size [#7574](https://github.com/389ds/389-ds-base/pull/7574)
+- Issue [7470](https://github.com/389ds/389-ds-base/issues/7470) - dsctl localhost tls import-server-key-cert fails with 'expected str, bytes or os.PathLike object, not NoneType' [#7477](https://github.com/389ds/389-ds-base/pull/7477)
+- Issue [7611](https://github.com/389ds/389-ds-base/issues/7611) - Preserve legacy PBKDF2 hash compatibility [#7649](https://github.com/389ds/389-ds-base/pull/7649)
+- Issue [7547](https://github.com/389ds/389-ds-base/issues/7547) - Heap buffer overflow in ldap\_utf8prev()
+- Issue [7611](https://github.com/389ds/389-ds-base/issues/7611) - PBKDF2 password verification should reject invalid iteration count [#7613](https://github.com/389ds/389-ds-base/pull/7613)
+- Issue [7558](https://github.com/389ds/389-ds-base/issues/7558) - Total init sends the suffix entry twice [#7640](https://github.com/389ds/389-ds-base/pull/7640)
+- Issue [7635](https://github.com/389ds/389-ds-base/issues/7635) - Integer Underflow in {SMD5} Password Comparison [#7636](https://github.com/389ds/389-ds-base/pull/7636)
+- Issue [7406](https://github.com/389ds/389-ds-base/issues/7406) - Fix ldap-agent SNMP stats file loading [#7630](https://github.com/389ds/389-ds-base/pull/7630)
+- Issue [7621](https://github.com/389ds/389-ds-base/issues/7621) - Stack Buffer Overflow in Password checkPrefix
+- Issue [7623](https://github.com/389ds/389-ds-base/issues/7623)  - Heap Buffer Overflow in 389-ds-base Audit Log Password Masking
+- Issue [7602](https://github.com/389ds/389-ds-base/issues/7602) - CI - lib389 user compare fails due to parentid mismatch [#7603](https://github.com/389ds/389-ds-base/pull/7603)
+- Issue [7537](https://github.com/389ds/389-ds-base/issues/7537) - CI - Fix replication log monitoring parser/timing failures [#7592](https://github.com/389ds/389-ds-base/pull/7592)
+- Issue [7593](https://github.com/389ds/389-ds-base/issues/7593) - Fix testimony docstring for SASL overflow test [#7606](https://github.com/389ds/389-ds-base/pull/7606)
+- Issue [7530](https://github.com/389ds/389-ds-base/issues/7530) - CI - Stabilize DNA plugin replication tests timing out in CI [#7572](https://github.com/389ds/389-ds-base/pull/7572)
+- Issue [7593](https://github.com/389ds/389-ds-base/issues/7593) - Reject invalid SASL packet length values in sasl\_io\_start\_packet [#7594](https://github.com/389ds/389-ds-base/pull/7594)
+- Issue [3555](https://github.com/389ds/389-ds-base/issues/3555) - UI - Fix audit issue with npm - ws, js-yaml, babel/core [#7599](https://github.com/389ds/389-ds-base/pull/7599)
+- Bump fast-uri from 3.1.0 to 3.1.2 in /src/cockpit/389-console [#7487](https://github.com/389ds/389-ds-base/pull/7487)
+- Update dependency uuid to v14 [SECURITY] [#7456](https://github.com/389ds/389-ds-base/pull/7456)
+- Update cockpit-389-ds-npm (major) [#7448](https://github.com/389ds/389-ds-base/pull/7448)
+- Issue [7263](https://github.com/389ds/389-ds-base/issues/7263) - UI - Use cockpit.file API for temporary file writes [#7590](https://github.com/389ds/389-ds-base/pull/7590)
+- Issue [7541](https://github.com/389ds/389-ds-base/issues/7541) - Add invalid ACL text header regression test [#7591](https://github.com/389ds/389-ds-base/pull/7591)
+- Issue [7554](https://github.com/389ds/389-ds-base/issues/7554) - UI - Revise local password policy layout
+- Issue [7521](https://github.com/389ds/389-ds-base/issues/7521) - UI - make changes for cockpit API updates
+- Issue [7541](https://github.com/389ds/389-ds-base/issues/7541) - heap-buffer-overflows in \_\_aclp\_\_normalize\_acltxt() [#7542](https://github.com/389ds/389-ds-base/pull/7542)
+- Issue [7531](https://github.com/389ds/389-ds-base/issues/7531) - Fix LMDB replication regression\_m2 failures and core dumps [#7575](https://github.com/389ds/389-ds-base/pull/7575)
+- Issue [7496](https://github.com/389ds/389-ds-base/issues/7496) - fix cherry-pick error
+- Issue [7490](https://github.com/389ds/389-ds-base/issues/7490) - Enable USDT probes by default in RPM [#7491](https://github.com/389ds/389-ds-base/pull/7491)
+- Issue [7576](https://github.com/389ds/389-ds-base/issues/7576) - Fix leak of temporary attribute syntax hash tables after schema reload
+- Issue [7558](https://github.com/389ds/389-ds-base/issues/7558) - During online import, the IDL should be created with in-depth first approach [#7559](https://github.com/389ds/389-ds-base/pull/7559)
+- Issue [7500](https://github.com/389ds/389-ds-base/issues/7500) - Prevent unsigned integer underflow during stalled import
+- Issue [7562](https://github.com/389ds/389-ds-base/issues/7562) - Error: NssSsl.add\_cert() got an unexpected keyword argument 'input\_file' [#7563](https://github.com/389ds/389-ds-base/pull/7563)
+- Issue [7560](https://github.com/389ds/389-ds-base/issues/7560) - lib389 - Add helper function for checking ASAN files
+- Issue [7539](https://github.com/389ds/389-ds-base/issues/7539) - Server shutdown during online reindex may lead to data loss [#7540](https://github.com/389ds/389-ds-base/pull/7540)
+- Issue [7549](https://github.com/389ds/389-ds-base/issues/7549) - Substring index should validate minimum nsSubStrBegin/nsSubStrEnd values [#7550](https://github.com/389ds/389-ds-base/pull/7550)
+- Issue [7440](https://github.com/389ds/389-ds-base/issues/7440) - Substring index produces empty results and can crash when non-default nsSubStrBegin/nsSubStrEnd lengths are configured [#7441](https://github.com/389ds/389-ds-base/pull/7441)
+- Fix test389 imports on older branches
+- Issue [7267](https://github.com/389ds/389-ds-base/issues/7267) - MDB\_BAD\_VALSIZE error when updating index [#7268](https://github.com/389ds/389-ds-base/pull/7268)
+- Issue [7327](https://github.com/389ds/389-ds-base/issues/7327) - dsctl healthcheck DSMOLE0001 inaccurate recommendations with multiple backends [#7328](https://github.com/389ds/389-ds-base/pull/7328)
+- Issue [7372](https://github.com/389ds/389-ds-base/issues/7372) - Reindex adds tombstones to ancestorid causing export failures [#7373](https://github.com/389ds/389-ds-base/pull/7373)
+- Issue [7437](https://github.com/389ds/389-ds-base/issues/7437) - LeakSanitizer: memory leaks in CoS cache error paths [#7438](https://github.com/389ds/389-ds-base/pull/7438)
+- Issue [6922](https://github.com/389ds/389-ds-base/issues/6922) - AddressSanitizer: leaks found by acl test suite
+- Issue [3555](https://github.com/389ds/389-ds-base/issues/3555) - UI - Fix audit issue with npm - brace-expansion [#7556](https://github.com/389ds/389-ds-base/pull/7556)
+- Issue [7554](https://github.com/389ds/389-ds-base/issues/7554) - deref plugin null pointer dereference if ber\_init fails
+- Issue [7493](https://github.com/389ds/389-ds-base/issues/7493) - RFE - Add ShadowAccount fixup task
+- Issue [7507](https://github.com/389ds/389-ds-base/issues/7507) - UI - cleanup style and alignments
+- Issue [7514](https://github.com/389ds/389-ds-base/issues/7514) - Crash when doing moddn on very large subtree
+- Issue [7516](https://github.com/389ds/389-ds-base/issues/7516) - dblayer\_bulk\_nextdata should not return an error when maxrecords is hit
+- Issue [7496](https://github.com/389ds/389-ds-base/issues/7496) - Fix latest GCC compiler warnings
+- Issue [7503](https://github.com/389ds/389-ds-base/issues/7503) - [CVE-2026-9064](https://access.redhat.com/security/cve/CVE-2026-9064) - Add a limit to the number controls per operation
+- Issue [7300](https://github.com/389ds/389-ds-base/issues/7300) - RFE - Add OS-level thread names to all server threads [#7301](https://github.com/389ds/389-ds-base/pull/7301)
+- Issue [7307](https://github.com/389ds/389-ds-base/issues/7307) - RFE - Expose work queue and worker utilization metrics [#7308](https://github.com/389ds/389-ds-base/pull/7308)
+- Issue [7464](https://github.com/389ds/389-ds-base/issues/7464) - CLI - allow dsidm to work with other user types
+- Issue [7457](https://github.com/389ds/389-ds-base/issues/7457) - Refactor memberOf perf test [#7458](https://github.com/389ds/389-ds-base/pull/7458)
+- Issue [7452](https://github.com/389ds/389-ds-base/issues/7452) - UI - password polices - reorganize settings
+- Issue [7431](https://github.com/389ds/389-ds-base/issues/7431) - password policy - passwordBadWords is ignored in local policies
+- Issue [7155](https://github.com/389ds/389-ds-base/issues/7155) - build\_candidate\_list - Database error 11 with range search [#7156](https://github.com/389ds/389-ds-base/pull/7156)
+- Issue [7426](https://github.com/389ds/389-ds-base/issues/7426) - logconv.py is out of sync with server-emitted note codes [#7427](https://github.com/389ds/389-ds-base/pull/7427)
+- Issue [7417](https://github.com/389ds/389-ds-base/issues/7417) - UI - global password policy syntax settings missing passwordMaxRepeats
+- Issue [3555](https://github.com/389ds/389-ds-base/issues/3555) - UI - Fix audit issue with npm - brace-expansion [#7411](https://github.com/389ds/389-ds-base/pull/7411)
+- Issue [7088](https://github.com/389ds/389-ds-base/issues/7088) - Change log level for "Can't locate CSN" error message
+- Issue [7423](https://github.com/389ds/389-ds-base/issues/7423) - cleanup pblock after freeing pre/post entries
+- Issue [7418](https://github.com/389ds/389-ds-base/issues/7418) - Use-after-free in deferred memberof [#7419](https://github.com/389ds/389-ds-base/pull/7419)
+- Issue [7407](https://github.com/389ds/389-ds-base/issues/7407) - dbscan -k option - fix cherry-pick error
+- Issue [7407](https://github.com/389ds/389-ds-base/issues/7407) - dbscan -k option display entries that do not match the specified key
+- Issue [7404](https://github.com/389ds/389-ds-base/issues/7404) - fix latest compiler warnings(cherry-pick issue)
+- Issue [7404](https://github.com/389ds/389-ds-base/issues/7404) - fix latest compiler warnings
+- Issue [7394](https://github.com/389ds/389-ds-base/issues/7394) - UI - Manual typing of ports can leave out digits [#7395](https://github.com/389ds/389-ds-base/pull/7395)
+- Issue [7277](https://github.com/389ds/389-ds-base/issues/7277) - UI - Fix Japanese translation errors errors in Cockpit UI [#7386](https://github.com/389ds/389-ds-base/pull/7386)
+- Issue [7246](https://github.com/389ds/389-ds-base/issues/7246) - correct formatting of 'Gen as CSN' in dsctl get-nsstate output [#7247](https://github.com/389ds/389-ds-base/pull/7247)
+- Issue [7126](https://github.com/389ds/389-ds-base/issues/7126) - WARN - keys2idl - received NULL idl from index\_read\_ext\_allids [#7127](https://github.com/389ds/389-ds-base/pull/7127)
+- Issue [7370](https://github.com/389ds/389-ds-base/issues/7370) - Runtime LSan/TSan injection for pytest [#7371](https://github.com/389ds/389-ds-base/pull/7371)
+- Issue [7378](https://github.com/389ds/389-ds-base/issues/7378) - Make sure suffix entry always gets assigned ID 1
+- Issue [7380](https://github.com/389ds/389-ds-base/issues/7380) - Internal op with negative wtime and large optime [#7381](https://github.com/389ds/389-ds-base/pull/7381)
+- Issue [7362](https://github.com/389ds/389-ds-base/issues/7362) - UI - Some FormSelect onChange parameters are reversed
+- Issue [7368](https://github.com/389ds/389-ds-base/issues/7368) - UI - global password policy page is missing passwordmintokenlength
+- Issue [7366](https://github.com/389ds/389-ds-base/issues/7366) - Memory leaks in syncrepl plugin during persistent search operations [#7367](https://github.com/389ds/389-ds-base/pull/7367)
+- Issue [3658](https://github.com/389ds/389-ds-base/issues/3658) - UI/CLI - show progress of db tasks
+- Issue [7284](https://github.com/389ds/389-ds-base/issues/7284) - CI - Fix test\_grace\_limit\_section after pwpolicy validation fix [#7357](https://github.com/389ds/389-ds-base/pull/7357)
+- Issue [7271](https://github.com/389ds/389-ds-base/issues/7271) - Add test for retrocl trimming shutdown crash [#7356](https://github.com/389ds/389-ds-base/pull/7356)
+- Issue [3555](https://github.com/389ds/389-ds-base/issues/3555) - UI - Fix audit issue with npm - flatted, picomatch [#7364](https://github.com/389ds/389-ds-base/pull/7364)
+- Issue [7337](https://github.com/389ds/389-ds-base/issues/7337) - UI - refactor all error handling to use getApiErrorMessge
+- Issue [1704](https://github.com/389ds/389-ds-base/issues/1704) - DNA plugin creates invalid shared config entry with port 0 [#7352](https://github.com/389ds/389-ds-base/pull/7352)
+- Issue [6753](https://github.com/389ds/389-ds-base/issues/6753) - Removing ticket 477828 test and porting to DSLdapObject [#6989](https://github.com/389ds/389-ds-base/pull/6989)
+- Issue [7348](https://github.com/389ds/389-ds-base/issues/7348) - CI - Fix failing dsconf security CLI add cert test [#7349](https://github.com/389ds/389-ds-base/pull/7349)
+- Issue [7346](https://github.com/389ds/389-ds-base/issues/7346) - DS does not handle escape char in bind user [#7347](https://github.com/389ds/389-ds-base/pull/7347)
+- Issue [7322](https://github.com/389ds/389-ds-base/issues/7322) - Fix cherry-pick error (reject repl agmt that points to itself)
+- Issue [7322](https://github.com/389ds/389-ds-base/issues/7322) - Reject adding a replication agreement that points to itself
+- Issue [7312](https://github.com/389ds/389-ds-base/issues/7312) - UI - Database Maximum Size cannot be easily set by typing [#7313](https://github.com/389ds/389-ds-base/pull/7313)
+- Issue [7342](https://github.com/389ds/389-ds-base/issues/7342) - CI - repl config regression [#7343](https://github.com/389ds/389-ds-base/pull/7343)
+- Issue [7339](https://github.com/389ds/389-ds-base/issues/7339) - Return the exact DN during export
+- Issue - UI - Improve suffix import LDIF table
+- Issue [7325](https://github.com/389ds/389-ds-base/issues/7325) - UI - new error parser missing import
+- Issue [7325](https://github.com/389ds/389-ds-base/issues/7325) - UI - create an error parser for cockpit spawn errors
+- Issue [7319](https://github.com/389ds/389-ds-base/issues/7319) - Action menu for certificates remains in empty certificate list [#7320](https://github.com/389ds/389-ds-base/pull/7320)
+- Issue [7265](https://github.com/389ds/389-ds-base/issues/7265) - CI - fix retro changelog maxage validation test
+- Issue [7093](https://github.com/389ds/389-ds-base/issues/7093) - A password policy can be created even when an identical policy already exists [#7283](https://github.com/389ds/389-ds-base/pull/7283)
+- Issue [7316](https://github.com/389ds/389-ds-base/issues/7316) - UI - update npm module immutable
+- Issue [7233](https://github.com/389ds/389-ds-base/issues/7233) - test\_produce\_division\_by\_zero fails with IsADirectoryError in conftest.py [#7234](https://github.com/389ds/389-ds-base/pull/7234)
+- Issue [7314](https://github.com/389ds/389-ds-base/issues/7314) - UI - Add progress steppers to Security, Database, and Replication tabs
+- Issuei 7281 - UI - Add encryption module management
+- Issue [7271](https://github.com/389ds/389-ds-base/issues/7271) - Add new plugin pre-close function check to plugin\_invoke\_plugin\_pb
+- Issue [7304](https://github.com/389ds/389-ds-base/issues/7304) - retrocl should not cache DN
+- Issue [7265](https://github.com/389ds/389-ds-base/issues/7265) - Add dse modify callback to validate retrocl trimming settings
+- Issue [7152](https://github.com/389ds/389-ds-base/issues/7152) - ns-slapd fails to shutdown when deferred memberof update is in progress [#7187](https://github.com/389ds/389-ds-base/pull/7187)
+- Issue [3555](https://github.com/389ds/389-ds-base/issues/3555) - UI - Fix audit issue with npm - ajv, minimatch [#7298](https://github.com/389ds/389-ds-base/pull/7298)
+- Issue [7291](https://github.com/389ds/389-ds-base/issues/7291) - Crash when configuring a replica with an incorrect nsds5ReplicaRoot [#7292](https://github.com/389ds/389-ds-base/pull/7292)
+- Issue [7271](https://github.com/389ds/389-ds-base/issues/7271) - implement a pre-close plugin function
+- Issue [7295](https://github.com/389ds/389-ds-base/issues/7295) - changelog max age validation cherry-pick error
+- Issue [7281](https://github.com/389ds/389-ds-base/issues/7281) - RFE - CLI - add support to managing additional encryption modules
+- Issue [7265](https://github.com/389ds/389-ds-base/issues/7265) - changelog maxage validation is not strict enough
+- Issue [7284](https://github.com/389ds/389-ds-base/issues/7284) - Creating local password policy succeeds with incorrect passwordInHistory value [#7285](https://github.com/389ds/389-ds-base/pull/7285)
+- Security fix for [CVE-2025-14905](https://access.redhat.com/security/cve/CVE-2025-14905)
+- Issue [7277](https://github.com/389ds/389-ds-base/issues/7277) - UI - Fix Japanese translation for "Successfully updated group" in Cockpit UI [#7278](https://github.com/389ds/389-ds-base/pull/7278)
+- Issue [7275](https://github.com/389ds/389-ds-base/issues/7275) - UI - Improve password policy field validation in Cockpit UI [#7276](https://github.com/389ds/389-ds-base/pull/7276)
+- Issue [7279](https://github.com/389ds/389-ds-base/issues/7279) - UI - Fix typo in export certificate dialog [#7280](https://github.com/389ds/389-ds-base/pull/7280)
+- Issue [7273](https://github.com/389ds/389-ds-base/issues/7273) - In a chaining environment binding as remote user causes an invalid error in the logs
+- Issue [7271](https://github.com/389ds/389-ds-base/issues/7271) - plugins that create threads need to update
+- Issue [5853](https://github.com/389ds/389-ds-base/issues/5853) - Update concread to 0.5.10
+- Issue [7053](https://github.com/389ds/389-ds-base/issues/7053) - Remove memberof\_del\_dn\_from\_groups from MemberOf plugin [#7064](https://github.com/389ds/389-ds-base/pull/7064)
+- Issue [7223](https://github.com/389ds/389-ds-base/issues/7223) - Remove integerOrderingMatch requirement for parentid [#7264](https://github.com/389ds/389-ds-base/pull/7264)
+- Issue [7066](https://github.com/389ds/389-ds-base/issues/7066)/7052 - allow password history to be set to zero and remove history
+- Issue [7223](https://github.com/389ds/389-ds-base/issues/7223) - Use lexicographical order for ancestorid [#7256](https://github.com/389ds/389-ds-base/pull/7256)
+- Issue [7213](https://github.com/389ds/389-ds-base/issues/7213) - (2nd) MDB\_BAD\_VALSIZE error while handling VLV [#7258](https://github.com/389ds/389-ds-base/pull/7258)
+- Issue [7184](https://github.com/389ds/389-ds-base/issues/7184) - (2nd) argparse.HelpFormatter \_format\_actions\_usage() is deprecated [#7257](https://github.com/389ds/389-ds-base/pull/7257)
+- Issue - CLI - dsctl db2index needs some hardening with MBD
+- Issue [7248](https://github.com/389ds/389-ds-base/issues/7248) - CLI - attribute uniqueness - fix usage for exclude subtree option
+- Issue [7231](https://github.com/389ds/389-ds-base/issues/7231) - Sync repl tests fail in FIPS mode due to non FIPS compliant crypto [#7232](https://github.com/389ds/389-ds-base/pull/7232)
+- Issue [7121](https://github.com/389ds/389-ds-base/issues/7121) - (2nd) LeakSanitizer: various leaks during replication [#7212](https://github.com/389ds/389-ds-base/pull/7212)
+- Issue [6947](https://github.com/389ds/389-ds-base/issues/6947) - Fix health\_system\_indexes\_test.py
+- Issue [7076](https://github.com/389ds/389-ds-base/issues/7076) - Fix revert\_cache() never called in modrdn [#7220](https://github.com/389ds/389-ds-base/pull/7220)
+- Issue [7076](https://github.com/389ds/389-ds-base/issues/7076), 6992, 6784, 6214 - Fix CI test failures [#7077](https://github.com/389ds/389-ds-base/pull/7077)
+- Issue [7096](https://github.com/389ds/389-ds-base/issues/7096) - (2nd) During replication online total init the function idl\_id\_is\_in\_idlist is not scaling with large database [#7205](https://github.com/389ds/389-ds-base/pull/7205)
+- Issue [3555](https://github.com/389ds/389-ds-base/issues/3555) - UI - Fix audit issue with npm - @isaacs/brace-expansion [#7228](https://github.com/389ds/389-ds-base/pull/7228)
+- Issue [7223](https://github.com/389ds/389-ds-base/issues/7223) - Add dsctl index-check command for offline index repair
+- Issue [7223](https://github.com/389ds/389-ds-base/issues/7223) - Detect and log index ordering mismatch during backend startup
+- Issue [7223](https://github.com/389ds/389-ds-base/issues/7223) - Add upgrade function to remove ancestorid index config entry
+- Issue [7223](https://github.com/389ds/389-ds-base/issues/7223) - Add upgrade function to remove nsIndexIDListScanLimit from parentid
+- Issue [7223](https://github.com/389ds/389-ds-base/issues/7223) - Revert index scan limits for system indexes
+- Issue [6542](https://github.com/389ds/389-ds-base/issues/6542) - RPM build errors on Fedora 42
+- Issue [7224](https://github.com/389ds/389-ds-base/issues/7224) - CI Test - Simplify test\_reserve\_descriptor\_validation [#7225](https://github.com/389ds/389-ds-base/pull/7225)
+- Issue [7194](https://github.com/389ds/389-ds-base/issues/7194) - Repl Log Analysis - Add CSN propagation details [#7195](https://github.com/389ds/389-ds-base/pull/7195)
+- Issue [7213](https://github.com/389ds/389-ds-base/issues/7213) - MDB\_BAD\_VALSIZE error while handling VLV [#7214](https://github.com/389ds/389-ds-base/pull/7214)
+- Issue [7027](https://github.com/389ds/389-ds-base/issues/7027) - (2nd) 389-ds-base OpenScanHub Leaks Detected [#7211](https://github.com/389ds/389-ds-base/pull/7211)
+- Issue [7184](https://github.com/389ds/389-ds-base/issues/7184) - argparse.HelpFormatter \_format\_actions\_usage() is deprecated
+- Issue [7198](https://github.com/389ds/389-ds-base/issues/7198) - Web console doesn't show sub-suffix when parent-suffix points to an entry [#7202](https://github.com/389ds/389-ds-base/pull/7202)
+- Issue [7189](https://github.com/389ds/389-ds-base/issues/7189) - DSBLE0007 generates incorrect remediation commands for scan limits
+- Bump lodash from 4.17.21 to 4.17.23 in /src/cockpit/389-console [#7203](https://github.com/389ds/389-ds-base/pull/7203)
+- Issue [7172](https://github.com/389ds/389-ds-base/issues/7172) - (2nd) Index ordering mismatch after upgrade [#7180](https://github.com/389ds/389-ds-base/pull/7180)
+- Issue [7172](https://github.com/389ds/389-ds-base/issues/7172) - Index ordering mismatch after upgrade [#7173](https://github.com/389ds/389-ds-base/pull/7173)
+- Issue - Revise paged result search locking
+- Issue [7096](https://github.com/389ds/389-ds-base/issues/7096) - During replication online total init the function idl\_id\_is\_in\_idlist is not scaling with large database [#7145](https://github.com/389ds/389-ds-base/pull/7145)
+- Revert "Issue [7160](https://github.com/389ds/389-ds-base/issues/7160) - Add lib389 version sync check to configure [#7165](https://github.com/389ds/389-ds-base/pull/7165)"
+- Issue [7160](https://github.com/389ds/389-ds-base/issues/7160) - Add lib389 version sync check to configure [#7165](https://github.com/389ds/389-ds-base/pull/7165)
+- Issue [7049](https://github.com/389ds/389-ds-base/issues/7049) - RetroCL plugin generates invalid LDIF
+- Issue [7150](https://github.com/389ds/389-ds-base/issues/7150) - Compressed access log rotations skipped, accesslog-list out of sync [#7151](https://github.com/389ds/389-ds-base/pull/7151)
+- Restore definition for slapi\_entry\_attr\_get\_valuearray
+- Issue [1793](https://github.com/389ds/389-ds-base/issues/1793) - RFE - Dynamic lists - UI and CLI updates
+- Issue [7119](https://github.com/389ds/389-ds-base/issues/7119) - Fix DNA shared config replication test [#7143](https://github.com/389ds/389-ds-base/pull/7143)
+- Issue [7081](https://github.com/389ds/389-ds-base/issues/7081) - Repl Log Analysis - Implement data sampling with performance and timezone fixes [#7086](https://github.com/389ds/389-ds-base/pull/7086)
+- Issue [1793](https://github.com/389ds/389-ds-base/issues/1793) - RFE - Implement dynamic lists
+- Issue [6753](https://github.com/389ds/389-ds-base/issues/6753) - Port ticket tests
+- Issue [6753](https://github.com/389ds/389-ds-base/issues/6753) - Port and fix ticket 47823 tests
+- Issue [6753](https://github.com/389ds/389-ds-base/issues/6753) - Add 'add\_exclude\_subtree' and 'remove\_exclude\_subtree' methods to Attribute uniqueness plugin
+- Issue [6753](https://github.com/389ds/389-ds-base/issues/6753) - Port ticket test 48026
+- Issue [7128](https://github.com/389ds/389-ds-base/issues/7128) - memory corruption in alias entry plugin [#7131](https://github.com/389ds/389-ds-base/pull/7131)
+- Issue [7091](https://github.com/389ds/389-ds-base/issues/7091) - Duplicate local password policy entries listed [#7092](https://github.com/389ds/389-ds-base/pull/7092)
+- Issue [7124](https://github.com/389ds/389-ds-base/issues/7124) - BDB cursor race condition with transaction isolation [#7125](https://github.com/389ds/389-ds-base/pull/7125)
+- Issue [7132](https://github.com/389ds/389-ds-base/issues/7132) - Keep alive entry updated too soon after an offline import [#7133](https://github.com/389ds/389-ds-base/pull/7133)
+- Issue [7121](https://github.com/389ds/389-ds-base/issues/7121) - LeakSanitizer: various leaks during replication [#7122](https://github.com/389ds/389-ds-base/pull/7122)
+- Issue [7115](https://github.com/389ds/389-ds-base/issues/7115) - LeakSanitizer: leak in `slapd\_bind\_local\_user()` [#7116](https://github.com/389ds/389-ds-base/pull/7116)
+- Issue [7109](https://github.com/389ds/389-ds-base/issues/7109) - AddressSanitizer: SEGV ldap/servers/slapd/csnset.c:302 in csnset\_dup [#7114](https://github.com/389ds/389-ds-base/pull/7114)
+- Issue [7056](https://github.com/389ds/389-ds-base/issues/7056) - DSBLE0007 doesn't generate remediation steps for missing indexes
+- Issue [7119](https://github.com/389ds/389-ds-base/issues/7119) - Harden DNA plugin locking for shared server list operations [#7120](https://github.com/389ds/389-ds-base/pull/7120)
+- Issue [7084](https://github.com/389ds/389-ds-base/issues/7084) - UI - schema - sorting attributes breaks expanded row
+- Issue [7007](https://github.com/389ds/389-ds-base/issues/7007) - Improve paged result search locking
+- Issue [3555](https://github.com/389ds/389-ds-base/issues/3555) - UI - Fix audit issue with npm - glob [#7107](https://github.com/389ds/389-ds-base/pull/7107)
+- Issue [6846](https://github.com/389ds/389-ds-base/issues/6846) - Attribute uniqueness is not enforced with modrdn [#7026](https://github.com/389ds/389-ds-base/pull/7026)
+- Issue [6901](https://github.com/389ds/389-ds-base/issues/6901) - Update changelog trimming logging - fix tests
+- Issue [6901](https://github.com/389ds/389-ds-base/issues/6901) - Update changelog trimming logging
+- Bump js-yaml from 4.1.0 to 4.1.1 in /src/cockpit/389-console [#7097](https://github.com/389ds/389-ds-base/pull/7097)
+- Issue [7069](https://github.com/389ds/389-ds-base/issues/7069) - Fix error reporting in HAProxy trusted IP parsing [#7094](https://github.com/389ds/389-ds-base/pull/7094)
+- Issue [7055](https://github.com/389ds/389-ds-base/issues/7055) - Online initialization of consumers fails with error -23 [#7075](https://github.com/389ds/389-ds-base/pull/7075)
+- Issue [7042](https://github.com/389ds/389-ds-base/issues/7042) - Enable global\_backend\_lock when memberofallbackend is enabled [#7043](https://github.com/389ds/389-ds-base/pull/7043)
+- Issue [7078](https://github.com/389ds/389-ds-base/issues/7078) - audit json logging does not encode binary values
+- Issue [7069](https://github.com/389ds/389-ds-base/issues/7069) - Add Subnet/CIDR Support for HAProxy Trusted IPs [#7070](https://github.com/389ds/389-ds-base/pull/7070)
+- Issue [6660](https://github.com/389ds/389-ds-base/issues/6660) - CLI, UI - Improve replication log analyzer usability [#7062](https://github.com/389ds/389-ds-base/pull/7062)
+- Issue [7065](https://github.com/389ds/389-ds-base/issues/7065) - A search filter containing a non normalized DN assertion does not return matching entries [#7068](https://github.com/389ds/389-ds-base/pull/7068)
+- Issue [7071](https://github.com/389ds/389-ds-base/issues/7071) - search filter (&(cn:dn:=groups)) no longer returns results
+- Issue [7073](https://github.com/389ds/389-ds-base/issues/7073) - Add NDN cache size configuration and enforcement tests [#7074](https://github.com/389ds/389-ds-base/pull/7074)
+- Issue [7041](https://github.com/389ds/389-ds-base/issues/7041) - CLI/UI - memberOf - no way to add/remove specific group filters
+- Issue [7061](https://github.com/389ds/389-ds-base/issues/7061) - CLI/UI - Improve error messages for dsconf localpwp list
+- Issue [7059](https://github.com/389ds/389-ds-base/issues/7059) - UI - unable to upload pem file
+- Issue [7032](https://github.com/389ds/389-ds-base/issues/7032) - The new ipahealthcheck test ipahealthcheck.ds.backends.BackendsCheck raises CRITICAL issue [#7036](https://github.com/389ds/389-ds-base/pull/7036)
+- Issue [7047](https://github.com/389ds/389-ds-base/issues/7047) - MemberOf plugin logs null attribute name on fixup task completion [#7048](https://github.com/389ds/389-ds-base/pull/7048)
+- Issue [7044](https://github.com/389ds/389-ds-base/issues/7044) - RFE - index sudoHost by default [#7046](https://github.com/389ds/389-ds-base/pull/7046)
+- Issue [6979](https://github.com/389ds/389-ds-base/issues/6979) - Improve the way to detect asynchronous operations in the access logs [#6980](https://github.com/389ds/389-ds-base/pull/6980)
+- Issue [7035](https://github.com/389ds/389-ds-base/issues/7035) - RFE - memberOf - adding scoping for specific groups
+- Issue - CLI/UI - Add option to delete all replication conflict entries
+- Issue [7033](https://github.com/389ds/389-ds-base/issues/7033) - lib389 -  basic plugin status not in JSON
+- Issue [7023](https://github.com/389ds/389-ds-base/issues/7023) - UI - if first instance that is loaded is stopped it breaks parts of the UI
+- Issue [7027](https://github.com/389ds/389-ds-base/issues/7027) - 389-ds-base OpenScanHub Leaks Detected [#7028](https://github.com/389ds/389-ds-base/pull/7028)
+- Issue [6966](https://github.com/389ds/389-ds-base/issues/6966) - On large DB, unlimited IDL scan limit reduce the SRCH performance [#6967](https://github.com/389ds/389-ds-base/pull/6967)
+- Issue [6660](https://github.com/389ds/389-ds-base/issues/6660) - UI - Improve replication log analysis charts and usability [#6968](https://github.com/389ds/389-ds-base/pull/6968)
+- Issue [6982](https://github.com/389ds/389-ds-base/issues/6982) - UI - MemberOf shared config does not validate DN properly [#6983](https://github.com/389ds/389-ds-base/pull/6983)
+- Issue [7021](https://github.com/389ds/389-ds-base/issues/7021) - Units for changing MDB max size are not consistent across different tools [#7022](https://github.com/389ds/389-ds-base/pull/7022)
+- Issue [6954](https://github.com/389ds/389-ds-base/issues/6954) - do not delete referrals on chain\_on\_update backend
+- Issue [7018](https://github.com/389ds/389-ds-base/issues/7018) - BUG - prevent stack depth being hit [#7019](https://github.com/389ds/389-ds-base/pull/7019)
+- Issue [6928](https://github.com/389ds/389-ds-base/issues/6928) - The parentId attribute is indexed with improper matching rule
+- Issue [6933](https://github.com/389ds/389-ds-base/issues/6933) - When deferred memberof update is enabled after the server crashed it should not launch memberof fixup task by default [#6935](https://github.com/389ds/389-ds-base/pull/6935)
+- Issue [6904](https://github.com/389ds/389-ds-base/issues/6904) - Fix config\_test.py::test\_lmdb\_config
+- Issue [7014](https://github.com/389ds/389-ds-base/issues/7014) - memberOf - ignored deferred updates with LMDB
+- Issue [7012](https://github.com/389ds/389-ds-base/issues/7012) - improve dscrl dbverify result when backend does not exists [#7013](https://github.com/389ds/389-ds-base/pull/7013)
+- Issue [6929](https://github.com/389ds/389-ds-base/issues/6929) - Compilation failure with rust-1.89 on Fedora ELN
+- Issue [6990](https://github.com/389ds/389-ds-base/issues/6990) - UI - Replace deprecated Select components with new TypeaheadSelect [#6996](https://github.com/389ds/389-ds-base/pull/6996)
+- Issue [6990](https://github.com/389ds/389-ds-base/issues/6990) - UI - Fix typeahead Select fields losing values on Enter keypress [#6991](https://github.com/389ds/389-ds-base/pull/6991)
+- Issue [6887](https://github.com/389ds/389-ds-base/issues/6887) - Enhance logconv.py to add support for JSON access logs [#6889](https://github.com/389ds/389-ds-base/pull/6889)
+- Issue [6985](https://github.com/389ds/389-ds-base/issues/6985) - Some logconv CI tests fail with BDB [#6986](https://github.com/389ds/389-ds-base/pull/6986)
+- Issue [6891](https://github.com/389ds/389-ds-base/issues/6891) - JSON logging - add wrapper function that checks for NULL
+- Issue [6977](https://github.com/389ds/389-ds-base/issues/6977) - UI - Show error message when trying to use unavailable ports [#6978](https://github.com/389ds/389-ds-base/pull/6978)
+- Issue [6956](https://github.com/389ds/389-ds-base/issues/6956) - More UI fixes
+- Issue [6947](https://github.com/389ds/389-ds-base/issues/6947) - Revise time skew check in healthcheck tool and add option
+- Issue [6805](https://github.com/389ds/389-ds-base/issues/6805) - RFE - Multiple backend entry cache tuning
+- Issue [6843](https://github.com/389ds/389-ds-base/issues/6843) - Add CI tests for logconv.py [#6856](https://github.com/389ds/389-ds-base/pull/6856)
+- Issue  - UI - update Radio handlers and LDAP entries last modified time
+- Issue [6660](https://github.com/389ds/389-ds-base/issues/6660) - UI - Fix minor typo [#6955](https://github.com/389ds/389-ds-base/pull/6955)
+- Issue [6910](https://github.com/389ds/389-ds-base/issues/6910) - Fix latest coverity issues
+- Issue [6919](https://github.com/389ds/389-ds-base/issues/6919) - numSubordinates/tombstoneNumSubordinates are inconsisten… [#6920](https://github.com/389ds/389-ds-base/pull/6920)
+- Issue [6663](https://github.com/389ds/389-ds-base/issues/6663) - Fix NULL subsystem crash in JSON error logging [#6883](https://github.com/389ds/389-ds-base/pull/6883)
+- Issue [6940](https://github.com/389ds/389-ds-base/issues/6940) - dsconf monitor server fails with ldapi:// due to absent server ID [#6941](https://github.com/389ds/389-ds-base/pull/6941)
+- Issue [6936](https://github.com/389ds/389-ds-base/issues/6936) - Make user/subtree policy creation idempotent [#6937](https://github.com/389ds/389-ds-base/pull/6937)
+- Issue [6865](https://github.com/389ds/389-ds-base/issues/6865) - AddressSanitizer: leak in agmt\_update\_init\_status
+- Issue [6848](https://github.com/389ds/389-ds-base/issues/6848) - AddressSanitizer: leak in do\_search
+- Issue [6850](https://github.com/389ds/389-ds-base/issues/6850) - AddressSanitizer: memory leak in mdb\_init
+- Issue [6778](https://github.com/389ds/389-ds-base/issues/6778) - Memory leak in roles\_cache\_create\_object\_from\_entry part 2
+- Issue [6778](https://github.com/389ds/389-ds-base/issues/6778) - Memory leak in roles\_cache\_create\_object\_from\_entry
+- Issue [6181](https://github.com/389ds/389-ds-base/issues/6181) - RFE - Allow system to manage uid/gid at startup
+- Issues 6913, 6886, 6250 - Adjust xfail marks [#6914](https://github.com/389ds/389-ds-base/pull/6914)
+- Issue [6768](https://github.com/389ds/389-ds-base/issues/6768) - ns-slapd crashes when a referral is added [#6780](https://github.com/389ds/389-ds-base/pull/6780)
+- Issue [6468](https://github.com/389ds/389-ds-base/issues/6468) - CLI - Fix default error log level
+- Issue [6339](https://github.com/389ds/389-ds-base/issues/6339) - Address Coverity scan issues in memberof and bdb\_layer [#6353](https://github.com/389ds/389-ds-base/pull/6353)
+- Issue [6897](https://github.com/389ds/389-ds-base/issues/6897) - Fix disk monitoring test failures and improve test maintainability [#6898](https://github.com/389ds/389-ds-base/pull/6898)
+- Issue [6884](https://github.com/389ds/389-ds-base/issues/6884) - Mask password hashes in audit logs [#6885](https://github.com/389ds/389-ds-base/pull/6885)
+- Issue [6594](https://github.com/389ds/389-ds-base/issues/6594) - Add test for numSubordinates replication consistency with tombstones [#6862](https://github.com/389ds/389-ds-base/pull/6862)
+- Issue [6250](https://github.com/389ds/389-ds-base/issues/6250) - Add test for entryUSN overflow on failed add operations [#6821](https://github.com/389ds/389-ds-base/pull/6821)
+- Issue [6895](https://github.com/389ds/389-ds-base/issues/6895) - Crash if repl keep alive entry can not be created
+- Issue [6893](https://github.com/389ds/389-ds-base/issues/6893) - Log user that is updated during password modify extended operation
+- Issue [6772](https://github.com/389ds/389-ds-base/issues/6772) - dsconf - Replicas with the "consumer" role allow for viewing and modification of their changelog. [#6773](https://github.com/389ds/389-ds-base/pull/6773)
+- Issue [6888](https://github.com/389ds/389-ds-base/issues/6888) - Missing access JSON logging for TLS/Client auth
+- Issue [6680](https://github.com/389ds/389-ds-base/issues/6680) - instance read-only mode is broken [#6681](https://github.com/389ds/389-ds-base/pull/6681)
+- Issue [6878](https://github.com/389ds/389-ds-base/issues/6878) - Prevent repeated disconnect logs during shutdown [#6879](https://github.com/389ds/389-ds-base/pull/6879)
+- Issue [6872](https://github.com/389ds/389-ds-base/issues/6872) - compressed log rotation creates files with world readable permission
+- Issue [6859](https://github.com/389ds/389-ds-base/issues/6859) - str2filter is not fully applying matching rules
+- Issue [6868](https://github.com/389ds/389-ds-base/issues/6868) - UI - schema attribute table expansion break after moving to
+- Issue [6854](https://github.com/389ds/389-ds-base/issues/6854) - Refactor for improved data management [#6855](https://github.com/389ds/389-ds-base/pull/6855)
+- Issue [6756](https://github.com/389ds/389-ds-base/issues/6756) - CLI, UI - Properly handle disabled NDN cache [#6757](https://github.com/389ds/389-ds-base/pull/6757)
+- Issue [6857](https://github.com/389ds/389-ds-base/issues/6857) - uiduniq: allow specifying match rules in the filter
+- Issue [6838](https://github.com/389ds/389-ds-base/issues/6838) - lib389/replica.py is using nonexistent datetime.UTC in Python 3.9
+- Issue [6822](https://github.com/389ds/389-ds-base/issues/6822) - Backend creation cleanup and Database UI tab error handling [#6823](https://github.com/389ds/389-ds-base/pull/6823)
+- Issue [6782](https://github.com/389ds/389-ds-base/issues/6782) - Improve paged result locking
+- Issue [6825](https://github.com/389ds/389-ds-base/issues/6825) - RootDN Access Control Plugin with wildcards for IP addre… [#6826](https://github.com/389ds/389-ds-base/pull/6826)
+- Issue [6736](https://github.com/389ds/389-ds-base/issues/6736) - Exception thrown by dsconf instance repl get\_ruv [#6742](https://github.com/389ds/389-ds-base/pull/6742)
+- Issue [6819](https://github.com/389ds/389-ds-base/issues/6819) - Incorrect pwdpolicysubentry returned for an entry with user password policy
+- Issue [6553](https://github.com/389ds/389-ds-base/issues/6553) - Update concread to 0.5.6 [#6824](https://github.com/389ds/389-ds-base/pull/6824)
+- Issue [1081](https://github.com/389ds/389-ds-base/issues/1081) - Add a CI test [#6063](https://github.com/389ds/389-ds-base/pull/6063)
+- Issue [6761](https://github.com/389ds/389-ds-base/issues/6761) - Password modify extended operation should skip password policy checks when executed by root DN
+- Issue [6791](https://github.com/389ds/389-ds-base/issues/6791) - crash in liblmdb during instance shutdown [#6793](https://github.com/389ds/389-ds-base/pull/6793)
+- Issue [6641](https://github.com/389ds/389-ds-base/issues/6641) - modrdn fails when a user is member of multiple groups [#6643](https://github.com/389ds/389-ds-base/pull/6643)
+- Issue [6776](https://github.com/389ds/389-ds-base/issues/6776) - Enabling audit log makes slapd coredump
+- Issue [6534](https://github.com/389ds/389-ds-base/issues/6534) - CI fails with Fedora 41 and DNF5
+- Issue [6787](https://github.com/389ds/389-ds-base/issues/6787) - Improve error message when bulk import connection is closed
+- Issue [6727](https://github.com/389ds/389-ds-base/issues/6727) - RFE - database compaction interval should be persistent
+- Issue [6438](https://github.com/389ds/389-ds-base/issues/6438) - Add basic dsidm organizational unit tests
+- Issue [6439](https://github.com/389ds/389-ds-base/issues/6439) - Fix dsidm service get\_dn option
+- Issue [5120](https://github.com/389ds/389-ds-base/issues/5120) - ns-slapd doesn't start in referral mode [#6763](https://github.com/389ds/389-ds-base/pull/6763)
+- Issue [6764](https://github.com/389ds/389-ds-base/issues/6764) - statistics about index lookup report a wrong duration [#6765](https://github.com/389ds/389-ds-base/pull/6765)
+- Issue [4989](https://github.com/389ds/389-ds-base/issues/4989) - Confusing error message from dsconf plugin set --enabled [#6750](https://github.com/389ds/389-ds-base/pull/6750)
+- Issue [6614](https://github.com/389ds/389-ds-base/issues/6614) - CLI - Error when trying to display global DB stats with LMDB [#6622](https://github.com/389ds/389-ds-base/pull/6622)
+- Issue [6321](https://github.com/389ds/389-ds-base/issues/6321) - lib389 get\_db\_lib function may returns the wrong db type [#6322](https://github.com/389ds/389-ds-base/pull/6322)
+- Issue [6276](https://github.com/389ds/389-ds-base/issues/6276) - UI - schema editing and memberof shared config not working correctly
+- Issue [6734](https://github.com/389ds/389-ds-base/issues/6734) - BUG - format strings may not contain backslash [#6749](https://github.com/389ds/389-ds-base/pull/6749)
+- Issue [6505](https://github.com/389ds/389-ds-base/issues/6505)- CI - backport changes for check\_value\_in\_log
+- Issue [6501](https://github.com/389ds/389-ds-base/issues/6501) - CLI - dsidm role rename was not working
+- Issue [6744](https://github.com/389ds/389-ds-base/issues/6744) - BUG - memory accounting is not always enabled [#6745](https://github.com/389ds/389-ds-base/pull/6745)
+- Issue [6492](https://github.com/389ds/389-ds-base/issues/6492)/6493 - CLI - dsdim can not create nested/filtered roles
+- Issue #6740 Certificate verify fails in FIPS mode
+- Issue [5356](https://github.com/389ds/389-ds-base/issues/5356) - Set DEFAULT\_PASSWORD\_STORAGE\_SCHEME to PBKDF2-SHA512 in tests
+- Issue [6603](https://github.com/389ds/389-ds-base/issues/6603) - Release tarballs ship a different Cargo.lock
+- Issue [6743](https://github.com/389ds/389-ds-base/issues/6743) - CLI - dsidm add option to list DN's
+- Issue [6669](https://github.com/389ds/389-ds-base/issues/6669) - logconv.py updates [#6673](https://github.com/389ds/389-ds-base/pull/6673)
+- Issue [6735](https://github.com/389ds/389-ds-base/issues/6735) - CLI - dsidm provide option to set decription when creating an entry
+- Bump tokio from 1.43.0 to 1.44.2 in /src [#6732](https://github.com/389ds/389-ds-base/pull/6732)
+- Issue [6728](https://github.com/389ds/389-ds-base/issues/6728) - CLI - Issue with user rename operation [#6729](https://github.com/389ds/389-ds-base/pull/6729)
+- Issue [6515](https://github.com/389ds/389-ds-base/issues/6515) - CLI - dsidm get\_dn does not return JSON format
+- Bump openssl from 0.10.70 to 0.10.72 in /src [#6730](https://github.com/389ds/389-ds-base/pull/6730)
+- Issue [6660](https://github.com/389ds/389-ds-base/issues/6660) - UI - Replication Monitoring Lag Report Feature [#6661](https://github.com/389ds/389-ds-base/pull/6661)
+- Issue [6713](https://github.com/389ds/389-ds-base/issues/6713) - ns-slapd crash during mdb offline import [#6714](https://github.com/389ds/389-ds-base/pull/6714)
+- Issue [6720](https://github.com/389ds/389-ds-base/issues/6720) - Remove BDB attribute from MDB DB Monitor [#6721](https://github.com/389ds/389-ds-base/pull/6721)
+- Issue [6715](https://github.com/389ds/389-ds-base/issues/6715) - dsconf backend replication monitor fails if replica id starts with 0 [#6716](https://github.com/389ds/389-ds-base/pull/6716)
+- Issue [6562](https://github.com/389ds/389-ds-base/issues/6562) - Fix issues around slapi\_filter\_sprintf [#6725](https://github.com/389ds/389-ds-base/pull/6725)
+- Issue [6481](https://github.com/389ds/389-ds-base/issues/6481) - When ports that are in use are used to update a DS instance the error message is not helpful [#6723](https://github.com/389ds/389-ds-base/pull/6723)
+- Issue [6626](https://github.com/389ds/389-ds-base/issues/6626) - Ignore replica busy condition in healthcheck [#6630](https://github.com/389ds/389-ds-base/pull/6630)
+- Issue [6693](https://github.com/389ds/389-ds-base/issues/6693) - Fix error messages inconsistencies [#6694](https://github.com/389ds/389-ds-base/pull/6694)
+- Issue [6464](https://github.com/389ds/389-ds-base/issues/6464) - UI - Fixed spelling in cockpit messages  
+- Issue [6700](https://github.com/389ds/389-ds-base/issues/6700) - CLI/UI - include superior objectclasses' allowed and requires attrs
+- Issue [6571](https://github.com/389ds/389-ds-base/issues/6571) - (2nd) Nested group does not receive memberOf attribute [#6697](https://github.com/389ds/389-ds-base/pull/6697)
+- Issue [6686](https://github.com/389ds/389-ds-base/issues/6686) - CLI - Re-enabling user accounts that reached inactivity limit fails with error [#6687](https://github.com/389ds/389-ds-base/pull/6687)
+- Issue [6288](https://github.com/389ds/389-ds-base/issues/6288) - dsidm crash with account policy when alt-state-attr is disabled [#6292](https://github.com/389ds/389-ds-base/pull/6292)
+- Issue [6704](https://github.com/389ds/389-ds-base/issues/6704) - UI - Add error log buffering config
+- Issue [6698](https://github.com/389ds/389-ds-base/issues/6698) - NPE after configuring invalid filtered role [#6699](https://github.com/389ds/389-ds-base/pull/6699)
+- Issue [6695](https://github.com/389ds/389-ds-base/issues/6695) - UI - fix more minor issues
+- Security fix for [CVE-2025-2487](https://access.redhat.com/security/cve/CVE-2025-2487)
+- Issue [6500](https://github.com/389ds/389-ds-base/issues/6500) - Fix covscan and ASAN issue
+- Issue [6571](https://github.com/389ds/389-ds-base/issues/6571) - Nested group does not receive memberOf attribute [#6679](https://github.com/389ds/389-ds-base/pull/6679)
+- Issue [6676](https://github.com/389ds/389-ds-base/issues/6676) - Add GitHub workflow action and fix pbkdf2 tests [#6677](https://github.com/389ds/389-ds-base/pull/6677)
+- Issue [6671](https://github.com/389ds/389-ds-base/issues/6671) - tombstone\_fixup\_test sometime fails on bdb
+- Issue [6401](https://github.com/389ds/389-ds-base/issues/6401) - Remove logging macros
+- Issue [6663](https://github.com/389ds/389-ds-base/issues/6663) - CLI - add error log JSON settings to dsconf
+- Issue [6663](https://github.com/389ds/389-ds-base/issues/6663) - RFE - Add option to write error log in JSON
+- Issue [6665](https://github.com/389ds/389-ds-base/issues/6665) - UI - Need to refresh log settings after saving
+- Issue [6639](https://github.com/389ds/389-ds-base/issues/6639) - Fix crash in upgrade when removing subtree name attribute
+- Issue [6568](https://github.com/389ds/389-ds-base/issues/6568) - Fix failing webUI tests
+- Issue [6656](https://github.com/389ds/389-ds-base/issues/6656) - UI - Enhance Monitor Log Viewer with Patternfly LogViewer component [#6657](https://github.com/389ds/389-ds-base/pull/6657)
+- Issue [6655](https://github.com/389ds/389-ds-base/issues/6655) - fix replication release replica decoding error
+- Issue  6653 - Cleanup error messages
+- Issue [6639](https://github.com/389ds/389-ds-base/issues/6639) - remove all the code related to entryrdn\_get\_switch
+- Issue [6429](https://github.com/389ds/389-ds-base/issues/6429) - UI - clicking on a database suffix under the Monitor tab crashes UI [#6610](https://github.com/389ds/389-ds-base/pull/6610)
+- Issue [6632](https://github.com/389ds/389-ds-base/issues/6632) - Replication init fails with ASAN build
+- Issue [6625](https://github.com/389ds/389-ds-base/issues/6625) - UI - various fixes part 3
+- Issue [6625](https://github.com/389ds/389-ds-base/issues/6625) - UI - fix next round of bugs
+- Issue [6625](https://github.com/389ds/389-ds-base/issues/6625) - UI - fix various issues with LDAP browser, etc
+- Issue [6553](https://github.com/389ds/389-ds-base/issues/6553) - Update concread to 0.5.4 and refactor statistics tracking [#6607](https://github.com/389ds/389-ds-base/pull/6607)
+- Bump esbuild from 0.24.0 to 0.25.0 in /src/cockpit/389-console [#6602](https://github.com/389ds/389-ds-base/pull/6602)
+- Issue [6599](https://github.com/389ds/389-ds-base/issues/6599) - Access JSON logging - lib389/CI/minor fixes
+- Issue [6615](https://github.com/389ds/389-ds-base/issues/6615) - test\_custom\_path CI test fails [#6616](https://github.com/389ds/389-ds-base/pull/6616)
+- Issue [6619](https://github.com/389ds/389-ds-base/issues/6619) - test\_dblib\_migration fails on RHEL10 [#6620](https://github.com/389ds/389-ds-base/pull/6620)
+- Issue [6617](https://github.com/389ds/389-ds-base/issues/6617) - test\_vlv\_as\_freeipa\_backup\_restore fails [#6618](https://github.com/389ds/389-ds-base/pull/6618)
+- Issue [6207](https://github.com/389ds/389-ds-base/issues/6207) - Random crash in test\_long\_rdn CI test [#6215](https://github.com/389ds/389-ds-base/pull/6215)
+- Issue [6623](https://github.com/389ds/389-ds-base/issues/6623) - UI - Generic updates [#6624](https://github.com/389ds/389-ds-base/pull/6624)
+- Issue [6611](https://github.com/389ds/389-ds-base/issues/6611) - db\_home\_test.py CI tests should be skipped on lmdb [#6612](https://github.com/389ds/389-ds-base/pull/6612)
+- Issue [6561](https://github.com/389ds/389-ds-base/issues/6561) - TLS 1.2 stickiness in FIPS mode
+- Issue [6599](https://github.com/389ds/389-ds-base/issues/6599) - Implement option to write access log in jSON
+- Issue [6367](https://github.com/389ds/389-ds-base/issues/6367) - RFE support of Session Tracking Control internet draft [#6403](https://github.com/389ds/389-ds-base/pull/6403)
+- Issue [6596](https://github.com/389ds/389-ds-base/issues/6596) - BUG - Compilation Regresion [#6597](https://github.com/389ds/389-ds-base/pull/6597)
+- Issue [6554](https://github.com/389ds/389-ds-base/issues/6554) - During import of entries without nsUniqueId, a supplier generates duplicate nsUniqueId (LMDB only) [#6582](https://github.com/389ds/389-ds-base/pull/6582)
+- Issue [6229](https://github.com/389ds/389-ds-base/issues/6229) - After an initial failure, subsequent online backups fail [#6230](https://github.com/389ds/389-ds-base/pull/6230)
+- Issue [6574](https://github.com/389ds/389-ds-base/issues/6574) - Move pblock access from switch to func table
+- Bump openssl from 0.10.66 to 0.10.70 in /src
+- Issue [6258](https://github.com/389ds/389-ds-base/issues/6258) - Mitigate race condition in paged\_results\_test.py [#6433](https://github.com/389ds/389-ds-base/pull/6433)
+- Issue [6566](https://github.com/389ds/389-ds-base/issues/6566) - RI plugin failure to handle a modrdn for rename of member of multiple groups [#6567](https://github.com/389ds/389-ds-base/pull/6567)
+- Issue [6436](https://github.com/389ds/389-ds-base/issues/6436) - MOD on a large group slow if substring index is present [#6437](https://github.com/389ds/389-ds-base/pull/6437)
+- Issue [6489](https://github.com/389ds/389-ds-base/issues/6489) - After log rotation refresh the FD pointer
+- Issue [6465](https://github.com/389ds/389-ds-base/issues/6465) - Create optional meta-package for replication reporting dependencies [#6560](https://github.com/389ds/389-ds-base/pull/6560)
+- Issue [6090](https://github.com/389ds/389-ds-base/issues/6090) - Fix dbscan options and man pages [#6315](https://github.com/389ds/389-ds-base/pull/6315)
+- Issue [6375](https://github.com/389ds/389-ds-base/issues/6375) - UI - Update cockpit.js code to the latest version [#6376](https://github.com/389ds/389-ds-base/pull/6376)
+- Issue [6374](https://github.com/389ds/389-ds-base/issues/6374) - nsslapd-mdb-max-dbs autotuning doesn't work properly [#6400](https://github.com/389ds/389-ds-base/pull/6400)
+- Issue [6476](https://github.com/389ds/389-ds-base/issues/6476) - Fix build failure with GCC 15
+- Issue [6468](https://github.com/389ds/389-ds-base/issues/6468) - Fix building for older versions of Python
+- Issue [4815](https://github.com/389ds/389-ds-base/issues/4815) - RFE - Add Replication Log Analysis Tool with CLI Support [#6466](https://github.com/389ds/389-ds-base/pull/6466)
+- Issue [6544](https://github.com/389ds/389-ds-base/issues/6544) - logconv.py: python3-magic conflicts with python3-file-magic
+- Issue [6446](https://github.com/389ds/389-ds-base/issues/6446) - Fix test\_acct\_policy\_consumer test to wait enough for lastLoginHistory update [#6530](https://github.com/389ds/389-ds-base/pull/6530)

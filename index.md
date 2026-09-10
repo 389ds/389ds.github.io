@@ -68,15 +68,21 @@ We have moved our IRC channel **\#389** from *freenode* to **irc.libera.chat** (
 <br>
 
 <!-- Try to keep this list under 10 releases  -->
-- 2026-04-29: Released **389-ds-base [3.2.1](docs/389ds/releases/release-3-2-1.html)**
-- 2026-01-26: Released **389-ds-base [3.2.0](docs/389ds/releases/release-3-2-0.html)**
-- 2026-01-26: Released **389-ds-base [2.8.0](docs/389ds/releases/release-2-8-0.html)**
-- 2025-06-25: Released **389-ds-base [3.1.3](docs/389ds/releases/release-3-1-3.html)**
-- 2025-06-25: Released **389-ds-base [2.7.0](docs/389ds/releases/release-2-7-0.html)**
-- 2025-06-25: Released **389-ds-base [2.6.2](docs/389ds/releases/release-2-6-2.html)**
-- 2025-01-23: Released **389-ds-base [3.0.6](docs/389ds/releases/release-3-0-6.html)**
-- 2025-01-23: Released **389-ds-base [2.6.1](docs/389ds/releases/release-2-6-1.html)**
-- 2024-12-16: Released **389-ds-base [2.5.3](docs/389ds/releases/release-2-5-3.html)**
+- 2026-09-07: Released **389-ds-base [3.2.3](docs/389ds/releases/release-3-2-3.html)**
+- 2026-09-07: Released **389-ds-base [3.1.5](docs/389ds/releases/release-3-1-5.html)**
+- 2026-09-07: Released **389-ds-base [3.0.7](docs/389ds/releases/release-3-0-7.html)**
+- 2026-09-07: Released **389-ds-base [2.9.1](docs/389ds/releases/release-2-9-1.html)**
+- 2026-09-07: Released **389-ds-base [2.8.2](docs/389ds/releases/release-2-8-2.html)**
+- 2026-09-07: Released **389-ds-base [2.6.3](docs/389ds/releases/release-2-6-3.html)**
+- 2026-09-07: Released **389-ds-base [2.4.7](docs/389ds/releases/release-2-4-7.html)**
+- 2026-09-07: Released **389-ds-base [2.2.11](docs/389ds/releases/release-2-2-11.html)**
+- 2026-09-07: Released **389-ds-base [1.4.3.41](docs/389ds/releases/release-1-4-3-41.html)**
+- 2026-09-07: Released **389-ds-base [3.3.1](docs/389ds/releases/release-3-3-1.html)**
+- 2026-06-03: Released **389-ds-base [3.3.0](docs/389ds/releases/release-3-3-0.html)**
+- 2026-06-03: Released **389-ds-base [3.2.2](docs/389ds/releases/release-3-2-2.html)**
+- 2026-06-03: Released **389-ds-base [2.9.0](docs/389ds/releases/release-2-9-0.html)**
+- 2026-06-03: Released **389-ds-base [2.8.1](docs/389ds/releases/release-2-8-1.html)**
+- 2025-12-16: Released **389-ds-base [3.1.4](docs/389ds/releases/release-3-1-4.html)**
 
 - [All past release notes](docs/389ds/releases/release-notes.html)
 
