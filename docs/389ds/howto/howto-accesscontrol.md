@@ -38,6 +38,4 @@ Another example would be to define access based on value matching, you can speci
     aci: (target="ldap:///dc=example,dc=com")(targetattr=*)(version 3.0;acl "manag
      er-write"; allow (all) userattr = "manager#USERDN";)
 
-There is a detailed online documentation, for RHDS 7.1 in the deployment guide, as well as in the Admin Guide, like for example on how to select permission, bind rules, role access, access from an ip address, domain or auth method, in <http://docs.redhat.com/docs/en-US/Red_Hat_Directory_Server/8.2/html/Administration_Guide/Managing_Access_Control.html>
-
-
+For detailed information about permissions, bind rules, roles, and access restrictions based on IP address, domain, or authentication method, see the [Red Hat Directory Server 13 guide to managing access control](https://docs.redhat.com/en/documentation/red_hat_directory_server/13/html/security_and_access_control/managing-access-control).
