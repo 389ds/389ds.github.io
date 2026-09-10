@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'git'
 gem 'typogruby'
 gem 'jekyll'
+gem 'sass-embedded', '1.79.6'
 gem 'jekyll-paginate'
 gem 'jekyll-sitemap'
 gem 'kramdown', ">= 2.3.0"
@@ -13,4 +14,3 @@ gem 'stringex'
 gem 'rack', "~>2.2"
 gem 'rack-rewrite'
 gem 'puma'
-

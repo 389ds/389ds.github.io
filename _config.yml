@@ -28,6 +28,10 @@ paginate_path: /news/page:num
 sass:
   sass_dir: _sass
   style: :compressed
+  silence_deprecations:
+    - color-functions
+    - mixed-decls
+    - slash-div
 
 markdown: KramdownPygments
 kramdown:

@@ -40,7 +40,7 @@ module Jekyll
       logger.error("Error:", "Could not read Git repository! Defaulting to current time.") if repo.nil?
 
       site.pages.each do |page|
-        most_recent = (repo.nil?) ? nil : repo.log.path(page.path).first
+        most_recent = (repo.nil?) ? nil : repo.log.path(page.path).execute.first
         if most_recent.nil?
           # Don't spam the console with warnings if there is no repo at all.
           logger.warn("Warning:", "#{page['path']} not found in Git log. Using current time.") unless repo.nil?

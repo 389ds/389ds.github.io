@@ -1,7 +1,9 @@
-FROM 389ds/389ds-website-ruby-27
-MAINTAINER awood@redhat.com
+FROM ruby:3.3
 
-USER root
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git python3 python3-pygments && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN mkdir -p /site && chmod 777 /site
 WORKDIR /site
 
@@ -10,7 +12,6 @@ WORKDIR /site
 COPY ./Gemfile* .
 RUN bundle install
 
-USER 1001
 # Turn off disk caching; jekyll tries to create a .jekyll-cache directory in the volume
 # mount which is doesn't have permission to do
 CMD bundle exec jekyll serve -d /tmp --disable-disk-cache --livereload -H 0.0.0.0
