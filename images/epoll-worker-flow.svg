@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 900" width="790" height="900" font-family="Helvetica, Arial, sans-serif">
+<rect width="790" height="900" fill="#ffffff"/>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5a6573"/></marker></defs>
+<text x="20" y="28" font-size="17" font-weight="bold" fill="#1d232b">epoll worker mode: the life of a request</text>
+<text x="20" y="48" font-size="12" fill="#5a6573">Function names from #7989: d = daemon.c, c = connection.c, t = conntable.c</text>
+<rect x="30" y="70" width="330" height="135" rx="6" fill="#ffffff" stroke="#8a94a1" stroke-width="1.6"/>
+<path d="M36,70 H354 Q360,70 360,76 V92 H30 V76 Q30,70 36,70 Z" fill="#8a94a1"/>
+<text x="40" y="85.5" font-size="12.5" font-weight="bold" fill="#ffffff">1  Accept (listener thread)</text>
+<text x="40" y="108" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">d: accept_thread()</tspan></text>
+<text x="40" y="123" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">d: handle_new_connection()</tspan></text>
+<text x="40" y="138" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">t: connection_table_move_</tspan></text>
+<text x="40" y="153" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">   connection_on_to_active_list()</tspan></text>
+<text x="40" y="168" fill="#1d232b"><tspan font-size="11.5">puts it on connection table list i</tspan></text>
+<text x="40" y="183" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">d: connection_epoll_register_nolock()</tspan></text>
+<text x="40" y="198" fill="#1d232b"><tspan font-size="11.5">adds the socket to list i, one-shot</tspan></text>
+<rect x="30" y="239" width="330" height="90" rx="6" fill="#ffffff" stroke="#5b5fa8" stroke-width="1.6"/>
+<path d="M36,239 H354 Q360,239 360,245 V261 H30 V245 Q30,239 36,239 Z" fill="#5b5fa8"/>
+<text x="40" y="254.5" font-size="12.5" font-weight="bold" fill="#ffffff">2  Connection table list i</text>
+<text x="40" y="277" fill="#1d232b"><tspan font-size="11.5">epoll set: the connections&#x27; sockets,</tspan></text>
+<text x="40" y="292" fill="#1d232b"><tspan font-size="11.5">each reported once, then disarmed</tspan></text>
+<text x="40" y="307" fill="#1d232b"><tspan font-size="11.5">eventfd: signals queued work</tspan></text>
+<text x="40" y="322" fill="#1d232b"><tspan font-size="11.5">and shutdown</tspan></text>
+<rect x="30" y="363" width="330" height="90" rx="6" fill="#ffffff" stroke="#a3367a" stroke-width="1.6"/>
+<path d="M36,363 H354 Q360,363 360,369 V385 H30 V369 Q30,363 36,363 Z" fill="#a3367a"/>
+<text x="40" y="378.5" font-size="12.5" font-weight="bold" fill="#ffffff">3  An idle worker waits</text>
+<text x="40" y="401" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">c: connection_threadmain()</tspan></text>
+<text x="40" y="416" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">c: connection_wait_for_epoll_work()</tspan></text>
+<text x="40" y="431" fill="#1d232b"><tspan font-size="11.5">queued work first, otherwise</tspan></text>
+<text x="40" y="446" fill="#1d232b"><tspan font-size="11.5">epoll_wait() for 1 event</tspan></text>
+<rect x="30" y="487" width="330" height="120" rx="6" fill="#ffffff" stroke="#a3367a" stroke-width="1.6"/>
+<path d="M36,487 H354 Q360,487 360,493 V509 H30 V493 Q30,487 36,487 Z" fill="#a3367a"/>
+<text x="40" y="502.5" font-size="12.5" font-weight="bold" fill="#ffffff">4  A ready connection wakes</text>
+<text x="40" y="525" fill="#1d232b"><tspan font-size="11.5">exactly one worker</tspan></text>
+<text x="40" y="540" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">d: handle_epoll_conn_event()</tspan></text>
+<text x="40" y="555" fill="#1d232b"><tspan font-size="11.5">checks: stale, closing, already</tspan></text>
+<text x="40" y="570" fill="#1d232b"><tspan font-size="11.5">owned, max threads per connection</tspan></text>
+<text x="40" y="585" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">c: connection_epoll_take_nolock()</tspan></text>
+<text x="40" y="600" fill="#1d232b"><tspan font-size="11.5">the worker takes the operation</tspan></text>
+<rect x="30" y="641" width="330" height="90" rx="6" fill="#ffffff" stroke="#a3367a" stroke-width="1.6"/>
+<path d="M36,641 H354 Q360,641 360,647 V663 H30 V647 Q30,641 36,641 Z" fill="#a3367a"/>
+<text x="40" y="656.5" font-size="12.5" font-weight="bold" fill="#ffffff">5  The same worker runs it</text>
+<text x="40" y="679" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">c: connection_read_operation()</tspan></text>
+<text x="40" y="694" fill="#1d232b"><tspan font-size="11.5">then the operation runs here:</tspan></text>
+<text x="40" y="709" fill="#1d232b"><tspan font-size="11.5">no work queue hop, no condition</tspan></text>
+<text x="40" y="724" fill="#1d232b"><tspan font-size="11.5">variable wake-up</tspan></text>
+<rect x="30" y="765" width="330" height="45" rx="6" fill="#ffffff" stroke="#a3367a" stroke-width="1.6"/>
+<path d="M36,765 H354 Q360,765 360,771 V787 H30 V771 Q30,765 36,765 Z" fill="#a3367a"/>
+<text x="40" y="780.5" font-size="12.5" font-weight="bold" fill="#ffffff">6  Operation done: what next?</text>
+<text x="40" y="803" fill="#1d232b"><tspan font-size="11.5">one of three outcomes (right)</tspan></text>
+<path d="M 195.0 205 L 195.0 239" fill="none" stroke="#5a6573" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 195.0 329 L 195.0 363" fill="none" stroke="#5a6573" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 195.0 453 L 195.0 487" fill="none" stroke="#5a6573" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 195.0 607 L 195.0 641" fill="none" stroke="#5a6573" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 195.0 731 L 195.0 765" fill="none" stroke="#5a6573" stroke-width="1.4" marker-end="url(#a)"/>
+<rect x="450" y="477" width="300" height="90" rx="6" fill="#ffffff" stroke="#0f6b72" stroke-width="1.6"/>
+<path d="M456,477 H744 Q750,477 750,483 V499 H450 V483 Q450,477 456,477 Z" fill="#0f6b72"/>
+<text x="460" y="492.5" font-size="12.5" font-weight="bold" fill="#ffffff">A  Nothing more buffered</text>
+<text x="460" y="515" fill="#1d232b"><tspan font-size="11.5">re-arm the socket, outside c_mutex:</tspan></text>
+<text x="460" y="530" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">c: connection_make_readable_</tspan></text>
+<text x="460" y="545" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">   defer_rearm_nolock()</tspan></text>
+<text x="460" y="560" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">d: connection_epoll_rearm_unlocked()</tspan></text>
+<rect x="450" y="607" width="300" height="90" rx="6" fill="#ffffff" stroke="#0f6b72" stroke-width="1.6"/>
+<path d="M456,607 H744 Q750,607 750,613 V629 H450 V613 Q450,607 456,607 Z" fill="#0f6b72"/>
+<text x="460" y="622.5" font-size="12.5" font-weight="bold" fill="#ffffff">B  More requests buffered</text>
+<text x="460" y="645" fill="#1d232b"><tspan font-size="11.5">or TLS data held by NSS:</tspan></text>
+<text x="460" y="660" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">add_work_q()</tspan><tspan font-size="11.5">, then</tspan></text>
+<text x="460" y="675" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">c: connection_epoll_signal_workers()</tspan></text>
+<text x="460" y="690" fill="#1d232b"><tspan font-size="11.5">signals the eventfd</tspan></text>
+<rect x="450" y="737" width="300" height="90" rx="6" fill="#ffffff" stroke="#0f6b72" stroke-width="1.6"/>
+<path d="M456,737 H744 Q750,737 750,743 V759 H450 V743 Q450,737 456,737 Z" fill="#0f6b72"/>
+<text x="460" y="752.5" font-size="12.5" font-weight="bold" fill="#ffffff">C  Replication, next request</text>
+<text x="460" y="775" fill="#1d232b"><tspan font-size="11.5">already readable: read it now,</tspan></text>
+<text x="460" y="790" fill="#1d232b"><tspan font-size="11.5">up to 16 in a row</tspan></text>
+<text x="460" y="805" fill="#1d232b"><tspan font-size="11.5">(CONN_EPOLL_REPL_READS_MAX),</tspan></text>
+<text x="460" y="820" fill="#1d232b"><tspan font-size="11.5">then re-arm</tspan></text>
+<path d="M 360 791 L 405 791 L 405 507 L 450 507" fill="none" stroke="#5a6573" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 405 791 L 405 637 L 450 637" fill="none" stroke="#5a6573" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 405 791 L 405 767 L 450 767" fill="none" stroke="#5a6573" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 750 522 L 778 522 L 778 265 L 360 265" fill="none" stroke="#5a6573" stroke-width="1.4" marker-end="url(#a)"/>
+<text x="368" y="259" font-size="11" fill="#5a6573" text-anchor="start">A: armed again in list i</text>
+<path d="M 750 652 L 764 652 L 764 295 L 360 295" fill="none" stroke="#5a6573" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
+<text x="368" y="289" font-size="11" fill="#5a6573" text-anchor="start">B: an idle worker takes the work</text>
+<path d="M 510 827 L 510 860 L 14 860 L 14 671 L 30 671" fill="none" stroke="#5a6573" stroke-width="1.4" marker-end="url(#a)"/>
+<text x="516" y="854" font-size="11" fill="#5a6573" text-anchor="start">C: back to 5, same worker</text>
+<rect x="450" y="70" width="300" height="120" rx="6" fill="#ffffff" stroke="#8a94a1" stroke-width="1.6"/>
+<path d="M456,70 H744 Q750,70 750,76 V92 H450 V76 Q450,70 456,70 Z" fill="#8a94a1"/>
+<text x="460" y="85.5" font-size="12.5" font-weight="bold" fill="#ffffff">Background, per list</text>
+<text x="460" y="108" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">d: ct_list_thread()</tspan><tspan font-size="11.5"> runs</tspan></text>
+<text x="460" y="123" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">d: check_active_connections()</tspan></text>
+<text x="460" y="138" fill="#1d232b"><tspan font-size="11.5">releases closed connections,</tspan></text>
+<text x="460" y="153" fill="#1d232b"><tspan font-size="11.5">takes part in certificate refresh</tspan></text>
+<text x="460" y="168" fill="#1d232b"><tspan font-family="Menlo, Consolas, monospace" font-size="11">d: check_idletimeout()</tspan></text>
+<text x="460" y="183" fill="#1d232b"><tspan font-size="11.5">the idle timeout sweep</tspan></text>
+<text x="20" y="888" font-size="11" fill="#5a6573">A connection is never reported while a worker owns it. Shutdown signals every eventfd.</text>
+</svg>
