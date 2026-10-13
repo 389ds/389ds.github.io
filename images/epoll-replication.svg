@@ -23,7 +23,7 @@
 <text x="242" y="117" font-size="11" fill="#5a6573" text-anchor="end">Poll (current default), turbo off</text>
 <rect x="250" y="105" width="39.7" height="15" rx="2" fill="#5b5fa8"/>
 <text x="295.7" y="117" font-size="11.5" fill="#1d232b">11.3 s</text>
-<text x="242" y="139" font-size="11" fill="#5a6573" text-anchor="end">epoll worker mode (#7989)</text>
-<rect x="250" y="127" width="58.6" height="15" rx="2" fill="#a3367a"/>
-<text x="314.6" y="139" font-size="11.5" fill="#1d232b">16.8 s</text>
+<text x="242" y="139" font-size="11" fill="#5a6573" text-anchor="end">epoll listener (#7983)</text>
+<rect x="250" y="127" width="62.1" height="15" rx="2" fill="#0f6b72"/>
+<text x="318.1" y="139" font-size="11.5" fill="#1d232b">17.7 s</text>
 </svg>

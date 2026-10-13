@@ -41,7 +41,7 @@ If you are adding a new design document, use the [template](design-template.html
 
 ## 389 Directory Server 3.4
 
-- [epoll Worker Mode](epoll-worker-design.html)
+- [epoll Connection Listener](epoll-listener-design.html)
 
 ## 389 Directory Server 3.1
 

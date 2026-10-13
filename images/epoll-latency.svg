@@ -18,11 +18,11 @@
 <text x="242" y="102" font-size="11" fill="#5a6573" text-anchor="end">Poll (current default), turbo off</text>
 <rect x="250" y="90" width="420.0" height="15" rx="2" fill="#5b5fa8"/>
 <text x="676.0" y="102" font-size="11.5" fill="#1d232b">16 ms</text>
-<text x="242" y="124" font-size="11" fill="#5a6573" text-anchor="end">epoll worker mode (#7989)</text>
-<rect x="250" y="112" width="21.7" height="15" rx="2" fill="#a3367a"/>
-<text x="277.7" y="124" font-size="11.5" fill="#1d232b">0.83 ms</text>
+<text x="242" y="124" font-size="11" fill="#5a6573" text-anchor="end">epoll listener (#7983)</text>
+<rect x="250" y="112" width="23.0" height="15" rx="2" fill="#0f6b72"/>
+<text x="279.0" y="124" font-size="11.5" fill="#1d232b">0.88 ms</text>
 <text x="0" y="160" font-size="12" font-weight="bold" fill="#1d232b">1,000 connections open</text>
-<text x="242" y="178" font-size="11" fill="#5a6573" text-anchor="end">epoll worker mode (#7989)</text>
-<rect x="250" y="166" width="20.6" height="15" rx="2" fill="#a3367a"/>
-<text x="276.6" y="178" font-size="11.5" fill="#1d232b">0.79 ms</text>
+<text x="242" y="178" font-size="11" fill="#5a6573" text-anchor="end">epoll listener (#7983)</text>
+<rect x="250" y="166" width="24.1" height="15" rx="2" fill="#0f6b72"/>
+<text x="280.1" y="178" font-size="11.5" fill="#1d232b">0.92 ms</text>
 </svg>
