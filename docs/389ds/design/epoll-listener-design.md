@@ -90,7 +90,42 @@ With 30,000 idle connections open, #7983 serves 1,000 active clients at 65.8k op
 
 With 20,000 connections open, a single client sees 0.88 ms per request with #7983 and about 16 ms with poll, whether or not turbo is on. #7983's latency barely changes between 1,000 and 20,000 open connections.
 
-CPU cost per operation is flat as connections grow: about 140 µs per operation at both 1,000 and 10,000 connections (poll: 1,200 to 1,800 µs at 10,000). On this rig every build tops out at 65k to 70k ops/s with the server at about 60% CPU; profiling points to lock contention in shared code (object extension creation and the access log), not to the listener.
+CPU cost per operation is flat as connections grow: about 140 µs per operation at both 1,000 and 10,000 connections (poll: 1,200 to 1,800 µs at 10,000). On this rig every build tops out at 65k to 70k ops/s with the server at about 60% CPU. The listener is not the reason: two shared locks are (next section).
+
+### Lock contention beyond the listener
+
+Once the listener stops being the bottleneck, off-CPU profiles show threads queued on two locks in shared code that every operation takes ([#7994](https://github.com/389ds/389-ds-base/issues/7994)):
+
+- **Object extension lock** (`factory.c`): `factory_destroy_extension()` held the per-type `extension_lock` while running every destructor, and `factory_create_extension()` needs the same lock. The connection list thread creates every operation, so it spent most of its blocked time (76%) waiting for workers running destructors.
+- **Access logging** (`log.c`, `libglobs.c`, `time.c`): every line took the config lock, the glibc time zone lock and the buffer lock, and the thread that found the buffer full wrote it to disk under that lock.
+
+The fixes depend on each other. With one connection table list and #7983, steady load at 1,000 connections:
+
+| Change | Searches/s |
+|---|---|
+| none | 65.0k |
+| extension lock fixed | 73.5k (+13%) |
+| access log fixed | 61.5k (-5%) |
+| both | 79.6k (+22-24%) |
+
+Fixing only the access log makes the server slower: workers that finish sooner take the extension lock more often and starve the list thread that feeds them, so idle workers more than double. With the extension lock fixed first, the list thread has spare time, the workers become the limit, and removing the access log waits pays off. With the default poll build and one list the lock waits disappear as well, but throughput does not change, because poll's single listener thread is the limit there; with four lists it is not, and the default build gains 20% (64.6k to 77.4k searches/s).
+
+### Four connection table lists, up to 50,000 connections
+
+Deployments with tens of thousands of connections run several connection table lists (`nsslapd-numlisteners`); four is a reasonable starting point. With four lists, mean of two 2-minute runs per point (stock configuration otherwise; see the tuning section below for what larger connection counts need):
+
+| Searches/s, 4 lists | 1,000 | 10,000 | 30,000 | 50,000 |
+|---|---|---|---|---|
+| poll | 65.2k | 2.4k | not run (collapsed at 10,000) | not run |
+| #7983 | 68.8k | 61.8k | 61.0k | 60.2k |
+| #7984 worker mode (experimental, below) | 70.5k | 66.0k | 66.0k | 65.7k |
+| #7984 worker mode with the #7994 lock fixes | 84.7k | 80.9k | 78.8k | 78.4k |
+
+From 10,000 to 50,000 connections #7983 holds 60-62k searches/s (within 3%), about 10% below its 1,000-connection figure; poll collapses at 10,000 connections with four lists as with one. For the epoll builds the two rounds agree within 3% (5% at one point); poll at 10,000 is erratic (2.0k and 2.9k). No job left more than one connection open afterwards, and the clients stayed below 35% busy. About 63,900 connections is the most the connection table can hold (a compile-time limit; tuning section below).
+
+### Connection churn
+
+With a new TCP connection for every operation (connect, anonymous bind, base search, unbind, close), the server sustains about 13,000 complete connection lifecycles per second with one list and 10,600 with four, without errors once the kernel limits below are raised. The ceiling is set by the single accept thread, not by CPU (the server is mostly idle): it serialises on the connection table lock (`table_mutex`, one lock for all lists) with the list threads that retire closed connections, and new connections wait about 7 ms in the kernel's accept queue. Raising it would mean more than one accept path and a per-list connection table lock; that is not part of this work.
 
 ![Replication catch-up](../../../images/epoll-replication.svg "Replication catch-up")
 
@@ -110,10 +145,25 @@ Major configuration options and enablement
 - Events per `epoll_wait()`: 4 per worker thread, at least 16; `SLAPD_EPOLL_MAX_EVENTS` overrides it.
 - No schema, configuration attribute or CLI changes.
 
+### Tuning for large connection counts
+
+None of these are changed by this work; they are what the measurements above needed beyond about 10,000 connections, and what large deployments should check.
+
+- **Connection table lists:** `nsslapd-numlisteners` (default 1). Four or more for tens of thousands of connections.
+- **Connection table size:** the table holds `nsslapd-maxdescriptors` minus the reserved descriptors, but never more than `FDS_PROCESS_MAX` (64,000, a compile-time limit in `daemon.c`) minus the reserved ones, split across the lists (4 lists: 15,975 slots each). Going past about 63,900 simultaneous connections needs a code change, not tuning.
+- **File descriptors:** the server takes its limit from the service's `LimitNOFILE`; `nsslapd-maxdescriptors` only needs setting if an older configuration pins a lower value. With epoll the limit is also capped by `fs.epoll.max_user_watches` (logged at startup when it applies).
+- **Worker threads:** `nsslapd-threadnumber`. With more lists, keep at least a few workers per list.
+- **Listen queue, for bursts of new connections:** `nsslapd-listen-backlog-size` defaults to 128, and the kernel caps it at `net.core.somaxconn` (4,096 on current kernels). At about 13,000 new connections/s the default 128 overflows; 8,192, with `somaxconn` raised to match, removes the overflows and the client-side connection errors, although it does not raise the churn ceiling above.
+- **Connection tracking, for heavy connection churn:** with netfilter connection tracking loaded, each short connection stays in the table through TIME_WAIT. At about 13,000 new connections/s the default `net.netfilter.nf_conntrack_max` (262,144) filled in under a minute and the kernel dropped new connections. Raise it (2,097,152 here) and shorten `nf_conntrack_tcp_timeout_time_wait` (10 s here), or exempt the LDAP ports from tracking.
+- **Load generators:** clients opening thousands of connections per second need a wider `net.ipv4.ip_local_port_range` and `net.ipv4.tcp_tw_reuse=1`; ldclt allows at most 1,000 threads per process.
+
+No TCP memory pressure, socket buffer or packet-drop limits were reached at any of these scales.
+
 External Impact
 ---------------
 
 - Shared connection lifecycle fixes found during this work are separate PRs because they also affect the default build: [#7985](https://github.com/389ds/389-ds-base/pull/7985) (persistent search thread slot), [#7986](https://github.com/389ds/389-ds-base/pull/7986) (worker holding a connection at shutdown), [#7987](https://github.com/389ds/389-ds-base/pull/7987) (unbind during bulk import), [#7988](https://github.com/389ds/389-ds-base/pull/7988) (error logged for buffered requests on a closing connection).
+- Shared lock contention found during this work, in object extensions and access logging, is fixed separately in one PR for [#7994](https://github.com/389ds/389-ds-base/issues/7994), because it affects every build.
 - [#7846](https://github.com/389ds/389-ds-base/pull/7846) (epoll and multiple listener updates) covers some of the same code; how the two combine is discussed in [#7842](https://github.com/389ds/389-ds-base/issues/7842).
 - Tests: `dirsrvtests/tests/suites/threads/connection_handling_test.py` covers five close paths under load and requests buffered in one TLS record.
 
@@ -122,7 +172,7 @@ Experimental: worker mode (on hold)
 
 [#7989](https://github.com/389ds/389-ds-base/pull/7989) (issue [#7984](https://github.com/389ds/389-ds-base/issues/7984), draft) lets idle worker threads wait on the list's epoll instance themselves and run the request of the connection that wakes them, removing the listener-to-worker hand-off and, with it, the need for turbo mode. Opt-in with `SLAPD_EPOLL_WORKERS=1`.
 
-Measured against #7983 on the same binary: 3% to 7% more throughput (69.6k, 68.9k and 67.1k ops/s at 1,000, 3,000 and 10,000 connections), 6% to 14% lower latency, and replication catch-up about 1 s faster. It passes the same suites and the overnight soak.
+Measured against #7983 on the same binary: 3% to 7% more throughput (69.6k, 68.9k and 67.1k ops/s at 1,000, 3,000 and 10,000 connections), 6% to 14% lower latency, and replication catch-up about 1 s faster. With four connection table lists it holds about 65-66k searches/s from 10,000 to 50,000 connections (table above). It passes the same suites and the overnight soak.
 
 It is on hold: it adds a second request-reading path in the same code as [#7920](https://github.com/389ds/389-ds-base/pull/7920) (CVE-2026-86344, worker pool exhaustion by partial LDAP messages) and the planned resumable reader, which matter more and which worker mode as designed does not address. It will be rebased onto them and re-measured once they land.
 
