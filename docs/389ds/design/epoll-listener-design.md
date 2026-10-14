@@ -114,6 +114,8 @@ Fixing only the access log makes the server slower: workers that finish sooner t
 
 Deployments with tens of thousands of connections run several connection table lists (`nsslapd-numlisteners`); four is a reasonable starting point. With four lists, mean of two 2-minute runs per point (stock configuration otherwise; see the tuning section below for what larger connection counts need):
 
+![Four connection table lists, up to 50,000 connections](../../../images/epoll-four-lists.svg "Four connection table lists, up to 50,000 connections")
+
 | Searches/s, 4 lists | 1,000 | 10,000 | 30,000 | 50,000 |
 |---|---|---|---|---|
 | poll | 65.2k | 2.4k | not run (collapsed at 10,000) | not run |
