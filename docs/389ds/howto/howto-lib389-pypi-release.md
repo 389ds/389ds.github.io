@@ -38,6 +38,15 @@ title: "How to lib389 PyPI Release"
 		chmod 600 ~/.pypirc
 
 
+### Check Out the Release
+
+Start from a clean checkout and replace X.Y.Z with the released version (for example, 3.3.1). Fetching the tag does not change your checkout.
+
+	cd /home/$USER/source/ds389/389-ds-base
+	git fetch upstream tag 389-ds-base-X.Y.Z
+	git switch --detach 389-ds-base-X.Y.Z
+
+
 ### Validate Version
 
 lib389 version must match the main 389-ds-base version in **VERSION.sh**
@@ -45,14 +54,14 @@ lib389 version must match the main 389-ds-base version in **VERSION.sh**
 	cd src/lib389
 	python3 validate_version.py
 
-If version mismatch, update it
+If validation fails at a published release tag, investigate before building. Use --update only during release preparation, before the release is tagged.
 
 	python3 validate_version.py --update
 
 
 ### Run Tests (Optional but Recommended)
 
-Run basic and CLI test suites
+Run basic and CLI test suites in a prepared Linux test environment with the matching server installed
 
 	cd /home/$USER/source/ds389/389-ds-base
 	pytest dirsrvtests/tests/suites/basic
@@ -65,8 +74,14 @@ Run basic and CLI test suites
 
 Clean previous builds
 
-	cd src/lib389
+	cd /home/$USER/source/ds389/389-ds-base/src/lib389
 	rm -rf dist/ build/ *.egg-info
+
+For release tags without the automatic fixture packaging hooks, including 3.3.1, copy the topology fixtures:
+
+	cp ../../dirsrvtests/lib/test389/topologies.py lib389/tests/topologies.py
+
+Omit this copy once the automatic hooks are included in the release tag being packaged. Merging them into main does not change existing release tags.
 
 Build distribution packages
 
@@ -90,8 +105,9 @@ Create test environment and install
 	source /tmp/lib389-test/bin/activate
 	pip install dist/lib389-*.whl
 
-Verify installation
+Verify installation outside the source directory so the import checks the installed package
 
+	cd /tmp
 	pip show lib389
     python3 -c "import lib389; print('Import OK')"
 	dsconf --help
@@ -106,16 +122,18 @@ Cleanup
 
 Always test on TestPyPI first
 
-	cd src/lib389
+	cd /home/$USER/source/ds389/389-ds-base/src/lib389
 	python3 -m twine upload --repository testpypi dist/*
 
 Verify at https://test.pypi.org/project/lib389/
 
-Test installation from TestPyPI
+Test installation from TestPyPI. Install dependencies from PyPI first, then the exact lib389 version from TestPyPI. Keep the dependency list aligned with pyproject.toml.
 
 	python3 -m venv /tmp/testpypi-env
 	source /tmp/testpypi-env/bin/activate
-	pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ lib389
+	pip install --index-url https://pypi.org/simple/ pyasn1 pyasn1-modules argcomplete python-ldap distro cryptography psutil
+	pip install --index-url https://test.pypi.org/simple/ --no-deps lib389==X.Y.Z
+	cd /tmp
     python3 -c "import lib389; print('Import OK')"
 	deactivate
 	rm -rf /tmp/testpypi-env
@@ -124,14 +142,15 @@ Test installation from TestPyPI
 ### Upload to Production PyPI
 
 Final checks:
+
 - TestPyPI upload successful
 - Version is correct
 - Tests pass
 - Git repository clean
 
-Upload to PyPI
+Upload the same artifacts verified on TestPyPI to PyPI
 
-	cd src/lib389
+	cd /home/$USER/source/ds389/389-ds-base/src/lib389
 	python3 -m twine upload --repository pypi dist/*
 
 Verify at https://pypi.org/project/lib389/
@@ -141,6 +160,7 @@ Test installation from PyPI
 	python3 -m venv /tmp/pypi-test
 	source /tmp/pypi-test/bin/activate
 	pip install lib389==X.Y.Z
+	cd /tmp
 	pip show lib389
 	dsconf --help
 	deactivate
@@ -157,7 +177,7 @@ Send email to these lists with Subject: **Announcing lib389 #.#.# PyPI Release**
 
 ### Troubleshooting
 
-**"File already exists"** - PyPI does not allow replacing versions. Increment version and rebuild.
+**"File already exists"** - PyPI does not allow replacing versions. Inspect the existing release first. Do not arbitrarily increment lib389's version; it must match the corresponding 389-ds-base release.
 
 **"Invalid authentication credentials"** - Check `~/.pypirc` has correct tokens and permissions.
 
