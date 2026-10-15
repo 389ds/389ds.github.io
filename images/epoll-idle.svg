@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 174" width="760" height="174" font-family="Helvetica, Arial, sans-serif">
+<rect width="760" height="174" fill="#ffffff"/>
+<text x="0" y="18" font-size="15" font-weight="bold" fill="#1d232b">Throughput with many idle connections (ops/s)</text>
+<line x1="250.0" y1="38" x2="250.0" y2="150" stroke="#5a6573" stroke-width="1"/>
+<text x="250.0" y="166" font-size="11" fill="#5a6573" text-anchor="middle">0</text>
+<line x1="355.0" y1="38" x2="355.0" y2="150" stroke="#dfe3e8" stroke-width="1"/>
+<text x="355.0" y="166" font-size="11" fill="#5a6573" text-anchor="middle">20.0k</text>
+<line x1="460.0" y1="38" x2="460.0" y2="150" stroke="#dfe3e8" stroke-width="1"/>
+<text x="460.0" y="166" font-size="11" fill="#5a6573" text-anchor="middle">40.0k</text>
+<line x1="565.0" y1="38" x2="565.0" y2="150" stroke="#dfe3e8" stroke-width="1"/>
+<text x="565.0" y="166" font-size="11" fill="#5a6573" text-anchor="middle">60.0k</text>
+<line x1="670.0" y1="38" x2="670.0" y2="150" stroke="#dfe3e8" stroke-width="1"/>
+<text x="670.0" y="166" font-size="11" fill="#5a6573" text-anchor="middle">80.0k</text>
+<text x="0" y="62" font-size="12" font-weight="bold" fill="#1d232b">1,000 active + 30,000 idle connections</text>
+<text x="242" y="80" font-size="11" fill="#5a6573" text-anchor="end">Poll (current default), turbo on</text>
+<rect x="250" y="68" width="79.5" height="15" rx="2" fill="#5b5fa8"/>
+<text x="335.5" y="80" font-size="11.5" fill="#1d232b">15.1k</text>
+<text x="242" y="102" font-size="11" fill="#5a6573" text-anchor="end">Poll (current default), turbo off</text>
+<rect x="250" y="90" width="122.5" height="15" rx="2" fill="#5b5fa8"/>
+<text x="378.5" y="102" font-size="11.5" fill="#1d232b">23.3k</text>
+<text x="242" y="124" font-size="11" fill="#5a6573" text-anchor="end">epoll listener (#7983)</text>
+<rect x="250" y="112" width="345.6" height="15" rx="2" fill="#0f6b72"/>
+<text x="601.6" y="124" font-size="11.5" fill="#1d232b">65.8k</text>
+</svg>

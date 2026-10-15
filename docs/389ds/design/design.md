@@ -39,6 +39,10 @@ If you are adding a new design document, use the [template](design-template.html
 - [Replication Monitoring With Ansible](ansible-replication-monitoring-design.html)
 
 
+## 389 Directory Server 3.4
+
+- [epoll Connection Listener](epoll-listener-design.html)
+
 ## 389 Directory Server 3.1
 
 - [Session Tracking Control client - replication](session-identifier-clients.html)
