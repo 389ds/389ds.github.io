@@ -110,6 +110,15 @@ The fixes depend on each other. With one connection table list and #7983, steady
 
 Fixing only the access log makes the server slower: workers that finish sooner take the extension lock more often and starve the list thread that feeds them, so idle workers more than double. With the extension lock fixed first, the list thread has spare time, the workers become the limit, and removing the access log waits pays off. With the default poll build and one list the lock waits disappear as well, but throughput does not change, because poll's single listener thread is the limit there; with four lists it is not, and the default build gains 20% (64.6k to 77.4k searches/s).
 
+The fixes are in [#7995](https://github.com/389ds/389-ds-base/pull/7995). The access log fix hands full buffers to a writer thread, so the logging threads no longer write to disk. With access log buffering turned off (`nsslapd-accesslog-logbuffering: off`, every line synced before the operation completes), the server can only sync about 680 times a second on the test rig. Today that is one sync per line, two per search. With the writer thread, lines that arrive during a sync go out together in the next one, about four lines per sync, and each caller still waits for its own line to be on disk. Default build, one list:
+
+| Unbuffered access log, searches/s | 100 connections | 1,000 connections |
+|---|---|---|
+| current code | 348 / 340 | about 340; 2-3 of 10 clients cannot connect |
+| #7995 | 1,372 / 1,293 | 1,346 |
+
+At 1,000 connections the current code also stops accepting new connections: the accept thread logs each new connection and, with buffering off, writes and syncs that line while holding the buffer lock every worker uses, so the listen queue fills.
+
 ### Four connection table lists, up to 50,000 connections
 
 Deployments with tens of thousands of connections run several connection table lists (`nsslapd-numlisteners`); four is a reasonable starting point. With four lists, mean of two 2-minute runs per point (stock configuration otherwise; see the tuning section below for what larger connection counts need):
@@ -177,6 +186,8 @@ Experimental: worker mode (on hold)
 Measured against #7983 on the same binary: 3% to 7% more throughput (69.6k, 68.9k and 67.1k ops/s at 1,000, 3,000 and 10,000 connections), 6% to 14% lower latency, and replication catch-up about 1 s faster. With four connection table lists it holds about 65-66k searches/s from 10,000 to 50,000 connections (table above). It passes the same suites and the overnight soak.
 
 It is on hold: it adds a second request-reading path in the same code as [#7920](https://github.com/389ds/389-ds-base/pull/7920) (CVE-2026-86344, worker pool exhaustion by partial LDAP messages) and the planned resumable reader, which matter more and which worker mode as designed does not address. It will be rebased onto them and re-measured once they land.
+
+#7920 on its own costs nothing measurable on the default build: 67.6k / 68.3k searches/s without it and 68.8k / 67.7k with it at 1,000 connections with one list, 68.1k / 65.3k and 68.4k / 66.9k with four lists. Under connection churn it averaged about 5% lower, mostly in one run, with the second pair within 1%. It passed the denial-of-service, SASL, persistent search and replication suites and a 13-cycle soak (as above) with no failures.
 
 Origin
 ------
