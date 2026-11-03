@@ -34,8 +34,8 @@ so there will always be situations or configurations that can not be adapted ful
 | LDAP Proxy       | Proxy                | -                         | ❌           |
 | AD Synchronisation | -                  | Winsync Plugin            | ❌           |
 | Inbuilt Schema   | OLDAP Schemas        | 389 Schemas               | ✅ (Complete, some esoteric types not supported) |
-| Custom Schema    | OLDAP Schemas        | 389 Schemas               | ✅ (Complete as part of openldap2ds) |
-| Database Import  | LDIF                 | LDIF                      | ✅ (Data manipulation automated in openldap2ds) |
+| Custom Schema    | OLDAP Schemas        | 389 Schemas               | ✅ (slapd.d via migration plan; legacy `*.schema` via `--convert-schema`) |
+| Database Import  | LDIF                 | LDIF                      | ✅ (Data manipulation automated in openldap_to_ds) |
 | Password Hashes  | Varies               | Varies                    | 🔨 (Some types may work, some may need development or migration) |
 | oldap 2 ds repl  | -                    | -                         | ❌ (No mechanism for openldap to replicate to 389 is possible) |
 | ds 2 oldap repl  | -                    | SyncREPL                  | 🔨 (Mostly complete, tests in place, some more QA required.) |
@@ -46,7 +46,7 @@ From this snapshot we can hopefully see that it's not possible to mix and match 
 389 ds, and that there will always be migration steps required. The only feasible mix and
 match will be *if* we develop support for 389-ds syncrepl to impersonate openldap's syncrepl
 provider (we will likely not consider delta syncrepl). Even in this scenario, as some plugins
-and configurations will have different attribute values, 
+and configurations will have different attribute values,
 
 Example Topologies
 ------------------
@@ -82,15 +82,113 @@ To support the inbuilt openldap schema, 389-ds is should adopt the rfc2307compat
 a set of schema conflicts that may arise during a migration. There are no other known conflicts with
 openldap schema.
 
-A tool called openldap2ds is being developed that can check for and migrate schema to 389-ds from
-openldap instances. It generates a migration plan which can be reviewed and modified, that then
-applies changes to the 389-ds instance, as well as suggesting changes for other instances in the topology.
+A tool called **openldap_to_ds** (`src/lib389/cli/openldap_to_ds`) checks for and migrates content from
+OpenLDAP into a 389-ds instance. It supports two independent workflows:
 
-Openldap2ds can also detect some plugins from openldap and configure 389-ds to match. This feature is
+1. **Full instance migration** (default) — reads an OpenLDAP `slapd.d` tree (and optional `slapcat`
+   LDIF exports), builds a migration plan, and with `--confirm` applies schema, indexes, selected
+   overlay plugins, and database import steps to the target instance.
+2. **Legacy `.schema` conversion** (`--convert-schema`) — converts slapd.conf-style `*.schema` files
+   (for example `include /etc/openldap/schema/custom.schema`) into 389-ds schema LDIF, optionally
+   writing a file, loading via the instance schemadir, or adding over LDAP while the server runs.
+
+Full migration generates a plan that can be reviewed; `--confirm` is required before any change is
+applied. Schema from `slapd.d` (`cn=config/cn=schema/*.ldif`, `olcAttributeTypes` / `olcObjectClasses`)
+is handled by `lib389/migrate/openldap/config.py` and `lib389/migrate/plan.py` as before.
+
+Openldap_to_ds can also detect some plugins from openldap and configure 389-ds to match. This feature is
 limited.
 
-Given an ldif export openldap2ds will be able to import an openldap backup into 389ds, performing
+Given an ldif export openldap_to_ds will be able to import an openldap backup into 389ds, performing
 needed data manipulation to remove openldap specific attributes.
+
+### Legacy `*.schema` file conversion
+
+Many deployments still ship custom definitions as OpenLDAP **schema** files (multi-line
+`attributetype` / `objectclass` blocks referenced from `slapd.conf`). 389-ds expects user schema
+as **LDIF** under the instance schemadir (or as `attributeTypes` / `objectClasses` on `cn=schema`).
+
+Implementation lives in `src/lib389/lib389/migrate/openldap/schema.py`.
+
+#### Conversion rules
+
+When converting text (single file or merged directory of `*.schema` files):
+
+| OpenLDAP input | 389 LDIF output |
+| -------------- | --------------- |
+| `#` comment lines | Preserved unchanged |
+| Blank lines | A line containing `#` |
+| Lines that are not comments and not `attributetype` / `objectclass` (e.g. `objectidentifier`) | Preserved as comments (`# …`) so the file stays valid LDIF |
+| `attributetype` / `objectclass` (any case), possibly split across lines | One line each: `attributeTypes:` / `objectClasses:` with the definition parenthesis joined into a single line |
+| First converted definition | Preceded once by `dn: cn=schema` |
+
+Example (conceptual):
+
+```
+attributetype ( 1.3.6.1.4.1.6152.10.3.1.26
+        NAME 'sendmailMTAAliasSearch'
+        … SINGLE-VALUE )
+
+objectclass ( 1.3.6.1.4.1.6152.10.3.2.14
+        NAME 'sendmailMTAAliasObject'
+        … )
+```
+
+becomes:
+
+```
+dn: cn=schema
+attributeTypes: ( 1.3.6.1.4.1.6152.10.3.1.26 NAME 'sendmailMTAAliasSearch' … SINGLE-VALUE )
+objectClasses: ( 1.3.6.1.4.1.6152.10.3.2.14 NAME 'sendmailMTAAliasObject' … )
+```
+
+API highlights:
+
+- `convert_openldap_schema_text()` — string in, LDIF string out (human-oriented output may include `#` lines between definitions).
+- `convert_openldap_schema_files()` — paths to `*.schema` files or directories; merges multiple files into one LDIF document (single `dn: cn=schema`).
+- `normalize_schema_ldif_for_schemadir()` — strips comment lines and emits one schemadir-safe entry (`dn: cn=schema`, lowercase `attributetypes` / `objectclasses`). Used automatically when installing to disk because schema reload validates every `*.ldif` in the schemadir and rejects layouts that embed `#` between attributes of the same entry.
+- `apply_schema_ldif_online()` — `MOD_ADD` each definition on `cn=schema` via `lib389.schema.Schema`.
+- `install_schema_ldif_to_schemadir()` — writes normalized LDIF, sets mode `0o777` on the file, runs a schema reload task against the instance schemadir.
+
+Object classes must use syntax the 389 schema parser accepts (for example `MUST ( objectclass $ cn )` and `MAY ( attrName )` rather than bare `MUST cn`). Invalid definitions cause schema reload to fail with LDAP result 65 (`LDAP_OBJECT_CLASS_VIOLATION`).
+
+Regression tests: `dirsrvtests/tests/suites/openldap_2_389/migrate_schema_test.py` (conversion unit checks, schemadir install + restart, online LDAP add).
+
+#### CLI: `--convert-schema` mode
+
+Argument group **OpenLDAP .schema conversion** on `openldap_to_ds`:
+
+| Option | Purpose |
+| ------ | ------- |
+| `--convert-schema SCHEMA …` | One or more `.schema` files or a directory containing `*.schema` |
+| `-o` / `--output` FILE | Write converted LDIF to a file; if omitted and not applying to the server, LDIF is printed to stdout |
+| `--apply-online` | Add definitions over LDAP (requires `instance` and a bind to the running server) |
+| `--copy-to-schemadir [FILENAME]` | Write normalized LDIF into the instance schemadir and start schema reload; default basename `98openldap-migrated.ldif` |
+
+Rules:
+
+- With `--convert-schema`, `instance` and `slapd_config` are **not** required unless applying schema to 389-ds.
+- `--apply-online` and `--copy-to-schemadir` are mutually exclusive.
+- Full migration mode still requires `instance`, `slapd_config`, and uses `--confirm` before changes.
+
+Examples:
+
+```bash
+# Convert only (no instance)
+openldap_to_ds --convert-schema /etc/openldap/schema/custom.schema -o /root/98custom.ldif
+
+# Convert all *.schema in a directory
+openldap_to_ds --convert-schema /etc/openldap/schema -o /root/custom.ldif
+
+# Install on disk and reload (run on the 389-ds host as root/dirsrv)
+openldap_to_ds standalone1 --convert-schema custom.schema --copy-to-schemadir 98custom.ldif
+
+# Add while the server is running
+openldap_to_ds standalone1 --convert-schema custom.schema --apply-online
+```
+
+For syncrepl setups that still `include` a file such as `dsee.schema`, convert that file with
+`--convert-schema` before placing the result in the instance schemadir or importing via LDAP.
 
 EntryUUID as a plugin for 389-ds - openldap uses this as part of it's replication model, and many
 applications are configured to use it as a primary key. If there is an existing parallel 389-ds
@@ -127,11 +225,14 @@ The replication topology should be accounted for in this step.
 It should also be noted which plugins are enabled, and how authentication is performed and where
 credentials are stored.
 
-The parallel 389-ds instance or topology should be brought up. Test migrations with openldap2ds
-should be performed. openldap2ds should be run against each server in the topology OR the migration
+The parallel 389-ds instance or topology should be brought up. Test migrations with **openldap_to_ds**
+should be performed. openldap_to_ds should be run against each server in the topology OR the migration
 commands should be run manually against each node to ensure they are in the same configuration state.
 
-The openldap2ds tool can be run to import and manipulate the openldap database as needed.
+Custom schema in legacy `*.schema` files can be converted and loaded separately with
+`openldap_to_ds --convert-schema` before or alongside a full `slapd.d` migration.
+
+The openldap_to_ds tool can be run to import and manipulate the openldap database as needed.
 
 If openldap is acting as a proxy to AD, 389-ds should be configured with winsync. It should be
 checked that the correct data associations are made to the entries.
@@ -223,14 +324,20 @@ We want to limit what can be synced. We achieve this with access controls on the
 	changetype: modify
 	add: aci
 	aci: (targetattr != "aci || creatorsName || modifiersName || createTimestamp || modifyTimestamp || parentId || entryId || nsAccountLock || numSubordinates || tombstoneNumSubordinates || nsSizeLimit || nsLookThroughLimit || nsTimeLimit || nsidletimeout")(targetfilter="(objectClass=*)")(version 3.0; acl "Enable sync repl full read"; allow (read, search)(userdn="ldap:///cn=syncrepl,ou=services,dc=example,dc=com");)
-	# 
+	#
 	ldapmodify -f 389_sync_aci.ldif -D 'cn=Directory Manager' -w password -x -H ldap://127.0.0.1:3389
 
 ## OpenLDAP configuration.
 
-Add the dsee.ldif
+Add the dsee schema (legacy file or converted LDIF). Example slapd.conf include:
 
 	include /etc/openldap/schema/dsee.schema
+
+Convert for 389-ds with:
+
+	openldap_to_ds --convert-schema /etc/openldap/schema/dsee.schema -o /path/to/98dsee.ldif
+
+Then install with `--copy-to-schemadir` or merge into your schemadir by hand.
 
 Load MDB
 
