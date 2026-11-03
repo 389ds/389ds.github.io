@@ -148,7 +148,7 @@ API highlights:
 - `convert_openldap_schema_files()` — paths to `*.schema` files or directories; merges multiple files into one LDIF document (single `dn: cn=schema`).
 - `normalize_schema_ldif_for_schemadir()` — strips comment lines and emits one schemadir-safe entry (`dn: cn=schema`, lowercase `attributetypes` / `objectclasses`). Used automatically when installing to disk because schema reload validates every `*.ldif` in the schemadir and rejects layouts that embed `#` between attributes of the same entry.
 - `apply_schema_ldif_online()` — `MOD_ADD` each definition on `cn=schema` via `lib389.schema.Schema`.
-- `install_schema_ldif_to_schemadir()` — writes normalized LDIF, sets mode `0o777` on the file, runs a schema reload task against the instance schemadir.
+- `install_schema_ldif_to_schemadir()` — writes normalized LDIF, sets mode `0o644` on the file, runs a schema reload task against the instance schemadir.
 
 Object classes must use syntax the 389 schema parser accepts (for example `MUST ( objectclass $ cn )` and `MAY ( attrName )` rather than bare `MUST cn`). Invalid definitions cause schema reload to fail with LDAP result 65 (`LDAP_OBJECT_CLASS_VIOLATION`).
 
