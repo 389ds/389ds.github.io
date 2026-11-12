@@ -269,9 +269,9 @@ following format.
 
     Author: <your name here>
 
-    Reviewed by: ???
+    Reviewed-by: NAME <EMAIL ADDRESS>
 
-Fill in the commit message and save. You now have a single well formed commit to send us.  In GitHub, the "relates" keyword will update that Issue with the commit hash (a very convenient feature).
+Fill in the commit message and save. You now have a single well formed commit to send us.  In GitHub, the "relates" keyword will update that Issue with the commit hash (a very convenient feature). You can please the "Reviwed-by:" value blank until it is reviewed then you acan amend the commit message withthe proper value: **John Smith <jsmith@example.com>**
 
 ### Create a pull-request
 
