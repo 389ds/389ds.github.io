@@ -32,6 +32,7 @@ Documents describing new features that were introduced in each release, as well 
 -   [ESC Guide](FAQ/esc-guide.html) - Smart Card Manager
 -   [Features](FAQ/features.html) - Features of 389 Directory Server 
 -   [LDAPI and AUTOBIND](FAQ/ldapi-and-autobind.html) - Description of LDAPI and AUTOBIND
+-   [Licensing](FAQ/licensing.html) - Licensing information for the 389 Directory Server and its components
 -   [Memory Usage Research](FAQ/memory-usage-research.html) - High memory usage investigation
 -   [New Setup Design](FAQ/new-setup-design.html) - Post setupUtil design
 -   [Password Syntax Checking](FAQ/password-syntax.html) - Password syntax checking

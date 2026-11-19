@@ -56,6 +56,13 @@ The ICU project is licensed under the X License (see also the [x.org](http://www
 
 The license allows ICU to be incorporated into a wide variety of software projects using the GPL license. The X license is compatible with the GPL, while also allowing ICU to be incorporated into non-open source products. The full ICU license can be found [here](http://source.icu-project.org/repos/icu/icu/trunk/license.html).
 
+### OpenLDAP
+
+389 Directory Server uses OpenLDAP's `libldap` and `liblber` libraries and the
+LMDB storage library for its `mdb` backend. It also ships the `dsee.schema`
+reference file from OpenLDAP. These components are covered by the
+[OpenLDAP Public License, version 2.8](https://www.openldap.org/software/release/license.html).
+
 ### Net-SNMP
 
 Net-SNMP is covered by several licenses, all BSD or BSD-like. See the Net-SNMP [license page](http://net-snmp.sourceforge.net/about/license.html) for full details.
