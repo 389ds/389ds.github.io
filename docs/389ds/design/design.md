@@ -53,6 +53,7 @@ If you are adding a new design document, use the [template](design-template.html
 - [Maximum Controls Per Operaton](max-ctrls-per-op-design.html)
 - [dsidm Get Effective Password Policy Design](dsidm-user-get-pwp-design.html)
 - [Server log async compression and deleteion design](log-async-compress-delete-design.html)
+- [Improving entry cache rollback](entrycache-rollback.html)
 
 ## 389 Directory Server 3.0
 
